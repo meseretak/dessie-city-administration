@@ -1,0 +1,277 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL_LOCAL")
+}
+
+model AdminUser {
+  id        String   @id @default(cuid())
+  username  String   @unique
+  password  String
+  name      String
+  role      String   @default("admin")
+  active    Boolean  @default(true)
+  lastLogin DateTime?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  auditLogs AuditLog[]
+}
+
+model AuditLog {
+  id        String   @id @default(cuid())
+  adminId   String?
+  action    String
+  model     String
+  recordId  String
+  details   String   @default("{}")
+  createdAt DateTime @default(now())
+
+  admin AdminUser? @relation(fields: [adminId], references: [id])
+}
+
+model User {
+  id        String   @id @default(cuid())
+  email     String   @unique
+  name      String?
+  role      String   @default("citizen")
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model ServiceRequest {
+  id          String   @id @default(cuid())
+  name        String
+  email       String
+  phone       String?
+  serviceType String
+  message     String?
+  status      String   @default("pending")
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+model NewsletterSubscription {
+  id        String   @id @default(cuid())
+  email     String   @unique
+  active    Boolean  @default(true)
+  createdAt DateTime @default(now())
+}
+
+model ContactMessage {
+  id        String   @id @default(cuid())
+  name      String
+  email     String
+  subject   String
+  message   String
+  status    String   @default("unread")
+  createdAt DateTime @default(now())
+}
+
+model QuoteRequest {
+  id        String   @id @default(cuid())
+  name      String
+  email     String
+  company   String
+  teamSize  String
+  message   String?
+  status    String   @default("pending")
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Hotel {
+  id             String   @id @default(cuid())
+  name           String
+  location       String
+  rating         Int      @default(3)
+  priceRange     String
+  description    String
+  phone          String?
+  email          String?
+  image          String?
+  amenities      String   @default("[]")
+  featured       Boolean  @default(false)
+  status         String   @default("active")
+  approvalStatus String   @default("approved")
+  createdBy      String?
+  approvedBy     String?
+  approvedAt     DateTime?
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+}
+
+model NewsArticle {
+  id             String    @id @default(cuid())
+  title          String
+  excerpt        String
+  content        String
+  category       String    @default("General")
+  image          String?
+  author         String?
+  status         String    @default("approved")
+  approvalStatus String    @default("approved")
+  createdBy      String?
+  approvedBy     String?
+  approvedAt     DateTime?
+  createdAt      DateTime  @default(now())
+  updatedAt      DateTime  @updatedAt
+}
+
+model Vacancy {
+  id             String    @id @default(cuid())
+  title          String
+  department     String
+  type           String
+  salary         String
+  deadline       String
+  status         String    @default("Open")
+  approvalStatus String    @default("approved")
+  description    String
+  requirements   String    @default("[]")
+  createdBy      String?
+  approvedBy     String?
+  approvedAt     DateTime?
+  createdAt      DateTime  @default(now())
+  updatedAt      DateTime  @updatedAt
+}
+
+model Bid {
+  id             String    @id @default(cuid())
+  title          String
+  reference      String
+  category       String
+  deadline       String
+  status         String    @default("Open")
+  approvalStatus String    @default("approved")
+  description    String
+  budget         String
+  requirements   String    @default("[]")
+  awardedTo      String?
+  createdBy      String?
+  approvedBy     String?
+  approvedAt     DateTime?
+  createdAt      DateTime  @default(now())
+  updatedAt      DateTime  @updatedAt
+}
+
+model Project {
+  id             String   @id @default(cuid())
+  title          String
+  category       String
+  status         String   @default("In Progress")
+  description    String
+  budget         String?
+  startDate      String?
+  endDate        String?
+  progress       Int      @default(0)
+  image          String?
+  approvalStatus String   @default("approved")
+  createdBy      String?
+  approvedBy     String?
+  approvedAt     DateTime?
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+}
+
+model Announcement {
+  id             String    @id @default(cuid())
+  title          String
+  content        String
+  priority       String    @default("normal")
+  status         String    @default("active")
+  startDate      DateTime  @default(now())
+  endDate        DateTime?
+  approvalStatus String    @default("approved")
+  createdBy      String?
+  approvedBy     String?
+  approvedAt     DateTime?
+  createdAt      DateTime  @default(now())
+  updatedAt      DateTime  @updatedAt
+}
+
+model PageContent {
+  id        String   @id @default(cuid())
+  page      String   @unique
+  title     String
+  content   String
+  updatedAt DateTime @updatedAt
+}
+
+model MenuItem {
+  id             String    @id @default(cuid())
+  label          String
+  pageId         String
+  parentId       String?
+  parent         MenuItem?  @relation("MenuChildren", fields: [parentId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  children       MenuItem[] @relation("MenuChildren")
+  order          Int       @default(0)
+  icon           String?
+  isVisible      Boolean   @default(true)
+  isOpenInNew    Boolean   @default(false)
+  approvalStatus String    @default("approved")
+  createdBy      String?
+  approvedBy     String?
+  approvedAt     DateTime?
+  createdAt      DateTime  @default(now())
+  updatedAt      DateTime  @updatedAt
+}
+
+model SliderImage {
+  id             String   @id @default(cuid())
+  title          String
+  subtitle       String
+  image          String
+  link           String?
+  sliderType     String   @default("hero")
+  order          Int      @default(0)
+  isActive       Boolean  @default(true)
+  tag            String?
+  accentColor    String?
+  approvalStatus String   @default("approved")
+  createdBy      String?
+  approvedBy     String?
+  approvedAt     DateTime?
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+}
+
+model CabinetMember {
+  id             String   @id @default(cuid())
+  name           String
+  title          String
+  department     String
+  photo          String?
+  bio            String
+  email          String?
+  phone          String?
+  socialLinks    String   @default("{}")
+  order          Int      @default(0)
+  approvalStatus String   @default("approved")
+  createdBy      String?
+  approvedBy     String?
+  approvedAt     DateTime?
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+}
+
+model SiteSetting {
+  id        String   @id @default(cuid())
+  key       String   @unique
+  value     String
+  category  String   @default("general")
+  updatedAt DateTime @updatedAt
+}
+
+model SiteVisit {
+  id        String   @id @default(cuid())
+  sessionId String
+  page      String   @default("/")
+  ip        String   @default("")
+  userAgent String   @default("")
+  referrer  String   @default("")
+  country   String   @default("")
+  createdAt DateTime @default(now())
+}
