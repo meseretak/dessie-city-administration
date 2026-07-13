@@ -1,6 +1,5 @@
 generator client {
-  provider        = "prisma-client-js"
-  previewFeatures = ["driverAdapters"]
+  provider = "prisma-client-js"
 }
 
 datasource db {
@@ -29,7 +28,6 @@ model AuditLog {
   recordId  String
   details   String   @default("{}")
   createdAt DateTime @default(now())
-
   admin AdminUser? @relation(fields: [adminId], references: [id])
 }
 
