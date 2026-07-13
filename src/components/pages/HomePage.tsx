@@ -196,12 +196,12 @@ const heroSlides = [
 ]
 
 const hotelImagesAll = [
-  ['/dessie-city-hall.png', '/heritage-landscape.png', '/city-aerial.png'],
-  ['/heritage-fortress.png', '/heritage-waterfall.png', '/heritage-church.png'],
-  ['/project-housing.png', '/heritage-memorial.png', '/heritage-market.png'],
-  ['/dessie-smart-center.png', '/project-smart-city.png', '/news-smart-city.png'],
-  ['/news-industry.png', '/project-industrial.png', '/building-commercial.png'],
-  ['/project-healthcare.png', '/building-hospital.png', '/news-health.png'],
+  ['/hotel-building.png', '/hotel-room.png', '/hotel-food.png'],
+  ['/hotel-lobby.png', '/hotel-building.png', '/hotel-room.png'],
+  ['/hotel-room.png', '/hotel-food.png', '/hotel-lobby.png'],
+  ['/hotel-food.png', '/hotel-room.png', '/hotel-building.png'],
+  ['/hotel-building.png', '/hotel-lobby.png', '/hotel-food.png'],
+  ['/hotel-room.png', '/hotel-building.png', '/hotel-lobby.png'],
 ]
 
 const hotels = [
@@ -1765,19 +1765,22 @@ export default function HomePage({ navigateTo }: { navigateTo: (page: PageId, ex
         </div>
       </section>
 
-      {/* ═══════════════════ RESOURCES & DOCUMENTS ═══════════════════ */}
+      {/* ═══════════════════ RESOURCES & DOCUMENTS + EMERGENCY ═══════════════════ */}
       <section id="resources-section" className="py-10 bg-[#f8faf8]">
-        <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 items-start">
+            {/* Resources — 2/3 */}
+            <div className="lg:col-span-2">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.5 }}
           >
-            <h2 className="text-2xl md:text-3xl font-bold text-[#1a1a1a] text-center gov-section-title inline-block mb-2">
+            <h2 className="text-2xl md:text-3xl font-bold text-[#1a1a1a] gov-section-title inline-block mb-2">
               RESOURCES &amp; DOCUMENTS
             </h2>
-            <p className="text-center text-[#6b7280] text-sm mb-6">Access official documents, proclamations, regulations, and application forms</p>
+            <p className="text-[#6b7280] text-sm mb-6">Access official documents, proclamations, regulations, and application forms</p>
 
             {/* Category Tabs */}
             <div className="flex flex-wrap justify-center gap-2 mb-6">
@@ -1952,6 +1955,43 @@ export default function HomePage({ navigateTo }: { navigateTo: (page: PageId, ex
               })()}
             </Card>
           </motion.div>
+            </div>{/* end resources col */}
+
+            {/* Emergency Contacts — 1/3 */}
+            <div className="lg:col-span-1">
+              <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.5, delay: 0.1 }}>
+                <h2 className="text-xl font-bold text-[#1a1a1a] gov-section-title inline-block mb-2">EMERGENCY CONTACTS</h2>
+                <p className="text-[#6b7280] text-sm mb-4">24/7 emergency services</p>
+                <div className="space-y-2">
+                  {[
+                    { label: 'Police Emergency', number: '911', icon: Shield, color: '#1a6b3c', bg: '#f0fdf4' },
+                    { label: 'Fire Brigade', number: '939', icon: Zap, color: '#c62828', bg: '#fef2f2' },
+                    { label: 'Medical Emergency', number: '907', icon: Heart, color: '#0369a1', bg: '#eff6ff' },
+                    { label: 'City Hall', number: '+251-33-111-0000', icon: Building, color: '#0d4a28', bg: '#f0fdf4' },
+                    { label: 'Public Works', number: '+251-33-111-1111', icon: Route, color: '#78350f', bg: '#fffbeb' },
+                    { label: 'Water Authority', number: '+251-33-111-2222', icon: Droplets, color: '#0369a1', bg: '#eff6ff' },
+                    { label: 'Electricity Office', number: '+251-33-111-3333', icon: Zap, color: '#c8a415', bg: '#fffbeb' },
+                    { label: 'Health Bureau', number: '+251-33-111-4444', icon: Stethoscope, color: '#c62828', bg: '#fef2f2' },
+                    { label: 'Anti-Corruption', number: '+251-33-111-5555', icon: Shield, color: '#6b21a8', bg: '#faf5ff' },
+                    { label: 'Traffic Police', number: '+251-33-111-6666', icon: Navigation, color: '#0369a1', bg: '#eff6ff' },
+                  ].map(({ label, number, icon: Icon, color, bg }) => (
+                    <a key={label} href={`tel:${number.replace(/\s/g, '')}`}
+                      className="flex items-center gap-3 p-2.5 bg-white rounded-lg border border-[#e2e8e0] hover:border-[#0d4a28]/30 hover:shadow-sm transition-all group">
+                      <div className="w-8 h-8 rounded-lg flex items-center justify-center shrink-0" style={{ backgroundColor: bg }}>
+                        <Icon className="w-4 h-4" style={{ color }} />
+                      </div>
+                      <div className="flex-1 min-w-0">
+                        <p className="text-xs font-semibold text-[#1a1a1a] truncate">{label}</p>
+                        <p className="text-xs font-bold" style={{ color }}>{number}</p>
+                      </div>
+                      <Phone className="w-3.5 h-3.5 text-[#9ca3af] opacity-0 group-hover:opacity-100 transition-opacity" />
+                    </a>
+                  ))}
+                </div>
+              </motion.div>
+            </div>
+
+          </div>{/* end grid */}
         </div>
       </section>
 
