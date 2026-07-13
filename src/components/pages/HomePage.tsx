@@ -193,8 +193,6 @@ const heroSlides = [
   { image: '/news-meeting.png', title: 'City Council in Action', subtitle: 'Transparent Governance for a Prosperous Dessie' },
   { image: '/heritage-landscape.png', title: 'Natural Beauty of Dessie', subtitle: 'Nestled in the Heart of the Amhara Highlands' },
 ]
-  { image: '/heritage-landscape.png', title: 'Natural Beauty', subtitle: 'Nestled in the Amhara Highlands' },
-]
 
 const hotelImagesAll = [
   ['/hotel-building.png', '/hotel-room.png', '/hotel-food.png'],
