@@ -1099,7 +1099,7 @@ export default function HomePage({ navigateTo }: { navigateTo: (page: PageId, ex
 
       {/* ═══════════════════ 4b. PROMOTIONAL SLIDER ═══════════════════ */}
       <section className="py-12 bg-gradient-to-b from-[#f0fdf4] to-white overflow-hidden">
-        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
           {/* Header */}
           <div className="text-center mb-8">
             <motion.div initial={{ opacity: 0, y: 10 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }}>
@@ -1346,8 +1346,8 @@ export default function HomePage({ navigateTo }: { navigateTo: (page: PageId, ex
       </section>
 
       {/* ═══════════════════ 6. VACANCIES & BIDS ═══════════════════ */}
-      <section className="py-10 bg-[#f8faf8]">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <section className="py-8 bg-[#f8faf8]">
+        <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
 
           {/* Header row */}
           <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 mb-6">
@@ -1391,59 +1391,59 @@ export default function HomePage({ navigateTo }: { navigateTo: (page: PageId, ex
 
           {/* Cards */}
           {loadingJB ? (
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-              {[1,2,3,4].map(n => <Skeleton key={n} className="h-24 rounded-xl" />)}
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+              {[1,2,3,4].map(n => <Skeleton key={n} className="h-16 rounded-lg" />)}
             </div>
           ) : jbData.length > 0 ? (
             <AnimatePresence mode="wait">
               <motion.div key={`${jbTab}-${jbPage}-${jbFilter}`}
                 initial={{ opacity: 0, y: 6 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -6 }}
                 transition={{ duration: 0.2 }}
-                className={jbTab === 'vacancies' ? 'grid grid-cols-1 sm:grid-cols-2 gap-3' : 'flex flex-col gap-2'}>
+                className={jbTab === 'vacancies' ? 'grid grid-cols-1 lg:grid-cols-2 gap-2' : 'flex flex-col gap-2'}>
                 {jbVisible.map((item: any, idx: number) => (
                   jbTab === 'vacancies' ? (
-                    <motion.div key={item.id} initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: idx * 0.05 }}>
-                      <Card className="cursor-pointer hover:shadow-lg transition-all border-0 shadow-sm group bg-white overflow-hidden"
+                    <motion.div key={item.id} initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: idx * 0.04 }}>
+                      <Card className="cursor-pointer hover:shadow-md transition-all border-0 shadow-sm group bg-white overflow-hidden"
                         onClick={() => navigateTo('vacancy-detail', { vacancyId: item.id })}>
                         <div className="h-0.5 bg-gradient-to-r from-[#0d4a28] to-[#1a6b3c] opacity-0 group-hover:opacity-100 transition-opacity" />
-                        <CardContent className="p-4 flex items-start gap-3">
-                          <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-[#0d4a28] to-[#1a6b3c] flex items-center justify-center shadow-sm shrink-0 group-hover:scale-105 transition-transform">
+                        <CardContent className="p-3 flex items-center gap-3">
+                          <div className="w-9 h-9 rounded-lg bg-gradient-to-br from-[#0d4a28] to-[#1a6b3c] flex items-center justify-center shrink-0">
                             <Briefcase className="w-4 h-4 text-white" />
                           </div>
                           <div className="flex-1 min-w-0">
-                            <div className="flex items-center gap-2 mb-1">
+                            <div className="flex items-center gap-1.5 mb-0.5">
                               <span className="text-[9px] font-bold bg-[#f0fdf4] text-[#0d4a28] border border-[#1a6b3c]/20 px-1.5 py-0.5 rounded">{item.type}</span>
-                              <span className="text-[9px] text-[#9ca3af] truncate">{item.department}</span>
+                              <span className="text-[9px] text-[#9ca3af] truncate max-w-[120px]">{item.department}</span>
                             </div>
-                            <h4 className="font-bold text-[#1a1a1a] text-sm group-hover:text-[#0d4a28] transition-colors line-clamp-1 mb-1">{item.title}</h4>
-                            <div className="flex items-center justify-between">
-                              <span className="text-xs font-extrabold text-[#c8a415]">{item.salary}</span>
-                              <span className="flex items-center gap-1 text-[9px] text-[#9ca3af]"><Clock className="w-2.5 h-2.5" />{item.deadline}</span>
-                            </div>
+                            <h4 className="font-bold text-[#1a1a1a] text-xs group-hover:text-[#0d4a28] transition-colors line-clamp-1">{item.title}</h4>
+                          </div>
+                          <div className="text-right shrink-0">
+                            <p className="text-xs font-extrabold text-[#c8a415]">{item.salary}</p>
+                            <p className="text-[9px] text-[#9ca3af]">{item.deadline}</p>
                           </div>
                         </CardContent>
                       </Card>
                     </motion.div>
                   ) : (
                     <motion.div key={item.id} initial={{ opacity: 0, x: -8 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: idx * 0.04 }}>
-                      <Card className="cursor-pointer hover:shadow-md transition-all border-0 shadow-sm group bg-white overflow-hidden"
+                      <Card className="cursor-pointer hover:shadow-md transition-all border-0 shadow-sm group bg-white"
                         onClick={() => navigateTo('bids-detail', { bidId: item.id })}>
-                        <CardContent className="p-3.5 flex items-center gap-4">
+                        <CardContent className="p-3 flex items-center gap-3">
                           <div className="w-9 h-9 rounded-lg bg-gradient-to-br from-[#7c5c00] to-[#c8a415] flex items-center justify-center shrink-0">
                             <Gavel className="w-4 h-4 text-white" />
                           </div>
                           <div className="flex-1 min-w-0">
-                            <div className="flex items-center gap-2 mb-0.5">
+                            <div className="flex items-center gap-1.5 mb-0.5">
                               <span className="text-[9px] font-bold bg-[#fffbeb] text-[#78350f] border border-[#c8a415]/20 px-1.5 py-0.5 rounded">{item.category}</span>
                               <span className="text-[9px] font-mono text-[#9ca3af]">{item.reference}</span>
                             </div>
                             <h4 className="font-semibold text-[#1a1a1a] text-xs group-hover:text-[#c8a415] transition-colors line-clamp-1">{item.title}</h4>
                           </div>
-                          <div className="text-right shrink-0 hidden sm:block">
+                          <div className="text-right shrink-0">
                             <p className="text-xs font-extrabold text-[#c8a415]">{item.budget}</p>
                             <p className="text-[9px] text-[#9ca3af]">{item.deadline}</p>
                           </div>
-                          <ArrowRight className="w-3.5 h-3.5 text-[#c8a415] opacity-0 group-hover:opacity-100 transition-opacity shrink-0" />
+                          <ArrowRight className="w-3 h-3 text-[#c8a415] opacity-0 group-hover:opacity-100 transition-opacity" />
                         </CardContent>
                       </Card>
                     </motion.div>
