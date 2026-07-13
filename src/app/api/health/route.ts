@@ -1,75 +1,55 @@
 import { NextResponse } from 'next/server'
 
 export async function GET() {
-  const tursoUrl = process.env.TURSO_DATABASE_URL
-  const tursoToken = process.env.TURSO_AUTH_TOKEN
-  const dbUrl = process.env.DATABASE_URL
+  const tursoUrl = (process.env.TURSO_DATABASE_URL ?? '').trim()
+  const tursoToken = (process.env.TURSO_AUTH_TOKEN ?? '').trim()
 
-  let libsqlTest = 'not tried'
-  let adapterTest = 'not tried'
-  let prismaTest = 'not tried'
+  let directTest = 'not tried'
+  let dbTest = 'not tried'
   let adminCount = 0
+  let vacancyCount = 0
 
-  // Test 1: Can we import @libsql/client?
+  // Test 1: Direct HTTP to Turso
   try {
-    const { createClient } = require('@libsql/client')
-    libsqlTest = 'import ok'
-
-    // Test 2: Can we create a client?
-    const url = (tursoUrl ?? '').trim()
-    const token = (tursoToken ?? '').trim()
-
-    if (url && token) {
-      const client = createClient({ url, authToken: token })
-      // Test 3: Can we query?
-      const result = await client.execute('SELECT COUNT(*) as count FROM AdminUser')
-      adminCount = Number(result.rows[0][0])
-      libsqlTest = `connected, adminCount=${adminCount}`
-      await client.close()
-    } else {
-      libsqlTest = `url empty=${!url}, token empty=${!token}`
-    }
+    const httpUrl = tursoUrl.replace('libsql://', 'https://')
+    const res = await fetch(`${httpUrl}/v2/pipeline`, {
+      method: 'POST',
+      headers: { 'Authorization': `Bearer ${tursoToken}`, 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        requests: [
+          { type: 'execute', stmt: { sql: 'SELECT COUNT(*) as c FROM AdminUser', args: [] } },
+          { type: 'execute', stmt: { sql: 'SELECT COUNT(*) as c FROM Vacancy', args: [] } },
+          { type: 'close' }
+        ]
+      })
+    })
+    const data = await res.json()
+    adminCount = parseInt(data.results?.[0]?.response?.result?.rows?.[0]?.[0]?.value ?? 0)
+    vacancyCount = parseInt(data.results?.[1]?.response?.result?.rows?.[0]?.[0]?.value ?? 0)
+    directTest = `OK - ${adminCount} admins, ${vacancyCount} vacancies`
   } catch (e: any) {
-    libsqlTest = `error: ${e.message}`
+    directTest = `ERROR: ${e.message}`
   }
 
-  // Test 4: Prisma adapter
-  try {
-    const { PrismaLibSQL } = require('@prisma/adapter-libsql')
-    adapterTest = 'import ok'
-    const { createClient } = require('@libsql/client')
-    const url = (tursoUrl ?? '').trim()
-    const token = (tursoToken ?? '').trim()
-    if (url && token) {
-      const libsql = createClient({ url, authToken: token })
-      const adapter = new PrismaLibSQL(libsql)
-      adapterTest = `adapter created: ${typeof adapter}`
-    }
-  } catch (e: any) {
-    adapterTest = `error: ${e.message}`
-  }
-
-  // Test 5: Prisma client
+  // Test 2: db proxy
   try {
     const { db } = await import('@/lib/db')
-    adminCount = await db.adminUser.count()
-    prismaTest = `ok, adminCount=${adminCount}`
+    const count = await (db as any).adminUser.count()
+    dbTest = `OK - count=${count}`
   } catch (e: any) {
-    prismaTest = `error: ${e.message?.substring(0, 100)}`
+    dbTest = `ERROR: ${e.message?.substring(0, 100)}`
   }
 
   return NextResponse.json({
     env: {
-      tursoUrl: tursoUrl ? tursoUrl.trim().substring(0, 50) + '...' : 'MISSING',
-      tursoToken: tursoToken ? 'SET (' + tursoToken.trim().length + ' chars)' : 'MISSING',
-      dbUrl: dbUrl ?? 'MISSING',
+      hasTursoUrl: !!tursoUrl,
+      hasTursoToken: !!tursoToken,
+      tursoUrl: tursoUrl.substring(0, 50),
       nodeEnv: process.env.NODE_ENV,
     },
-    tests: {
-      libsqlClient: libsqlTest,
-      prismaAdapter: adapterTest,
-      prismaClient: prismaTest,
-    },
+    directHttp: directTest,
+    dbProxy: dbTest,
     adminCount,
+    vacancyCount,
   })
 }
