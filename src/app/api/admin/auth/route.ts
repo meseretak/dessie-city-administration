@@ -9,6 +9,7 @@ function hashPassword(pw: string): string {
   return createHash('sha256').update(pw + 'dessie_salt_2025').digest('hex')
 }
 
+// POST — Login
 export async function POST(req: Request) {
   try {
     const { username, password } = await req.json()
@@ -48,19 +49,20 @@ export async function POST(req: Request) {
     const cookieStore = await cookies()
     cookieStore.set(ADMIN_SESSION, JSON.stringify(sessionData), {
       httpOnly: true,
-      secure: false,
+      secure: process.env.NODE_ENV === 'production',
       sameSite: 'lax',
-      maxAge: 60 * 60 * 24,
+      maxAge: 60 * 60 * 24, // 24 hours
       path: '/',
     })
 
-    return NextResponse.json(sessionData)
+    return NextResponse.json({ user: sessionData })
   } catch (error) {
     console.error('Admin login error:', error)
     return NextResponse.json({ error: 'Login failed' }, { status: 500 })
   }
 }
 
+// GET — Check session
 export async function GET() {
   try {
     const cookieStore = await cookies()
@@ -70,26 +72,30 @@ export async function GET() {
       return NextResponse.json({ authenticated: false }, { status: 401 })
     }
 
-    const user = JSON.parse(session)
-    const admin = await db.adminUser.findUnique({ where: { id: user.id } })
+    const parsed = JSON.parse(session)
+    const admin = await db.adminUser.findUnique({ where: { id: parsed.id } })
 
     if (!admin || !admin.active) {
-      const cookieStore2 = await cookies()
-      cookieStore2.delete(ADMIN_SESSION)
+      const cs = await cookies()
+      cs.delete(ADMIN_SESSION)
       return NextResponse.json({ authenticated: false }, { status: 401 })
     }
 
     return NextResponse.json({
-      id: admin.id,
-      username: admin.username,
-      name: admin.name,
-      role: admin.role,
+      authenticated: true,
+      user: {
+        id: admin.id,
+        username: admin.username,
+        name: admin.name,
+        role: admin.role,
+      },
     })
   } catch {
     return NextResponse.json({ authenticated: false }, { status: 401 })
   }
 }
 
+// DELETE — Logout
 export async function DELETE() {
   try {
     const cookieStore = await cookies()

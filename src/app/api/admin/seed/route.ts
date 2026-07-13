@@ -1,8 +1,13 @@
 import { db } from '@/lib/db'
 import { NextResponse } from 'next/server'
 import { cookies } from 'next/headers'
+import { createHash } from 'crypto'
 
 const ADMIN_SESSION = 'dessie_admin_session'
+
+function hashPassword(pw: string): string {
+  return createHash('sha256').update(pw + 'dessie_salt_2025').digest('hex')
+}
 
 async function getAdminUser() {
   const cookieStore = await cookies()
@@ -18,21 +23,13 @@ async function getAdminUser() {
 
 export async function POST() {
   try {
-    // Allow initial seeding without auth
-    const encoder = new TextEncoder()
-    async function hashPw(pw: string) {
-      const d = encoder.encode(pw + 'dessie_salt_2025')
-      const h = await crypto.subtle.digest('SHA-256', d)
-      return Array.from(new Uint8Array(h)).map(b => b.toString(16).padStart(2, '0')).join('')
-    }
-
     const existing = await db.adminUser.count()
     if (existing > 0) {
       return NextResponse.json({ message: 'Admin users already exist', count: existing })
     }
 
-    const adminPw = await hashPw('admin123')
-    const checkerPw = await hashPw('checker123')
+    const adminPw = hashPassword('admin123')
+    const checkerPw = hashPassword('checker123')
 
     await db.adminUser.createMany({
       data: [
@@ -45,7 +42,7 @@ export async function POST() {
     await db.vacancy.updateMany({ data: { approvalStatus: 'approved', approvedBy: 'system', approvedAt: new Date() } })
     await db.bid.updateMany({ data: { approvalStatus: 'approved', approvedBy: 'system', approvedAt: new Date() } })
 
-    return NextResponse.json({ success: true, message: 'Admin users created' })
+    return NextResponse.json({ success: true, message: 'Admin users created: admin/admin123 and checker/checker123' })
   } catch (error) {
     console.error('Seed admin error:', error)
     return NextResponse.json({ error: 'Failed to seed admin users' }, { status: 500 })

@@ -482,8 +482,8 @@ export default function HomePage({ navigateTo }: { navigateTo: (page: PageId, ex
   }, [bookingForm, bookingHotel, toast])
 
   /* ── Paginated data slices ── */
-  const serviceStart = servicePage * 8
-  const visibleServices = serviceCards.slice(serviceStart, serviceStart + 8)
+  const serviceStart = servicePage * 4
+  const visibleServices = serviceCards.slice(serviceStart, serviceStart + 4)
   const hotelStart = hotelPage * 3
   const visibleHotels = hotels.slice(hotelStart, hotelStart + 3)
   const projectStart = projectPage * 4
@@ -643,184 +643,119 @@ export default function HomePage({ navigateTo }: { navigateTo: (page: PageId, ex
         </div>
       </section>
 
-      {/* ═══════════════════ 2. CITIZEN SERVICES ═══════════════════ */}
-      <section id="services" className="py-12 md:py-16 bg-white">
+      {/* ═══════════════════ 2. CITIZEN SERVICES + VACANCIES ═══════════════════ */}
+      <section id="services" className="py-14 bg-gradient-to-b from-white to-[#f8faf8]">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <motion.div
-              initial={{ opacity: 0, x: -20 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              viewport={{ once: true, margin: '-60px' }}
-              transition={{ duration: 0.5 }}
-            >
-              {/* Header */}
-              <div className="flex items-start sm:items-center justify-between mb-6 gap-3">
+          <div className="grid grid-cols-1 xl:grid-cols-5 gap-10 items-start">
+
+            {/* ══ LEFT: Citizen Services (3 cols out of 5) ══ */}
+            <motion.div className="xl:col-span-3 order-1"
+              initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, margin: '-60px' }} transition={{ duration: 0.5 }}>
+
+              {/* Section Header */}
+              <div className="flex items-end justify-between mb-8">
                 <div>
-                  <h2 className="text-2xl md:text-3xl font-bold text-[#0d4a28] tracking-tight">
-                    CITIZEN SERVICES
-                  </h2>
-                  <div className="h-1 w-16 bg-gradient-to-r from-[#c8a415] to-[#c8a415]/20 rounded-full mt-2" />
-                  <p className="mt-2 text-[#6b7280] text-sm max-w-md">
-                    Access essential government services — fast, secure, and convenient.
-                  </p>
+                  <div className="flex items-center gap-2 mb-2">
+                    <div className="w-8 h-8 rounded-lg bg-[#0d4a28] flex items-center justify-center">
+                      <Building className="w-4 h-4 text-white" />
+                    </div>
+                    <span className="text-xs font-bold text-[#0d4a28] uppercase tracking-widest">Government Services</span>
+                  </div>
+                  <h2 className="text-2xl md:text-3xl font-extrabold text-[#0d4a28] tracking-tight">CITIZEN SERVICES</h2>
+                  <div className="h-1 w-20 bg-gradient-to-r from-[#c8a415] via-[#c8a415]/60 to-transparent rounded-full mt-2" />
+                  <p className="mt-2 text-[#6b7280] text-sm">Fast, secure, and convenient government services.</p>
                 </div>
-                <Button
-                  variant="outline"
-                  size="sm"
-                  className="border-[#1a6b3c] text-[#1a6b3c] hover:bg-[#1a6b3c] hover:text-white font-semibold tracking-wider text-xs shrink-0"
-                  onClick={() => navigateTo('services')}
-                >
-                  ALL SERVICES <ChevronRight className="w-3 h-3 ml-1" />
+                <Button variant="outline" size="sm"
+                  className="hidden sm:flex border-[#0d4a28] text-[#0d4a28] hover:bg-[#0d4a28] hover:text-white font-bold tracking-wider text-xs gap-1"
+                  onClick={() => navigateTo('services')}>
+                  ALL SERVICES <ArrowRight className="w-3 h-3" />
                 </Button>
               </div>
 
-              {/* Service Cards Grid */}
-              <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4">
+              {/* 2×2 Service Cards */}
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 {visibleServices.map((card, i) => {
                   const Icon = card.icon
                   return (
-                    <motion.div
-                      key={card.title}
-                      initial={{ opacity: 0, y: 16 }}
-                      whileInView={{ opacity: 1, y: 0 }}
-                      viewport={{ once: true, margin: '-40px' }}
-                      transition={{ duration: 0.35, delay: i * 0.04 }}
-                    >
+                    <motion.div key={card.title}
+                      initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }}
+                      viewport={{ once: true }} transition={{ duration: 0.4, delay: i * 0.08 }}>
                       <Dialog open={selectedService === card.title} onOpenChange={(open) => { if (!open) setSelectedService(null) }}>
-                        <Card className="h-full border border-[#e2e8e0] hover:border-[#1a6b3c]/40 hover:shadow-lg transition-all duration-300 group overflow-hidden relative">
-                          {/* Top green accent bar */}
-                          <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-[#0d4a28] to-[#1a6b3c] rounded-t-xl opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-                          <CardContent className="p-4 flex flex-col h-full pt-5">
-                            <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-[#0d4a28] to-[#1a6b3c] flex items-center justify-center shrink-0 mb-3 group-hover:scale-110 transition-transform duration-300 shadow-md shadow-[#1a6b3c]/20">
-                              <Icon className="w-5 h-5 text-white" />
+                        <Card className="h-full border-0 shadow-sm hover:shadow-xl transition-all duration-300 group cursor-pointer bg-white overflow-hidden relative"
+                          onClick={() => setSelectedService(card.title)}>
+                          {/* Colored left border */}
+                          <div className="absolute left-0 top-0 bottom-0 w-1 bg-gradient-to-b from-[#0d4a28] to-[#c8a415] rounded-l-xl" />
+                          <CardContent className="p-5 pl-6 flex flex-col h-full">
+                            <div className="flex items-start gap-4 mb-3">
+                              <div className="w-12 h-12 rounded-2xl bg-gradient-to-br from-[#0d4a28] to-[#1a6b3c] flex items-center justify-center shrink-0 group-hover:scale-110 transition-transform duration-300 shadow-md shadow-[#1a6b3c]/25">
+                                <Icon className="w-5 h-5 text-white" />
+                              </div>
+                              <div className="flex-1 min-w-0">
+                                <h3 className="font-extrabold text-[#1a1a1a] text-sm group-hover:text-[#0d4a28] transition-colors">{card.title}</h3>
+                                <p className="text-[#6b7280] text-xs leading-relaxed mt-1 line-clamp-2">{card.desc}</p>
+                              </div>
                             </div>
-                            <h3 className="font-bold text-[#1a1a1a] text-sm mb-1">{card.title}</h3>
-                            <p className="text-[#6b7280] text-xs leading-relaxed line-clamp-2 flex-1">{card.desc}</p>
-                            <button
-                              onClick={(e) => { e.stopPropagation(); setSelectedService(card.title) }}
-                              className="mt-3 flex items-center gap-1 text-[#1a6b3c] text-xs font-semibold opacity-0 group-hover:opacity-100 translate-y-1 group-hover:translate-y-0 transition-all duration-300"
-                            >
-                              See Details <ArrowRight className="w-3 h-3" />
-                            </button>
+                            <div className="mt-auto pt-3 border-t border-[#f0f0f0] flex items-center justify-between">
+                              <span className="text-[10px] font-bold text-[#9ca3af] uppercase tracking-widest">Dessie City</span>
+                              <span className="flex items-center gap-1 text-[#0d4a28] text-xs font-bold opacity-0 group-hover:opacity-100 transition-all">
+                                Details <ArrowRight className="w-3 h-3" />
+                              </span>
+                            </div>
                           </CardContent>
                         </Card>
 
-                        {/* ── Service Details Dialog ── */}
-                        <DialogContent className="sm:max-w-lg p-0 gap-0 overflow-hidden rounded-xl border-[#e2e8e0]">
+                        {/* Service Details Dialog */}
+                        <DialogContent className="sm:max-w-lg p-0 gap-0 overflow-hidden rounded-2xl">
                           {serviceDetails[card.title] && (
                             <>
-                              {/* Green gradient header */}
                               <div className="bg-gradient-to-br from-[#0d4a28] to-[#1a6b3c] px-6 py-6 text-white relative overflow-hidden">
-                                <div className="absolute top-0 right-0 w-32 h-32 bg-white/5 rounded-full -translate-y-1/2 translate-x-1/2" />
-                                <div className="absolute bottom-0 left-0 w-20 h-20 bg-white/5 rounded-full translate-y-1/2 -translate-x-1/2" />
+                                <div className="absolute -top-6 -right-6 w-32 h-32 bg-white/5 rounded-full" />
+                                <div className="absolute -bottom-4 -left-4 w-20 h-20 bg-white/5 rounded-full" />
                                 <div className="relative">
-                                  <span className="inline-block text-[10px] font-bold tracking-widest uppercase bg-[#c8a415] text-[#0d4a28] px-2.5 py-0.5 rounded-full mb-3">
-                                    Service Details
-                                  </span>
+                                  <span className="inline-block text-[10px] font-bold tracking-widest uppercase bg-[#c8a415] text-[#0d4a28] px-2.5 py-0.5 rounded-full mb-3">Service Details</span>
                                   <div className="flex items-center gap-3">
-                                    <div className="w-12 h-12 rounded-xl bg-white/15 flex items-center justify-center">
-                                      <Icon className="w-6 h-6 text-white" />
-                                    </div>
+                                    <div className="w-12 h-12 rounded-xl bg-white/15 flex items-center justify-center"><Icon className="w-6 h-6 text-white" /></div>
                                     <DialogTitle className="text-xl font-bold">{card.title}</DialogTitle>
                                   </div>
                                 </div>
                               </div>
-
-                              {/* Body */}
-                              <div className="px-6 py-5 max-h-[60vh] overflow-y-auto space-y-5">
-                                {/* Description */}
-                                <div>
-                                  <h4 className="text-xs font-bold text-[#0d4a28] uppercase tracking-wider mb-1.5">Description</h4>
-                                  <p className="text-sm text-[#374151] leading-relaxed">{serviceDetails[card.title].fullDescription}</p>
-                                </div>
-
-                                {/* Requirements */}
+                              <div className="px-6 py-5 max-h-[60vh] overflow-y-auto space-y-4">
+                                <p className="text-sm text-[#374151] leading-relaxed">{serviceDetails[card.title].fullDescription}</p>
                                 <div>
                                   <h4 className="text-xs font-bold text-[#0d4a28] uppercase tracking-wider mb-2">Requirements</h4>
                                   <ul className="space-y-1.5">
                                     {serviceDetails[card.title].requirements.map((req, ri) => (
                                       <li key={ri} className="flex items-start gap-2 text-sm text-[#374151]">
-                                        <CheckCircle className="w-4 h-4 text-[#1a6b3c] shrink-0 mt-0.5" />
-                                        <span>{req}</span>
+                                        <CheckCircle className="w-4 h-4 text-[#1a6b3c] shrink-0 mt-0.5" /><span>{req}</span>
                                       </li>
                                     ))}
                                   </ul>
                                 </div>
-
-                                {/* Documents */}
-                                <div>
-                                  <h4 className="text-xs font-bold text-[#0d4a28] uppercase tracking-wider mb-2">Documents Needed</h4>
-                                  <ul className="space-y-1.5">
-                                    {serviceDetails[card.title].documents.map((doc, di) => (
-                                      <li key={di} className="flex items-start gap-2 text-sm text-[#374151]">
-                                        <FileText className="w-4 h-4 text-[#c8a415] shrink-0 mt-0.5" />
-                                        <span>{doc}</span>
-                                      </li>
-                                    ))}
-                                  </ul>
-                                </div>
-
-                                {/* Steps */}
-                                <div>
-                                  <h4 className="text-xs font-bold text-[#0d4a28] uppercase tracking-wider mb-2">How to Apply</h4>
-                                  <ol className="space-y-2">
-                                    {serviceDetails[card.title].steps.map((step, si) => (
-                                      <li key={si} className="flex items-start gap-3 text-sm text-[#374151]">
-                                        <span className="w-6 h-6 rounded-full bg-[#1a6b3c] text-white text-[11px] font-bold flex items-center justify-center shrink-0 mt-0.5">
-                                          {si + 1}
-                                        </span>
-                                        <span className="pt-0.5">{step}</span>
-                                      </li>
-                                    ))}
-                                  </ol>
-                                </div>
-
-                                {/* Fees & Processing (side by side) */}
-                                <div className="grid grid-cols-2 gap-4">
-                                  <div className="bg-[#f0fdf4] rounded-lg p-3 border border-[#1a6b3c]/10">
+                                <div className="grid grid-cols-2 gap-3">
+                                  <div className="bg-[#f0fdf4] rounded-xl p-3 border border-[#1a6b3c]/10">
                                     <p className="text-[10px] font-bold text-[#6b7280] uppercase tracking-wider mb-1">Fees</p>
-                                    <p className="text-sm font-semibold text-[#0d4a28]">{serviceDetails[card.title].fees}</p>
+                                    <p className="text-sm font-bold text-[#0d4a28]">{serviceDetails[card.title].fees}</p>
                                   </div>
-                                  <div className="bg-[#fffbeb] rounded-lg p-3 border border-[#c8a415]/10">
+                                  <div className="bg-[#fffbeb] rounded-xl p-3 border border-[#c8a415]/10">
                                     <p className="text-[10px] font-bold text-[#6b7280] uppercase tracking-wider mb-1">Processing Time</p>
-                                    <p className="text-sm font-semibold text-[#0d4a28]">{serviceDetails[card.title].processingTime}</p>
+                                    <p className="text-sm font-bold text-[#0d4a28]">{serviceDetails[card.title].processingTime}</p>
                                   </div>
                                 </div>
-
-                                {/* Office & Contact */}
-                                <div className="border-t border-[#e2e8e0] pt-4 grid grid-cols-1 sm:grid-cols-2 gap-3">
-                                  <div className="flex items-start gap-2">
-                                    <Building className="w-4 h-4 text-[#1a6b3c] shrink-0 mt-0.5" />
-                                    <div>
-                                      <p className="text-[10px] font-bold text-[#6b7280] uppercase tracking-wider">Office</p>
-                                      <p className="text-sm text-[#374151]">{serviceDetails[card.title].office}</p>
-                                    </div>
-                                  </div>
-                                  <div className="flex items-start gap-2">
-                                    <Phone className="w-4 h-4 text-[#1a6b3c] shrink-0 mt-0.5" />
-                                    <div>
-                                      <p className="text-[10px] font-bold text-[#6b7280] uppercase tracking-wider">Contact</p>
-                                      <p className="text-sm text-[#374151]">{serviceDetails[card.title].contact}</p>
-                                      <p className="text-xs text-[#6b7280]">{serviceDetails[card.title].hours}</p>
-                                    </div>
+                                <div className="flex items-center gap-3 p-3 bg-[#f8faf8] rounded-xl">
+                                  <Phone className="w-4 h-4 text-[#1a6b3c] shrink-0" />
+                                  <div>
+                                    <p className="text-xs font-bold text-[#0d4a28]">{serviceDetails[card.title].contact}</p>
+                                    <p className="text-xs text-[#6b7280]">{serviceDetails[card.title].hours}</p>
                                   </div>
                                 </div>
                               </div>
-
-                              {/* Footer */}
                               <DialogFooter className="px-6 py-4 bg-[#f8faf8] border-t border-[#e2e8e0] gap-2">
-                                <Button
-                                  className="bg-[#1a6b3c] hover:bg-[#0d4a28] text-white text-sm font-semibold"
-                                  onClick={() => { setSelectedService(null); navigateTo('service-detail', { serviceId: card.title }) }}
-                                >
-                                  Go to Full Service Page <ArrowRight className="w-4 h-4 ml-1" />
+                                <Button className="bg-[#0d4a28] hover:bg-[#155d33] text-white text-sm font-bold"
+                                  onClick={() => { setSelectedService(null); navigateTo('service-detail', { serviceId: card.title }) }}>
+                                  Full Service Page <ArrowRight className="w-4 h-4 ml-1" />
                                 </Button>
-                                <Button
-                                  variant="ghost"
-                                  className="text-[#6b7280] hover:text-[#1a1a1a] text-sm"
-                                  onClick={() => setSelectedService(null)}
-                                >
-                                  Close
-                                </Button>
+                                <Button variant="ghost" className="text-[#6b7280] text-sm" onClick={() => setSelectedService(null)}>Close</Button>
                               </DialogFooter>
                             </>
                           )}
@@ -831,236 +766,177 @@ export default function HomePage({ navigateTo }: { navigateTo: (page: PageId, ex
                 })}
               </div>
 
-              <GreenPagination
-                totalItems={serviceCards.length}
-                perPage={8}
-                currentPage={servicePage}
-                onPageChange={setServicePage}
-              />
-            </motion.div>
-        </div>
-      </section>
-
-      {/* ═══════════════════ VACANCIES & BIDS PLACEHOLDER (removed - see dedicated pages) ═══════════════════ */}
-      <div className="hidden" aria-hidden="true">
-            <motion.div
-              className="lg:col-span-2"
-              initial={{ opacity: 0, x: 20 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              viewport={{ once: true, margin: '-60px' }}
-              transition={{ duration: 0.5, delay: 0.1 }}
-            >
-              <div className="rounded-xl overflow-hidden border border-[#e2e8e0] sticky top-20 shadow-sm">
-                {/* Header bar with tabs */}
-                <div className="bg-gradient-to-r from-[#0d4a28] to-[#155d33] rounded-t-xl px-4 py-3 flex items-center justify-between">
-                  <div className="flex gap-1.5">
-                    <button
-                      onClick={() => { setJbTab('vacancies'); setJbPage(0); setJbFilter('All') }}
-                      className={`flex items-center gap-1.5 px-3.5 py-2 rounded-lg text-xs font-semibold transition-all duration-200 ${jbTab === 'vacancies' ? 'bg-white text-[#0d4a28] shadow-sm' : 'text-white/70 hover:text-white hover:bg-white/10'}`}
-                    >
-                      <Briefcase className="w-3.5 h-3.5" /> VACANCIES
+              {/* Pagination */}
+              <div className="mt-6 flex items-center justify-between">
+                <span className="text-xs text-[#9ca3af]">
+                  Showing {serviceStart + 1}–{Math.min(serviceStart + 4, serviceCards.length)} of {serviceCards.length} services
+                </span>
+                <div className="flex items-center gap-2">
+                  <button onClick={() => setServicePage(p => Math.max(0, p - 1))} disabled={servicePage === 0}
+                    className="w-8 h-8 rounded-lg border border-[#e2e8e0] flex items-center justify-center disabled:opacity-30 hover:border-[#0d4a28] hover:bg-[#0d4a28] hover:text-white transition-all">
+                    <ChevronLeft className="w-4 h-4" />
+                  </button>
+                  {Array.from({ length: Math.ceil(serviceCards.length / 4) }, (_, i) => (
+                    <button key={i} onClick={() => setServicePage(i)}
+                      className={`w-8 h-8 rounded-lg text-xs font-bold transition-all ${servicePage === i ? 'bg-[#0d4a28] text-white shadow-md' : 'border border-[#e2e8e0] text-[#6b7280] hover:border-[#0d4a28] hover:text-[#0d4a28]'}`}>
+                      {i + 1}
                     </button>
-                    <button
-                      onClick={() => { setJbTab('bids'); setJbPage(0); setJbFilter('All') }}
-                      className={`flex items-center gap-1.5 px-3.5 py-2 rounded-lg text-xs font-semibold transition-all duration-200 ${jbTab === 'bids' ? 'bg-white text-[#0d4a28] shadow-sm' : 'text-white/70 hover:text-white hover:bg-white/10'}`}
-                    >
-                      <Gavel className="w-3.5 h-3.5" /> BIDS
-                    </button>
-                  </div>
-                  <button
-                    onClick={() => navigateTo(jbTab === 'vacancies' ? 'vacancy' : 'bids')}
-                    className="text-[#c8a415] text-xs font-semibold flex items-center gap-1 hover:gap-2 transition-all"
-                  >
-                    ALL <ChevronRight className="w-3 h-3" />
+                  ))}
+                  <button onClick={() => setServicePage(p => Math.min(Math.ceil(serviceCards.length / 4) - 1, p + 1))} disabled={servicePage >= Math.ceil(serviceCards.length / 4) - 1}
+                    className="w-8 h-8 rounded-lg border border-[#e2e8e0] flex items-center justify-center disabled:opacity-30 hover:border-[#0d4a28] hover:bg-[#0d4a28] hover:text-white transition-all">
+                    <ChevronRight className="w-4 h-4" />
                   </button>
                 </div>
+              </div>
 
-                {/* Filter row */}
-                {!loadingJB && jbData.length > 0 && jbFilterOptions.length > 1 && (
-                  <div className="px-4 pt-3">
-                    <Select value={jbFilter} onValueChange={(val) => { setJbFilter(val); setJbPage(0) }}>
-                      <SelectTrigger className="h-8 text-xs border-[#e2e8e0] bg-[#f8faf8]">
-                        <SelectValue placeholder={`Filter by ${jbTab === 'vacancies' ? 'Department' : 'Category'}`} />
-                      </SelectTrigger>
-                      <SelectContent>
-                        {jbFilterOptions.map(opt => (
-                          <SelectItem key={opt} value={opt} className="text-xs">{opt}</SelectItem>
-                        ))}
-                      </SelectContent>
-                    </Select>
+              <Button variant="outline" size="sm" className="sm:hidden w-full mt-4 border-[#0d4a28] text-[#0d4a28] font-bold"
+                onClick={() => navigateTo('services')}>
+                VIEW ALL SERVICES <ArrowRight className="w-3 h-3 ml-1" />
+              </Button>
+            </motion.div>
+
+            {/* ══ RIGHT: Vacancies & Bids (2 cols out of 5) ══ */}
+            <motion.div className="xl:col-span-2 order-2"
+              initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, margin: '-60px' }} transition={{ duration: 0.5, delay: 0.15 }}>
+
+              {/* Header */}
+              <div className="flex items-end justify-between mb-8">
+                <div>
+                  <div className="flex items-center gap-2 mb-2">
+                    <div className="w-8 h-8 rounded-lg bg-[#c8a415] flex items-center justify-center">
+                      <Briefcase className="w-4 h-4 text-white" />
+                    </div>
+                    <span className="text-xs font-bold text-[#c8a415] uppercase tracking-widest">Opportunities</span>
                   </div>
-                )}
-
-                {/* Cards area */}
-                <div className="p-4 min-h-[340px]">
-                  {loadingJB ? (
-                    <div className="space-y-3">
-                      {[1, 2, 3].map(n => (
-                        <Skeleton key={n} className="h-28 w-full rounded-lg" />
-                      ))}
-                    </div>
-                  ) : jbVisible.length > 0 ? (
-                    <div className="space-y-3">
-                      {jbVisible.map((item: any, idx: number) => (
-                        <motion.div
-                          key={item.id}
-                          initial={{ opacity: 0, y: 10 }}
-                          animate={{ opacity: 1, y: 0 }}
-                          transition={{ duration: 0.25, delay: idx * 0.06 }}
-                        >
-                          {jbTab === 'vacancies' ? (
-                            <Card
-                              className="cursor-pointer hover:shadow-md transition-all duration-200 border border-[#e2e8e0] hover:border-[#1a6b3c]/40 group"
-                              onClick={() => navigateTo('vacancy-detail', { vacancyId: item.id })}
-                            >
-                              <CardContent className="p-3.5">
-                                <div className="flex items-start gap-2.5">
-                                  <div className="w-2.5 h-2.5 rounded-full bg-[#1a6b3c] shrink-0 mt-1.5 shadow-sm shadow-[#1a6b3c]/30" />
-                                  <div className="flex-1 min-w-0">
-                                    <h4 className="font-bold text-[#1a1a1a] text-xs uppercase tracking-wide group-hover:text-[#1a6b3c] transition-colors line-clamp-1">
-                                      {item.title}
-                                    </h4>
-                                    <div className="flex flex-wrap items-center gap-1.5 mt-1.5">
-                                      <Badge variant="secondary" className="text-[10px] px-1.5 py-0 bg-[#f0fdf4] text-[#0d4a28] border border-[#1a6b3c]/15 font-medium">
-                                        {item.department}
-                                      </Badge>
-                                      <Badge variant="secondary" className="text-[10px] px-1.5 py-0 bg-[#f8faf8] text-[#6b7280] border border-[#e2e8e0] font-medium">
-                                        {item.type}
-                                      </Badge>
-                                    </div>
-                                    {item.description && (
-                                      <p className="text-[11px] text-[#6b7280] mt-2 line-clamp-2 leading-relaxed">{item.description}</p>
-                                    )}
-                                    <div className="flex items-center justify-between mt-2.5 pt-2 border-t border-[#e2e8e0]/60">
-                                      <div className="flex items-center gap-3">
-                                        {item.salary && (
-                                          <span className="text-xs font-bold text-[#c8a415]">{item.salary}</span>
-                                        )}
-                                        {item.deadline && (
-                                          <span className="flex items-center gap-1 text-[10px] text-[#6b7280]">
-                                            <Clock className="w-3 h-3" />
-                                            {item.deadline}
-                                          </span>
-                                        )}
-                                      </div>
-                                      <span className="flex items-center gap-0.5 text-[10px] font-semibold text-[#1a6b3c] opacity-0 group-hover:opacity-100 transition-opacity">
-                                        View Details <ArrowRight className="w-3 h-3" />
-                                      </span>
-                                    </div>
-                                  </div>
-                                </div>
-                              </CardContent>
-                            </Card>
-                          ) : (
-                            <Card
-                              className="cursor-pointer hover:shadow-md transition-all duration-200 border border-[#e2e8e0] hover:border-[#c8a415]/40 group"
-                              onClick={() => navigateTo('bids-detail', { bidId: item.id })}
-                            >
-                              <CardContent className="p-3.5">
-                                <div className="flex items-start gap-2.5">
-                                  <div className={`w-2.5 h-2.5 rounded-full shrink-0 mt-1.5 shadow-sm ${item.status === 'Awarded' ? 'bg-[#c8a415] shadow-[#c8a415]/30' : 'bg-[#1a6b3c] shadow-[#1a6b3c]/30'}`} />
-                                  <div className="flex-1 min-w-0">
-                                    <h4 className="font-bold text-[#1a1a1a] text-xs uppercase tracking-wide group-hover:text-[#c8a415] transition-colors line-clamp-1">
-                                      {item.title}
-                                    </h4>
-                                    <div className="flex flex-wrap items-center gap-1.5 mt-1.5">
-                                      <Badge variant="secondary" className="text-[10px] px-1.5 py-0 bg-[#fffbeb] text-[#92400e] border border-[#c8a415]/15 font-medium">
-                                        {item.category}
-                                      </Badge>
-                                      <Badge variant="secondary" className={`text-[10px] px-1.5 py-0 font-medium ${item.status === 'Awarded' ? 'bg-[#c8a415]/10 text-[#c8a415] border border-[#c8a415]/20' : 'bg-[#f0fdf4] text-[#0d4a28] border border-[#1a6b3c]/15'}`}>
-                                        {item.status}
-                                      </Badge>
-                                      {item.reference && (
-                                        <Badge variant="secondary" className="text-[10px] px-1.5 py-0 bg-[#f8faf8] text-[#6b7280] border border-[#e2e8e0] font-medium">
-                                          {item.reference}
-                                        </Badge>
-                                      )}
-                                    </div>
-                                    {item.description && (
-                                      <p className="text-[11px] text-[#6b7280] mt-2 line-clamp-2 leading-relaxed">{item.description}</p>
-                                    )}
-                                    <div className="flex items-center justify-between mt-2.5 pt-2 border-t border-[#e2e8e0]/60">
-                                      <div className="flex items-center gap-3">
-                                        {item.budget && (
-                                          <span className="text-xs font-bold text-[#c8a415]">{item.budget}</span>
-                                        )}
-                                        {item.deadline && (
-                                          <span className="flex items-center gap-1 text-[10px] text-[#6b7280]">
-                                            <Clock className="w-3 h-3" />
-                                            {item.deadline}
-                                          </span>
-                                        )}
-                                      </div>
-                                      <span className="flex items-center gap-0.5 text-[10px] font-semibold text-[#c8a415] opacity-0 group-hover:opacity-100 transition-opacity">
-                                        View Details <ArrowRight className="w-3 h-3" />
-                                      </span>
-                                    </div>
-                                  </div>
-                                </div>
-                              </CardContent>
-                            </Card>
-                          )}
-                        </motion.div>
-                      ))}
-                    </div>
-                  ) : (
-                    <div className="text-center py-12">
-                      {jbTab === 'vacancies' ? (
-                        <>
-                          <Briefcase className="w-10 h-10 text-[#6b7280]/30 mx-auto mb-3" />
-                          <p className="text-[#6b7280] text-sm font-medium">No open vacancies at the moment.</p>
-                          <p className="text-[#9ca3af] text-xs mt-1">Check back soon for new opportunities.</p>
-                        </>
-                      ) : (
-                        <>
-                          <Gavel className="w-10 h-10 text-[#6b7280]/30 mx-auto mb-3" />
-                          <p className="text-[#6b7280] text-sm font-medium">No open bids at the moment.</p>
-                          <p className="text-[#9ca3af] text-xs mt-1">Check back soon for new tenders.</p>
-                        </>
-                      )}
-                    </div>
-                  )}
+                  <h2 className="text-2xl font-extrabold text-[#1a1a1a] tracking-tight">JOBS & BIDS</h2>
+                  <div className="h-1 w-16 bg-gradient-to-r from-[#c8a415] to-transparent rounded-full mt-2" />
                 </div>
+              </div>
 
-                {/* Circular pagination */}
-                {jbData.length > JB_PER_PAGE && (
-                  <div className="px-4 pb-4 flex items-center justify-center gap-1.5">
-                    <button
-                      onClick={() => setJbPage(jbPage - 1)}
-                      disabled={jbPage === 0}
-                      className="w-7 h-7 rounded-full bg-[#0d4a28] text-white flex items-center justify-center disabled:opacity-40 hover:bg-[#155d33] transition-colors"
-                    >
-                      <ChevronLeft className="w-3.5 h-3.5" />
-                    </button>
-                    {Array.from({ length: Math.ceil(jbData.length / JB_PER_PAGE) }, (_, i) => (
-                      <button
-                        key={i}
-                        onClick={() => setJbPage(i)}
-                        className={`w-7 h-7 rounded-full flex items-center justify-center text-xs font-semibold transition-colors ${
-                          jbPage === i ? 'bg-[#1a6b3c] text-white' : 'bg-white text-[#1a1a1a] border border-[#e2e8e0] hover:border-[#1a6b3c]'
-                        }`}
-                      >
-                        {i + 1}
-                      </button>
-                    ))}
-                    <button
-                      onClick={() => setJbPage(jbPage + 1)}
-                      disabled={jbPage >= Math.ceil(jbData.length / JB_PER_PAGE) - 1}
-                      className="w-7 h-7 rounded-full bg-[#0d4a28] text-white flex items-center justify-center disabled:opacity-40 hover:bg-[#155d33] transition-colors"
-                    >
-                      <ChevronRight className="w-3.5 h-3.5" />
-                    </button>
+              {/* Tab switcher */}
+              <div className="flex gap-1 p-1 bg-[#f0f0f0] rounded-xl mb-4">
+                <button onClick={() => { setJbTab('vacancies'); setJbPage(0); setJbFilter('All') }}
+                  className={`flex-1 flex items-center justify-center gap-1.5 py-2 rounded-lg text-xs font-bold transition-all ${jbTab === 'vacancies' ? 'bg-[#0d4a28] text-white shadow-md' : 'text-[#6b7280] hover:text-[#0d4a28]'}`}>
+                  <Briefcase className="w-3.5 h-3.5" /> VACANCIES
+                </button>
+                <button onClick={() => { setJbTab('bids'); setJbPage(0); setJbFilter('All') }}
+                  className={`flex-1 flex items-center justify-center gap-1.5 py-2 rounded-lg text-xs font-bold transition-all ${jbTab === 'bids' ? 'bg-[#c8a415] text-white shadow-md' : 'text-[#6b7280] hover:text-[#c8a415]'}`}>
+                  <Gavel className="w-3.5 h-3.5" /> BIDS
+                </button>
+              </div>
+
+              {/* Cards */}
+              <div className="space-y-3 min-h-[280px]">
+                {loadingJB ? (
+                  [1,2,3].map(n => <Skeleton key={n} className="h-24 w-full rounded-xl" />)
+                ) : jbVisible.length > 0 ? (
+                  <AnimatePresence mode="wait">
+                    <motion.div key={`${jbTab}-${jbPage}-${jbFilter}`}
+                      initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -8 }}
+                      transition={{ duration: 0.2 }} className="space-y-3">
+                      {jbVisible.map((item: any, idx: number) => (
+                        jbTab === 'vacancies' ? (
+                          <motion.div key={item.id} initial={{ opacity: 0, x: 10 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: idx * 0.07 }}>
+                            <Card className="cursor-pointer hover:shadow-lg transition-all duration-300 border-0 shadow-sm group bg-white overflow-hidden relative"
+                              onClick={() => navigateTo('vacancy-detail', { vacancyId: item.id })}>
+                              {/* Accent top bar */}
+                              <div className="absolute top-0 left-0 right-0 h-0.5 bg-gradient-to-r from-[#0d4a28] to-[#1a6b3c] opacity-0 group-hover:opacity-100 transition-opacity" />
+                              <CardContent className="p-4">
+                                <div className="flex items-start gap-3">
+                                  <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-[#0d4a28] to-[#1a6b3c] flex items-center justify-center shrink-0 shadow-sm group-hover:scale-105 transition-transform">
+                                    <Briefcase className="w-4 h-4 text-white" />
+                                  </div>
+                                  <div className="flex-1 min-w-0">
+                                    <h4 className="font-extrabold text-[#1a1a1a] text-xs leading-snug group-hover:text-[#0d4a28] transition-colors line-clamp-2">{item.title}</h4>
+                                    <div className="flex flex-wrap gap-1 mt-1.5">
+                                      <span className="text-[10px] font-semibold bg-[#f0fdf4] text-[#0d4a28] border border-[#1a6b3c]/20 px-1.5 py-0.5 rounded-md">{item.department}</span>
+                                      <span className="text-[10px] font-medium bg-[#f8f8f8] text-[#6b7280] border border-[#e2e8e0] px-1.5 py-0.5 rounded-md">{item.type}</span>
+                                    </div>
+                                    <div className="flex items-center justify-between mt-2 pt-2 border-t border-[#f5f5f5]">
+                                      <span className="text-xs font-extrabold text-[#c8a415]">{item.salary}</span>
+                                      <span className="flex items-center gap-1 text-[10px] text-[#9ca3af]">
+                                        <Clock className="w-3 h-3" />{item.deadline}
+                                      </span>
+                                    </div>
+                                  </div>
+                                </div>
+                              </CardContent>
+                            </Card>
+                          </motion.div>
+                        ) : (
+                          <motion.div key={item.id} initial={{ opacity: 0, x: 10 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: idx * 0.07 }}>
+                            <Card className="cursor-pointer hover:shadow-lg transition-all duration-300 border-0 shadow-sm group bg-white overflow-hidden relative"
+                              onClick={() => navigateTo('bids-detail', { bidId: item.id })}>
+                              <div className="absolute top-0 left-0 right-0 h-0.5 bg-gradient-to-r from-[#c8a415] to-[#f59e0b] opacity-0 group-hover:opacity-100 transition-opacity" />
+                              <CardContent className="p-4">
+                                <div className="flex items-start gap-3">
+                                  <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-[#7c5c00] to-[#c8a415] flex items-center justify-center shrink-0 shadow-sm group-hover:scale-105 transition-transform">
+                                    <Gavel className="w-4 h-4 text-white" />
+                                  </div>
+                                  <div className="flex-1 min-w-0">
+                                    <h4 className="font-extrabold text-[#1a1a1a] text-xs leading-snug group-hover:text-[#c8a415] transition-colors line-clamp-2">{item.title}</h4>
+                                    <div className="flex flex-wrap gap-1 mt-1.5">
+                                      <span className="text-[10px] font-semibold bg-[#fffbeb] text-[#78350f] border border-[#c8a415]/20 px-1.5 py-0.5 rounded-md">{item.category}</span>
+                                      <span className="text-[10px] font-mono text-[#9ca3af]">{item.reference}</span>
+                                    </div>
+                                    <div className="flex items-center justify-between mt-2 pt-2 border-t border-[#f5f5f5]">
+                                      <span className="text-xs font-extrabold text-[#c8a415]">{item.budget}</span>
+                                      <span className="flex items-center gap-1 text-[10px] text-[#9ca3af]">
+                                        <Clock className="w-3 h-3" />{item.deadline}
+                                      </span>
+                                    </div>
+                                  </div>
+                                </div>
+                              </CardContent>
+                            </Card>
+                          </motion.div>
+                        )
+                      ))}
+                    </motion.div>
+                  </AnimatePresence>
+                ) : (
+                  <div className="flex flex-col items-center justify-center py-12 bg-[#f8faf8] rounded-2xl text-center">
+                    <div className="w-14 h-14 rounded-2xl bg-white flex items-center justify-center mb-3 shadow-sm">
+                      {jbTab === 'vacancies' ? <Briefcase className="w-6 h-6 text-[#0d4a28]" /> : <Gavel className="w-6 h-6 text-[#c8a415]" />}
+                    </div>
+                    <p className="text-sm font-bold text-[#374151]">No {jbTab === 'vacancies' ? 'vacancies' : 'bids'} right now</p>
+                    <p className="text-xs text-[#9ca3af] mt-1">Check back soon for new opportunities</p>
                   </div>
                 )}
               </div>
-            </motion.div>
-      </div>
 
-      {/* ═══════════════════ 3. FEATURED HOTELS ═══════════════════ */}
+              {/* Pagination + View All */}
+              <div className="mt-4 flex items-center justify-between">
+                {jbData.length > JB_PER_PAGE ? (
+                  <div className="flex gap-1.5">
+                    <button onClick={() => setJbPage(p => Math.max(0, p - 1))} disabled={jbPage === 0}
+                      className="w-7 h-7 rounded-lg border border-[#e2e8e0] flex items-center justify-center disabled:opacity-30 hover:border-[#0d4a28] hover:bg-[#0d4a28] hover:text-white transition-all">
+                      <ChevronLeft className="w-3.5 h-3.5" />
+                    </button>
+                    <button onClick={() => setJbPage(p => p + 1)} disabled={(jbPage + 1) * JB_PER_PAGE >= jbData.length}
+                      className="w-7 h-7 rounded-lg border border-[#e2e8e0] flex items-center justify-center disabled:opacity-30 hover:border-[#0d4a28] hover:bg-[#0d4a28] hover:text-white transition-all">
+                      <ChevronRight className="w-3.5 h-3.5" />
+                    </button>
+                  </div>
+                ) : <span />}
+                <button onClick={() => navigateTo(jbTab === 'vacancies' ? 'vacancy' : 'bids')}
+                  className="flex items-center gap-1.5 text-xs font-bold text-[#0d4a28] hover:gap-2.5 transition-all">
+                  VIEW ALL {jbTab === 'vacancies' ? 'VACANCIES' : 'BIDS'} <ArrowRight className="w-3.5 h-3.5" />
+                </button>
+              </div>
+            </motion.div>
+
+          </div>
+        </div>
+      </section>
+
+
+      {/* ═══════════════════ 3.  HOTELS ═══════════════════ */}
       <section className="py-10 bg-[#f8faf8]">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <h2 className="text-3xl md:text-4xl font-bold text-[#1a1a1a] text-center gov-section-title inline-block mb-8">
-            FEATURED HOTELS
+            HOTELS
           </h2>
           <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
             {visibleHotels.map((hotel, hi) => {

@@ -93,7 +93,6 @@ export const metadata: Metadata = {
   },
   manifest: "/manifest.json",
 
-  // Open Graph
   openGraph: {
     title: "Dessie City Administration | Official Government Portal",
     description: siteDescription,
@@ -104,28 +103,20 @@ export const metadata: Metadata = {
     alternateLocale: ["am_ET"],
     images: [
       {
-        url: "/dessie-city-hall.png",
+        url: `${siteUrl}/dessie-city-hall.png`,
         width: 1200,
         height: 630,
         alt: "Dessie City Hall — South Wollo, Amhara Region, Ethiopia",
         type: "image/png",
       },
-      {
-        url: "/city-aerial.png",
-        width: 1200,
-        height: 630,
-        alt: "Aerial view of Dessie City, South Wollo, Ethiopia",
-        type: "image/png",
-      },
     ],
   },
 
-  // Twitter / X
   twitter: {
     card: "summary_large_image",
     title: "Dessie City Administration | Official Portal",
     description: "Official smart city government portal — Dessie, South Wollo, Amhara, Ethiopia",
-    images: ["/dessie-city-hall.png"],
+    images: [`${siteUrl}/dessie-city-hall.png`],
     site: "@DessieCity",
     creator: "@DessieCity",
   },

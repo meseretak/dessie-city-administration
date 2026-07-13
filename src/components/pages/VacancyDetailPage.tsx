@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useRef, useEffect } from 'react'
 import { motion } from 'framer-motion'
 import { PageId } from '@/lib/types'
 import { Button } from '@/components/ui/button'
@@ -12,8 +12,9 @@ import { Label } from '@/components/ui/label'
 import { Separator } from '@/components/ui/separator'
 import {
   ArrowLeft, ArrowRight, CheckCircle, Clock, MapPin, DollarSign, Building2,
-  Briefcase, GraduationCap, Heart, Home, Bus, BookOpen, Award, Shield, Star,
-  CalendarDays, Upload, Send, Users, FileText, Target, ChevronRight
+  Briefcase, Heart, Home, Bus, BookOpen, Shield, Star,
+  CalendarDays, Upload, Send, Users, FileText, Target, ChevronRight,
+  Loader2, CheckCircle2, X, AlertCircle
 } from 'lucide-react'
 
 interface VacancyDetailPageProps {
@@ -21,23 +22,17 @@ interface VacancyDetailPageProps {
   navigateTo: (page: PageId, extra?: Record<string, string>) => void
 }
 
-const vacancyData: Record<string, {
-  title: string; department: string; type: string; salary: string; deadline: string; status: string; postedDate: string;
-  description: string; requirements: string[]; responsibilities: string[]
-}> = {
-  v1: {
-    title: 'Senior Urban Planner', department: 'Engineering', type: 'Permanent', salary: 'ETB 25,000-35,000', deadline: 'Jul 30, 2025', status: 'Open', postedDate: 'Jun 15, 2025',
-    description: 'Dessie City Administration is seeking an experienced Senior Urban Planner to lead the strategic planning and development of our rapidly growing city. This critical role involves developing comprehensive land use plans, updating zoning regulations, and coordinating with various departments to ensure sustainable urban growth.\n\nThe successful candidate will work closely with the Mayor\'s office, engineering teams, and community stakeholders to create livable, accessible, and environmentally responsible urban spaces. You will be responsible for conducting feasibility studies, preparing master plans, and presenting recommendations to the City Council.\n\nThis is an exceptional opportunity for a passionate urban planner to make a lasting impact on one of Ethiopia\'s most dynamic cities. The role offers competitive compensation, professional development opportunities, and the chance to shape the future of Dessie for generations to come.\n\nThe ideal candidate brings a blend of technical expertise, creative vision, and collaborative leadership. You should be comfortable working in a fast-paced government environment while maintaining the highest standards of professional integrity and public service.',
-    requirements: ['Master\'s degree in Urban Planning, Architecture, or related field', 'Minimum 8 years of progressive urban planning experience', 'Proficiency in AutoCAD, ArcGIS, and planning software', 'Strong knowledge of Ethiopian urban development policies', 'Excellent project management and leadership skills', 'Ability to present complex plans to diverse audiences', 'Fluency in Amharic and English (written and spoken)', 'Professional registration with relevant body'],
-    responsibilities: ['Develop and update the city\'s comprehensive master plan', 'Review and recommend changes to zoning regulations', 'Conduct land use studies and feasibility assessments', 'Coordinate infrastructure planning with engineering departments', 'Present planning proposals to City Council and stakeholders', 'Supervise junior planners and review their work products', 'Engage with community groups on development projects', 'Monitor compliance with approved plans and regulations']
-  }
-}
-
-const getVacancy = (id: string) => vacancyData[id] || {
-  title: id ? `Position #${id}` : 'Position Not Found', department: 'General', type: 'N/A', salary: 'N/A', deadline: 'N/A', status: 'N/A', postedDate: 'N/A',
-  description: 'Detailed job description will be available here. Please check back later or contact the HR department for more information about this position.',
-  requirements: ['Relevant educational qualification', 'Professional experience in the field', 'Strong communication skills', 'Commitment to public service', 'Ability to work in a team environment'],
-  responsibilities: ['Perform duties as assigned by the department head', 'Collaborate with cross-functional teams', 'Prepare reports and documentation', 'Participate in departmental meetings', 'Contribute to organizational goals']
+interface VacancyFromDB {
+  id: string
+  title: string
+  department: string
+  type: string
+  salary: string
+  deadline: string
+  status: string
+  description: string
+  requirements: string
+  createdAt: string
 }
 
 const benefits = [
@@ -50,25 +45,125 @@ const benefits = [
 ]
 
 export default function VacancyDetailPage({ vacancyId, navigateTo }: VacancyDetailPageProps) {
+  const [vacancy, setVacancy] = useState<VacancyFromDB | null>(null)
+  const [loading, setLoading] = useState(true)
+
+  // Form state
   const [name, setName] = useState('')
   const [email, setEmail] = useState('')
   const [phone, setPhone] = useState('')
   const [cover, setCover] = useState('')
-  const v = getVacancy(vacancyId || '')
+  const [cvFile, setCvFile] = useState<File | null>(null)
+  const [submitting, setSubmitting] = useState(false)
+  const [submitted, setSubmitted] = useState(false)
+  const [submitError, setSubmitError] = useState('')
+  const fileInputRef = useRef<HTMLInputElement>(null)
+
+  // Fetch vacancy from DB
+  useEffect(() => {
+    if (!vacancyId) { setLoading(false); return }
+    fetch('/api/admin/vacancies')
+      .then(r => r.json())
+      .then((all: VacancyFromDB[]) => {
+        const found = all.find(v => v.id === vacancyId || v.title === vacancyId)
+        setVacancy(found || null)
+      })
+      .catch(() => setVacancy(null))
+      .finally(() => setLoading(false))
+  }, [vacancyId])
+
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0] || null
+    if (file) {
+      if (file.size > 5 * 1024 * 1024) {
+        setSubmitError('File size must be under 5MB')
+        return
+      }
+      const allowed = ['application/pdf', 'application/msword',
+        'application/vnd.openxmlformats-officedocument.wordprocessingml.document']
+      if (!allowed.includes(file.type)) {
+        setSubmitError('Only PDF or DOC/DOCX files allowed')
+        return
+      }
+      setCvFile(file)
+      setSubmitError('')
+    }
+  }
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault()
+    setSubmitError('')
+
+    if (!name.trim() || !email.trim() || !phone.trim()) {
+      setSubmitError('Please fill in all required fields (Name, Email, Phone)')
+      return
+    }
+    if (!cvFile) {
+      setSubmitError('Please upload your CV')
+      return
+    }
+
+    setSubmitting(true)
+    try {
+      const formData = new FormData()
+      formData.append('name', name.trim())
+      formData.append('email', email.trim())
+      formData.append('phone', phone.trim())
+      formData.append('cover', cover.trim())
+      formData.append('vacancyId', vacancyId || '')
+      formData.append('vacancyTitle', vacancy?.title || vacancyId || '')
+      formData.append('cv', cvFile)
+
+      const res = await fetch('/api/vacancy-apply', { method: 'POST', body: formData })
+      const data = await res.json()
+
+      if (res.ok) {
+        setSubmitted(true)
+        setName(''); setEmail(''); setPhone(''); setCover(''); setCvFile(null)
+      } else {
+        setSubmitError(data.error || 'Submission failed. Please try again.')
+      }
+    } catch {
+      setSubmitError('Network error. Please check your connection and try again.')
+    } finally {
+      setSubmitting(false)
+    }
+  }
+
+  if (loading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <Loader2 className="w-8 h-8 animate-spin text-[#1a6b3c]" />
+      </div>
+    )
+  }
+
+  const title = vacancy?.title || (vacancyId ? vacancyId : 'Position Not Found')
+  const department = vacancy?.department || 'General'
+  const type = vacancy?.type || 'N/A'
+  const salary = vacancy?.salary || 'N/A'
+  const deadline = vacancy?.deadline || 'N/A'
+  const status = vacancy?.status || 'Open'
+  const description = vacancy?.description || 'Please contact HR for more details about this position.'
+  const requirements: string[] = (() => {
+    if (!vacancy?.requirements) return ['Relevant qualification', 'Professional experience', 'Strong communication skills']
+    try { return JSON.parse(vacancy.requirements) } catch { return [vacancy.requirements] }
+  })()
+  const postedDate = vacancy?.createdAt ? new Date(vacancy.createdAt).toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' }) : 'N/A'
 
   return (
     <div className="min-h-screen">
-      {/* Page Banner */}
+      {/* Banner */}
       <section className="bg-[#0d4a28] py-14 px-4">
         <div className="max-w-7xl mx-auto">
-          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5 }}>
+          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}>
             <div className="flex items-center gap-2 text-green-300 text-sm mb-4">
               <Briefcase className="w-4 h-4" />
               <span>VACANCIES</span>
               <ChevronRight className="w-3 h-3" />
-              <span className="text-white">{v.title}</span>
+              <span className="text-white">{title}</span>
             </div>
-            <h1 className="text-3xl md:text-4xl font-extrabold text-white uppercase tracking-wider gov-heading-display">{v.title}</h1>
+            <h1 className="text-3xl md:text-4xl font-extrabold text-white uppercase tracking-wider">{title}</h1>
           </motion.div>
         </div>
       </section>
@@ -78,24 +173,26 @@ export default function VacancyDetailPage({ vacancyId, navigateTo }: VacancyDeta
           <ArrowLeft className="w-4 h-4 mr-2" /> Back to Vacancies
         </Button>
 
-        {/* Job Overview */}
+        {/* Overview card */}
         <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}>
-          <Card className="glass p-6 mb-8">
+          <Card className="p-6 mb-8">
             <CardContent className="p-0">
               <div className="flex flex-wrap items-center gap-3 mb-6">
-                <Badge className={v.status === 'Open' ? 'bg-[#1a6b3c] text-white' : 'bg-red-600 text-white'}>{v.status === 'Open' ? '● OPEN' : '● CLOSED'}</Badge>
-                <Badge variant="outline" className="border-[#c8a415] text-[#c8a415]">{v.type}</Badge>
+                <Badge className={status === 'Open' ? 'bg-[#1a6b3c] text-white' : 'bg-red-600 text-white'}>
+                  {status === 'Open' ? '● OPEN' : '● CLOSED'}
+                </Badge>
+                <Badge variant="outline" className="border-[#c8a415] text-[#c8a415]">{type}</Badge>
               </div>
               <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
                 {[
-                  { icon: Building2, label: 'Department', value: v.department },
-                  { icon: Briefcase, label: 'Employment Type', value: v.type },
-                  { icon: DollarSign, label: 'Salary Range', value: v.salary },
-                  { icon: Clock, label: 'Deadline', value: v.deadline },
-                  { icon: CalendarDays, label: 'Posted Date', value: v.postedDate },
+                  { icon: Building2, label: 'Department', value: department },
+                  { icon: Briefcase, label: 'Employment Type', value: type },
+                  { icon: DollarSign, label: 'Salary Range', value: salary },
+                  { icon: Clock, label: 'Deadline', value: deadline },
+                  { icon: CalendarDays, label: 'Posted Date', value: postedDate },
                   { icon: MapPin, label: 'Location', value: 'Dessie, Amhara' },
                   { icon: Users, label: 'Reports To', value: 'Department Head' },
-                  { icon: Target, label: 'Level', value: 'Senior' },
+                  { icon: Target, label: 'Level', value: 'Professional' },
                 ].map((item, i) => (
                   <div key={i} className="flex items-start gap-3">
                     <item.icon className="w-5 h-5 text-[#1a6b3c] mt-0.5 shrink-0" />
@@ -112,38 +209,21 @@ export default function VacancyDetailPage({ vacancyId, navigateTo }: VacancyDeta
 
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
           <div className="lg:col-span-2 space-y-8">
-            {/* Job Description */}
             <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }}>
               <h2 className="text-xl font-bold text-foreground gov-section-title mb-6">Job Description</h2>
               <div className="text-muted-foreground space-y-4 leading-relaxed">
-                {v.description.split('\n\n').map((p, i) => <p key={i}>{p}</p>)}
+                {description.split('\n\n').map((p, i) => <p key={i}>{p}</p>)}
               </div>
             </motion.div>
 
             <Separator />
 
-            {/* Requirements */}
             <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }}>
               <h2 className="text-xl font-bold text-foreground gov-section-title mb-6">Requirements</h2>
               <div className="space-y-3">
-                {v.requirements.map((r, i) => (
+                {requirements.map((r, i) => (
                   <div key={i} className="flex items-start gap-3">
                     <CheckCircle className="w-5 h-5 text-[#1a6b3c] mt-0.5 shrink-0" />
-                    <p className="text-muted-foreground">{r}</p>
-                  </div>
-                ))}
-              </div>
-            </motion.div>
-
-            <Separator />
-
-            {/* Responsibilities */}
-            <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 }}>
-              <h2 className="text-xl font-bold text-foreground gov-section-title mb-6">Key Responsibilities</h2>
-              <div className="space-y-3">
-                {v.responsibilities.map((r, i) => (
-                  <div key={i} className="flex items-start gap-3">
-                    <ArrowRight className="w-5 h-5 text-[#c8a415] mt-0.5 shrink-0" />
                     <p className="text-muted-foreground">{r}</p>
                   </div>
                 ))}
@@ -152,16 +232,15 @@ export default function VacancyDetailPage({ vacancyId, navigateTo }: VacancyDeta
           </div>
 
           {/* Sidebar */}
-          <div className="space-y-8">
-            {/* Benefits */}
+          <div className="space-y-6">
             <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }}>
-              <h2 className="text-xl font-bold text-foreground gov-section-title mb-6">Benefits & Perks</h2>
+              <h2 className="text-xl font-bold text-foreground gov-section-title mb-4">Benefits & Perks</h2>
               <div className="grid gap-3">
                 {benefits.map((b, i) => (
                   <Card key={i} className="border border-border">
-                    <CardContent className="p-4 flex items-start gap-3">
-                      <div className="w-10 h-10 rounded-full bg-[#e8f5e9] flex items-center justify-center shrink-0">
-                        <b.icon className="w-5 h-5 text-[#1a6b3c]" />
+                    <CardContent className="p-3 flex items-start gap-3">
+                      <div className="w-8 h-8 rounded-full bg-[#e8f5e9] flex items-center justify-center shrink-0">
+                        <b.icon className="w-4 h-4 text-[#1a6b3c]" />
                       </div>
                       <div>
                         <p className="font-semibold text-sm text-foreground">{b.title}</p>
@@ -173,20 +252,21 @@ export default function VacancyDetailPage({ vacancyId, navigateTo }: VacancyDeta
               </div>
             </motion.div>
 
-            {/* How to Apply */}
-            <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.25 }}>
-              <Card className="bg-[#0d4a28] text-white border-0">
-                <CardContent className="p-6">
-                  <h3 className="font-bold text-lg mb-4 flex items-center gap-2"><Star className="w-5 h-5 text-[#c8a415]" /> How to Apply</h3>
-                  <ol className="space-y-3 text-sm text-green-100">
-                    <li className="flex items-start gap-2"><span className="w-6 h-6 rounded-full bg-white/20 flex items-center justify-center text-xs font-bold shrink-0">1</span>Review all requirements carefully</li>
-                    <li className="flex items-start gap-2"><span className="w-6 h-6 rounded-full bg-white/20 flex items-center justify-center text-xs font-bold shrink-0">2</span>Prepare your CV and certificates</li>
-                    <li className="flex items-start gap-2"><span className="w-6 h-6 rounded-full bg-white/20 flex items-center justify-center text-xs font-bold shrink-0">3</span>Fill out the application form below</li>
-                    <li className="flex items-start gap-2"><span className="w-6 h-6 rounded-full bg-white/20 flex items-center justify-center text-xs font-bold shrink-0">4</span>Submit before the deadline</li>
-                  </ol>
-                </CardContent>
-              </Card>
-            </motion.div>
+            <Card className="bg-[#0d4a28] text-white border-0">
+              <CardContent className="p-5">
+                <h3 className="font-bold text-base mb-3 flex items-center gap-2">
+                  <Star className="w-4 h-4 text-[#c8a415]" /> How to Apply
+                </h3>
+                <ol className="space-y-2 text-sm text-green-100">
+                  {['Review all requirements carefully', 'Prepare your CV (PDF/DOC, max 5MB)', 'Fill out the application form below', 'Submit before the deadline'].map((s, i) => (
+                    <li key={i} className="flex items-start gap-2">
+                      <span className="w-5 h-5 rounded-full bg-white/20 flex items-center justify-center text-xs font-bold shrink-0">{i + 1}</span>
+                      {s}
+                    </li>
+                  ))}
+                </ol>
+              </CardContent>
+            </Card>
           </div>
         </div>
 
@@ -195,41 +275,134 @@ export default function VacancyDetailPage({ vacancyId, navigateTo }: VacancyDeta
         {/* Apply Now Form */}
         <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.4 }}>
           <h2 className="text-2xl font-bold text-foreground gov-section-title mb-8">Apply Now</h2>
-          <Card className="p-6 md:p-8">
-            <CardContent className="p-0">
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <div>
-                  <Label htmlFor="name">Full Name *</Label>
-                  <Input id="name" placeholder="Enter your full name" value={name} onChange={e => setName(e.target.value)} className="mt-1.5" />
-                </div>
-                <div>
-                  <Label htmlFor="email">Email Address *</Label>
-                  <Input id="email" type="email" placeholder="your@email.com" value={email} onChange={e => setEmail(e.target.value)} className="mt-1.5" />
-                </div>
-                <div>
-                  <Label htmlFor="phone">Phone Number *</Label>
-                  <Input id="phone" placeholder="+251 9XX XXX XXXX" value={phone} onChange={e => setPhone(e.target.value)} className="mt-1.5" />
-                </div>
-                <div>
-                  <Label>Upload CV *</Label>
-                  <div className="mt-1.5 border-2 border-dashed border-border rounded-lg p-6 text-center hover:border-[#1a6b3c] transition-colors cursor-pointer">
-                    <Upload className="w-8 h-8 text-muted-foreground mx-auto mb-2" />
-                    <p className="text-sm text-muted-foreground">Drag & drop or click to upload</p>
-                    <p className="text-xs text-muted-foreground mt-1">PDF, DOC (Max 5MB)</p>
-                  </div>
-                </div>
-                <div className="md:col-span-2">
-                  <Label htmlFor="cover">Cover Letter</Label>
-                  <Textarea id="cover" placeholder="Write your cover letter here..." rows={5} value={cover} onChange={e => setCover(e.target.value)} className="mt-1.5" />
-                </div>
-              </div>
-              <div className="mt-6 flex justify-end">
-                <Button className="bg-[#1a6b3c] hover:bg-[#0d4a28] text-white px-8">
-                  <Send className="w-4 h-4 mr-2" /> SUBMIT APPLICATION
+
+          {submitted ? (
+            <Card className="border-0 bg-[#e8f5e9]">
+              <CardContent className="p-10 text-center">
+                <CheckCircle2 className="w-16 h-16 text-[#1a6b3c] mx-auto mb-4" />
+                <h3 className="text-xl font-bold text-[#1a6b3c] mb-2">Application Submitted!</h3>
+                <p className="text-muted-foreground mb-6">
+                  Thank you for applying. We have received your application and will contact you at your provided email address.
+                </p>
+                <Button onClick={() => setSubmitted(false)} variant="outline" className="border-[#1a6b3c] text-[#1a6b3c]">
+                  Submit Another Application
                 </Button>
-              </div>
-            </CardContent>
-          </Card>
+              </CardContent>
+            </Card>
+          ) : (
+            <Card className="p-6 md:p-8">
+              <CardContent className="p-0">
+                <form onSubmit={handleSubmit}>
+                  {submitError && (
+                    <div className="mb-4 p-3 bg-red-50 border border-red-200 rounded-md flex items-center gap-2 text-red-700 text-sm">
+                      <AlertCircle className="w-4 h-4 shrink-0" />
+                      {submitError}
+                    </div>
+                  )}
+
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div>
+                      <Label htmlFor="app-name">Full Name *</Label>
+                      <Input
+                        id="app-name"
+                        placeholder="Enter your full name"
+                        value={name}
+                        onChange={e => setName(e.target.value)}
+                        className="mt-1.5"
+                        required
+                      />
+                    </div>
+                    <div>
+                      <Label htmlFor="app-email">Email Address *</Label>
+                      <Input
+                        id="app-email"
+                        type="email"
+                        placeholder="your@email.com"
+                        value={email}
+                        onChange={e => setEmail(e.target.value)}
+                        className="mt-1.5"
+                        required
+                      />
+                    </div>
+                    <div>
+                      <Label htmlFor="app-phone">Phone Number *</Label>
+                      <Input
+                        id="app-phone"
+                        placeholder="+251 9XX XXX XXXX"
+                        value={phone}
+                        onChange={e => setPhone(e.target.value)}
+                        className="mt-1.5"
+                        required
+                      />
+                    </div>
+
+                    {/* CV File Upload */}
+                    <div>
+                      <Label>Upload CV * (PDF or DOC, max 5MB)</Label>
+                      <input
+                        ref={fileInputRef}
+                        type="file"
+                        accept=".pdf,.doc,.docx,application/pdf,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document"
+                        onChange={handleFileChange}
+                        className="hidden"
+                      />
+                      <div
+                        onClick={() => fileInputRef.current?.click()}
+                        className={`mt-1.5 border-2 border-dashed rounded-lg p-5 text-center cursor-pointer transition-colors ${
+                          cvFile ? 'border-[#1a6b3c] bg-[#e8f5e9]' : 'border-border hover:border-[#1a6b3c] hover:bg-[#f0faf4]'
+                        }`}
+                      >
+                        {cvFile ? (
+                          <div className="flex items-center justify-center gap-2">
+                            <FileText className="w-5 h-5 text-[#1a6b3c]" />
+                            <span className="text-sm font-medium text-[#1a6b3c] truncate max-w-[180px]">{cvFile.name}</span>
+                            <button
+                              type="button"
+                              onClick={e => { e.stopPropagation(); setCvFile(null); if (fileInputRef.current) fileInputRef.current.value = '' }}
+                              className="text-red-500 hover:text-red-700"
+                            >
+                              <X className="w-4 h-4" />
+                            </button>
+                          </div>
+                        ) : (
+                          <>
+                            <Upload className="w-8 h-8 text-muted-foreground mx-auto mb-2" />
+                            <p className="text-sm text-muted-foreground">Click to upload your CV</p>
+                            <p className="text-xs text-muted-foreground mt-1">PDF, DOC, DOCX (Max 5MB)</p>
+                          </>
+                        )}
+                      </div>
+                    </div>
+
+                    <div className="md:col-span-2">
+                      <Label htmlFor="app-cover">Cover Letter (Optional)</Label>
+                      <Textarea
+                        id="app-cover"
+                        placeholder="Write a brief cover letter explaining why you are a good fit for this position..."
+                        rows={5}
+                        value={cover}
+                        onChange={e => setCover(e.target.value)}
+                        className="mt-1.5"
+                      />
+                    </div>
+                  </div>
+
+                  <div className="mt-6 flex justify-end">
+                    <Button
+                      type="submit"
+                      disabled={submitting}
+                      className="bg-[#1a6b3c] hover:bg-[#0d4a28] text-white px-8"
+                    >
+                      {submitting
+                        ? <><Loader2 className="w-4 h-4 mr-2 animate-spin" /> Submitting...</>
+                        : <><Send className="w-4 h-4 mr-2" /> SUBMIT APPLICATION</>
+                      }
+                    </Button>
+                  </div>
+                </form>
+              </CardContent>
+            </Card>
+          )}
         </motion.div>
       </div>
     </div>
