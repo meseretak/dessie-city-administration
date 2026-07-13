@@ -222,25 +222,25 @@ export default function Home() {
       </div>
 
       {/* ============ STICKY HEADER ============ */}
-      <header className="sticky top-0 z-50 !bg-[#ffffff]">
+      <header className="sticky top-0 z-50 !bg-[#ffffff] shadow-sm">
         <div className="tricolor-stripe" />
-        <div className="max-w-6xl mx-auto px-4 py-3 md:py-4 flex items-center justify-between gap-4">
+        <div className="max-w-7xl mx-auto px-4 py-2 md:py-3 flex items-center gap-4">
           {/* Left: Logo */}
           <button onClick={() => navigateTo('home')} className="flex items-center gap-2 shrink-0 cursor-pointer">
             <img
               src="/official-logo.png"
               alt="Dessie City Administration Logo"
-              className="h-14 md:h-16 w-auto object-contain"
+              className="h-12 md:h-14 w-auto object-contain"
             />
             <div className="leading-tight hidden sm:block">
-              <span className="text-[#0d4a28] font-extrabold text-lg md:text-xl tracking-wide">DESSIE</span>
+              <span className="text-[#0d4a28] font-extrabold text-base md:text-lg tracking-wide">DESSIE</span>
               <br />
-              <span className="text-[0.6rem] md:text-[0.65rem] tracking-[0.1em] text-[#555] uppercase font-semibold">City Administration</span>
+              <span className="text-[0.55rem] md:text-[0.6rem] tracking-[0.1em] text-[#555] uppercase font-semibold">City Administration</span>
             </div>
           </button>
 
-          {/* Center: Desktop Nav */}
-          <nav className="hidden xl:flex items-center gap-1 ml-2">
+          {/* Center: Desktop Nav — pushed right with ml-auto */}
+          <nav className="hidden xl:flex items-center gap-0.5 ml-auto">
             {NAV_ITEMS.map((item) => (
               <div
                 key={item.label}
@@ -250,14 +250,14 @@ export default function Home() {
               >
                 <button
                   onClick={() => navigateTo(item.id)}
-                  className={`gov-nav-link px-4 py-2.5 rounded-md text-[0.8rem] font-medium flex items-center gap-1.5 transition-all ${
+                  className={`gov-nav-link px-3 py-2 rounded-md text-[0.78rem] font-medium flex items-center gap-1 transition-all ${
                     currentPage === item.id
                       ? 'text-white bg-[#1a6b3c] shadow-md shadow-[#1a6b3c]/20'
                       : 'text-[#333] hover:text-[#1a6b3c] hover:bg-[#1a6b3c]/5'
                   }`}
                 >
                   {item.label}
-                  {item.children && <ChevronDown className="w-3.5 h-3.5" />}
+                  {item.children && <ChevronDown className="w-3 h-3" />}
                 </button>
 
                 {/* Dropdown for Services / Announcements */}
@@ -375,7 +375,7 @@ export default function Home() {
                   <Button
                     variant="ghost"
                     size="icon"
-                    className="h-9 w-9"
+                    className="h-8 w-8"
                     onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')}
                     aria-label="Toggle dark mode"
                   >
@@ -385,45 +385,6 @@ export default function Home() {
                 <TooltipContent>Toggle Theme</TooltipContent>
               </Tooltip>
             </TooltipProvider>
-
-            {/* 5-Color Accent Picker */}
-            <div className="relative">
-              <TooltipProvider>
-                <Tooltip>
-                  <TooltipTrigger asChild>
-                    <Button
-                      variant="ghost"
-                      size="icon"
-                      className="h-9 w-9"
-                      onClick={(e) => { e.stopPropagation(); setColorPickerOpen(!colorPickerOpen) }}
-                      aria-label="Change accent color"
-                    >
-                      <Palette className="w-4 h-4" style={{ color: accentColor }} />
-                    </Button>
-                  </TooltipTrigger>
-                  <TooltipContent>Accent Color</TooltipContent>
-                </Tooltip>
-              </TooltipProvider>
-              {colorPickerOpen && (
-                <div className="absolute right-0 top-full mt-2 bg-white rounded-xl shadow-2xl border border-gray-200 p-3 z-[80] w-48" onClick={e => e.stopPropagation()}>
-                  <p className="text-xs font-semibold text-gray-500 mb-2 tracking-wider uppercase">Accent Color</p>
-                  <div className="space-y-1.5">
-                    {accentColors.map((ac) => (
-                      <button
-                        key={ac.color}
-                        onClick={() => { setAccentColor(ac.color); setColorPickerOpen(false); document.documentElement.style.setProperty('--accent-color', ac.color) }}
-                        className={`w-full flex items-center gap-3 px-2 py-1.5 rounded-lg hover:bg-gray-50 transition-colors ${accentColor === ac.color ? 'bg-gray-50' : ''}`}
-                      >
-                        <span className="w-5 h-5 rounded-full border-2 flex items-center justify-center shrink-0" style={{ borderColor: ac.color, backgroundColor: accentColor === ac.color ? ac.color : 'transparent' }}>
-                          {accentColor === ac.color && <span className="w-2 h-2 rounded-full bg-white" />}
-                        </span>
-                        <span className="text-xs font-medium text-gray-700">{ac.label}</span>
-                      </button>
-                    ))}
-                  </div>
-                </div>
-              )}
-            </div>
 
             {/* Mobile Hamburger */}
             <Sheet open={mobileMenuOpen} onOpenChange={setMobileMenuOpen}>

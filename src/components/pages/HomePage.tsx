@@ -196,12 +196,12 @@ const heroSlides = [
 ]
 
 const hotelImagesAll = [
-  ['/hotel-building.png', '/hotel-room.png', '/hotel-food.png'],
-  ['/hotel-lobby.png', '/hotel-pool.png', '/hotel-room.png'],
-  ['/hotel-food.png', '/hotel-building.png', '/hotel-lobby.png'],
-  ['/hotel-room.png', '/hotel-pool.png', '/hotel-building.png'],
-  ['/hotel-lobby.png', '/hotel-food.png', '/hotel-room.png'],
-  ['/hotel-pool.png', '/hotel-building.png', '/hotel-lobby.png'],
+  ['/dessie-city-hall.png', '/heritage-landscape.png', '/city-aerial.png'],
+  ['/heritage-fortress.png', '/heritage-waterfall.png', '/heritage-church.png'],
+  ['/project-housing.png', '/heritage-memorial.png', '/heritage-market.png'],
+  ['/dessie-smart-center.png', '/project-smart-city.png', '/news-smart-city.png'],
+  ['/news-industry.png', '/project-industrial.png', '/building-commercial.png'],
+  ['/project-healthcare.png', '/building-hospital.png', '/news-health.png'],
 ]
 
 const hotels = [
@@ -215,7 +215,7 @@ const hotels = [
 
 const featuredProjects = [
   { title: 'Smart City', desc: 'Digital transformation of all city services and citizen engagement platforms.', image: '/project-smart-city.png', color: 'emerald' },
-  { title: 'Industrial Zone', desc: '500-hectare zone to attract manufacturing investment and create jobs.', image: '/project-industrial.png', color: 'amber' },
+  { title: 'Industrial Zone', desc: '500 Haktar zone to attract manufacturing investment and create jobs.', image: '/project-industrial.png', color: 'amber' },
   { title: 'Road Network', desc: 'Expanding arterial roads, walkways, and modern traffic management.', image: '/project-road.png', color: 'blue' },
   { title: 'Water & Sanitation', desc: 'Modern water supply and sanitation infrastructure for all residents.', image: '/project-water.png', color: 'cyan' },
   { title: 'Education Hub', desc: 'New schools, vocational centers, and digital learning programs.', image: '/project-education.png', color: 'purple' },
@@ -379,7 +379,7 @@ export default function HomePage({ navigateTo }: { navigateTo: (page: PageId, ex
   /* ── Resources Pagination ── */
   const [resCategory, setResCategory] = useState(0)
   const [resPage, setResPage] = useState(0)
-  const RES_PER_PAGE = 5
+  const RES_PER_PAGE = 3
 
   /* ── Newsletter ── */
   const [email, setEmail] = useState('')
@@ -1712,30 +1712,30 @@ export default function HomePage({ navigateTo }: { navigateTo: (page: PageId, ex
       </section>
 
       {/* ═══════════════════ 11. NEWSLETTER ═══════════════════ */}
-      <section className="py-10 bg-[#1a6b3c]">
-        <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <h2 className="text-3xl md:text-4xl font-bold text-white gov-heading-display mb-3">
-            STAY INFORMED
-          </h2>
-          <p className="text-white/70 mb-6 text-base">
-            Subscribe to our newsletter for the latest updates, news, and announcements from Dessie City Administration.
-          </p>
-          <div className="flex flex-col sm:flex-row gap-3 max-w-lg mx-auto">
-            <Input
-              type="email"
-              placeholder="Enter your email address"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              className="bg-white/10 border-white/20 text-white placeholder:text-white/50 focus:border-[#c8a415] h-12"
-              onKeyDown={(e) => e.key === 'Enter' && handleSubscribe()}
-            />
-            <Button
-              className="bg-[#c8a415] hover:bg-[#b39412] text-[#1a1a1a] font-bold tracking-wider h-12 px-8 shrink-0"
-              onClick={handleSubscribe}
-              disabled={subscribing}
-            >
-              {subscribing ? 'SUBSCRIBING...' : 'SUBSCRIBE'}
-            </Button>
+      <section className="py-6 bg-[#1a6b3c]">
+        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="flex flex-col sm:flex-row items-center gap-4">
+            <div className="flex-1 text-center sm:text-left">
+              <h2 className="text-xl font-bold text-white mb-0.5">STAY INFORMED</h2>
+              <p className="text-white/70 text-sm">Get the latest news and announcements from Dessie City Administration.</p>
+            </div>
+            <div className="flex gap-2 w-full sm:w-auto">
+              <Input
+                type="email"
+                placeholder="Your email address"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                className="bg-white/10 border-white/20 text-white placeholder:text-white/50 focus:border-[#c8a415] h-10 min-w-[220px]"
+                onKeyDown={(e) => e.key === 'Enter' && handleSubscribe()}
+              />
+              <Button
+                className="bg-[#c8a415] hover:bg-[#b39412] text-[#1a1a1a] font-bold h-10 px-5 shrink-0"
+                onClick={handleSubscribe}
+                disabled={subscribing}
+              >
+                {subscribing ? '...' : 'SUBSCRIBE'}
+              </Button>
+            </div>
           </div>
         </div>
       </section>
