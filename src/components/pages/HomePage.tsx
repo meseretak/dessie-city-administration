@@ -187,12 +187,12 @@ const statCards = [
 ]
 
 const heroSlides = [
-  { image: '/dessie-city-hall-day.png', title: 'ደሴ ከተማ አስተዳደር', subtitle: 'Welcome to Dessie City Administration — Serving 500,000+ Citizens' },
-  { image: '/dessie-city-hall-night.png', title: 'Dessie City Hall', subtitle: 'The Heart of Governance — Open & Transparent Administration' },
-  { image: '/dessie-smart-center.png', title: 'Dessie Smart City 2025', subtitle: 'Advanced CCTV & Control Center — Real-Time City Monitoring' },
-  { image: '/dessie-service-counter.png', title: 'Modern Citizen Service Center', subtitle: 'Fast & Efficient Government Services Under One Roof' },
-  { image: '/dessie-service-center.png', title: 'Integrated Service Hall', subtitle: 'One-Stop Services — Ethiopost, Digital & Government Services' },
-  { image: '/dessie-conference-hall.png', title: 'Smart Conference Hall', subtitle: 'State-of-the-Art Meeting Facilities for Modern Governance' },
+  { image: '/dessie-city-hall.png', title: 'ደሴ ከተማ አስተዳደር', subtitle: 'Welcome to Dessie City Administration — Serving 500,000+ Citizens with Excellence' },
+  { image: '/dessie-smart-center.png', title: 'Dessie Smart City 2025', subtitle: 'Advanced Digital Control Center — Real-Time City Monitoring & Governance' },
+  { image: '/city-aerial.png', title: 'Dessie — City of Progress', subtitle: 'A Growing Urban Center in the Heart of Amhara Region, Ethiopia' },
+  { image: '/dessie-service-counter.png', title: 'Modern Citizen Service Center', subtitle: 'Fast & Efficient Government Services — Over 40 Services Under One Roof' },
+  { image: '/heritage-landscape.png', title: 'Natural Beauty of Dessie', subtitle: 'Nestled in the Highlands — A City of Culture, Heritage & Growth' },
+  { image: '/dessie-conference-hall.png', title: 'Smart Conference & Meeting Hall', subtitle: 'State-of-the-Art Governance Infrastructure for Modern Administration' },
 ]
 
 const hotelImagesAll = [
