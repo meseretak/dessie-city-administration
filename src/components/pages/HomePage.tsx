@@ -358,6 +358,12 @@ export default function HomePage({ navigateTo }: { navigateTo: (page: PageId, ex
 
   /* ── Project Pagination ── */
   const [projectPage, setProjectPage] = useState(0)
+  /* ── Heritage Pagination ── */
+  const [heritagePage, setHeritagePage] = useState(0)
+  const HERITAGE_PER_PAGE = 3
+  /* ── Landmarks Pagination ── */
+  const [landmarkPage, setLandmarkPage] = useState(0)
+  const LANDMARK_PER_PAGE = 4
 
   /* ── Jobs & Bids ── */
   const [latestVacancies, setLatestVacancies] = useState<any[]>([])
@@ -1601,113 +1607,132 @@ export default function HomePage({ navigateTo }: { navigateTo: (page: PageId, ex
       {/* ═══════════════════ 9. HERITAGE & HISTORICAL PLACES ═══════════════════ */}
       <section className="py-10 bg-[#f8faf8]">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <h2 className="text-3xl md:text-4xl font-bold text-[#1a1a1a] text-center gov-section-title inline-block mb-8">
-            HERITAGE &amp; HISTORICAL PLACES
-          </h2>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {heritagePlaces.map((place, i) => (
-              <motion.div
-                key={place.name}
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true, margin: '-30px' }}
-                transition={{ duration: 0.4, delay: i * 0.08 }}
-              >
+          <div className="flex items-center justify-between mb-6">
+            <div>
+              <h2 className="text-2xl md:text-3xl font-bold text-[#1a1a1a] gov-section-title inline-block">HERITAGE & HISTORICAL PLACES</h2>
+              <div className="h-0.5 w-16 bg-[#c8a415] rounded-full mt-1" />
+            </div>
+            <Button variant="outline" size="sm" className="border-[#1a6b3c] text-[#1a6b3c] hover:bg-[#1a6b3c] hover:text-white text-xs font-bold" onClick={() => navigateTo('tourism')}>VIEW ALL</Button>
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
+            {heritagePlaces.slice(heritagePage * HERITAGE_PER_PAGE, (heritagePage + 1) * HERITAGE_PER_PAGE).map((place, i) => (
+              <motion.div key={place.name} initial={{ opacity: 0, y: 16 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.4, delay: i * 0.08 }}>
                 <Card className="h-full border border-[#e2e8e0] hover:shadow-lg hover:-translate-y-1 transition-all duration-300 overflow-hidden">
-                  <div className="h-48 overflow-hidden">
-                    <img
-                      src={place.image}
-                      alt={place.name}
-                      className="w-full h-full object-cover"
-                    />
+                  <div className="h-44 overflow-hidden">
+                    <img src={place.image} alt={place.name} className="w-full h-full object-cover hover:scale-105 transition-transform duration-500" />
                   </div>
-                  <CardContent className="p-5">
-                    <h3 className="font-bold text-[#1a1a1a] text-base mb-2">{place.name}</h3>
-                    <p className="text-[#6b7280] text-sm leading-relaxed">{place.description}</p>
+                  <CardContent className="p-4">
+                    <h3 className="font-bold text-[#1a1a1a] text-sm mb-1">{place.name}</h3>
+                    <p className="text-[#6b7280] text-xs leading-relaxed line-clamp-3">{place.description}</p>
                   </CardContent>
                 </Card>
               </motion.div>
             ))}
           </div>
+          {heritagePlaces.length > HERITAGE_PER_PAGE && (
+            <div className="mt-5 flex items-center justify-center gap-2">
+              <button onClick={() => setHeritagePage(p => Math.max(0, p - 1))} disabled={heritagePage === 0}
+                className="w-8 h-8 rounded-lg border border-[#e2e8e0] flex items-center justify-center disabled:opacity-30 hover:border-[#0d4a28] hover:bg-[#0d4a28] hover:text-white transition-all">
+                <ChevronLeft className="w-4 h-4" />
+              </button>
+              {Array.from({ length: Math.ceil(heritagePlaces.length / HERITAGE_PER_PAGE) }, (_, i) => (
+                <button key={i} onClick={() => setHeritagePage(i)}
+                  className={`w-8 h-8 rounded-lg text-xs font-bold transition-all ${heritagePage === i ? 'bg-[#0d4a28] text-white' : 'border border-[#e2e8e0] text-[#6b7280] hover:border-[#0d4a28]'}`}>{i + 1}</button>
+              ))}
+              <button onClick={() => setHeritagePage(p => Math.min(Math.ceil(heritagePlaces.length / HERITAGE_PER_PAGE) - 1, p + 1))} disabled={heritagePage >= Math.ceil(heritagePlaces.length / HERITAGE_PER_PAGE) - 1}
+                className="w-8 h-8 rounded-lg border border-[#e2e8e0] flex items-center justify-center disabled:opacity-30 hover:border-[#0d4a28] hover:bg-[#0d4a28] hover:text-white transition-all">
+                <ChevronRight className="w-4 h-4" />
+              </button>
+            </div>
+          )}
         </div>
       </section>
 
       {/* ═══════════════════ 9b. DESSIE CITY LANDMARKS ═══════════════════ */}
       <section className="py-10 bg-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <h2 className="text-3xl md:text-4xl font-bold text-[#1a1a1a] text-center gov-section-title inline-block mb-8">
-            DESSIE CITY LANDMARKS
-          </h2>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
-            {cityLandmarks.map((landmark, i) => (
-              <motion.div
-                key={landmark.name}
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true, margin: '-30px' }}
-                transition={{ duration: 0.4, delay: i * 0.07 }}
-              >
+          <div className="flex items-center justify-between mb-6">
+            <div>
+              <h2 className="text-2xl md:text-3xl font-bold text-[#1a1a1a] gov-section-title inline-block">DESSIE CITY LANDMARKS</h2>
+              <div className="h-0.5 w-16 bg-[#c8a415] rounded-full mt-1" />
+            </div>
+          </div>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+            {cityLandmarks.slice(landmarkPage * LANDMARK_PER_PAGE, (landmarkPage + 1) * LANDMARK_PER_PAGE).map((landmark, i) => (
+              <motion.div key={landmark.name} initial={{ opacity: 0, y: 16 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.4, delay: i * 0.07 }}>
                 <div className="bg-white rounded-xl overflow-hidden border border-[#e2e8e0] hover:shadow-lg hover:-translate-y-1 transition-all duration-300">
-                  <div className="relative h-44 overflow-hidden">
-                    <img
-                      src={landmark.image}
-                      alt={landmark.name}
-                      className="w-full h-full object-cover"
-                    />
+                  <div className="relative h-40 overflow-hidden">
+                    <img src={landmark.image} alt={landmark.name} className="w-full h-full object-cover" />
                     <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent" />
                     <div className="absolute bottom-0 left-0 right-0 p-3">
-                      <h3 className="text-white font-bold text-sm leading-tight">{landmark.name}</h3>
+                      <h3 className="text-white font-bold text-xs leading-tight">{landmark.name}</h3>
                     </div>
                   </div>
-                  <div className="p-4">
-                    <p className="text-[#6b7280] text-xs leading-relaxed">{landmark.desc}</p>
+                  <div className="p-3">
+                    <p className="text-[#6b7280] text-xs leading-relaxed line-clamp-2">{landmark.desc}</p>
                   </div>
                 </div>
               </motion.div>
             ))}
           </div>
+          {cityLandmarks.length > LANDMARK_PER_PAGE && (
+            <div className="mt-5 flex items-center justify-center gap-2">
+              <button onClick={() => setLandmarkPage(p => Math.max(0, p - 1))} disabled={landmarkPage === 0}
+                className="w-8 h-8 rounded-lg border border-[#e2e8e0] flex items-center justify-center disabled:opacity-30 hover:border-[#0d4a28] hover:bg-[#0d4a28] hover:text-white transition-all">
+                <ChevronLeft className="w-4 h-4" />
+              </button>
+              {Array.from({ length: Math.ceil(cityLandmarks.length / LANDMARK_PER_PAGE) }, (_, i) => (
+                <button key={i} onClick={() => setLandmarkPage(i)}
+                  className={`w-8 h-8 rounded-lg text-xs font-bold transition-all ${landmarkPage === i ? 'bg-[#0d4a28] text-white' : 'border border-[#e2e8e0] text-[#6b7280] hover:border-[#0d4a28]'}`}>{i + 1}</button>
+              ))}
+              <button onClick={() => setLandmarkPage(p => Math.min(Math.ceil(cityLandmarks.length / LANDMARK_PER_PAGE) - 1, p + 1))} disabled={landmarkPage >= Math.ceil(cityLandmarks.length / LANDMARK_PER_PAGE) - 1}
+                className="w-8 h-8 rounded-lg border border-[#e2e8e0] flex items-center justify-center disabled:opacity-30 hover:border-[#0d4a28] hover:bg-[#0d4a28] hover:text-white transition-all">
+                <ChevronRight className="w-4 h-4" />
+              </button>
+            </div>
+          )}
         </div>
       </section>
 
-      {/* ═══════════════════ 10. WEATHER ═══════════════════ */}
-      <section className="py-10 bg-white">
+      {/* ═══════════════════ 10. WEATHER & CITY INFO ═══════════════════ */}
+      <section className="py-6 bg-white border-y border-[#e2e8e0]">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.5 }}
-            className="max-w-lg mx-auto"
-          >
-            <Card className="bg-gradient-to-br from-[#e8f5e9] to-[#f8faf8] border border-[#e2e8e0]">
-              <CardContent className="p-6">
-                <div className="flex items-center gap-6 mb-4">
-                  <CloudSun className="w-14 h-14 text-[#1a6b3c]" />
-                  <div>
-                    <p className="text-5xl font-extrabold text-[#1a1a1a]">24°C</p>
-                    <p className="text-[#6b7280] text-lg font-medium">Partly Cloudy</p>
-                  </div>
-                </div>
-                <div className="grid grid-cols-3 gap-4">
-                  <div className="text-center">
-                    <Droplets className="w-5 h-5 text-[#1a6b3c] mx-auto mb-1" />
-                    <p className="text-sm font-semibold text-[#1a1a1a]">62%</p>
-                    <p className="text-xs text-[#6b7280]">Humidity</p>
-                  </div>
-                  <div className="text-center">
-                    <Wind className="w-5 h-5 text-[#1a6b3c] mx-auto mb-1" />
-                    <p className="text-sm font-semibold text-[#1a1a1a]">12 km/h</p>
-                    <p className="text-xs text-[#6b7280]">Wind</p>
-                  </div>
-                  <div className="text-center">
-                    <Sunrise className="w-5 h-5 text-[#1a6b3c] mx-auto mb-1" />
-                    <p className="text-sm font-semibold text-[#1a1a1a]">6:12 AM</p>
-                    <p className="text-xs text-[#6b7280]">Sunrise</p>
-                  </div>
-                </div>
-              </CardContent>
-            </Card>
-          </motion.div>
+          <div className="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-7 gap-3 items-center">
+            {/* Weather Card */}
+            <div className="col-span-2 sm:col-span-2 lg:col-span-2 flex items-center gap-3 bg-gradient-to-r from-[#e8f5e9] to-[#f0fdf4] rounded-xl p-3 border border-[#1a6b3c]/10">
+              <CloudSun className="w-10 h-10 text-[#1a6b3c] shrink-0" />
+              <div>
+                <p className="text-2xl font-extrabold text-[#1a1a1a] leading-none">24°C</p>
+                <p className="text-xs text-[#6b7280]">Partly Cloudy · Dessie</p>
+              </div>
+            </div>
+            {/* Weather Details */}
+            <div className="flex flex-col items-center gap-0.5 bg-[#f8faf8] rounded-xl p-3 border border-[#e2e8e0]">
+              <Droplets className="w-4 h-4 text-[#1a6b3c]" />
+              <p className="text-sm font-bold text-[#1a1a1a]">62%</p>
+              <p className="text-[9px] text-[#6b7280]">Humidity</p>
+            </div>
+            <div className="flex flex-col items-center gap-0.5 bg-[#f8faf8] rounded-xl p-3 border border-[#e2e8e0]">
+              <Wind className="w-4 h-4 text-[#1a6b3c]" />
+              <p className="text-sm font-bold text-[#1a1a1a]">12km/h</p>
+              <p className="text-[9px] text-[#6b7280]">Wind</p>
+            </div>
+            <div className="flex flex-col items-center gap-0.5 bg-[#f8faf8] rounded-xl p-3 border border-[#e2e8e0]">
+              <Sunrise className="w-4 h-4 text-[#c8a415]" />
+              <p className="text-sm font-bold text-[#1a1a1a]">6:12AM</p>
+              <p className="text-[9px] text-[#6b7280]">Sunrise</p>
+            </div>
+            <div className="flex flex-col items-center gap-0.5 bg-[#f8faf8] rounded-xl p-3 border border-[#e2e8e0]">
+              <MapPin className="w-4 h-4 text-[#c62828]" />
+              <p className="text-sm font-bold text-[#1a1a1a]">2,470m</p>
+              <p className="text-[9px] text-[#6b7280]">Altitude</p>
+            </div>
+            <div className="flex flex-col items-center gap-0.5 bg-[#f8faf8] rounded-xl p-3 border border-[#e2e8e0]">
+              <Users className="w-4 h-4 text-[#0d4a28]" />
+              <p className="text-sm font-bold text-[#1a1a1a]">450K+</p>
+              <p className="text-[9px] text-[#6b7280]">Population</p>
+            </div>
+          </div>
         </div>
       </section>
 
