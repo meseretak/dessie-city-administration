@@ -226,16 +226,16 @@ export default function Home() {
         <div className="tricolor-stripe" />
         <div className="max-w-6xl mx-auto px-4 py-3 md:py-4 flex items-center justify-between gap-4">
           {/* Left: Logo */}
-          <button onClick={() => navigateTo('home')} className="flex items-center gap-3 shrink-0 cursor-pointer">
+          <button onClick={() => navigateTo('home')} className="flex items-center gap-2 shrink-0 cursor-pointer">
             <img
               src="/official-logo.png"
               alt="Dessie City Administration Logo"
-              className="h-14 md:h-20 w-auto object-contain rounded-full"
+              className="h-14 md:h-16 w-auto object-contain"
             />
-            <div className="leading-tight">
-              <span className="text-[#1a6b3c] font-extrabold text-xl md:text-2xl tracking-wide">DESSIE</span>
+            <div className="leading-tight hidden sm:block">
+              <span className="text-[#0d4a28] font-extrabold text-lg md:text-xl tracking-wide">DESSIE</span>
               <br />
-              <span className="text-[0.6rem] md:text-[0.7rem] tracking-[0.12em] text-[#555] uppercase font-semibold">City Administration</span>
+              <span className="text-[0.6rem] md:text-[0.65rem] tracking-[0.1em] text-[#555] uppercase font-semibold">City Administration</span>
             </div>
           </button>
 
@@ -555,7 +555,7 @@ export default function Home() {
                 <img
                   src="/official-logo.png"
                   alt="Dessie City Administration Logo"
-                  className="h-16 w-auto object-contain"
+                  className="h-14 w-auto object-contain"
                 />
                 <div className="leading-tight">
                   <span className="text-green-400 font-bold text-xl tracking-wide">DESSIE</span>
