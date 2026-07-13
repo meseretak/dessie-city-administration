@@ -812,42 +812,43 @@ export default function HomePage({ navigateTo }: { navigateTo: (page: PageId, ex
               viewport={{ once: true, margin: '-60px' }} transition={{ duration: 0.5, delay: 0.15 }}>
 
               {/* Header */}
-              <div className="flex items-end justify-between mb-8">
+              <div className="flex items-end justify-between mb-5">
                 <div>
-                  <div className="flex items-center gap-2 mb-2">
-                    <div className="w-8 h-8 rounded-lg bg-[#c62828] flex items-center justify-center">
-                      <Newspaper className="w-4 h-4 text-white" />
+                  <div className="flex items-center gap-2 mb-1">
+                    <div className="w-7 h-7 rounded-lg bg-[#c62828] flex items-center justify-center">
+                      <Newspaper className="w-3.5 h-3.5 text-white" />
                     </div>
-                    <span className="text-xs font-bold text-[#c62828] uppercase tracking-widest">Latest Updates</span>
+                    <span className="text-[10px] font-bold text-[#c62828] uppercase tracking-widest">Latest Updates</span>
                   </div>
-                  <h2 className="text-2xl font-extrabold text-[#1a1a1a] tracking-tight">LATEST NEWS</h2>
-                  <div className="h-1 w-16 bg-gradient-to-r from-[#c62828] to-transparent rounded-full mt-2" />
+                  <h2 className="text-xl font-extrabold text-[#1a1a1a]">LATEST NEWS</h2>
+                  <div className="h-0.5 w-14 bg-[#c62828] rounded-full mt-1" />
                 </div>
                 <button onClick={() => navigateTo('news')}
-                  className="flex items-center gap-1.5 text-xs font-bold text-[#c62828] hover:gap-2.5 transition-all">
-                  VIEW ALL <ArrowRight className="w-3.5 h-3.5" />
+                  className="flex items-center gap-1 text-xs font-bold text-[#c62828] hover:gap-2 transition-all">
+                  VIEW ALL <ArrowRight className="w-3 h-3" />
                 </button>
               </div>
 
-              {/* News Cards */}
+              {/* News Cards — bigger with excerpt */}
               <div className="space-y-3">
-                {visibleNews.slice(0, 4).map((item, i) => (
+                {visibleNews.slice(0, 3).map((item, i) => (
                   <motion.div key={item.title}
                     initial={{ opacity: 0, x: 10 }} animate={{ opacity: 1, x: 0 }}
                     transition={{ delay: i * 0.07 }}>
-                    <Card className="cursor-pointer hover:shadow-md transition-all border-0 shadow-sm group bg-white overflow-hidden"
+                    <Card className="cursor-pointer hover:shadow-lg transition-all border-0 shadow-sm group bg-white overflow-hidden"
                       onClick={() => navigateTo('news')}>
                       <CardContent className="p-0 flex">
-                        <div className="w-20 h-20 shrink-0 overflow-hidden">
+                        <div className="w-28 h-24 shrink-0 overflow-hidden">
                           <img src={item.image} alt={item.title}
                             className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" />
                         </div>
                         <div className="flex-1 p-3 min-w-0">
                           <div className="flex items-center gap-1.5 mb-1">
                             <span className="text-[9px] font-bold bg-[#c62828] text-white px-1.5 py-0.5 rounded">{item.category}</span>
-                            <span className="text-[10px] text-[#9ca3af]">{item.date}</span>
+                            <span className="text-[9px] text-[#9ca3af]">{item.date}</span>
                           </div>
-                          <h4 className="font-bold text-[#1a1a1a] text-xs leading-snug group-hover:text-[#c62828] transition-colors line-clamp-2">{item.title}</h4>
+                          <h4 className="font-bold text-[#1a1a1a] text-xs leading-snug group-hover:text-[#c62828] transition-colors line-clamp-2 mb-1">{item.title}</h4>
+                          <p className="text-[10px] text-[#6b7280] line-clamp-2 leading-relaxed">{item.excerpt}</p>
                         </div>
                       </CardContent>
                     </Card>
@@ -855,11 +856,19 @@ export default function HomePage({ navigateTo }: { navigateTo: (page: PageId, ex
                 ))}
               </div>
 
-              {/* View all button */}
-              <button onClick={() => navigateTo('news')}
-                className="mt-4 w-full py-2.5 border-2 border-dashed border-[#e2e8e0] rounded-xl text-xs font-bold text-[#6b7280] hover:border-[#c62828] hover:text-[#c62828] transition-all">
-                VIEW ALL NEWS & ANNOUNCEMENTS →
-              </button>
+              {/* Pagination dots for news */}
+              <div className="mt-3 flex items-center justify-between">
+                <div className="flex gap-1">
+                  {Array.from({ length: Math.ceil(homeNews.length / 3) }, (_, i) => (
+                    <button key={i} onClick={() => setNewsPage(i)}
+                      className={`w-2 h-2 rounded-full transition-all ${newsPage === i ? 'bg-[#c62828] w-4' : 'bg-[#e2e8e0]'}`} />
+                  ))}
+                </div>
+                <button onClick={() => navigateTo('news')}
+                  className="text-[10px] font-bold text-[#c62828] flex items-center gap-1 hover:gap-2 transition-all">
+                  ALL NEWS <ArrowRight className="w-3 h-3" />
+                </button>
+              </div>
             </motion.div>
 
           </div>
@@ -1105,7 +1114,7 @@ export default function HomePage({ navigateTo }: { navigateTo: (page: PageId, ex
 
       {/* ═══════════════════ 4b. PROMOTIONAL SLIDER ═══════════════════ */}
       <section className="py-12 bg-gradient-to-b from-[#f0fdf4] to-white overflow-hidden">
-        <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
           {/* Header */}
           <div className="text-center mb-8">
             <motion.div initial={{ opacity: 0, y: 10 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }}>
