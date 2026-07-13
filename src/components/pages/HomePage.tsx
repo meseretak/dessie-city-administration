@@ -1971,7 +1971,7 @@ export default function HomePage({ navigateTo }: { navigateTo: (page: PageId, ex
               <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.5, delay: 0.1 }}>
                 <h2 className="text-xl font-bold text-[#1a1a1a] gov-section-title inline-block mb-2">EMERGENCY CONTACTS</h2>
                 <p className="text-[#6b7280] text-sm mb-4">24/7 emergency services</p>
-                <div className="space-y-2">
+                <div className="grid grid-cols-1 gap-1.5">
                   {[
                     { label: 'Police Emergency', number: '911', icon: Shield, color: '#1a6b3c', bg: '#f0fdf4' },
                     { label: 'Fire Brigade', number: '939', icon: Zap, color: '#c62828', bg: '#fef2f2' },
@@ -1979,21 +1979,18 @@ export default function HomePage({ navigateTo }: { navigateTo: (page: PageId, ex
                     { label: 'City Hall', number: '+251-33-111-0000', icon: Building, color: '#0d4a28', bg: '#f0fdf4' },
                     { label: 'Public Works', number: '+251-33-111-1111', icon: Route, color: '#78350f', bg: '#fffbeb' },
                     { label: 'Water Authority', number: '+251-33-111-2222', icon: Droplets, color: '#0369a1', bg: '#eff6ff' },
-                    { label: 'Electricity Office', number: '+251-33-111-3333', icon: Zap, color: '#c8a415', bg: '#fffbeb' },
+                    { label: 'Electricity', number: '+251-33-111-3333', icon: Zap, color: '#c8a415', bg: '#fffbeb' },
                     { label: 'Health Bureau', number: '+251-33-111-4444', icon: Stethoscope, color: '#c62828', bg: '#fef2f2' },
-                    { label: 'Anti-Corruption', number: '+251-33-111-5555', icon: Shield, color: '#6b21a8', bg: '#faf5ff' },
-                    { label: 'Traffic Police', number: '+251-33-111-6666', icon: Navigation, color: '#0369a1', bg: '#eff6ff' },
                   ].map(({ label, number, icon: Icon, color, bg }) => (
-                    <a key={label} href={`tel:${number.replace(/\s/g, '')}`}
-                      className="flex items-center gap-3 p-2.5 bg-white rounded-lg border border-[#e2e8e0] hover:border-[#0d4a28]/30 hover:shadow-sm transition-all group">
-                      <div className="w-8 h-8 rounded-lg flex items-center justify-center shrink-0" style={{ backgroundColor: bg }}>
-                        <Icon className="w-4 h-4" style={{ color }} />
+                    <a key={label} href={`tel:${number.replace(/[\s-]/g, '')}`}
+                      className="flex items-center gap-2.5 p-2 bg-white rounded-lg border border-[#e2e8e0] hover:border-[#0d4a28]/30 hover:shadow-sm transition-all group">
+                      <div className="w-7 h-7 rounded-md flex items-center justify-center shrink-0" style={{ backgroundColor: bg }}>
+                        <Icon className="w-3.5 h-3.5" style={{ color }} />
                       </div>
                       <div className="flex-1 min-w-0">
-                        <p className="text-xs font-semibold text-[#1a1a1a] truncate">{label}</p>
-                        <p className="text-xs font-bold" style={{ color }}>{number}</p>
+                        <p className="text-[10px] font-semibold text-[#1a1a1a] truncate leading-tight">{label}</p>
+                        <p className="text-[10px] font-bold leading-tight" style={{ color }}>{number}</p>
                       </div>
-                      <Phone className="w-3.5 h-3.5 text-[#9ca3af] opacity-0 group-hover:opacity-100 transition-opacity" />
                     </a>
                   ))}
                 </div>

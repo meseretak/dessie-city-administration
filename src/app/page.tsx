@@ -634,23 +634,8 @@ export default function Home() {
               </form>
             </div>
           </div>
-          {/* Emergency Quick Contacts */}
-          <div className="mt-8 pt-6 border-t border-white/10">
-            <h4 className="text-[#c8a415] font-semibold text-xs tracking-wider uppercase mb-3 text-center">Emergency Contacts</h4>
-            <div className="flex flex-wrap justify-center gap-4 sm:gap-6">
-              {[
-                { label: 'Police', number: '991', color: 'text-red-400' },
-                { label: 'Ambulance', number: '902', color: 'text-red-400' },
-                { label: 'Fire', number: '939', color: 'text-red-400' },
-                { label: 'Helpline', number: '+251 33 111 0000', color: 'text-green-400' },
-              ].map((e) => (
-                <span key={e.label} className="text-white/60 text-xs">
-                  <span className="text-white/40">{e.label}:</span>{' '}
-                  <span className={`font-bold ${e.color}`}>{e.number}</span>
-                </span>
-              ))}
-            </div>
-          </div>
+          {/* Bottom bar spacer */}
+          <div className="mt-6" />
         </div>
 
         {/* Bottom Bar */}

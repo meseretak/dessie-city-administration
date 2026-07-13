@@ -22,7 +22,8 @@ import {
   LayoutDashboard, Newspaper, Briefcase, FileText, CheckCircle2,
   XCircle, Clock, LogOut, Menu, Loader2, Plus, Pencil, Trash2,
   Shield, User, Mail, Phone, MessageSquare, AlertTriangle, Eye,
-  ChevronDown, Search, RefreshCw,
+  ChevronDown, Search, RefreshCw, Hotel, FolderOpen, Megaphone,
+  Users, Settings, Star, MapPin, Building2,
 } from 'lucide-react'
 
 /* ========================= TYPES ========================= */
@@ -105,7 +106,7 @@ interface Stats {
   recentServiceRequests: { id: string; name: string; serviceType: string; status: string; createdAt: string }[]
 }
 
-type ActiveSection = 'dashboard' | 'news' | 'vacancies' | 'bids' | 'approvals' | 'audit'
+type ActiveSection = 'dashboard' | 'news' | 'vacancies' | 'bids' | 'approvals' | 'audit' | 'hotels' | 'projects' | 'announcements' | 'cabinet' | 'contacts' | 'service-requests' | 'settings' | 'users'
 
 /* ========================= MAIN COMPONENT ========================= */
 export default function AdminPanel() {
@@ -244,13 +245,21 @@ export default function AdminPanel() {
   }
 
   // ==================== SIDEBAR NAV ITEMS ====================
-  const navItems: { id: ActiveSection; label: string; icon: React.ReactNode }[] = [
-    { id: 'dashboard', label: 'Dashboard', icon: <LayoutDashboard className="h-4 w-4" /> },
-    { id: 'news', label: 'News Management', icon: <Newspaper className="h-4 w-4" /> },
-    { id: 'vacancies', label: 'Vacancy Management', icon: <Briefcase className="h-4 w-4" /> },
-    { id: 'bids', label: 'Bids & Tenders', icon: <FileText className="h-4 w-4" /> },
-    { id: 'approvals', label: 'Approval Queue', icon: <CheckCircle2 className="h-4 w-4" /> },
-    { id: 'audit', label: 'Audit Log', icon: <Eye className="h-4 w-4" /> },
+  const navItems: { id: ActiveSection; label: string; icon: React.ReactNode; group?: string }[] = [
+    { id: 'dashboard', label: 'Dashboard', icon: <LayoutDashboard className="h-4 w-4" />, group: 'Main' },
+    { id: 'news', label: 'News', icon: <Newspaper className="h-4 w-4" />, group: 'Content' },
+    { id: 'vacancies', label: 'Vacancies', icon: <Briefcase className="h-4 w-4" />, group: 'Content' },
+    { id: 'bids', label: 'Bids & Tenders', icon: <FileText className="h-4 w-4" />, group: 'Content' },
+    { id: 'announcements', label: 'Announcements', icon: <Megaphone className="h-4 w-4" />, group: 'Content' },
+    { id: 'projects', label: 'Projects', icon: <FolderOpen className="h-4 w-4" />, group: 'Content' },
+    { id: 'hotels', label: 'Hotels', icon: <Hotel className="h-4 w-4" />, group: 'Content' },
+    { id: 'cabinet', label: 'Cabinet Members', icon: <Users className="h-4 w-4" />, group: 'People' },
+    { id: 'contacts', label: 'Contact Messages', icon: <Mail className="h-4 w-4" />, group: 'Inbox' },
+    { id: 'service-requests', label: 'Service Requests', icon: <MessageSquare className="h-4 w-4" />, group: 'Inbox' },
+    { id: 'approvals', label: 'Approval Queue', icon: <CheckCircle2 className="h-4 w-4" />, group: 'Admin' },
+    { id: 'users', label: 'Admin Users', icon: <User className="h-4 w-4" />, group: 'Admin' },
+    { id: 'settings', label: 'Site Settings', icon: <Settings className="h-4 w-4" />, group: 'Admin' },
+    { id: 'audit', label: 'Audit Log', icon: <Eye className="h-4 w-4" />, group: 'Admin' },
   ]
 
   const handleNav = (id: ActiveSection) => {
