@@ -9,25 +9,33 @@ function createPrismaClient(): PrismaClient {
   const tursoUrl = (process.env.TURSO_DATABASE_URL ?? '').trim()
   const tursoToken = (process.env.TURSO_AUTH_TOKEN ?? '').trim()
 
-  if (tursoUrl.startsWith('libsql://') && tursoToken) {
+  // Only use Turso if both vars are properly set
+  if (tursoUrl && tursoToken && tursoUrl.startsWith('libsql://')) {
     try {
       // eslint-disable-next-line @typescript-eslint/no-var-requires
-      const { createClient } = require('@libsql/client')
-      // eslint-disable-next-line @typescript-eslint/no-var-requires  
-      const { PrismaLibSQL } = require('@prisma/adapter-libsql')
-      const libsql = createClient({ url: tursoUrl, authToken: tursoToken })
-      const adapter = new PrismaLibSQL(libsql)
+      const libsqlClient = require('@libsql/client')
+      // eslint-disable-next-line @typescript-eslint/no-var-requires
+      const prismaLibsql = require('@prisma/adapter-libsql')
+
+      const client = libsqlClient.createClient({
+        url: tursoUrl,
+        authToken: tursoToken,
+      })
+      const adapter = new prismaLibsql.PrismaLibSQL(client)
       return new PrismaClient({ adapter } as any)
     } catch (e) {
-      console.error('[db] adapter error:', e)
+      console.error('[db] Turso connection failed:', e)
     }
   }
 
-  return new PrismaClient({ log: ['error'] })
+  // Fallback — used during build time static generation
+  return new PrismaClient({ log: [] })
 }
 
-export const db: PrismaClient = global.prisma ?? createPrismaClient()
-
-if (process.env.NODE_ENV !== 'production') {
-  global.prisma = db
-}
+export const db: PrismaClient =
+  global.prisma ??
+  (() => {
+    const client = createPrismaClient()
+    if (process.env.NODE_ENV !== 'production') global.prisma = client
+    return client
+  })()

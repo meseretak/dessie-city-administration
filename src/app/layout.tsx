@@ -73,11 +73,6 @@ export const metadata: Metadata = {
   generator: "Next.js",
   applicationName: siteName,
   referrer: "origin-when-cross-origin",
-  colorScheme: "light dark",
-  themeColor: [
-    { media: "(prefers-color-scheme: light)", color: "#1a6b3c" },
-    { media: "(prefers-color-scheme: dark)", color: "#0d4a28" },
-  ],
   viewport: {
     width: "device-width",
     initialScale: 1,
@@ -173,6 +168,17 @@ export const metadata: Metadata = {
     "og:longitude": "39.6333",
   },
 };
+
+export const viewport = {
+  width: "device-width",
+  initialScale: 1,
+  maximumScale: 5,
+  colorScheme: "light dark",
+  themeColor: [
+    { media: "(prefers-color-scheme: light)", color: "#1a6b3c" },
+    { media: "(prefers-color-scheme: dark)", color: "#0d4a28" },
+  ],
+}
 
 export default function RootLayout({
   children,
