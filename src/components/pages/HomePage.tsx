@@ -365,7 +365,7 @@ export default function HomePage({ navigateTo }: { navigateTo: (page: PageId, ex
   const [loadingJB, setLoadingJB] = useState(true)
   const [jbTab, setJbTab] = useState<'vacancies' | 'bids'>('vacancies')
   const [jbPage, setJbPage] = useState(0)
-  const JB_PER_PAGE = 6
+  const JB_PER_PAGE = 4
   const [selectedService, setSelectedService] = useState<string | null>(null)
   const [jbFilter, setJbFilter] = useState('All')
 
@@ -1346,123 +1346,104 @@ export default function HomePage({ navigateTo }: { navigateTo: (page: PageId, ex
       </section>
 
       {/* ═══════════════════ 6. VACANCIES & BIDS ═══════════════════ */}
-      <section className="py-12 bg-white">
+      <section className="py-10 bg-[#f8faf8]">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
 
-          {/* Header */}
-          <div className="flex items-end justify-between mb-8">
+          {/* Header row */}
+          <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 mb-6">
             <div>
-              <div className="flex items-center gap-2 mb-2">
-                <div className="w-8 h-8 rounded-lg bg-[#0d4a28] flex items-center justify-center">
-                  <Briefcase className="w-4 h-4 text-white" />
+              <div className="flex items-center gap-2 mb-1">
+                <div className="w-7 h-7 rounded-lg bg-[#0d4a28] flex items-center justify-center">
+                  <Briefcase className="w-3.5 h-3.5 text-white" />
                 </div>
-                <span className="text-xs font-bold text-[#0d4a28] uppercase tracking-widest">Opportunities</span>
+                <span className="text-[10px] font-bold text-[#0d4a28] uppercase tracking-widest">Open Opportunities</span>
               </div>
-              <h2 className="text-2xl md:text-3xl font-extrabold text-[#0d4a28] tracking-tight">VACANCIES & BIDS</h2>
-              <div className="h-1 w-20 bg-gradient-to-r from-[#c8a415] to-transparent rounded-full mt-2" />
-              <p className="mt-2 text-[#6b7280] text-sm">Open positions and procurement opportunities from Dessie City Administration.</p>
+              <h2 className="text-xl md:text-2xl font-extrabold text-[#0d4a28]">VACANCIES & BIDS</h2>
+              <div className="h-0.5 w-14 bg-[#c8a415] rounded-full mt-1" />
+            </div>
+
+            {/* Tab + Search in one row */}
+            <div className="flex items-center gap-3 flex-wrap">
+              <div className="flex gap-1 p-1 bg-white rounded-xl border border-[#e2e8e0] shadow-sm">
+                <button onClick={() => { setJbTab('vacancies'); setJbPage(0); setJbFilter('All') }}
+                  className={`flex items-center gap-1.5 px-4 py-2 rounded-lg text-xs font-bold transition-all ${jbTab === 'vacancies' ? 'bg-[#0d4a28] text-white shadow-sm' : 'text-[#6b7280] hover:text-[#0d4a28]'}`}>
+                  <Briefcase className="w-3.5 h-3.5" /> Vacancies
+                  {latestVacancies.length > 0 && <span className={`ml-0.5 text-[9px] px-1 py-0.5 rounded-full font-bold ${jbTab === 'vacancies' ? 'bg-white/25' : 'bg-[#0d4a28]/10 text-[#0d4a28]'}`}>{latestVacancies.length}</span>}
+                </button>
+                <button onClick={() => { setJbTab('bids'); setJbPage(0); setJbFilter('All') }}
+                  className={`flex items-center gap-1.5 px-4 py-2 rounded-lg text-xs font-bold transition-all ${jbTab === 'bids' ? 'bg-[#c8a415] text-white shadow-sm' : 'text-[#6b7280] hover:text-[#c8a415]'}`}>
+                  <Gavel className="w-3.5 h-3.5" /> Bids
+                  {latestBids.length > 0 && <span className={`ml-0.5 text-[9px] px-1 py-0.5 rounded-full font-bold ${jbTab === 'bids' ? 'bg-white/25' : 'bg-[#c8a415]/10 text-[#c8a415]'}`}>{latestBids.length}</span>}
+                </button>
+              </div>
+              {/* Search — bids only */}
+              {jbTab === 'bids' && (
+                <div className="relative">
+                  <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-[#9ca3af]" />
+                  <input type="text" placeholder="Search bids..."
+                    value={jbFilter === 'All' ? '' : jbFilter}
+                    onChange={e => { setJbFilter(e.target.value || 'All'); setJbPage(0) }}
+                    className="pl-9 pr-3 py-2 text-xs border border-[#e2e8e0] rounded-xl focus:outline-none focus:border-[#c8a415] bg-white w-44" />
+                </div>
+              )}
             </div>
           </div>
 
-          {/* Tab switcher */}
-          <div className="flex gap-2 p-1.5 bg-[#f0f0f0] rounded-2xl mb-6 w-fit">
-            <button onClick={() => { setJbTab('vacancies'); setJbPage(0); setJbFilter('All') }}
-              className={`flex items-center gap-2 px-5 py-2.5 rounded-xl text-sm font-bold transition-all ${jbTab === 'vacancies' ? 'bg-[#0d4a28] text-white shadow-md' : 'text-[#6b7280] hover:text-[#0d4a28]'}`}>
-              <Briefcase className="w-4 h-4" /> VACANCIES {latestVacancies.length > 0 && <span className={`text-[10px] px-1.5 py-0.5 rounded-full font-bold ${jbTab === 'vacancies' ? 'bg-white/20' : 'bg-[#0d4a28]/10 text-[#0d4a28]'}`}>{latestVacancies.length}</span>}
-            </button>
-            <button onClick={() => { setJbTab('bids'); setJbPage(0); setJbFilter('All') }}
-              className={`flex items-center gap-2 px-5 py-2.5 rounded-xl text-sm font-bold transition-all ${jbTab === 'bids' ? 'bg-[#c8a415] text-white shadow-md' : 'text-[#6b7280] hover:text-[#c8a415]'}`}>
-              <Gavel className="w-4 h-4" /> BIDS & TENDERS {latestBids.length > 0 && <span className={`text-[10px] px-1.5 py-0.5 rounded-full font-bold ${jbTab === 'bids' ? 'bg-white/20' : 'bg-[#c8a415]/10 text-[#c8a415]'}`}>{latestBids.length}</span>}
-            </button>
-          </div>
-
-          {/* Filter row — vacancies: dept chips | bids: search only */}
-          <div className="mb-6">
-            {jbTab === 'vacancies' && !loadingJB && jbFilterOptions.length > 1 && (
-              <div className="flex flex-wrap items-center gap-2">
-                <span className="text-xs font-semibold text-[#6b7280] mr-1">Filter:</span>
-                {jbFilterOptions.map(opt => (
-                  <button key={opt} onClick={() => { setJbFilter(opt); setJbPage(0) }}
-                    className={`text-xs font-bold px-3 py-1.5 rounded-lg transition-all ${jbFilter === opt ? 'bg-[#0d4a28] text-white shadow-sm' : 'bg-[#f0f0f0] text-[#6b7280] hover:bg-[#0d4a28]/10 hover:text-[#0d4a28]'}`}>
-                    {opt}
-                  </button>
-                ))}
-              </div>
-            )}
-            {jbTab === 'bids' && (
-              <div className="relative max-w-md">
-                <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-[#9ca3af]" />
-                <input
-                  type="text"
-                  placeholder="Search bids by title or reference..."
-                  value={jbFilter === 'All' ? '' : jbFilter}
-                  onChange={e => { setJbFilter(e.target.value || 'All'); setJbPage(0) }}
-                  className="w-full pl-10 pr-4 py-2.5 text-sm border border-[#e2e8e0] rounded-xl focus:outline-none focus:border-[#c8a415] focus:ring-1 focus:ring-[#c8a415]/20 bg-white"
-                />
-              </div>
-            )}
-          </div>
-
-          {/* Cards Grid */}
+          {/* Cards */}
           {loadingJB ? (
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-              {[1,2,3,4,5,6].map(n => <Skeleton key={n} className="h-32 w-full rounded-xl" />)}
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+              {[1,2,3,4].map(n => <Skeleton key={n} className="h-24 rounded-xl" />)}
             </div>
           ) : jbData.length > 0 ? (
             <AnimatePresence mode="wait">
               <motion.div key={`${jbTab}-${jbPage}-${jbFilter}`}
-                initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -8 }}
-                transition={{ duration: 0.25 }}
-                className={jbTab === 'vacancies' ? "grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4" : "flex flex-col gap-3"}>
+                initial={{ opacity: 0, y: 6 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -6 }}
+                transition={{ duration: 0.2 }}
+                className={jbTab === 'vacancies' ? 'grid grid-cols-1 sm:grid-cols-2 gap-3' : 'flex flex-col gap-2'}>
                 {jbVisible.map((item: any, idx: number) => (
                   jbTab === 'vacancies' ? (
-                    <motion.div key={item.id} initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: idx * 0.05 }}>
-                      <Card className="h-full cursor-pointer hover:shadow-xl transition-all duration-300 border-0 shadow-sm group bg-white overflow-hidden relative"
+                    <motion.div key={item.id} initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: idx * 0.05 }}>
+                      <Card className="cursor-pointer hover:shadow-lg transition-all border-0 shadow-sm group bg-white overflow-hidden"
                         onClick={() => navigateTo('vacancy-detail', { vacancyId: item.id })}>
-                        <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-[#0d4a28] to-[#1a6b3c] opacity-0 group-hover:opacity-100 transition-opacity" />
-                        <CardContent className="p-5">
-                          <div className="flex items-start justify-between mb-3">
-                            <div className="w-11 h-11 rounded-xl bg-gradient-to-br from-[#0d4a28] to-[#1a6b3c] flex items-center justify-center shadow-md group-hover:scale-110 transition-transform">
-                              <Briefcase className="w-5 h-5 text-white" />
-                            </div>
-                            <span className="text-[10px] font-bold bg-[#f0fdf4] text-[#0d4a28] border border-[#1a6b3c]/20 px-2 py-1 rounded-lg">{item.type}</span>
+                        <div className="h-0.5 bg-gradient-to-r from-[#0d4a28] to-[#1a6b3c] opacity-0 group-hover:opacity-100 transition-opacity" />
+                        <CardContent className="p-4 flex items-start gap-3">
+                          <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-[#0d4a28] to-[#1a6b3c] flex items-center justify-center shadow-sm shrink-0 group-hover:scale-105 transition-transform">
+                            <Briefcase className="w-4 h-4 text-white" />
                           </div>
-                          <h4 className="font-extrabold text-[#1a1a1a] text-sm leading-snug group-hover:text-[#0d4a28] transition-colors mb-2 line-clamp-2">{item.title}</h4>
-                          <p className="text-[10px] font-semibold text-[#6b7280] mb-3">{item.department}</p>
-                          <div className="flex items-center justify-between pt-3 border-t border-[#f0f0f0]">
-                            <span className="text-sm font-extrabold text-[#c8a415]">{item.salary}</span>
-                            <span className="flex items-center gap-1 text-[10px] text-[#9ca3af]"><Clock className="w-3 h-3" />{item.deadline}</span>
+                          <div className="flex-1 min-w-0">
+                            <div className="flex items-center gap-2 mb-1">
+                              <span className="text-[9px] font-bold bg-[#f0fdf4] text-[#0d4a28] border border-[#1a6b3c]/20 px-1.5 py-0.5 rounded">{item.type}</span>
+                              <span className="text-[9px] text-[#9ca3af] truncate">{item.department}</span>
+                            </div>
+                            <h4 className="font-bold text-[#1a1a1a] text-sm group-hover:text-[#0d4a28] transition-colors line-clamp-1 mb-1">{item.title}</h4>
+                            <div className="flex items-center justify-between">
+                              <span className="text-xs font-extrabold text-[#c8a415]">{item.salary}</span>
+                              <span className="flex items-center gap-1 text-[9px] text-[#9ca3af]"><Clock className="w-2.5 h-2.5" />{item.deadline}</span>
+                            </div>
                           </div>
                         </CardContent>
                       </Card>
                     </motion.div>
                   ) : (
-                    /* BIDS — single row, horizontal list layout */
-                    <motion.div key={item.id} initial={{ opacity: 0, x: -10 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: idx * 0.04 }}>
-                      <Card className="cursor-pointer hover:shadow-md transition-all duration-200 border-0 shadow-sm group bg-white overflow-hidden"
+                    <motion.div key={item.id} initial={{ opacity: 0, x: -8 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: idx * 0.04 }}>
+                      <Card className="cursor-pointer hover:shadow-md transition-all border-0 shadow-sm group bg-white overflow-hidden"
                         onClick={() => navigateTo('bids-detail', { bidId: item.id })}>
-                        <CardContent className="p-4 flex items-center gap-5">
-                          {/* Icon */}
-                          <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-[#7c5c00] to-[#c8a415] flex items-center justify-center shadow-sm shrink-0 group-hover:scale-105 transition-transform">
-                            <Gavel className="w-5 h-5 text-white" />
+                        <CardContent className="p-3.5 flex items-center gap-4">
+                          <div className="w-9 h-9 rounded-lg bg-gradient-to-br from-[#7c5c00] to-[#c8a415] flex items-center justify-center shrink-0">
+                            <Gavel className="w-4 h-4 text-white" />
                           </div>
-                          {/* Title + Ref */}
                           <div className="flex-1 min-w-0">
                             <div className="flex items-center gap-2 mb-0.5">
-                              <span className="text-[10px] font-bold bg-[#fffbeb] text-[#78350f] border border-[#c8a415]/20 px-2 py-0.5 rounded-md">{item.category}</span>
-                              <span className="text-[10px] font-mono text-[#9ca3af]">{item.reference}</span>
+                              <span className="text-[9px] font-bold bg-[#fffbeb] text-[#78350f] border border-[#c8a415]/20 px-1.5 py-0.5 rounded">{item.category}</span>
+                              <span className="text-[9px] font-mono text-[#9ca3af]">{item.reference}</span>
                             </div>
-                            <h4 className="font-bold text-[#1a1a1a] text-sm group-hover:text-[#c8a415] transition-colors line-clamp-1">{item.title}</h4>
+                            <h4 className="font-semibold text-[#1a1a1a] text-xs group-hover:text-[#c8a415] transition-colors line-clamp-1">{item.title}</h4>
                           </div>
-                          {/* Budget */}
                           <div className="text-right shrink-0 hidden sm:block">
-                            <p className="text-sm font-extrabold text-[#c8a415]">{item.budget}</p>
-                            <p className="text-[10px] text-[#9ca3af] flex items-center gap-1 justify-end mt-0.5">
-                              <Clock className="w-3 h-3" />{item.deadline}
-                            </p>
+                            <p className="text-xs font-extrabold text-[#c8a415]">{item.budget}</p>
+                            <p className="text-[9px] text-[#9ca3af]">{item.deadline}</p>
                           </div>
-                          {/* Arrow */}
-                          <ArrowRight className="w-4 h-4 text-[#c8a415] opacity-0 group-hover:opacity-100 transition-opacity shrink-0" />
+                          <ArrowRight className="w-3.5 h-3.5 text-[#c8a415] opacity-0 group-hover:opacity-100 transition-opacity shrink-0" />
                         </CardContent>
                       </Card>
                     </motion.div>
@@ -1471,43 +1452,43 @@ export default function HomePage({ navigateTo }: { navigateTo: (page: PageId, ex
               </motion.div>
             </AnimatePresence>
           ) : (
-            <div className="flex flex-col items-center justify-center py-20 bg-[#f8faf8] rounded-2xl text-center">
-              <div className="w-16 h-16 rounded-2xl bg-white flex items-center justify-center mb-4 shadow-sm">
-                {jbTab === 'vacancies' ? <Briefcase className="w-7 h-7 text-[#0d4a28]" /> : <Gavel className="w-7 h-7 text-[#c8a415]" />}
+            <div className="flex flex-col items-center py-12 bg-white rounded-2xl text-center">
+              <div className="w-12 h-12 rounded-xl bg-[#f8faf8] flex items-center justify-center mb-3">
+                {jbTab === 'vacancies' ? <Briefcase className="w-5 h-5 text-[#0d4a28]" /> : <Gavel className="w-5 h-5 text-[#c8a415]" />}
               </div>
-              <p className="font-bold text-[#374151]">No {jbTab === 'vacancies' ? 'open vacancies' : 'open bids'} at the moment</p>
-              <p className="text-sm text-[#9ca3af] mt-1">Check back soon for new opportunities</p>
+              <p className="text-sm font-bold text-[#374151]">No {jbTab === 'vacancies' ? 'open vacancies' : 'open bids'}</p>
+              <p className="text-xs text-[#9ca3af] mt-1">Check back soon</p>
             </div>
           )}
 
           {/* Pagination */}
-          {jbData.length > JB_PER_PAGE && (
-            <div className="mt-8 flex items-center justify-between">
-              <span className="text-sm text-[#9ca3af]">
-                Showing {jbPage * JB_PER_PAGE + 1}–{Math.min((jbPage + 1) * JB_PER_PAGE, jbData.length)} of {jbData.length}
-              </span>
-              <div className="flex items-center gap-2">
+          <div className="mt-5 flex items-center justify-between">
+            <span className="text-xs text-[#9ca3af]">
+              {jbData.length > 0 ? `${jbPage * JB_PER_PAGE + 1}–${Math.min((jbPage + 1) * JB_PER_PAGE, jbData.length)} of ${jbData.length}` : ''}
+            </span>
+            {jbData.length > JB_PER_PAGE && (
+              <div className="flex items-center gap-1.5">
                 <button onClick={() => setJbPage(p => Math.max(0, p - 1))} disabled={jbPage === 0}
-                  className="w-9 h-9 rounded-xl border border-[#e2e8e0] flex items-center justify-center disabled:opacity-30 hover:border-[#0d4a28] hover:bg-[#0d4a28] hover:text-white transition-all">
-                  <ChevronLeft className="w-4 h-4" />
+                  className="w-8 h-8 rounded-lg border border-[#e2e8e0] flex items-center justify-center disabled:opacity-30 hover:border-[#0d4a28] hover:bg-[#0d4a28] hover:text-white transition-all">
+                  <ChevronLeft className="w-3.5 h-3.5" />
                 </button>
                 {Array.from({ length: Math.ceil(jbData.length / JB_PER_PAGE) }, (_, i) => (
                   <button key={i} onClick={() => setJbPage(i)}
-                    className={`w-9 h-9 rounded-xl text-sm font-bold transition-all ${jbPage === i ? 'bg-[#0d4a28] text-white shadow-md' : 'border border-[#e2e8e0] text-[#6b7280] hover:border-[#0d4a28] hover:text-[#0d4a28]'}`}>
+                    className={`w-8 h-8 rounded-lg text-xs font-bold transition-all ${jbPage === i ? 'bg-[#0d4a28] text-white shadow-sm' : 'border border-[#e2e8e0] text-[#6b7280] hover:border-[#0d4a28] hover:text-[#0d4a28]'}`}>
                     {i + 1}
                   </button>
                 ))}
                 <button onClick={() => setJbPage(p => p + 1)} disabled={(jbPage + 1) * JB_PER_PAGE >= jbData.length}
-                  className="w-9 h-9 rounded-xl border border-[#e2e8e0] flex items-center justify-center disabled:opacity-30 hover:border-[#0d4a28] hover:bg-[#0d4a28] hover:text-white transition-all">
-                  <ChevronRight className="w-4 h-4" />
+                  className="w-8 h-8 rounded-lg border border-[#e2e8e0] flex items-center justify-center disabled:opacity-30 hover:border-[#0d4a28] hover:bg-[#0d4a28] hover:text-white transition-all">
+                  <ChevronRight className="w-3.5 h-3.5" />
                 </button>
               </div>
-              <Button variant="outline" onClick={() => navigateTo(jbTab === 'vacancies' ? 'vacancy' : 'bids')}
-                className="border-[#0d4a28] text-[#0d4a28] hover:bg-[#0d4a28] hover:text-white font-bold text-xs">
-                VIEW ALL {jbTab === 'vacancies' ? 'VACANCIES' : 'BIDS'} <ArrowRight className="w-3.5 h-3.5 ml-1" />
-              </Button>
-            </div>
-          )}
+            )}
+            <button onClick={() => navigateTo(jbTab === 'vacancies' ? 'vacancy' : 'bids')}
+              className="flex items-center gap-1.5 text-xs font-bold text-[#0d4a28] hover:gap-2.5 transition-all">
+              VIEW ALL <ArrowRight className="w-3.5 h-3.5" />
+            </button>
+          </div>
         </div>
       </section>
 
