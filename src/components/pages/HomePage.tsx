@@ -24,7 +24,7 @@ import {
   ChevronDown, ChevronLeft, ChevronRight, Users, Ruler, Landmark,
   Banknote, UserCheck, Factory, Route, CheckCircle, Mountain, Music,
   Star, CloudSun, Droplets, Wind, Sunrise, ArrowRight, Sparkles,
-  Clock, Gavel, Navigation, Phone, Building, Mail, Shield, Download, BookOpen, Scale, ClipboardList, Newspaper
+  Clock, Gavel, Navigation, Phone, Building, Mail, Shield, Download, BookOpen, Scale, ClipboardList, Newspaper, Search
 } from 'lucide-react'
 
 /* ─────────────────── Animated Counter ─────────────────── */
@@ -187,11 +187,12 @@ const statCards = [
 ]
 
 const heroSlides = [
-  { image: '/dessie-city-hall.png', title: 'ደሴ ከተማ አስተዳደር', subtitle: 'Dessie City Administration — Serving Citizens with Excellence' },
-  { image: '/city-aerial.png', title: 'Smart City Dessie 2025', subtitle: 'Digital Transformation — Access All City Services Online' },
-  { image: '/news-smart-city.png', title: 'Modern Service Center', subtitle: 'One-Stop Government Services for Every Citizen' },
-  { image: '/news-meeting.png', title: 'City Council in Action', subtitle: 'Transparent Governance for a Prosperous Dessie' },
-  { image: '/heritage-landscape.png', title: 'Natural Beauty of Dessie', subtitle: 'Nestled in the Heart of the Amhara Highlands' },
+  { image: '/dessie-city-hall-day.png', title: 'ደሴ ከተማ አስተዳደር', subtitle: 'Welcome to Dessie City Administration — Serving 500,000+ Citizens' },
+  { image: '/dessie-city-hall-night.png', title: 'Dessie City Hall', subtitle: 'The Heart of Governance — Open & Transparent Administration' },
+  { image: '/dessie-smart-center.png', title: 'Dessie Smart City 2025', subtitle: 'Advanced CCTV & Control Center — Real-Time City Monitoring' },
+  { image: '/dessie-service-counter.png', title: 'Modern Citizen Service Center', subtitle: 'Fast & Efficient Government Services Under One Roof' },
+  { image: '/dessie-service-center.png', title: 'Integrated Service Hall', subtitle: 'One-Stop Services — Ethiopost, Digital & Government Services' },
+  { image: '/dessie-conference-hall.png', title: 'Smart Conference Hall', subtitle: 'State-of-the-Art Meeting Facilities for Modern Governance' },
 ]
 
 const hotelImagesAll = [
@@ -270,15 +271,15 @@ const cabinetMembers = [
 ]
 
 const homeNews = [
-  { title: 'DESSIE CITY COUNCIL APPROVES ETB 2.8 BILLION ANNUAL BUDGET', date: 'Jul 12, 2025', category: 'Press Release', image: '/news-meeting.png', excerpt: 'The City Council has unanimously approved the municipal budget with significant allocations for infrastructure, education, and healthcare.' },
-  { title: 'SMART CITY CONTROL CENTER LAUNCHED IN DESSIE', date: 'Jul 10, 2025', category: 'Smart City', image: '/news-smart-city.png', excerpt: 'The new smart city monitoring center features real-time CCTV surveillance and data analytics for better city management.' },
-  { title: 'MODERN ONE-STOP SERVICE CENTER OPENS FOR CITIZENS', date: 'Jul 8, 2025', category: 'News', image: '/news-infrastructure.png', excerpt: 'Citizens can now access 40+ government services under one roof at the newly inaugurated Dessie Service Center.' },
-  { title: 'NEW CITY HALL INAUGURATED — A LANDMARK FOR DESSIE', date: 'Jul 5, 2025', category: 'News', image: '/dessie-city-hall.png', excerpt: 'The newly constructed Dessie City Hall stands as a symbol of modern governance and transparent administration.' },
-  { title: 'DESSIE LAUNCHES FREE PUBLIC WI-FI IN CITY CENTER', date: 'Jul 2, 2025', category: 'Technology', image: '/news-smart-city.png', excerpt: 'Residents and visitors can now access free high-speed internet across the city center as part of the smart city initiative.' },
-  { title: 'NEW CITY HOSPITAL WING INAUGURATED WITH 200 BEDS', date: 'Jun 28, 2025', category: 'Health', image: '/news-health.png', excerpt: 'The new wing features modern medical equipment, pediatric and maternity wards, and an emergency department.' },
+  { title: 'DESSIE SMART CITY CONTROL CENTER LAUNCHED', date: 'Jul 12, 2025', category: 'Smart City', image: '/dessie-smart-center.png', excerpt: 'The new smart city monitoring center features a massive CCTV wall with real-time surveillance of the entire city — a major milestone in digital governance.' },
+  { title: 'MODERN ONE-STOP SERVICE CENTER OPENS FOR CITIZENS', date: 'Jul 10, 2025', category: 'News', image: '/dessie-service-counter.png', excerpt: 'Dessie citizens can now access 40+ government services at a single modern center staffed with professional officers in uniform.' },
+  { title: 'NEW CITIZEN SERVICE HALL WITH INTEGRATED SERVICES', date: 'Jul 8, 2025', category: 'Infrastructure', image: '/dessie-service-center.png', excerpt: 'The state-of-the-art service hall integrates Ethiopost, telecom, banking, and government services under one elegant roof.' },
+  { title: 'STATE-OF-THE-ART CONFERENCE HALL OPENS AT CITY ADMIN', date: 'Jul 5, 2025', category: 'News', image: '/dessie-conference-hall.png', excerpt: 'The smart conference hall features digital screens, smart microphone systems, and the Dessie City Administration emblem on display.' },
+  { title: 'DESSIE CITY HALL INAUGURATED — A NEW ERA OF GOVERNANCE', date: 'Jul 2, 2025', category: 'Press Release', image: '/dessie-city-hall-night.png', excerpt: 'The newly built Dessie City Administration building, illuminated beautifully at night, marks a new era of transparent and modern governance.' },
+  { title: 'CITY HALL — THE SEAT OF DESSIE ADMINISTRATION', date: 'Jun 28, 2025', category: 'News', image: '/dessie-city-hall-day.png', excerpt: 'The grand staircase and beautifully landscaped entrance of Dessie City Hall symbolize the city\'s progress and commitment to excellence.' },
   { title: 'ANNUAL DESSIE CULTURAL FESTIVAL DATES ANNOUNCED', date: 'Jun 25, 2025', category: 'Culture', image: '/news-culture.png', excerpt: 'The week-long festival will showcase traditional music, dance, crafts, and cuisine from the Amhara Region.' },
-  { title: 'SMART CONFERENCE HALL OPENS AT CITY ADMINISTRATION', date: 'Jun 20, 2025', category: 'News', image: '/news-meeting.png', excerpt: 'The state-of-the-art conference hall features digital screens, smart podiums, and modern meeting facilities.' },
-  { title: 'MODERN WATER TREATMENT PLANT BEGINS OPERATIONS', date: 'Jun 15, 2025', category: 'Infrastructure', image: '/news-infrastructure.png', excerpt: 'The new treatment facility will provide clean drinking water to an additional 100,000 residents.' },
+  { title: 'NEW CITY HOSPITAL WING INAUGURATED WITH 200 BEDS', date: 'Jun 20, 2025', category: 'Health', image: '/news-health.png', excerpt: 'The new wing features modern medical equipment, pediatric wards, and a 24/7 emergency department serving residents.' },
+  { title: 'MODERN WATER TREATMENT PLANT BEGINS OPERATIONS', date: 'Jun 15, 2025', category: 'Infrastructure', image: '/news-infrastructure.png', excerpt: 'The new facility provides clean drinking water to an additional 100,000 residents across Dessie.' },
 ]
 
 const socialIcons = [
@@ -503,9 +504,13 @@ export default function HomePage({ navigateTo }: { navigateTo: (page: PageId, ex
 
   const jbData = useMemo(() => {
     const raw = jbTab === 'vacancies' ? latestVacancies : latestBids
-    if (jbFilter === 'All') return raw
+    if (jbFilter === 'All' || !jbFilter) return raw
     if (jbTab === 'vacancies') return raw.filter((v: any) => v.department === jbFilter)
-    return raw.filter((b: any) => b.category === jbFilter)
+    // Bids: text search on title or reference
+    const q = jbFilter.toLowerCase()
+    return raw.filter((b: any) =>
+      b.title?.toLowerCase().includes(q) || b.reference?.toLowerCase().includes(q) || b.category?.toLowerCase().includes(q)
+    )
   }, [jbTab, latestVacancies, latestBids, jbFilter])
 
   const jbStart = jbPage * JB_PER_PAGE
@@ -1371,20 +1376,32 @@ export default function HomePage({ navigateTo }: { navigateTo: (page: PageId, ex
             </button>
           </div>
 
-          {/* Filter row */}
-          {!loadingJB && jbData.length > 0 && jbFilterOptions.length > 1 && (
-            <div className="mb-5 flex items-center gap-3">
-              <span className="text-xs font-semibold text-[#6b7280]">Filter by:</span>
-              <div className="flex flex-wrap gap-2">
+          {/* Filter row — vacancies: dept chips | bids: search only */}
+          <div className="mb-6">
+            {jbTab === 'vacancies' && !loadingJB && jbFilterOptions.length > 1 && (
+              <div className="flex flex-wrap items-center gap-2">
+                <span className="text-xs font-semibold text-[#6b7280] mr-1">Filter:</span>
                 {jbFilterOptions.map(opt => (
                   <button key={opt} onClick={() => { setJbFilter(opt); setJbPage(0) }}
-                    className={`text-xs font-bold px-3 py-1.5 rounded-lg transition-all ${jbFilter === opt ? 'bg-[#0d4a28] text-white' : 'bg-[#f0f0f0] text-[#6b7280] hover:bg-[#0d4a28]/10 hover:text-[#0d4a28]'}`}>
+                    className={`text-xs font-bold px-3 py-1.5 rounded-lg transition-all ${jbFilter === opt ? 'bg-[#0d4a28] text-white shadow-sm' : 'bg-[#f0f0f0] text-[#6b7280] hover:bg-[#0d4a28]/10 hover:text-[#0d4a28]'}`}>
                     {opt}
                   </button>
                 ))}
               </div>
-            </div>
-          )}
+            )}
+            {jbTab === 'bids' && (
+              <div className="relative max-w-md">
+                <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-[#9ca3af]" />
+                <input
+                  type="text"
+                  placeholder="Search bids by title or reference..."
+                  value={jbFilter === 'All' ? '' : jbFilter}
+                  onChange={e => { setJbFilter(e.target.value || 'All'); setJbPage(0) }}
+                  className="w-full pl-10 pr-4 py-2.5 text-sm border border-[#e2e8e0] rounded-xl focus:outline-none focus:border-[#c8a415] focus:ring-1 focus:ring-[#c8a415]/20 bg-white"
+                />
+              </div>
+            )}
+          </div>
 
           {/* Cards Grid */}
           {loadingJB ? (
