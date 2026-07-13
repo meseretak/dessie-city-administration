@@ -6,7 +6,7 @@ export async function GET() {
     const vacancies = await db.vacancy.findMany({
       where: { status: 'Open', approvalStatus: 'approved' },
       orderBy: { createdAt: 'desc' },
-      take: 5,
+      take: 20,
       select: {
         id: true,
         title: true,

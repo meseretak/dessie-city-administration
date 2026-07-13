@@ -364,7 +364,7 @@ export default function HomePage({ navigateTo }: { navigateTo: (page: PageId, ex
   const [loadingJB, setLoadingJB] = useState(true)
   const [jbTab, setJbTab] = useState<'vacancies' | 'bids'>('vacancies')
   const [jbPage, setJbPage] = useState(0)
-  const JB_PER_PAGE = 3
+  const JB_PER_PAGE = 6
   const [selectedService, setSelectedService] = useState<string | null>(null)
   const [jbFilter, setJbFilter] = useState('All')
 

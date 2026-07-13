@@ -290,7 +290,7 @@ export async function POST() {
     ]
 
     const createdVacancies = await db.vacancy.createMany({
-      data: vacancies,
+      data: vacancies.map(v => ({ ...v, approvalStatus: 'approved', status: 'Open' })),
     })
 
     /* ── Seed Bids/Tenders ── */
@@ -418,7 +418,7 @@ export async function POST() {
     ]
 
     const createdBids = await db.bid.createMany({
-      data: bids,
+      data: bids.map(b => ({ ...b, approvalStatus: 'approved', status: 'Open' })),
     })
 
     return NextResponse.json({
