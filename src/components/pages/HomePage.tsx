@@ -187,10 +187,12 @@ const statCards = [
 ]
 
 const heroSlides = [
-  { image: '/city-aerial.png', title: 'Welcome to Dessie', subtitle: 'A City of Progress & Heritage' },
-  { image: '/dessie-city-hall.png', title: 'City Administration', subtitle: 'Serving Citizens with Excellence' },
-  { image: '/news-road.png', title: 'Connecting Roads', subtitle: 'Modern Infrastructure for a Growing City' },
-  { image: '/hotel-building.png', title: 'Growing Skyline', subtitle: 'New Buildings & Urban Development' },
+  { image: '/dessie-city-hall.png', title: 'ደሴ ከተማ አስተዳደር', subtitle: 'Dessie City Administration — Serving Citizens with Excellence' },
+  { image: '/city-aerial.png', title: 'Smart City Dessie 2025', subtitle: 'Digital Transformation — Access All City Services Online' },
+  { image: '/news-smart-city.png', title: 'Modern Service Center', subtitle: 'One-Stop Government Services for Every Citizen' },
+  { image: '/news-meeting.png', title: 'City Council in Action', subtitle: 'Transparent Governance for a Prosperous Dessie' },
+  { image: '/heritage-landscape.png', title: 'Natural Beauty of Dessie', subtitle: 'Nestled in the Heart of the Amhara Highlands' },
+]
   { image: '/heritage-landscape.png', title: 'Natural Beauty', subtitle: 'Nestled in the Amhara Highlands' },
 ]
 
@@ -271,14 +273,14 @@ const cabinetMembers = [
 
 const homeNews = [
   { title: 'DESSIE CITY COUNCIL APPROVES ETB 2.8 BILLION ANNUAL BUDGET', date: 'Jul 12, 2025', category: 'Press Release', image: '/news-meeting.png', excerpt: 'The City Council has unanimously approved the municipal budget with significant allocations for infrastructure, education, and healthcare.' },
-  { title: 'SMART CITY DIGITAL PLATFORM LAUNCHED FOR PUBLIC SERVICES', date: 'Jul 10, 2025', category: 'News', image: '/news-smart-city.png', excerpt: 'Citizens can now access over 40 government services online including tax payments and permit applications.' },
-  { title: 'NEW 500-HECTARE INDUSTRIAL ZONE CONSTRUCTION BEGINS', date: 'Jul 8, 2025', category: 'News', image: '/news-industry.png', excerpt: 'Expected to attract over ETB 10 billion in investment and create more than 5,000 permanent jobs.' },
-  { title: 'DESSIE-WOLDIYA HIGHWAY EXPANSION REACHES 75% COMPLETION', date: 'Jul 5, 2025', category: 'News', image: '/news-road.png', excerpt: 'The 45km road upgrade includes four-lane highways, modern bridges, and pedestrian pathways.' },
+  { title: 'SMART CITY CONTROL CENTER LAUNCHED IN DESSIE', date: 'Jul 10, 2025', category: 'Smart City', image: '/news-smart-city.png', excerpt: 'The new smart city monitoring center features real-time CCTV surveillance and data analytics for better city management.' },
+  { title: 'MODERN ONE-STOP SERVICE CENTER OPENS FOR CITIZENS', date: 'Jul 8, 2025', category: 'News', image: '/news-infrastructure.png', excerpt: 'Citizens can now access 40+ government services under one roof at the newly inaugurated Dessie Service Center.' },
+  { title: 'NEW CITY HALL INAUGURATED — A LANDMARK FOR DESSIE', date: 'Jul 5, 2025', category: 'News', image: '/dessie-city-hall.png', excerpt: 'The newly constructed Dessie City Hall stands as a symbol of modern governance and transparent administration.' },
   { title: 'DESSIE LAUNCHES FREE PUBLIC WI-FI IN CITY CENTER', date: 'Jul 2, 2025', category: 'Technology', image: '/news-smart-city.png', excerpt: 'Residents and visitors can now access free high-speed internet across the city center as part of the smart city initiative.' },
-  { title: 'NEW CITY HOSPITAL WING INAUGURATED WITH 200 BEDS', date: 'Jun 28, 2025', category: 'Health', image: '/news-health.png', excerpt: 'The new wing features modern medical equipment, pediatric and maternity wards, and an emergency department serving over 50,000 residents.' },
-  { title: 'ANNUAL DESSIE CULTURAL FESTIVAL DATES ANNOUNCED', date: 'Jun 25, 2025', category: 'Culture', image: '/news-culture.png', excerpt: 'The week-long festival will showcase traditional music, dance, crafts, and cuisine from the Amhara Region, attracting visitors nationwide.' },
-  { title: 'CITY LAUNCHES YOUTH ENTREPRENEURSHIP FUND WORTH ETB 50M', date: 'Jun 20, 2025', category: 'Economy', image: '/news-meeting.png', excerpt: 'Young entrepreneurs aged 18-35 can apply for grants up to ETB 500,000 to start or expand businesses within Dessie city limits.' },
-  { title: 'MODERN WATER TREATMENT PLANT BEGINS OPERATIONS', date: 'Jun 15, 2025', category: 'Infrastructure', image: '/news-infrastructure.png', excerpt: 'The new treatment facility will provide clean drinking water to an additional 100,000 residents, reducing water shortages in eastern neighborhoods.' },
+  { title: 'NEW CITY HOSPITAL WING INAUGURATED WITH 200 BEDS', date: 'Jun 28, 2025', category: 'Health', image: '/news-health.png', excerpt: 'The new wing features modern medical equipment, pediatric and maternity wards, and an emergency department.' },
+  { title: 'ANNUAL DESSIE CULTURAL FESTIVAL DATES ANNOUNCED', date: 'Jun 25, 2025', category: 'Culture', image: '/news-culture.png', excerpt: 'The week-long festival will showcase traditional music, dance, crafts, and cuisine from the Amhara Region.' },
+  { title: 'SMART CONFERENCE HALL OPENS AT CITY ADMINISTRATION', date: 'Jun 20, 2025', category: 'News', image: '/news-meeting.png', excerpt: 'The state-of-the-art conference hall features digital screens, smart podiums, and modern meeting facilities.' },
+  { title: 'MODERN WATER TREATMENT PLANT BEGINS OPERATIONS', date: 'Jun 15, 2025', category: 'Infrastructure', image: '/news-infrastructure.png', excerpt: 'The new treatment facility will provide clean drinking water to an additional 100,000 residents.' },
 ]
 
 const socialIcons = [
@@ -1396,7 +1398,7 @@ export default function HomePage({ navigateTo }: { navigateTo: (page: PageId, ex
               <motion.div key={`${jbTab}-${jbPage}-${jbFilter}`}
                 initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -8 }}
                 transition={{ duration: 0.25 }}
-                className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+                className={jbTab === 'vacancies' ? "grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4" : "flex flex-col gap-3"}>
                 {jbVisible.map((item: any, idx: number) => (
                   jbTab === 'vacancies' ? (
                     <motion.div key={item.id} initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: idx * 0.05 }}>
@@ -1420,23 +1422,32 @@ export default function HomePage({ navigateTo }: { navigateTo: (page: PageId, ex
                       </Card>
                     </motion.div>
                   ) : (
-                    <motion.div key={item.id} initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: idx * 0.05 }}>
-                      <Card className="h-full cursor-pointer hover:shadow-xl transition-all duration-300 border-0 shadow-sm group bg-white overflow-hidden relative"
+                    /* BIDS — single row, horizontal list layout */
+                    <motion.div key={item.id} initial={{ opacity: 0, x: -10 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: idx * 0.04 }}>
+                      <Card className="cursor-pointer hover:shadow-md transition-all duration-200 border-0 shadow-sm group bg-white overflow-hidden"
                         onClick={() => navigateTo('bids-detail', { bidId: item.id })}>
-                        <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-[#c8a415] to-[#f59e0b] opacity-0 group-hover:opacity-100 transition-opacity" />
-                        <CardContent className="p-5">
-                          <div className="flex items-start justify-between mb-3">
-                            <div className="w-11 h-11 rounded-xl bg-gradient-to-br from-[#7c5c00] to-[#c8a415] flex items-center justify-center shadow-md group-hover:scale-110 transition-transform">
-                              <Gavel className="w-5 h-5 text-white" />
+                        <CardContent className="p-4 flex items-center gap-5">
+                          {/* Icon */}
+                          <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-[#7c5c00] to-[#c8a415] flex items-center justify-center shadow-sm shrink-0 group-hover:scale-105 transition-transform">
+                            <Gavel className="w-5 h-5 text-white" />
+                          </div>
+                          {/* Title + Ref */}
+                          <div className="flex-1 min-w-0">
+                            <div className="flex items-center gap-2 mb-0.5">
+                              <span className="text-[10px] font-bold bg-[#fffbeb] text-[#78350f] border border-[#c8a415]/20 px-2 py-0.5 rounded-md">{item.category}</span>
+                              <span className="text-[10px] font-mono text-[#9ca3af]">{item.reference}</span>
                             </div>
-                            <span className="text-[10px] font-bold bg-[#fffbeb] text-[#78350f] border border-[#c8a415]/20 px-2 py-1 rounded-lg">{item.category}</span>
+                            <h4 className="font-bold text-[#1a1a1a] text-sm group-hover:text-[#c8a415] transition-colors line-clamp-1">{item.title}</h4>
                           </div>
-                          <h4 className="font-extrabold text-[#1a1a1a] text-sm leading-snug group-hover:text-[#c8a415] transition-colors mb-1 line-clamp-2">{item.title}</h4>
-                          <p className="text-[10px] font-mono text-[#9ca3af] mb-3">{item.reference}</p>
-                          <div className="flex items-center justify-between pt-3 border-t border-[#f0f0f0]">
-                            <span className="text-sm font-extrabold text-[#c8a415]">{item.budget}</span>
-                            <span className="flex items-center gap-1 text-[10px] text-[#9ca3af]"><Clock className="w-3 h-3" />{item.deadline}</span>
+                          {/* Budget */}
+                          <div className="text-right shrink-0 hidden sm:block">
+                            <p className="text-sm font-extrabold text-[#c8a415]">{item.budget}</p>
+                            <p className="text-[10px] text-[#9ca3af] flex items-center gap-1 justify-end mt-0.5">
+                              <Clock className="w-3 h-3" />{item.deadline}
+                            </p>
                           </div>
+                          {/* Arrow */}
+                          <ArrowRight className="w-4 h-4 text-[#c8a415] opacity-0 group-hover:opacity-100 transition-opacity shrink-0" />
                         </CardContent>
                       </Card>
                     </motion.div>
