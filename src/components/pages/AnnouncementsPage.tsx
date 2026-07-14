@@ -1,5 +1,6 @@
 'use client'
 
+import { useState, useEffect } from 'react'
 import { motion } from 'framer-motion'
 import { Tabs, TabsList, TabsTrigger, TabsContent } from '@/components/ui/tabs'
 import { Card, CardContent } from '@/components/ui/card'
@@ -65,6 +66,30 @@ function StatusBadge({ status }: { status: 'Open' | 'Closed' | 'Awarded' }) {
 }
 
 export default function AnnouncementsPage({ navigateTo }: AnnouncementsPageProps) {
+  const [dbNews, setDbNews] = useState<any[]>([])
+  const [dbAnnouncements, setDbAnnouncements] = useState<any[]>([])
+
+  useEffect(() => {
+    // Fetch news from DB
+    fetch('/api/admin/news')
+      .then(r => r.ok ? r.json() : [])
+      .then((data: any[]) => {
+        if (data?.length > 0) setDbNews(data.filter(a => a.approvalStatus === 'approved' || a.status === 'published'))
+      }).catch(() => {})
+    // Fetch announcements from DB
+    fetch('/api/admin/announcements')
+      .then(r => r.ok ? r.json() : [])
+      .then((data: any[]) => {
+        if (data?.length > 0) setDbAnnouncements(data.filter(a => a.approvalStatus === 'approved' || a.status === 'active'))
+      }).catch(() => {})
+  }, [])
+
+  const allNews = dbNews.length > 0 ? dbNews : newsItems
+  const allAnnouncements = dbAnnouncements.length > 0 ? dbAnnouncements.map(a => ({
+    id: a.id, title: a.title, date: a.startDate || a.createdAt || '', category: a.priority === 'high' ? 'Important' : 'General',
+    excerpt: a.content?.substring(0, 150) || ''
+  })) : announcements
+
   return (
     <div className="min-h-screen">
       {/* Page Banner */}

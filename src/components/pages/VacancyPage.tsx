@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useMemo, useCallback } from 'react'
+import { useState, useMemo, useCallback, useEffect } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { PageId } from '@/lib/types'
 import { Badge } from '@/components/ui/badge'
@@ -929,6 +929,40 @@ export default function VacancyPage({ navigateTo }: VacancyPageProps) {
   const [page, setPage] = useState(0)
   const [viewMode, setViewMode] = useState<ViewMode>('grid')
   const [expandedIds, setExpandedIds] = useState<Set<string>>(new Set())
+  const [dbVacancies, setDbVacancies] = useState<any[]>([])
+  const [loadingDb, setLoadingDb] = useState(true)
+
+  // Fetch vacancies from DB on mount
+  useEffect(() => {
+    fetch('/api/admin/vacancies')
+      .then(r => r.ok ? r.json() : [])
+      .then((data: any[]) => {
+        if (data && data.length > 0) {
+          // Map DB vacancies to the Vacancy interface
+          const mapped = data
+            .filter(v => v.approvalStatus === 'approved' || !v.approvalStatus)
+            .map(v => ({
+              id: v.id,
+              title: v.title || '',
+              department: v.department || '',
+              type: (v.type === 'Contract' ? 'Contract' : 'Permanent') as 'Permanent' | 'Contract',
+              salary: v.salary || 'Competitive',
+              salaryMid: 20000,
+              deadline: v.deadline || 'See details',
+              status: (v.status === 'Open' ? 'Open' : 'Closed') as 'Open' | 'Closed',
+              description: v.description || '',
+              requirements: (() => { try { return JSON.parse(v.requirements || '[]') } catch { return [v.requirements || ''] } })(),
+              location: 'Dessie, Ethiopia',
+            }))
+          setDbVacancies(mapped)
+        }
+      })
+      .catch(() => {})
+      .finally(() => setLoadingDb(false))
+  }, [])
+
+  // Use DB data if available, fall back to hardcoded
+  const allVacancies: Vacancy[] = dbVacancies.length > 0 ? dbVacancies : vacancies
 
   const updateDepartment = useCallback((value: string) => {
     setDepartment(value)
@@ -963,7 +997,7 @@ export default function VacancyPage({ navigateTo }: VacancyPageProps) {
   }, [])
 
   const filtered = useMemo(() => {
-    return vacancies.filter((v) => {
+    return allVacancies.filter((v) => {
       if (department !== 'All' && v.department !== department) return false
       if (type !== 'All' && v.type !== type) return false
       if (salaryRange !== 'all' && !matchesSalaryRange(v.salaryMid, salaryRange)) return false
@@ -1031,7 +1065,7 @@ export default function VacancyPage({ navigateTo }: VacancyPageProps) {
       </section>
 
       {/* Stats Banner */}
-      <StatsBanner items={vacancies} />
+      <StatsBanner items={allVacancies} />
 
       {/* Filters */}
       <motion.div

@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useMemo, useCallback } from 'react'
+import { useState, useMemo, useCallback, useEffect } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { PageId } from '@/lib/types'
 import { Badge } from '@/components/ui/badge'
@@ -600,6 +600,36 @@ export default function BidsPage({ navigateTo }: BidsPageProps) {
   const [page, setPage] = useState(0)
   const [viewMode, setViewMode] = useState<'grid' | 'list'>('grid')
   const [expandedIds, setExpandedIds] = useState<Set<string>>(new Set())
+  const [dbBids, setDbBids] = useState<any[]>([])
+
+  // Fetch bids from DB
+  useEffect(() => {
+    fetch('/api/admin/bids')
+      .then(r => r.ok ? r.json() : [])
+      .then((data: any[]) => {
+        if (data && data.length > 0) {
+          const mapped = data
+            .filter(b => b.approvalStatus === 'approved' || !b.approvalStatus)
+            .map(b => ({
+              id: b.id,
+              title: b.title || '',
+              reference: b.reference || '',
+              category: b.category || 'Other',
+              budget: b.budget || 'See details',
+              budgetNum: parseInt((b.budget || '0').replace(/[^0-9]/g, '')) || 0,
+              deadline: b.deadline || 'See details',
+              status: (b.status || 'Open') as 'Open' | 'Closed' | 'Awarded',
+              awardedTo: b.awardedTo || '',
+              description: b.description || '',
+              requirements: (() => { try { return JSON.parse(b.requirements || '[]') } catch { return [b.requirements || ''] } })(),
+            }))
+          setDbBids(mapped)
+        }
+      })
+      .catch(() => {})
+  }, [])
+
+  const allTenders = dbBids.length > 0 ? dbBids : tenders
 
   const updateCategory = useCallback((value: string) => { setCategory(value); setPage(0) }, [])
   const updateStatus = useCallback((value: string) => { setStatus(value); setPage(0) }, [])
@@ -622,7 +652,7 @@ export default function BidsPage({ navigateTo }: BidsPageProps) {
 
   const filtered = useMemo(() => {
     const range = budgetRanges[budgetRange]
-    return tenders.filter(t => {
+    return allTenders.filter(t => {
       if (category !== 'All' && t.category !== category) return false
       if (status !== 'All' && t.status !== status) return false
       if (search && !t.title.toLowerCase().includes(search.toLowerCase()) && !t.reference.toLowerCase().includes(search.toLowerCase())) return false

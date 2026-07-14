@@ -35,7 +35,7 @@ const socialIcons = [
 ]
 
 const mayorInfo = {
-  name: 'Hon. Samuel Mollalign',
+  name: 'Samuel Molalign Desalegn',
   title: 'Mayor of Dessie City',
   photo: '/mayor-photo.png',
   email: 'mayor@dessiecity.gov.et',

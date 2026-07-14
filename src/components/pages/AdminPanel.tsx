@@ -374,8 +374,8 @@ export default function AdminPanel() {
           {activeSection === 'bids' && <BidSection isChecker={isChecker} />}
           {activeSection === 'announcements' && <SimpleSection model="announcements" label="Announcement" isChecker={isChecker} fields={['title','content','priority','status']} />}
           {activeSection === 'projects' && <SimpleSection model="projects" label="Project" isChecker={isChecker} fields={['title','category','status','description','budget','progress']} />}
-          {activeSection === 'hotels' && <SimpleSection model="hotels" label="Hotel" isChecker={isChecker} fields={['name','location','rating','priceRange','description','phone','email']} />}
-          {activeSection === 'cabinet' && <SimpleSection model="cabinet-members" label="Cabinet Member" isChecker={isChecker} fields={['name','title','department','bio','email','phone']} />}
+          {activeSection === 'hotels' && <SimpleSection model="hotels" label="Hotel" isChecker={isChecker} fields={['name','location','rating','priceRange','description','phone','email','image']} />}
+          {activeSection === 'cabinet' && <SimpleSection model="cabinet-members" label="Cabinet Member" isChecker={isChecker} fields={['name','title','department','bio','email','phone','photo']} />}
           {activeSection === 'sliders' && <SimpleSection model="sliders" label="Slider Image" isChecker={isChecker} fields={['title','subtitle','image','sliderType','tag','link']} />}
           {activeSection === 'menu' && <SimpleSection model="menu-items" label="Menu Item" isChecker={isChecker} fields={['label','pageId','order','icon']} />}
           {activeSection === 'contacts' && <InboxSection model="contacts" label="Contact Messages" />}
