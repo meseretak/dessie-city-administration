@@ -392,15 +392,16 @@ export default function AdminPanel() {
 
 /* ========================= APPROVAL BADGE ========================= */
 function ApprovalBadge({ status }: { status: string }) {
+  const s = status || 'pending'
   const colorMap: Record<string, string> = {
     pending: 'background-color:#fbbf24;color:#78350f;border-color:transparent',
     approved: 'background-color:#22c55e;color:#052e16;border-color:transparent',
     rejected: 'background-color:#ef4444;color:#fff;border-color:transparent',
   }
-  const style = colorMap[status] || colorMap.pending
+  const style = colorMap[s] || colorMap.pending
   return (
     <Badge className="text-[10px] px-2 py-0.5 font-medium" style={style}>
-      {status.charAt(0).toUpperCase() + status.slice(1)}
+      {s.charAt(0).toUpperCase() + s.slice(1)}
     </Badge>
   )
 }

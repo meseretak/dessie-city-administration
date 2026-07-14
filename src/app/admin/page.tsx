@@ -2,7 +2,9 @@
 
 import dynamic from 'next/dynamic'
 
-const AdminPanel = dynamic(() => import('@/components/pages/AdminPanel'), {
+const AdminPanel = dynamic(() => import('@/components/pages/AdminPanel').catch(() => {
+  return { default: () => <div className="min-h-screen flex items-center justify-center"><p className="text-red-500">Admin panel failed to load. Please refresh.</p></div> }
+}), {
   ssr: false,
   loading: () => (
     <div className="min-h-screen flex items-center justify-center bg-gray-50">
