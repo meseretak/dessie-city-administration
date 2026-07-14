@@ -1,99 +1,111 @@
 'use client'
 
-import { useState } from 'react'
-import { motion } from 'framer-motion'
+import { useState, useEffect } from 'react'
+import { motion, AnimatePresence } from 'framer-motion'
 import { PageId } from '@/lib/types'
 import { Badge } from '@/components/ui/badge'
-import { Separator } from '@/components/ui/separator'
+import { Input } from '@/components/ui/input'
+import { Skeleton } from '@/components/ui/skeleton'
 import {
   Newspaper, Calendar, MapPin, Clock, ChevronLeft, ChevronRight,
+  Search, ArrowRight, Eye,
 } from 'lucide-react'
 
 interface NewsPageProps {
   navigateTo: (page: PageId, extra?: Record<string, string>) => void
 }
 
-const articles = [
-  { id: 'n1', title: 'DESSIE CITY COUNCIL APPROVES ETB 2.8 BILLION ANNUAL BUDGET FOR 2025/26 FISCAL YEAR', excerpt: 'The Dessie City Council has unanimously approved the municipal budget of ETB 2.8 billion for the 2025/26 fiscal year, with significant allocations for infrastructure development, education, healthcare, and digital transformation initiatives across all 12 kebeles.', date: 'Jul 12, 2025', category: 'Press Release', image: '/news-meeting.png', author: 'Communication Department' },
-  { id: 'n2', title: 'SMART CITY DIGITAL PLATFORM LAUNCHED TO ENHANCE PUBLIC SERVICE DELIVERY', excerpt: 'Mayor Samuel Mollalign officially launched the Dessie Smart City Digital Platform, enabling citizens to access over 40 government services online including tax payments, permit applications, and service requests through a unified portal.', date: 'Jul 10, 2025', category: 'News', image: '/news-smart-city.png', author: 'IT Department' },
-  { id: 'n3', title: 'NEW 500-HECTARE INDUSTRIAL ZONE CONSTRUCTION BEGINS ON EASTERN OUTSKIRTS', excerpt: 'Construction has officially begun on the Dessie Industrial Zone, a 500-hectare development project expected to attract over ETB 10 billion in investment and create more than 5,000 permanent jobs for residents of Dessie and surrounding areas.', date: 'Jul 8, 2025', category: 'News', image: '/news-industry.png', author: 'Investment Office' },
-  { id: 'n4', title: 'DESSIE-WOLDIYA HIGHWAY EXPANSION REACHES 75% COMPLETION MILESTONE', excerpt: 'The major highway expansion project connecting Dessie to Woldiya has reached 75% completion. The 45km road upgrade includes four-lane highways, modern bridges, and pedestrian pathways, expected to be fully operational by October 2025.', date: 'Jul 5, 2025', category: 'News', image: '/news-road.png', author: 'Engineering Department' },
-  { id: 'n5', title: 'ANNUAL DESSIE CULTURAL FESTIVAL SCHEDULED FOR AUGUST 5-8 WITH REGIONAL PARTICIPATION', excerpt: 'The much-anticipated annual Dessie Cultural Festival will bring together performers and visitors from across the Amhara Region and beyond. The four-day event features traditional music, dance, art exhibitions, and a showcase of local cuisine and crafts.', date: 'Jul 3, 2025', category: 'Event', image: '/news-culture.png', author: 'Culture & Tourism Bureau' },
-  { id: 'n6', title: 'NEW COMPREHENSIVE HEALTH CENTER INAUGURATED IN KEBELE 08', excerpt: 'A state-of-the-art health center has been inaugurated in Kebele 08, providing essential healthcare services including maternity care, pediatrics, laboratory testing, and pharmacy services to over 50,000 residents in the eastern part of the city.', date: 'Jun 30, 2025', category: 'News', image: '/news-health.png', author: 'Health Bureau' },
-  { id: 'n7', title: 'CITY ADMINISTRATION SIGNS MOU WITH DESSIE UNIVERSITY FOR RESEARCH COLLABORATION', excerpt: 'Dessie City Administration and Dessie University have signed a Memorandum of Understanding to collaborate on urban planning research, digital governance solutions, and community development programs that will benefit both the city and academic community.', date: 'Jun 28, 2025', category: 'News', image: '/news-ceremony.png', author: 'Communication Department' },
-  { id: 'n8', title: 'MAJOR URBAN INFRASTRUCTURE PROJECT INCLUDES 15KM WATER PIPELINE AND DRAINAGE SYSTEM', excerpt: 'The city has launched a comprehensive infrastructure project including a 15km water pipeline extension, modern stormwater drainage system, and road rehabilitation in six kebeles, funded through a partnership with the regional government and international development partners.', date: 'Jun 25, 2025', category: 'News', image: '/news-infrastructure.png', author: 'Engineering Department' },
-  { id: 'n9', title: 'PUBLIC CONSULTATION FORUM ON NEW CITY MASTER PLAN ATTRACTS OVER 2,000 RESIDENTS', excerpt: 'More than 2,000 residents participated in the public consultation forum for Dessie\'s new 10-year comprehensive master plan, providing valuable input on zoning, transportation, public spaces, and environmental conservation priorities.', date: 'Jun 22, 2025', category: 'Announcement', image: '/news-meeting.png', author: 'Urban Planning Department' },
-  { id: 'n10', title: 'DIGITAL LITERACY TRAINING PROGRAM LAUNCHED FOR 10,000 YOUTH ACROSS ALL KEBELES', excerpt: 'A comprehensive digital literacy training program has been launched targeting 10,000 young people across all 12 kebeles. The program covers basic computer skills, internet safety, e-government services, and entrepreneurial digital skills.', date: 'Jun 20, 2025', category: 'Announcement', image: '/news-smart-city.png', author: 'Youth & Sport Bureau' },
-]
-
-const events = [
-  { title: 'City Development Forum', date: 'Jul 15, 2025', location: 'City Hall Conference Center', desc: 'Annual stakeholder forum on development strategy and progress review.' },
-  { title: 'Cultural Festival', date: 'Aug 5-8, 2025', location: 'Dessie Stadium & City Square', desc: 'Four-day celebration of Amhara culture with music, dance, and art exhibitions.' },
-  { title: 'Youth Entrepreneurship Summit', date: 'Aug 20, 2025', location: 'Dessie University', desc: 'Summit connecting young entrepreneurs with mentors and funding opportunities.' },
-  { title: 'Environmental Cleanup Campaign', date: 'Jul 25, 2025', location: 'All Kebeles', desc: 'Citywide volunteer cleanup campaign to promote environmental awareness.' },
-  { title: 'Health Screening Week', date: 'Aug 1-7, 2025', location: 'All Health Centers', desc: 'Free health screenings including blood pressure, diabetes, and eye tests.' },
-  { title: 'Digital Literacy Workshop', date: 'Aug 12, 2025', location: 'Public Library', desc: 'Free workshops teaching basic computer and internet skills to citizens.' },
-]
-
-const categoryTabs = ['All', 'News', 'Press Release', 'Event', 'Announcement']
-
-const ITEMS_PER_PAGE = 4
-
-function Pagination({ total, perPage, current, onChange }: { total: number; perPage: number; current: number; onChange: (p: number) => void }) {
-  const totalPages = Math.ceil(total / perPage)
-  if (totalPages <= 1) return null
-  return (
-    <div className="flex items-center justify-center gap-2 mt-8">
-      <button onClick={() => onChange(current - 1)} disabled={current === 0} className="w-9 h-9 rounded-lg bg-[#1a6b3c] text-white flex items-center justify-center disabled:opacity-40 hover:bg-[#155d33] transition-colors">
-        <ChevronLeft className="w-4 h-4" />
-      </button>
-      {Array.from({ length: totalPages }, (_, i) => (
-        <button key={i} onClick={() => onChange(i)} className={`w-9 h-9 rounded-lg flex items-center justify-center text-sm font-semibold transition-colors ${current === i ? 'bg-[#c62828] text-white' : 'bg-white text-[#333] border border-[#e2e8e0] hover:border-[#1a6b3c]'}`}>
-          {i + 1}
-        </button>
-      ))}
-      <button onClick={() => onChange(current + 1)} disabled={current >= totalPages - 1} className="w-9 h-9 rounded-lg bg-[#1a6b3c] text-white flex items-center justify-center disabled:opacity-40 hover:bg-[#155d33] transition-colors">
-        <ChevronRight className="w-4 h-4" />
-      </button>
-    </div>
-  )
+interface Article {
+  id: string
+  title: string
+  excerpt: string
+  content: string
+  category: string
+  image?: string
+  author?: string
+  status: string
+  approvalStatus: string
+  createdAt: string
 }
 
+const categoryTabs = ['All', 'News', 'Smart City', 'Infrastructure', 'Press Release', 'Event', 'Health', 'Culture', 'Technology']
+const ITEMS_PER_PAGE = 6
+
+const events = [
+  { title: 'City Development Forum', date: 'Jul 15, 2025', location: 'City Hall', desc: 'Annual stakeholder forum on development strategy.' },
+  { title: 'Cultural Festival', date: 'Aug 5-8, 2025', location: 'Dessie Stadium', desc: 'Four-day celebration of Amhara culture and heritage.' },
+  { title: 'Youth Entrepreneurship Summit', date: 'Aug 20, 2025', location: 'Dessie University', desc: 'Connecting young entrepreneurs with mentors.' },
+  { title: 'Environmental Cleanup', date: 'Jul 25, 2025', location: 'All Kebeles', desc: 'Citywide volunteer cleanup campaign.' },
+  { title: 'Health Screening Week', date: 'Aug 1-7, 2025', location: 'All Health Centers', desc: 'Free health screenings for all residents.' },
+  { title: 'Digital Literacy Workshop', date: 'Aug 12, 2025', location: 'Public Library', desc: 'Free computer and internet skills workshop.' },
+]
+
 export default function NewsPage({ navigateTo }: NewsPageProps) {
+  const [articles, setArticles] = useState<Article[]>([])
+  const [loading, setLoading] = useState(true)
   const [activeTab, setActiveTab] = useState('All')
   const [page, setPage] = useState(0)
+  const [search, setSearch] = useState('')
 
-  const filtered = activeTab === 'All' ? articles : articles.filter(a => {
-    if (activeTab === 'Press Release') return a.category === 'Press Release'
-    return a.category === activeTab
+  useEffect(() => {
+    fetch('/api/admin/news')
+      .then(r => r.ok ? r.json() : [])
+      .then((data: Article[]) => {
+        // Only show published/approved articles
+        const published = data.filter(a => a.approvalStatus === 'approved' || a.status === 'published')
+        setArticles(published)
+      })
+      .catch(() => setArticles([]))
+      .finally(() => setLoading(false))
+  }, [])
+
+  const filtered = articles.filter(a => {
+    const matchTab = activeTab === 'All' || a.category === activeTab
+    const matchSearch = !search || a.title.toLowerCase().includes(search.toLowerCase()) || a.excerpt.toLowerCase().includes(search.toLowerCase())
+    return matchTab && matchSearch
   })
 
-  const handleTabChange = (tab: string) => {
-    setActiveTab(tab)
-    setPage(0)
-  }
-
+  const totalPages = Math.ceil(filtered.length / ITEMS_PER_PAGE)
   const pagedArticles = filtered.slice(page * ITEMS_PER_PAGE, (page + 1) * ITEMS_PER_PAGE)
 
+  const handleTabChange = (tab: string) => { setActiveTab(tab); setPage(0) }
+  const handleSearch = (q: string) => { setSearch(q); setPage(0) }
+
   return (
-    <div className="min-h-screen">
-      {/* Page Banner */}
-      <section className="bg-[#0d4a28] py-16 px-4">
-        <div className="max-w-7xl mx-auto text-center">
-          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5 }}>
-            <Newspaper className="w-12 h-12 text-[#c8a415] mx-auto mb-4" />
-            <h1 className="text-4xl md:text-5xl font-extrabold text-white uppercase tracking-wider gov-heading-display">Latest News</h1>
-            <p className="mt-4 text-green-200 text-lg">Latest updates, press releases, and announcements from Dessie City Administration</p>
+    <div className="min-h-screen bg-[#f8faf8]">
+      {/* Banner */}
+      <section className="bg-[#0d4a28] py-12 px-4">
+        <div className="max-w-7xl mx-auto">
+          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
+            <div>
+              <div className="flex items-center gap-2 mb-2">
+                <Newspaper className="w-6 h-6 text-[#c8a415]" />
+                <span className="text-green-300 text-sm font-medium uppercase tracking-widest">Media Center</span>
+              </div>
+              <h1 className="text-3xl md:text-4xl font-extrabold text-white uppercase tracking-wider">NEWS & ANNOUNCEMENTS</h1>
+              <p className="mt-2 text-green-200 text-sm">Latest updates from Dessie City Administration</p>
+            </div>
+            {/* Search */}
+            <div className="relative w-full md:w-72">
+              <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-white/50" />
+              <Input
+                placeholder="Search news..."
+                value={search}
+                onChange={e => handleSearch(e.target.value)}
+                className="pl-10 bg-white/10 border-white/20 text-white placeholder:text-white/50 focus:border-[#c8a415]"
+              />
+            </div>
           </motion.div>
         </div>
       </section>
 
       {/* Category Tabs */}
-      <div className="bg-white border-b border-border sticky top-16 z-30">
+      <div className="bg-white border-b border-[#e2e8e0] sticky top-16 z-30">
         <div className="max-w-7xl mx-auto px-4">
-          <div className="flex gap-1 overflow-x-auto no-scrollbar py-3">
+          <div className="flex gap-1 overflow-x-auto py-3 no-scrollbar">
             {categoryTabs.map(tab => (
-              <button key={tab} onClick={() => handleTabChange(tab)} className={`px-5 py-2 rounded-full text-sm font-semibold uppercase tracking-wider whitespace-nowrap transition-all ${activeTab === tab ? 'bg-[#1a6b3c] text-white' : 'bg-[#f0f4f0] text-muted-foreground hover:bg-[#e8f5e9]'}`}>
+              <button key={tab} onClick={() => handleTabChange(tab)}
+                className={`px-4 py-2 rounded-lg text-xs font-bold uppercase tracking-wider whitespace-nowrap transition-all ${activeTab === tab ? 'bg-[#0d4a28] text-white shadow-sm' : 'bg-[#f0f4f0] text-[#555] hover:bg-[#e8f5e9] hover:text-[#0d4a28]'}`}>
                 {tab}
               </button>
             ))}
@@ -101,80 +113,146 @@ export default function NewsPage({ navigateTo }: NewsPageProps) {
         </div>
       </div>
 
-      {/* News List */}
-      <section className="bg-[#f8faf8] py-12 px-4">
-        <div className="max-w-5xl mx-auto">
-          <h2 className="text-2xl font-bold text-foreground gov-section-title mb-6">
-            {activeTab === 'All' ? 'All News' : activeTab} ({filtered.length})
-          </h2>
+      {/* Main Content */}
+      <div className="max-w-7xl mx-auto px-4 py-10">
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
 
-          <div className="space-y-4">
-            {pagedArticles.map((article, i) => (
-              <motion.div
-                key={article.id}
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: i * 0.05 }}
-                className="flex flex-col sm:flex-row gap-4 sm:gap-6 p-4 sm:p-5 bg-white rounded-xl border border-[#e2e8e0] hover:shadow-md transition-shadow cursor-pointer"
-                onClick={() => navigateTo('news-detail', { newsId: article.id })}
-              >
-                <img src={article.image} alt="" className="w-full sm:w-48 h-36 sm:h-32 object-cover rounded-lg" />
-                <div className="flex-1 min-w-0">
-                  <div className="flex items-center gap-2 mb-2">
-                    <Badge className="bg-[#1a6b3c] text-white text-xs">{article.category}</Badge>
-                    <span className="text-xs text-gray-500">{article.date}</span>
-                    <span className="text-xs text-gray-400 hidden sm:inline">• {article.author}</span>
-                  </div>
-                  <h3 className="font-bold text-sm sm:text-base uppercase leading-tight text-[#1a1a1a]">{article.title}</h3>
-                  <div className="w-12 h-0.5 bg-[#c62828] my-2" />
-                  <p className="text-sm text-gray-600 leading-relaxed line-clamp-3">{article.excerpt}</p>
-                </div>
-              </motion.div>
-            ))}
-          </div>
-
-          {pagedArticles.length === 0 && (
-            <div className="text-center py-16 text-muted-foreground">
-              <Newspaper className="w-16 h-16 mx-auto mb-4 opacity-40" />
-              <p className="text-lg font-medium">No articles found for this category</p>
+          {/* News Grid — 2/3 */}
+          <div className="lg:col-span-2">
+            <div className="flex items-center justify-between mb-6">
+              <h2 className="text-lg font-extrabold text-[#0d4a28]">
+                {activeTab === 'All' ? 'All News' : activeTab}
+                <span className="ml-2 text-sm font-normal text-[#9ca3af]">({filtered.length} articles)</span>
+              </h2>
             </div>
-          )}
 
-          <Pagination total={filtered.length} perPage={ITEMS_PER_PAGE} current={page} onChange={setPage} />
-        </div>
-      </section>
-
-      <Separator className="max-w-5xl mx-auto" />
-
-      {/* Upcoming Events Sidebar */}
-      <section className="bg-white py-12 px-4">
-        <div className="max-w-5xl mx-auto">
-          <h2 className="text-2xl font-bold text-foreground gov-section-title mb-8 flex items-center gap-2">
-            <Calendar className="w-6 h-6 text-[#c8a415]" /> Upcoming Events
-          </h2>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-            {events.map((e, i) => (
-              <motion.div key={i} initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: i * 0.08 }}>
-                <div className="p-5 rounded-xl border border-[#e2e8e0] bg-[#f8faf8] hover:shadow-md transition-shadow h-full">
-                  <div className="flex items-start gap-4">
-                    <div className="w-14 h-14 rounded-lg bg-[#e8f5e9] flex items-center justify-center shrink-0">
-                      <Calendar className="w-7 h-7 text-[#1a6b3c]" />
-                    </div>
-                    <div>
-                      <h3 className="font-bold text-foreground mb-1">{e.title}</h3>
-                      <div className="flex flex-wrap gap-x-4 gap-y-1 text-sm text-muted-foreground mb-2">
-                        <span className="flex items-center gap-1"><Clock className="w-3.5 h-3.5" />{e.date}</span>
-                        <span className="flex items-center gap-1"><MapPin className="w-3.5 h-3.5" />{e.location}</span>
+            {loading ? (
+              <div className="space-y-4">
+                {[1,2,3,4].map(n => <Skeleton key={n} className="h-40 w-full rounded-xl" />)}
+              </div>
+            ) : pagedArticles.length === 0 ? (
+              <div className="text-center py-16 bg-white rounded-2xl">
+                <Newspaper className="w-14 h-14 mx-auto mb-3 text-[#d1d5db]" />
+                <p className="font-bold text-[#374151]">No articles found</p>
+                <p className="text-sm text-[#9ca3af] mt-1">Try a different category or search term</p>
+              </div>
+            ) : (
+              <AnimatePresence mode="wait">
+                <motion.div key={`${activeTab}-${page}`}
+                  initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0 }}
+                  className="space-y-5">
+                  {pagedArticles.map((article, i) => (
+                    <motion.div key={article.id}
+                      initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: i * 0.06 }}
+                      className="bg-white rounded-2xl border border-[#e2e8e0] hover:shadow-xl hover:-translate-y-0.5 transition-all duration-300 overflow-hidden cursor-pointer group"
+                      onClick={() => navigateTo('news-detail', { newsId: article.id })}>
+                      <div className="flex flex-col sm:flex-row">
+                        {/* Image — bigger */}
+                        <div className="w-full sm:w-56 h-48 sm:h-44 shrink-0 overflow-hidden relative">
+                          <img src={article.image || '/news-meeting.png'} alt={article.title}
+                            className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
+                          <div className="absolute inset-0 bg-gradient-to-t from-black/30 to-transparent" />
+                          <span className="absolute top-3 left-3 text-[10px] font-bold bg-[#c62828] text-white px-2 py-1 rounded">
+                            {article.category}
+                          </span>
+                        </div>
+                        {/* Content */}
+                        <div className="flex-1 p-5 flex flex-col justify-between">
+                          <div>
+                            <div className="flex items-center gap-3 mb-3">
+                              <span className="text-xs text-[#9ca3af] font-medium flex items-center gap-1">
+                                <Clock className="w-3 h-3" />
+                                {new Date(article.createdAt).toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' })}
+                              </span>
+                              {article.author && (
+                                <span className="text-xs text-[#9ca3af]">• {article.author}</span>
+                              )}
+                            </div>
+                            <h3 className="font-extrabold text-base text-[#1a1a1a] group-hover:text-[#c62828] transition-colors leading-snug mb-2 line-clamp-2">
+                              {article.title}
+                            </h3>
+                            <div className="w-10 h-0.5 bg-[#c62828] rounded mb-2" />
+                            <p className="text-sm text-[#6b7280] leading-relaxed line-clamp-3">{article.excerpt}</p>
+                          </div>
+                          <div className="mt-4 flex items-center gap-1.5 text-sm font-bold text-[#c62828]">
+                            <Eye className="w-4 h-4" /> Read Full Article <ArrowRight className="w-4 h-4" />
+                          </div>
+                        </div>
                       </div>
-                      <p className="text-sm text-muted-foreground">{e.desc}</p>
+                    </motion.div>
+                  ))}
+                </motion.div>
+              </AnimatePresence>
+            )}
+
+            {/* Pagination */}
+            {totalPages > 1 && (
+              <div className="flex items-center justify-center gap-2 mt-8">
+                <button onClick={() => setPage(p => Math.max(0, p - 1))} disabled={page === 0}
+                  className="w-9 h-9 rounded-xl border border-[#e2e8e0] flex items-center justify-center disabled:opacity-30 hover:border-[#0d4a28] hover:bg-[#0d4a28] hover:text-white transition-all">
+                  <ChevronLeft className="w-4 h-4" />
+                </button>
+                {Array.from({ length: totalPages }, (_, i) => (
+                  <button key={i} onClick={() => setPage(i)}
+                    className={`w-9 h-9 rounded-xl text-sm font-bold transition-all ${page === i ? 'bg-[#c62828] text-white shadow-md' : 'border border-[#e2e8e0] text-[#6b7280] hover:border-[#c62828] hover:text-[#c62828]'}`}>
+                    {i + 1}
+                  </button>
+                ))}
+                <button onClick={() => setPage(p => Math.min(totalPages - 1, p + 1))} disabled={page >= totalPages - 1}
+                  className="w-9 h-9 rounded-xl border border-[#e2e8e0] flex items-center justify-center disabled:opacity-30 hover:border-[#0d4a28] hover:bg-[#0d4a28] hover:text-white transition-all">
+                  <ChevronRight className="w-4 h-4" />
+                </button>
+              </div>
+            )}
+          </div>
+
+          {/* Sidebar — 1/3 */}
+          <div className="space-y-6">
+            {/* Upcoming Events */}
+            <div className="bg-white rounded-2xl border border-[#e2e8e0] overflow-hidden">
+              <div className="bg-[#0d4a28] px-4 py-3 flex items-center gap-2">
+                <Calendar className="w-4 h-4 text-[#c8a415]" />
+                <h3 className="font-bold text-white text-sm">UPCOMING EVENTS</h3>
+              </div>
+              <div className="divide-y divide-[#f0f0f0]">
+                {events.map((e, i) => (
+                  <div key={i} className="p-4 hover:bg-[#f8faf8] transition-colors cursor-pointer">
+                    <h4 className="font-bold text-sm text-[#1a1a1a] mb-1">{e.title}</h4>
+                    <div className="flex items-center gap-3 text-xs text-[#9ca3af] mb-1">
+                      <span className="flex items-center gap-1"><Clock className="w-3 h-3" />{e.date}</span>
+                      <span className="flex items-center gap-1"><MapPin className="w-3 h-3" />{e.location}</span>
+                    </div>
+                    <p className="text-xs text-[#6b7280]">{e.desc}</p>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            {/* Latest 3 articles sidebar */}
+            <div className="bg-white rounded-2xl border border-[#e2e8e0] overflow-hidden">
+              <div className="bg-[#c62828] px-4 py-3 flex items-center gap-2">
+                <Newspaper className="w-4 h-4 text-white" />
+                <h3 className="font-bold text-white text-sm">MOST RECENT</h3>
+              </div>
+              <div className="divide-y divide-[#f0f0f0]">
+                {articles.slice(0, 4).map((a, i) => (
+                  <div key={i} className="p-3 flex gap-3 hover:bg-[#f8faf8] transition-colors cursor-pointer group"
+                    onClick={() => navigateTo('news-detail', { newsId: a.id })}>
+                    <div className="w-14 h-14 rounded-lg overflow-hidden shrink-0">
+                      <img src={a.image || '/news-meeting.png'} alt="" className="w-full h-full object-cover group-hover:scale-105 transition-transform" />
+                    </div>
+                    <div className="flex-1 min-w-0">
+                      <p className="text-xs font-bold text-[#1a1a1a] group-hover:text-[#c62828] transition-colors line-clamp-2">{a.title}</p>
+                      <p className="text-[10px] text-[#9ca3af] mt-0.5">{new Date(a.createdAt).toLocaleDateString()}</p>
                     </div>
                   </div>
-                </div>
-              </motion.div>
-            ))}
+                ))}
+              </div>
+            </div>
           </div>
+
         </div>
-      </section>
+      </div>
     </div>
   )
 }
