@@ -370,7 +370,15 @@ export default function AdminPanel() {
           {activeSection === 'news' && <NewsSection isChecker={isChecker} />}
           {activeSection === 'vacancies' && <VacancySection isChecker={isChecker} />}
           {activeSection === 'bids' && <BidSection isChecker={isChecker} />}
+          {activeSection === 'announcements' && <SimpleSection model="announcements" label="Announcement" isChecker={isChecker} fields={['title','content','priority','status']} />}
+          {activeSection === 'projects' && <SimpleSection model="projects" label="Project" isChecker={isChecker} fields={['title','category','status','description','budget','progress']} />}
+          {activeSection === 'hotels' && <SimpleSection model="hotels" label="Hotel" isChecker={isChecker} fields={['name','location','rating','priceRange','description','phone','email']} />}
+          {activeSection === 'cabinet' && <SimpleSection model="cabinet-members" label="Cabinet Member" isChecker={isChecker} fields={['name','title','department','bio','email','phone']} />}
+          {activeSection === 'contacts' && <InboxSection model="contacts" label="Contact Messages" />}
+          {activeSection === 'service-requests' && <InboxSection model="service-requests" label="Service Requests" />}
           {activeSection === 'approvals' && <ApprovalSection isChecker={isChecker} />}
+          {activeSection === 'users' && <UsersSection />}
+          {activeSection === 'settings' && <SettingsSection />}
           {activeSection === 'audit' && <AuditSection />}
         </div>
       </main>
@@ -1375,6 +1383,308 @@ function AuditSection() {
           </Table>
         </div>
       </Card>
+    </div>
+  )
+}
+
+/* ========================= SIMPLE CRUD SECTION (Hotels, Projects, Announcements, Cabinet) ========================= */
+function SimpleSection({ model, label, isChecker, fields }: { model: string; label: string; isChecker: boolean; fields: string[] }) {
+  const { toast } = useToast()
+  const [items, setItems] = useState<any[]>([])
+  const [loading, setLoading] = useState(true)
+  const [dialogOpen, setDialogOpen] = useState(false)
+  const [editingItem, setEditingItem] = useState<any>(null)
+  const [saving, setSaving] = useState(false)
+  const [form, setForm] = useState<Record<string, string>>({})
+
+  const endpoint = `/api/admin/${model}`
+
+  const fetchItems = useCallback(async () => {
+    setLoading(true)
+    try {
+      const res = await fetch(endpoint)
+      if (res.ok) setItems(await res.json())
+    } catch { /* ignore */ }
+    setLoading(false)
+  }, [endpoint])
+
+  useEffect(() => { fetchItems() }, [fetchItems])
+
+  const openCreate = () => {
+    setEditingItem(null)
+    const empty: Record<string, string> = {}
+    fields.forEach(f => { empty[f] = '' })
+    setForm(empty)
+    setDialogOpen(true)
+  }
+
+  const openEdit = (item: any) => {
+    setEditingItem(item)
+    const filled: Record<string, string> = {}
+    fields.forEach(f => { filled[f] = String(item[f] ?? '') })
+    setForm(filled)
+    setDialogOpen(true)
+  }
+
+  const handleSave = async () => {
+    setSaving(true)
+    try {
+      const url = editingItem ? `${endpoint}?id=${editingItem.id}` : endpoint
+      const method = editingItem ? 'PUT' : 'POST'
+      const res = await fetch(url, { method, headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(form) })
+      if (res.ok) {
+        toast({ title: isChecker ? 'Saved & published' : 'Created — awaiting approval' })
+        setDialogOpen(false)
+        fetchItems()
+      } else {
+        const d = await res.json()
+        toast({ title: 'Error', description: d.error || 'Save failed', variant: 'destructive' })
+      }
+    } catch {
+      toast({ title: 'Network error', variant: 'destructive' })
+    } finally { setSaving(false) }
+  }
+
+  const handleDelete = async (id: string) => {
+    if (!confirm(`Delete this ${label}?`)) return
+    try {
+      const res = await fetch(`${endpoint}?id=${id}`, { method: 'DELETE' })
+      if (res.ok) { toast({ title: 'Deleted' }); fetchItems() }
+    } catch { toast({ title: 'Error', variant: 'destructive' }) }
+  }
+
+  const titleField = fields[0]
+
+  return (
+    <div className="space-y-4">
+      <div className="flex items-center justify-between">
+        <p className="text-sm text-muted-foreground">{items.length} {label}(s)</p>
+        <Button onClick={openCreate} className="text-white" style={{ backgroundColor: '#0d4a28' }}>
+          <Plus className="h-4 w-4 mr-2" /> Add {label}
+        </Button>
+      </div>
+      <Card className="border-0 shadow-sm overflow-hidden">
+        <div className="overflow-x-auto">
+          <Table>
+            <TableHeader>
+              <TableRow style={{ backgroundColor: '#0d4a2808' }}>
+                <TableHead>{titleField.charAt(0).toUpperCase() + titleField.slice(1)}</TableHead>
+                {fields[1] && <TableHead className="hidden md:table-cell">{fields[1]}</TableHead>}
+                {fields[2] && <TableHead className="hidden lg:table-cell">{fields[2]}</TableHead>}
+                <TableHead className="text-right">Actions</TableHead>
+              </TableRow>
+            </TableHeader>
+            <TableBody>
+              {loading ? (
+                <TableRow><TableCell colSpan={4}><TableSkeleton rows={3} cols={3} /></TableCell></TableRow>
+              ) : items.length === 0 ? (
+                <TableRow><TableCell colSpan={4} className="text-center py-8 text-muted-foreground">No {label}s yet</TableCell></TableRow>
+              ) : items.map(item => (
+                <TableRow key={item.id}>
+                  <TableCell className="font-medium max-w-[200px] truncate">{item[titleField]}</TableCell>
+                  {fields[1] && <TableCell className="hidden md:table-cell text-sm text-muted-foreground">{item[fields[1]]}</TableCell>}
+                  {fields[2] && <TableCell className="hidden lg:table-cell text-sm text-muted-foreground">{item[fields[2]]}</TableCell>}
+                  <TableCell className="text-right">
+                    <div className="flex items-center justify-end gap-1">
+                      <Button size="icon" variant="ghost" className="h-8 w-8" onClick={() => openEdit(item)}><Pencil className="h-3.5 w-3.5" /></Button>
+                      <Button size="icon" variant="ghost" className="h-8 w-8 text-red-500 hover:text-red-700 hover:bg-red-50" onClick={() => handleDelete(item.id)}><Trash2 className="h-3.5 w-3.5" /></Button>
+                    </div>
+                  </TableCell>
+                </TableRow>
+              ))}
+            </TableBody>
+          </Table>
+        </div>
+      </Card>
+
+      <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
+        <DialogContent className="max-w-lg max-h-[90vh] overflow-y-auto">
+          <DialogHeader><DialogTitle style={{ color: '#0d4a28' }}>{editingItem ? `Edit ${label}` : `Add ${label}`}</DialogTitle></DialogHeader>
+          <div className="space-y-3">
+            {fields.map(f => (
+              <div key={f} className="space-y-1.5">
+                <Label>{f.charAt(0).toUpperCase() + f.slice(1)}</Label>
+                {f === 'content' || f === 'description' || f === 'bio' ? (
+                  <Textarea value={form[f] || ''} onChange={e => setForm(p => ({ ...p, [f]: e.target.value }))} rows={3} />
+                ) : (
+                  <Input value={form[f] || ''} onChange={e => setForm(p => ({ ...p, [f]: e.target.value }))} placeholder={f} />
+                )}
+              </div>
+            ))}
+          </div>
+          <DialogFooter>
+            <Button variant="outline" onClick={() => setDialogOpen(false)}>Cancel</Button>
+            <Button onClick={handleSave} disabled={saving} className="text-white" style={{ backgroundColor: '#0d4a28' }}>
+              {saving && <Loader2 className="h-4 w-4 animate-spin mr-2" />}{editingItem ? 'Update' : 'Create'}
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
+    </div>
+  )
+}
+
+/* ========================= INBOX SECTION (Contacts, Service Requests) ========================= */
+function InboxSection({ model, label }: { model: string; label: string }) {
+  const { toast } = useToast()
+  const [items, setItems] = useState<any[]>([])
+  const [loading, setLoading] = useState(true)
+  const [selected, setSelected] = useState<any>(null)
+
+  useEffect(() => {
+    fetch(`/api/admin/${model}`).then(r => r.ok ? r.json() : []).then(setItems).catch(() => {}).finally(() => setLoading(false))
+  }, [model])
+
+  const handleDelete = async (id: string) => {
+    if (!confirm('Delete this message?')) return
+    try {
+      const res = await fetch(`/api/admin/${model}?id=${id}`, { method: 'DELETE' })
+      if (res.ok) { toast({ title: 'Deleted' }); setItems(p => p.filter(i => i.id !== id)); setSelected(null) }
+    } catch { toast({ title: 'Error', variant: 'destructive' }) }
+  }
+
+  return (
+    <div className="space-y-4">
+      <p className="text-sm text-muted-foreground">{items.length} {label}</p>
+      <div className="grid md:grid-cols-2 gap-4">
+        <Card className="border-0 shadow-sm overflow-hidden">
+          <div className="overflow-x-auto">
+            <Table>
+              <TableHeader><TableRow style={{ backgroundColor: '#0d4a2808' }}>
+                <TableHead>From</TableHead>
+                <TableHead className="hidden sm:table-cell">Subject/Type</TableHead>
+                <TableHead>Status</TableHead>
+              </TableRow></TableHeader>
+              <TableBody>
+                {loading ? <TableRow><TableCell colSpan={3}><TableSkeleton rows={4} cols={3} /></TableCell></TableRow>
+                : items.length === 0 ? <TableRow><TableCell colSpan={3} className="text-center py-8 text-muted-foreground">No messages</TableCell></TableRow>
+                : items.map(item => (
+                  <TableRow key={item.id} className={`cursor-pointer ${selected?.id === item.id ? 'bg-[#0d4a2810]' : ''}`} onClick={() => setSelected(item)}>
+                    <TableCell className="font-medium text-sm truncate max-w-[120px]">{item.name}</TableCell>
+                    <TableCell className="hidden sm:table-cell text-xs text-muted-foreground truncate max-w-[120px]">{item.subject || item.serviceType || ''}</TableCell>
+                    <TableCell><Badge variant="secondary" className="text-[10px]">{item.status}</Badge></TableCell>
+                  </TableRow>
+                ))}
+              </TableBody>
+            </Table>
+          </div>
+        </Card>
+
+        {selected && (
+          <Card className="border-0 shadow-sm p-4 space-y-3">
+            <div className="flex items-center justify-between">
+              <h3 className="font-bold text-sm" style={{ color: '#0d4a28' }}>Message Details</h3>
+              <Button size="icon" variant="ghost" className="h-7 w-7 text-red-500" onClick={() => handleDelete(selected.id)}><Trash2 className="h-3.5 w-3.5" /></Button>
+            </div>
+            <div className="space-y-2 text-sm">
+              <div><span className="font-semibold text-muted-foreground text-xs">FROM:</span><p>{selected.name}</p></div>
+              <div><span className="font-semibold text-muted-foreground text-xs">EMAIL:</span><p>{selected.email}</p></div>
+              {selected.phone && <div><span className="font-semibold text-muted-foreground text-xs">PHONE:</span><p>{selected.phone}</p></div>}
+              {selected.subject && <div><span className="font-semibold text-muted-foreground text-xs">SUBJECT:</span><p>{selected.subject}</p></div>}
+              {selected.serviceType && <div><span className="font-semibold text-muted-foreground text-xs">SERVICE:</span><p>{selected.serviceType}</p></div>}
+              <div><span className="font-semibold text-muted-foreground text-xs">MESSAGE:</span><p className="mt-1 text-muted-foreground leading-relaxed">{selected.message}</p></div>
+              <div><span className="font-semibold text-muted-foreground text-xs">DATE:</span><p>{new Date(selected.createdAt).toLocaleString()}</p></div>
+            </div>
+          </Card>
+        )}
+      </div>
+    </div>
+  )
+}
+
+/* ========================= USERS SECTION ========================= */
+function UsersSection() {
+  const { toast } = useToast()
+  const [users, setUsers] = useState<any[]>([])
+  const [loading, setLoading] = useState(true)
+
+  useEffect(() => {
+    fetch('/api/admin/seed').then(r => r.ok ? r.json() : []).then(data => { if (Array.isArray(data)) setUsers(data) }).catch(() => {}).finally(() => setLoading(false))
+  }, [])
+
+  return (
+    <div className="space-y-4">
+      <p className="text-sm text-muted-foreground">{users.length} admin user(s)</p>
+      <Card className="border-0 shadow-sm overflow-hidden">
+        <div className="overflow-x-auto">
+          <Table>
+            <TableHeader><TableRow style={{ backgroundColor: '#0d4a2808' }}>
+              <TableHead>Username</TableHead>
+              <TableHead>Name</TableHead>
+              <TableHead>Role</TableHead>
+              <TableHead>Status</TableHead>
+              <TableHead className="hidden md:table-cell">Last Login</TableHead>
+            </TableRow></TableHeader>
+            <TableBody>
+              {loading ? <TableRow><TableCell colSpan={5}><TableSkeleton rows={3} cols={4} /></TableCell></TableRow>
+              : users.length === 0 ? <TableRow><TableCell colSpan={5} className="text-center py-8 text-muted-foreground">No admin users</TableCell></TableRow>
+              : users.map(u => (
+                <TableRow key={u.id}>
+                  <TableCell className="font-mono text-sm">{u.username}</TableCell>
+                  <TableCell className="font-medium">{u.name}</TableCell>
+                  <TableCell><Badge style={{ backgroundColor: u.role === 'super_admin' ? '#c8a415' : '#1a6b3c', color: 'white', borderColor: 'transparent' }} className="text-[10px]">{u.role === 'super_admin' ? 'Checker' : 'Maker'}</Badge></TableCell>
+                  <TableCell><Badge variant={u.active ? 'default' : 'secondary'} className="text-[10px]">{u.active ? 'Active' : 'Inactive'}</Badge></TableCell>
+                  <TableCell className="hidden md:table-cell text-xs text-muted-foreground">{u.lastLogin ? new Date(u.lastLogin).toLocaleDateString() : 'Never'}</TableCell>
+                </TableRow>
+              ))}
+            </TableBody>
+          </Table>
+        </div>
+      </Card>
+    </div>
+  )
+}
+
+/* ========================= SETTINGS SECTION ========================= */
+function SettingsSection() {
+  const { toast } = useToast()
+  const [settings, setSettings] = useState<any[]>([])
+  const [loading, setLoading] = useState(true)
+  const [saving, setSaving] = useState<string | null>(null)
+  const [editValues, setEditValues] = useState<Record<string, string>>({})
+
+  useEffect(() => {
+    fetch('/api/admin/site-settings').then(r => r.ok ? r.json() : []).then(data => {
+      if (Array.isArray(data)) {
+        setSettings(data)
+        const vals: Record<string, string> = {}
+        data.forEach((s: any) => { vals[s.key] = s.value })
+        setEditValues(vals)
+      }
+    }).catch(() => {}).finally(() => setLoading(false))
+  }, [])
+
+  const handleSave = async (key: string) => {
+    setSaving(key)
+    try {
+      const res = await fetch('/api/admin/site-settings', { method: 'PUT', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ key, value: editValues[key] }) })
+      if (res.ok) toast({ title: 'Setting saved' })
+      else toast({ title: 'Error', variant: 'destructive' })
+    } catch { toast({ title: 'Network error', variant: 'destructive' }) }
+    finally { setSaving(null) }
+  }
+
+  if (loading) return <div className="space-y-3">{[1,2,3].map(i => <div key={i} className="h-12 bg-gray-100 rounded animate-pulse" />)}</div>
+
+  return (
+    <div className="space-y-4">
+      <p className="text-sm text-muted-foreground">{settings.length} setting(s)</p>
+      <div className="grid gap-3">
+        {settings.map(s => (
+          <Card key={s.key} className="border-0 shadow-sm">
+            <CardContent className="p-3 flex items-center gap-3">
+              <div className="flex-1 min-w-0">
+                <Label className="text-xs text-muted-foreground uppercase tracking-wider">{s.key.replace(/_/g, ' ')}</Label>
+                <Input value={editValues[s.key] || ''} onChange={e => setEditValues(p => ({ ...p, [s.key]: e.target.value }))} className="mt-1 h-8 text-sm" />
+              </div>
+              <Button size="sm" className="text-white shrink-0" style={{ backgroundColor: '#0d4a28' }} onClick={() => handleSave(s.key)} disabled={saving === s.key}>
+                {saving === s.key ? <Loader2 className="h-3 w-3 animate-spin" /> : 'Save'}
+              </Button>
+            </CardContent>
+          </Card>
+        ))}
+        {settings.length === 0 && <p className="text-center text-muted-foreground py-8 text-sm">No settings configured yet</p>}
+      </div>
     </div>
   )
 }

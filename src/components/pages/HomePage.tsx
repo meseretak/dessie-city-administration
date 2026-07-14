@@ -1976,8 +1976,6 @@ export default function HomePage({ navigateTo }: { navigateTo: (page: PageId, ex
                     { label: 'Police Emergency', number: '911', icon: Shield, color: '#1a6b3c', bg: '#f0fdf4' },
                     { label: 'Fire Brigade', number: '939', icon: Zap, color: '#c62828', bg: '#fef2f2' },
                     { label: 'Medical Emergency', number: '907', icon: Heart, color: '#0369a1', bg: '#eff6ff' },
-                    { label: 'City Hall', number: '+251-33-111-0000', icon: Building, color: '#0d4a28', bg: '#f0fdf4' },
-                    { label: 'Public Works', number: '+251-33-111-1111', icon: Route, color: '#78350f', bg: '#fffbeb' },
                     { label: 'Water Authority', number: '+251-33-111-2222', icon: Droplets, color: '#0369a1', bg: '#eff6ff' },
                     { label: 'Electricity', number: '+251-33-111-3333', icon: Zap, color: '#c8a415', bg: '#fffbeb' },
                     { label: 'Health Bureau', number: '+251-33-111-4444', icon: Stethoscope, color: '#c62828', bg: '#fef2f2' },
