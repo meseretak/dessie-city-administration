@@ -106,7 +106,7 @@ interface Stats {
   recentServiceRequests: { id: string; name: string; serviceType: string; status: string; createdAt: string }[]
 }
 
-type ActiveSection = 'dashboard' | 'news' | 'vacancies' | 'bids' | 'approvals' | 'audit' | 'hotels' | 'projects' | 'announcements' | 'cabinet' | 'contacts' | 'service-requests' | 'settings' | 'users'
+type ActiveSection = 'dashboard' | 'news' | 'vacancies' | 'bids' | 'approvals' | 'audit' | 'hotels' | 'projects' | 'announcements' | 'cabinet' | 'contacts' | 'service-requests' | 'settings' | 'users' | 'sliders' | 'menu'
 
 /* ========================= MAIN COMPONENT ========================= */
 export default function AdminPanel() {
@@ -253,6 +253,8 @@ export default function AdminPanel() {
     { id: 'announcements', label: 'Announcements', icon: <Bell className="h-4 w-4" />, group: 'Content' },
     { id: 'projects', label: 'Projects', icon: <FolderOpen className="h-4 w-4" />, group: 'Content' },
     { id: 'hotels', label: 'Hotels', icon: <Building2 className="h-4 w-4" />, group: 'Content' },
+    { id: 'sliders', label: 'Hero Sliders', icon: <Star className="h-4 w-4" />, group: 'Content' },
+    { id: 'menu', label: 'Menu Items', icon: <Menu className="h-4 w-4" />, group: 'Content' },
     { id: 'cabinet', label: 'Cabinet Members', icon: <Users className="h-4 w-4" />, group: 'People' },
     { id: 'contacts', label: 'Contact Messages', icon: <Mail className="h-4 w-4" />, group: 'Inbox' },
     { id: 'service-requests', label: 'Service Requests', icon: <MessageSquare className="h-4 w-4" />, group: 'Inbox' },
@@ -374,6 +376,8 @@ export default function AdminPanel() {
           {activeSection === 'projects' && <SimpleSection model="projects" label="Project" isChecker={isChecker} fields={['title','category','status','description','budget','progress']} />}
           {activeSection === 'hotels' && <SimpleSection model="hotels" label="Hotel" isChecker={isChecker} fields={['name','location','rating','priceRange','description','phone','email']} />}
           {activeSection === 'cabinet' && <SimpleSection model="cabinet-members" label="Cabinet Member" isChecker={isChecker} fields={['name','title','department','bio','email','phone']} />}
+          {activeSection === 'sliders' && <SimpleSection model="sliders" label="Slider Image" isChecker={isChecker} fields={['title','subtitle','image','sliderType','tag','link']} />}
+          {activeSection === 'menu' && <SimpleSection model="menu-items" label="Menu Item" isChecker={isChecker} fields={['label','pageId','order','icon']} />}
           {activeSection === 'contacts' && <InboxSection model="contacts" label="Contact Messages" />}
           {activeSection === 'service-requests' && <InboxSection model="service-requests" label="Service Requests" />}
           {activeSection === 'approvals' && <ApprovalSection isChecker={isChecker} />}
