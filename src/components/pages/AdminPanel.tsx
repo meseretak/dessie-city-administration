@@ -22,8 +22,8 @@ import {
   LayoutDashboard, Newspaper, Briefcase, FileText, CheckCircle2,
   XCircle, Clock, LogOut, Menu, Loader2, Plus, Pencil, Trash2,
   Shield, User, Mail, Phone, MessageSquare, AlertTriangle, Eye,
-  ChevronDown, Search, RefreshCw, Hotel, FolderOpen, Megaphone,
-  Users, Settings, Star, MapPin, Building2,
+  ChevronDown, Search, RefreshCw, Building2, FolderOpen, Bell,
+  Users, Settings, Star, MapPin,
 } from 'lucide-react'
 
 /* ========================= TYPES ========================= */
@@ -250,9 +250,9 @@ export default function AdminPanel() {
     { id: 'news', label: 'News', icon: <Newspaper className="h-4 w-4" />, group: 'Content' },
     { id: 'vacancies', label: 'Vacancies', icon: <Briefcase className="h-4 w-4" />, group: 'Content' },
     { id: 'bids', label: 'Bids & Tenders', icon: <FileText className="h-4 w-4" />, group: 'Content' },
-    { id: 'announcements', label: 'Announcements', icon: <Megaphone className="h-4 w-4" />, group: 'Content' },
+    { id: 'announcements', label: 'Announcements', icon: <Bell className="h-4 w-4" />, group: 'Content' },
     { id: 'projects', label: 'Projects', icon: <FolderOpen className="h-4 w-4" />, group: 'Content' },
-    { id: 'hotels', label: 'Hotels', icon: <Hotel className="h-4 w-4" />, group: 'Content' },
+    { id: 'hotels', label: 'Hotels', icon: <Building2 className="h-4 w-4" />, group: 'Content' },
     { id: 'cabinet', label: 'Cabinet Members', icon: <Users className="h-4 w-4" />, group: 'People' },
     { id: 'contacts', label: 'Contact Messages', icon: <Mail className="h-4 w-4" />, group: 'Inbox' },
     { id: 'service-requests', label: 'Service Requests', icon: <MessageSquare className="h-4 w-4" />, group: 'Inbox' },
