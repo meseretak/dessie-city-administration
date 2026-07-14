@@ -812,43 +812,51 @@ export default function HomePage({ navigateTo }: { navigateTo: (page: PageId, ex
               viewport={{ once: true, margin: '-60px' }} transition={{ duration: 0.5, delay: 0.15 }}>
 
               {/* Header */}
-              <div className="flex items-end justify-between mb-5">
+              <div className="flex items-end justify-between mb-4">
                 <div>
                   <div className="flex items-center gap-2 mb-1">
-                    <div className="w-7 h-7 rounded-lg bg-[#c62828] flex items-center justify-center">
-                      <Newspaper className="w-3.5 h-3.5 text-white" />
+                    <div className="w-8 h-8 rounded-lg bg-[#c62828] flex items-center justify-center">
+                      <Newspaper className="w-4 h-4 text-white" />
                     </div>
-                    <span className="text-[10px] font-bold text-[#c62828] uppercase tracking-widest">Latest Updates</span>
+                    <span className="text-xs font-bold text-[#c62828] uppercase tracking-widest">Latest Updates</span>
                   </div>
-                  <h2 className="text-xl font-extrabold text-[#1a1a1a]">LATEST NEWS</h2>
-                  <div className="h-0.5 w-14 bg-[#c62828] rounded-full mt-1" />
+                  <h2 className="text-2xl font-extrabold text-[#1a1a1a]">LATEST NEWS</h2>
+                  <div className="h-1 w-16 bg-[#c62828] rounded-full mt-1" />
                 </div>
                 <button onClick={() => navigateTo('news')}
-                  className="flex items-center gap-1 text-xs font-bold text-[#c62828] hover:gap-2 transition-all">
+                  className="flex items-center gap-1 text-xs font-bold text-[#c62828] hover:gap-2 transition-all border border-[#c62828]/30 px-2.5 py-1.5 rounded-lg hover:bg-[#c62828]/5">
                   VIEW ALL <ArrowRight className="w-3 h-3" />
                 </button>
               </div>
 
-              {/* News Cards — bigger with excerpt */}
+              {/* News Cards — tall with full excerpt */}
               <div className="space-y-3">
-                {visibleNews.slice(0, 3).map((item, i) => (
-                  <motion.div key={item.title}
-                    initial={{ opacity: 0, x: 10 }} animate={{ opacity: 1, x: 0 }}
-                    transition={{ delay: i * 0.07 }}>
-                    <Card className="cursor-pointer hover:shadow-lg transition-all border-0 shadow-sm group bg-white overflow-hidden"
+                {visibleNews.slice(newsPage * 3, (newsPage + 1) * 3).map((item, i) => (
+                  <motion.div key={item.title + i}
+                    initial={{ opacity: 0, x: 10 }} whileInView={{ opacity: 1, x: 0 }}
+                    viewport={{ once: true }} transition={{ delay: i * 0.07 }}>
+                    <Card className="cursor-pointer hover:shadow-xl transition-all duration-300 border-0 shadow-md group bg-white overflow-hidden"
                       onClick={() => navigateTo('news')}>
                       <CardContent className="p-0 flex">
-                        <div className="w-28 h-24 shrink-0 overflow-hidden">
+                        {/* Image — taller and wider */}
+                        <div className="w-32 h-28 shrink-0 overflow-hidden relative">
                           <img src={item.image} alt={item.title}
-                            className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" />
+                            className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" />
+                          <div className="absolute inset-0 bg-gradient-to-r from-transparent to-black/10" />
                         </div>
-                        <div className="flex-1 p-3 min-w-0">
-                          <div className="flex items-center gap-1.5 mb-1">
-                            <span className="text-[9px] font-bold bg-[#c62828] text-white px-1.5 py-0.5 rounded">{item.category}</span>
-                            <span className="text-[9px] text-[#9ca3af]">{item.date}</span>
+                        {/* Content */}
+                        <div className="flex-1 p-4 min-w-0 flex flex-col justify-between">
+                          <div>
+                            <div className="flex items-center gap-2 mb-2">
+                              <span className="text-[10px] font-bold bg-[#c62828] text-white px-2 py-0.5 rounded">{item.category}</span>
+                              <span className="text-[10px] text-[#9ca3af] font-medium">{item.date}</span>
+                            </div>
+                            <h4 className="font-extrabold text-[#1a1a1a] text-sm leading-snug group-hover:text-[#c62828] transition-colors line-clamp-2 mb-1">{item.title}</h4>
+                            <p className="text-[11px] text-[#6b7280] line-clamp-2 leading-relaxed">{item.excerpt}</p>
                           </div>
-                          <h4 className="font-bold text-[#1a1a1a] text-xs leading-snug group-hover:text-[#c62828] transition-colors line-clamp-2 mb-1">{item.title}</h4>
-                          <p className="text-[10px] text-[#6b7280] line-clamp-2 leading-relaxed">{item.excerpt}</p>
+                          <div className="flex items-center gap-1 text-[10px] font-bold text-[#c62828] mt-2 opacity-0 group-hover:opacity-100 transition-opacity">
+                            Read More <ArrowRight className="w-2.5 h-2.5" />
+                          </div>
                         </div>
                       </CardContent>
                     </Card>
@@ -856,17 +864,17 @@ export default function HomePage({ navigateTo }: { navigateTo: (page: PageId, ex
                 ))}
               </div>
 
-              {/* Pagination dots for news */}
-              <div className="mt-3 flex items-center justify-between">
-                <div className="flex gap-1">
+              {/* Pagination */}
+              <div className="mt-4 flex items-center justify-between">
+                <div className="flex gap-1.5">
                   {Array.from({ length: Math.ceil(homeNews.length / 3) }, (_, i) => (
                     <button key={i} onClick={() => setNewsPage(i)}
-                      className={`w-2 h-2 rounded-full transition-all ${newsPage === i ? 'bg-[#c62828] w-4' : 'bg-[#e2e8e0]'}`} />
+                      className={`transition-all rounded-full ${newsPage === i ? 'bg-[#c62828] w-6 h-2' : 'bg-[#e2e8e0] w-2 h-2 hover:bg-[#c62828]/40'}`} />
                   ))}
                 </div>
                 <button onClick={() => navigateTo('news')}
-                  className="text-[10px] font-bold text-[#c62828] flex items-center gap-1 hover:gap-2 transition-all">
-                  ALL NEWS <ArrowRight className="w-3 h-3" />
+                  className="text-xs font-bold text-[#c62828] flex items-center gap-1 hover:gap-2 transition-all">
+                  ALL NEWS & MEDIA <ArrowRight className="w-3.5 h-3.5" />
                 </button>
               </div>
             </motion.div>
