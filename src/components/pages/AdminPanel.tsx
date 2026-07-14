@@ -679,7 +679,7 @@ function NewsSection({ isChecker }: { isChecker: boolean }) {
                     <TableCell className="hidden sm:table-cell"><Badge variant="secondary">{item.status}</Badge></TableCell>
                     <TableCell><ApprovalBadge status={item.approvalStatus} /></TableCell>
                     <TableCell className="hidden lg:table-cell text-xs text-muted-foreground">
-                      {new Date(item.createdAt).toLocaleDateString()}
+                      {(item.createdAt ? new Date(item.createdAt).toLocaleDateString() : "N/A")}
                     </TableCell>
                     <TableCell className="text-right">
                       <div className="flex items-center justify-end gap-1">
@@ -1270,7 +1270,7 @@ function ApprovalSection({ isChecker }: { isChecker: boolean }) {
                         {item._model === 'NewsArticle' ? 'News' : item._model}
                       </Badge>
                       <span className="text-xs text-muted-foreground">
-                        {new Date(item.createdAt).toLocaleDateString()}
+                        {(item.createdAt ? new Date(item.createdAt).toLocaleDateString() : "N/A")}
                       </span>
                     </div>
                     <p className="text-sm font-medium truncate">{item.title}</p>
@@ -1364,13 +1364,13 @@ function AuditSection() {
               ) : (
                 logs.map(log => {
                   let details = ''
-                  try { details = JSON.parse(log.details).title || log.details } catch { details = log.details }
+                  try { details = (() => { try { return JSON.parse(log.details || '{}').title || log.details || '' } catch { return log.details || '' } })() } catch { details = log.details }
                   return (
                     <TableRow key={log.id}>
                       <TableCell className="text-xs whitespace-nowrap">
-                        {new Date(log.createdAt).toLocaleString()}
+                        {(log.createdAt ? new Date(log.createdAt).toLocaleString() : "N/A")}
                       </TableCell>
-                      <TableCell className="text-sm">{log.admin?.name || 'Unknown'}</TableCell>
+                      <TableCell className="text-sm">{(log.admin?.name || log.adminId || 'Unknown')}</TableCell>
                       <TableCell>
                         <Badge className="text-[10px] px-2 py-0.5 capitalize" style={actionColor[log.action] || actionColor.update}>
                           {log.action}
@@ -1629,7 +1629,7 @@ function UsersSection() {
                   <TableCell className="font-medium">{u.name}</TableCell>
                   <TableCell><Badge style={{ backgroundColor: u.role === 'super_admin' ? '#c8a415' : '#1a6b3c', color: 'white', borderColor: 'transparent' }} className="text-[10px]">{u.role === 'super_admin' ? 'Checker' : 'Maker'}</Badge></TableCell>
                   <TableCell><Badge variant={u.active ? 'default' : 'secondary'} className="text-[10px]">{u.active ? 'Active' : 'Inactive'}</Badge></TableCell>
-                  <TableCell className="hidden md:table-cell text-xs text-muted-foreground">{u.lastLogin ? new Date(u.lastLogin).toLocaleDateString() : 'Never'}</TableCell>
+                  <TableCell className="hidden md:table-cell text-xs text-muted-foreground">{(u.lastLogin ? new Date(u.lastLogin).toLocaleDateString() : 'Never')}</TableCell>
                 </TableRow>
               ))}
             </TableBody>
