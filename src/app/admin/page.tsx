@@ -1,4 +1,13 @@
-import AdminPanel from '@/components/pages/AdminPanel'
+import dynamic from 'next/dynamic'
+
+const AdminPanel = dynamic(() => import('@/components/pages/AdminPanel'), {
+  ssr: false,
+  loading: () => (
+    <div className="min-h-screen flex items-center justify-center bg-gray-50">
+      <div className="animate-spin rounded-full h-10 w-10 border-b-2 border-[#0d4a28]" />
+    </div>
+  ),
+})
 
 export default function Admin() {
   return <AdminPanel />
