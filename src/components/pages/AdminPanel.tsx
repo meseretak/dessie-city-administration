@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect, useCallback } from 'react'
+import React, { useState, useEffect, useCallback } from 'react'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Input } from '@/components/ui/input'
@@ -393,12 +393,12 @@ export default function AdminPanel() {
 /* ========================= APPROVAL BADGE ========================= */
 function ApprovalBadge({ status }: { status: string }) {
   const s = status || 'pending'
-  const colorMap: Record<string, string> = {
-    pending: 'background-color:#fbbf24;color:#78350f;border-color:transparent',
-    approved: 'background-color:#22c55e;color:#052e16;border-color:transparent',
-    rejected: 'background-color:#ef4444;color:#fff;border-color:transparent',
+  const styleMap: Record<string, React.CSSProperties> = {
+    pending: { backgroundColor: '#fbbf24', color: '#78350f', borderColor: 'transparent' },
+    approved: { backgroundColor: '#22c55e', color: '#052e16', borderColor: 'transparent' },
+    rejected: { backgroundColor: '#ef4444', color: '#fff', borderColor: 'transparent' },
   }
-  const style = colorMap[s] || colorMap.pending
+  const style = styleMap[s] || styleMap.pending
   return (
     <Badge className="text-[10px] px-2 py-0.5 font-medium" style={style}>
       {s.charAt(0).toUpperCase() + s.slice(1)}
@@ -1200,10 +1200,10 @@ function ApprovalSection({ isChecker }: { isChecker: boolean }) {
     }
   }
 
-  const modelBadgeColor: Record<string, string> = {
-    NewsArticle: 'background-color:#e0f2fe;color:#0369a1;border-color:transparent',
-    Vacancy: 'background-color:#fef3c7;color:#92400e;border-color:transparent',
-    Bid: 'background-color:#ede9fe;color:#5b21b6;border-color:transparent',
+  const modelBadgeColor: Record<string, React.CSSProperties> = {
+    NewsArticle: { backgroundColor: '#e0f2fe', color: '#0369a1', borderColor: 'transparent' },
+    Vacancy: { backgroundColor: '#fef3c7', color: '#92400e', borderColor: 'transparent' },
+    Bid: { backgroundColor: '#ede9fe', color: '#5b21b6', borderColor: 'transparent' },
   }
 
   if (!isChecker) {
@@ -1333,12 +1333,12 @@ function AuditSection() {
     })()
   }, [toast])
 
-  const actionColor: Record<string, string> = {
-    create: 'background-color:#dcfce7;color:#166534;border-color:transparent',
-    update: 'background-color:#dbeafe;color:#1e40af;border-color:transparent',
-    delete: 'background-color:#fee2e2;color:#991b1b;border-color:transparent',
-    approve: 'background-color:#d1fae5;color:#065f46;border-color:transparent',
-    reject: 'background-color:#fee2e2;color:#991b1b;border-color:transparent',
+  const actionColor: Record<string, React.CSSProperties> = {
+    create: { backgroundColor: '#dcfce7', color: '#166534', borderColor: 'transparent' },
+    update: { backgroundColor: '#dbeafe', color: '#1e40af', borderColor: 'transparent' },
+    delete: { backgroundColor: '#fee2e2', color: '#991b1b', borderColor: 'transparent' },
+    approve: { backgroundColor: '#d1fae5', color: '#065f46', borderColor: 'transparent' },
+    reject: { backgroundColor: '#fee2e2', color: '#991b1b', borderColor: 'transparent' },
   }
 
   return (
@@ -1370,7 +1370,7 @@ function AuditSection() {
                       <TableCell className="text-xs whitespace-nowrap">
                         {(log.createdAt ? new Date(log.createdAt).toLocaleString() : "N/A")}
                       </TableCell>
-                      <TableCell className="text-sm">{(log.admin?.name || log.adminId || 'Unknown')}</TableCell>
+                      <TableCell className="text-sm">{(log.admin?.name || 'Unknown')}</TableCell>
                       <TableCell>
                         <Badge className="text-[10px] px-2 py-0.5 capitalize" style={actionColor[log.action] || actionColor.update}>
                           {log.action}
