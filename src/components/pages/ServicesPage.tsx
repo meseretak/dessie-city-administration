@@ -17,7 +17,7 @@ import {
 
 const fadeInUp = {
   hidden: { opacity: 0, y: 30 },
-  visible: { opacity: 1, y: 0, transition: { duration: 0.6, ease: 'easeOut' } }
+  visible: { opacity: 1, y: 0, transition: { duration: 0.6, ease: 'easeOut' as const } }
 }
 
 const staggerContainer = {
@@ -29,91 +29,50 @@ interface ServicesPageProps {
   navigateTo: (page: PageId, extra?: { serviceId?: string; vacancyId?: string; newsId?: string; bidId?: string }) => void
 }
 
-const services = [
-  {
-    title: 'Birth Registration',
-    icon: Baby,
-    description: 'Register births within 30 days and obtain official birth certificates. The service is available at all kebele offices and online.',
-    features: ['Online registration available', 'Certificate issued within 3 days', 'Free for all citizens']
-  },
-  {
-    title: 'Business License',
-    icon: FileCheck,
-    description: 'Apply for new business licenses or renew existing ones. All types of businesses supported including trade, manufacturing, and services.',
-    features: ['New & renewal applications', 'All business types supported', 'Digital tracking system']
-  },
-  {
-    title: 'Building Permit',
-    icon: Building,
-    description: 'Submit building permit applications for residential, commercial, and industrial construction. Track your application status online.',
-    features: ['Online application tracking', 'Residential & commercial permits', 'Inspection scheduling']
-  },
-  {
-    title: 'Land Services',
-    icon: MapPin,
-    description: 'Access land registration, cadastral survey, title deed issuance, and land transfer services.',
-    features: ['Cadastral survey services', 'Title deed issuance', 'Land transfer processing']
-  },
-  {
-    title: 'Tax Payment',
-    icon: Receipt,
-    description: 'Pay property taxes, business taxes, and municipal fees online or at designated payment centers.',
-    features: ['Online & offline payment', 'Multiple payment methods', 'Instant receipt download']
-  },
-  {
-    title: 'Marriage Registration',
-    icon: Heart,
-    description: 'Register marriages and obtain official marriage certificates. Both civil and religious marriages supported.',
-    features: ['Civil & religious marriages', 'Certificate in 5 days', 'Online appointment booking']
-  },
-  {
-    title: 'Health Services',
-    icon: Stethoscope,
-    description: 'Find hospitals, health centers, clinics, and pharmacies. Access health information and emergency services.',
-    features: ['Facility directory & map', 'Emergency contact info', 'Health campaign schedules']
-  },
-  {
-    title: 'Education',
-    icon: GraduationCap,
-    description: 'Information about schools, colleges, TVET institutions, and universities in Dessie.',
-    features: ['School enrollment info', 'Scholarship listings', 'TVET program directory']
-  },
-  {
-    title: 'Transportation',
-    icon: Bus,
-    description: 'Public transport routes, schedules, taxi services, and traffic information for navigating Dessie.',
-    features: ['Route maps & schedules', 'Real-time traffic updates', 'Taxi fare information']
-  },
-  {
-    title: 'Water & Electricity',
-    icon: Droplets,
-    description: 'New connections, billing inquiries, service interruptions, and payment services for utilities.',
-    features: ['New connection requests', 'Billing & payment', 'Outage reporting']
-  },
-  {
-    title: 'Complaints & Feedback',
-    icon: MessageSquareWarning,
-    description: 'Submit service complaints, suggestions, and feedback. Track resolution status online.',
-    features: ['Online submission form', 'Real-time status tracking', 'Anonymous option available']
-  },
-  {
-    title: 'Appointments',
-    icon: CalendarDays,
-    description: 'Book appointments with city offices, departments, and officials for in-person visits.',
-    features: ['Choose date & time', 'Department selection', 'Email confirmation']
-  },
-]
+// Bilingual services data
+const servicesData = {
+  en: [
+    { title: 'Birth Registration', icon: Baby, description: 'Register births within 30 days and obtain official birth certificates. Available at all kebele offices and online.', features: ['Online registration available', 'Certificate issued within 3 days', 'Free for all citizens'] },
+    { title: 'Business License', icon: FileCheck, description: 'Apply for new business licenses or renew existing ones. All types of businesses supported.', features: ['New & renewal applications', 'All business types supported', 'Digital tracking system'] },
+    { title: 'Building Permit', icon: Building, description: 'Submit building permit applications for residential, commercial, and industrial construction.', features: ['Online application tracking', 'Residential & commercial permits', 'Inspection scheduling'] },
+    { title: 'Land Services', icon: MapPin, description: 'Access land registration, cadastral survey, title deed issuance, and land transfer services.', features: ['Cadastral survey services', 'Title deed issuance', 'Land transfer processing'] },
+    { title: 'Tax Payment', icon: Receipt, description: 'Pay property taxes, business taxes, and municipal fees online or at payment centers.', features: ['Online & offline payment', 'Multiple payment methods', 'Instant receipt download'] },
+    { title: 'Marriage Registration', icon: Heart, description: 'Register marriages and obtain official marriage certificates. Both civil and religious marriages supported.', features: ['Civil & religious marriages', 'Certificate in 5 days', 'Online appointment booking'] },
+    { title: 'Health Services', icon: Stethoscope, description: 'Find hospitals, health centers, clinics, and pharmacies. Access health information and emergency services.', features: ['Facility directory & map', 'Emergency contact info', 'Health campaign schedules'] },
+    { title: 'Education', icon: GraduationCap, description: 'Information about schools, colleges, TVET institutions, and universities in Dessie.', features: ['School enrollment info', 'Scholarship listings', 'TVET program directory'] },
+    { title: 'Transportation', icon: Bus, description: 'Public transport routes, schedules, taxi services, and traffic information for Dessie.', features: ['Route maps & schedules', 'Real-time traffic updates', 'Taxi fare information'] },
+    { title: 'Water & Electricity', icon: Droplets, description: 'New connections, billing inquiries, service interruptions, and payment services for utilities.', features: ['New connection requests', 'Billing & payment', 'Outage reporting'] },
+    { title: 'Complaints & Feedback', icon: MessageSquareWarning, description: 'Submit service complaints, suggestions, and feedback. Track resolution status online.', features: ['Online submission form', 'Real-time status tracking', 'Anonymous option available'] },
+    { title: 'Appointments', icon: CalendarDays, description: 'Book appointments with city offices, departments, and officials for in-person visits.', features: ['Choose date & time', 'Department selection', 'Email confirmation'] },
+  ],
+  am: [
+    { title: 'የልደት ምዝገባ', icon: Baby, description: 'ልጅ ከተወለደ በ30 ቀናት ውስጥ ይመዝገቡ እና ይፋዊ የልደት ምስክር ወረቀት ያግኙ። ሁሉም ቀበሌ ቢሮዎችና ኦንላይን ይገኛል።', features: ['ኦንላይን ምዝገባ ይቻላል', 'ምስክር ወረቀት በ3 ቀናት', 'ለሁሉም ዜጎች ነፃ'] },
+    { title: 'የንግድ ፈቃድ', icon: FileCheck, description: 'አዲስ የንግድ ፈቃድ ያመልክቱ ወይም ያለዎትን ያሳድሱ። ሁሉም ዓይነት ንግዶች ይደገፋሉ።', features: ['አዲስ እና ታደሻ ማመልከቻ', 'ሁሉም ዓይነት ንግዶች', 'ዲጂታል ክትትል ስርዓት'] },
+    { title: 'የግንባታ ፈቃድ', icon: Building, description: 'ለቤት፣ ለንግድ እና ለኢንዱስትሪ ግንባታ ፈቃድ ያመልክቱ። ሁኔታዎን ኦንላይን ይከታተሉ።', features: ['ኦንላይን ክትትል', 'ቤት እና ንግድ ፈቃዶች', 'ፍተሻ ቀጠሮ'] },
+    { title: 'የመሬት አገልግሎቶች', icon: MapPin, description: 'የመሬት ምዝገባ፣ ካዳስትራል ዳሰሳ፣ ሰነድ ማውጣት እና ማስተላለፍ አገልግሎቶች።', features: ['ካዳስትራል ዳሰሳ', 'ሰነድ ማውጣት', 'የመሬት ማስተላለፍ'] },
+    { title: 'ግብር ክፍያ', icon: Receipt, description: 'የንብረት ግብር፣ የንግድ ግብር እና ሌሎች ክፍያዎችን ኦንላይን ወይም በቢሮ ይክፈሉ።', features: ['ኦንላይን እና ቢሮ ክፍያ', 'ብዙ የክፍያ ዘዴዎች', 'ፈጣን ደረሰኝ'] },
+    { title: 'የጋብቻ ምዝገባ', icon: Heart, description: 'ጋብቻ ይመዝገቡ እና ይፋዊ ምስክር ወረቀት ያግኙ። ሲቪልና ሃይማኖታዊ ጋብቻ ይደገፋሉ።', features: ['ሲቪልና ሃይማኖታዊ ጋብቻ', 'ምስክር ወረቀት በ5 ቀናት', 'ቀጠሮ ኦንላይን'] },
+    { title: 'የጤና አገልግሎቶች', icon: Stethoscope, description: 'ሆስፒታሎች፣ ጤና ጣቢያዎች፣ ክሊኒኮች ያግኙ። ድንገተኛ አገልግሎትና ጤና መረጃ።', features: ['የጤና ተቋም ዝርዝር', 'ድንገተኛ ጥሪ', 'የጤና ዘመቻ ቀኖች'] },
+    { title: 'ትምህርት', icon: GraduationCap, description: 'ስለ ትምህርት ቤቶች፣ ኮሌጆች፣ TVET እና ዩኒቨርሲቲዎች ደሴ ከተማ ውስጥ መረጃ።', features: ['የትምህርት ቤት ምዝገባ', 'ስኮላርሺፕ ዝርዝር', 'TVET መርሃ ግብሮች'] },
+    { title: 'ትራንስፖርት', icon: Bus, description: 'የሕዝብ ትራንስፖርት መስመሮች፣ ፕሮግራሞች፣ ታክሲ አገልግሎት እና የትራፊክ መረጃ።', features: ['የመስመር ካርታ', 'የትራፊክ ዝማኔ', 'የታክሲ ታሪፍ'] },
+    { title: 'ውሃና ኤሌክትሪክ', icon: Droplets, description: 'አዲስ ግንኙነት፣ ቢሊንግ፣ የአገልግሎት ማቋረጥና ክፍያ አገልግሎቶች።', features: ['አዲስ ግንኙነት ጥያቄ', 'ቢሊንግ እና ክፍያ', 'ማቋረጥ ሪፖርት'] },
+    { title: 'ቅሬታዎችና አስተያየቶች', icon: MessageSquareWarning, description: 'የአገልግሎት ቅሬታ፣ ሀሳቦችና አስተያየቶች ያስገቡ። ሁኔታ ኦንላይን ይከታተሉ።', features: ['ኦንላይን ማስገቢያ', 'ፈጣን ክትትል', 'ስም ሳይጠቀሱ ይቻላል'] },
+    { title: 'ቀጠሮዎች', icon: CalendarDays, description: 'ከከተማ ቢሮዎች፣ ክፍሎችና ባለስልጣናት ጋር ቀጠሮ ያዙ።', features: ['ቀንና ሰዓት ምረጥ', 'ዲፓርትመንት ምረጥ', 'ኢሜይል ማረጋገጫ'] },
+  ]
+}
 
 const steps = [
-  { num: 1, title: 'Select Service', desc: 'Browse our comprehensive list of municipal services and choose what you need.', icon: ClipboardList },
-  { num: 2, title: 'Fill Application', desc: 'Complete the required forms with your information and upload necessary documents.', icon: FileText },
-  { num: 3, title: 'Receive Confirmation', desc: 'Get instant confirmation and track your application status online in real time.', icon: Shield },
+  { num: 1, title: 'Select Service', titleAm: 'አገልግሎት ምረጥ', desc: 'Browse our comprehensive list of municipal services and choose what you need.', descAm: 'የህዝብ አገልግሎቶች ዝርዝር ይመልከቱ እና የሚፈልጉትን ይምረጡ።', icon: ClipboardList },
+  { num: 2, title: 'Fill Application', titleAm: 'ማመልከቻ ይሙሉ', desc: 'Complete the required forms with your information and upload necessary documents.', descAm: 'አስፈላጊ ቅጾችን ይሙሉ እና ሰነዶቹን ይጭኑ።', icon: FileText },
+  { num: 3, title: 'Receive Confirmation', titleAm: 'ማረጋገጫ ያግኙ', desc: 'Get instant confirmation and track your application status online in real time.', descAm: 'ፈጣን ማረጋገጫ ያግኙ እና ሁኔታዎን ኦንላይን ይከታተሉ።', icon: Shield },
 ]
 
 export default function ServicesPage({ navigateTo }: ServicesPageProps) {
   const { lang } = useLang()
   const isAm = lang === 'am'
   const [searchQuery, setSearchQuery] = useState('')
+
+  const services = servicesData[isAm ? 'am' : 'en']
 
   const filteredServices = services.filter(
     (s) =>
@@ -160,8 +119,8 @@ export default function ServicesPage({ navigateTo }: ServicesPageProps) {
             {filteredServices.length === 0 ? (
               <motion.div variants={fadeInUp} className="text-center py-16">
                 <Search className="w-16 h-16 text-muted-foreground/30 mx-auto mb-4" />
-                <h3 className="text-lg font-semibold text-muted-foreground">No services found</h3>
-                <p className="text-sm text-muted-foreground mt-1">Try a different search term</p>
+                <h3 className="text-lg font-semibold text-muted-foreground">{isAm ? 'አገልግሎቶች አልተገኙም' : 'No services found'}</h3>
+                <p className="text-sm text-muted-foreground mt-1">{isAm ? 'ሌላ ቃል ይሞክሩ' : 'Try a different search term'}</p>
               </motion.div>
             ) : (
               <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -187,7 +146,7 @@ export default function ServicesPage({ navigateTo }: ServicesPageProps) {
                           className="text-[#1a6b3c] font-semibold text-sm p-0 h-auto hover:text-[#0d4a28] justify-start group-hover:gap-2 transition-all"
                           onClick={(e) => { e.stopPropagation(); navigateTo('service-detail', { serviceId: service.title }) }}
                         >
-                          ACCESS SERVICE <ArrowRight className="w-4 h-4 ml-1" />
+                          {isAm ? 'አገልግሎቱን ይጠቀሙ' : 'ACCESS SERVICE'} <ArrowRight className="w-4 h-4 ml-1" />
                         </Button>
                       </CardContent>
                     </Card>
@@ -204,8 +163,8 @@ export default function ServicesPage({ navigateTo }: ServicesPageProps) {
         <div className="max-w-4xl mx-auto">
           <motion.div initial="hidden" whileInView="visible" viewport={{ once: true, margin: '-50px' }} variants={staggerContainer}>
             <motion.div variants={fadeInUp} className="text-center mb-10">
-              <h2 className="gov-section-title text-2xl md:text-3xl font-bold text-[#0d4a28] inline-block">HOW IT WORKS</h2>
-              <p className="text-muted-foreground mt-4">Accessing city services is simple and straightforward</p>
+              <h2 className="gov-section-title text-2xl md:text-3xl font-bold text-[#0d4a28] inline-block">{isAm ? 'እንዴት እንደሚሰራ' : 'HOW IT WORKS'}</h2>
+              <p className="text-muted-foreground mt-4">{isAm ? 'የከተማ አገልግሎቶችን ማግኘት ቀላልና ቀጥተኛ ነው' : 'Accessing city services is simple and straightforward'}</p>
             </motion.div>
             <div className="grid md:grid-cols-3 gap-8">
               {steps.map((step) => (
@@ -213,8 +172,8 @@ export default function ServicesPage({ navigateTo }: ServicesPageProps) {
                   <div className="w-16 h-16 rounded-full bg-[#1a6b3c] text-white text-2xl font-bold flex items-center justify-center mx-auto mb-4 shadow-lg">
                     {step.num}
                   </div>
-                  <h3 className="text-lg font-bold text-[#0d4a28] mb-2">{step.title}</h3>
-                  <p className="text-sm text-muted-foreground leading-relaxed">{step.desc}</p>
+                  <h3 className="text-lg font-bold text-[#0d4a28] mb-2">{isAm ? step.titleAm : step.title}</h3>
+                  <p className="text-sm text-muted-foreground leading-relaxed">{isAm ? step.descAm : step.desc}</p>
                 </motion.div>
               ))}
             </div>
