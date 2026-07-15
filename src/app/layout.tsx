@@ -1,9 +1,10 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
+import { Geist, Geist_Mono, Noto_Sans_Ethiopic } from "next/font/google";
 import "./globals.css";
 import { Toaster } from "@/components/ui/toaster";
 import { ThemeProvider } from "next-themes";
 import { LangProvider } from "@/lib/LangContext";
+import CookieConsent from "@/components/CookieConsent";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -13,6 +14,13 @@ const geistSans = Geist({
 const geistMono = Geist_Mono({
   variable: "--font-geist-mono",
   subsets: ["latin"],
+});
+
+const notoEthiopic = Noto_Sans_Ethiopic({
+  variable: "--font-ethiopic",
+  subsets: ["ethiopic"],
+  weight: ["400", "500", "600", "700", "800"],
+  display: "swap",
 });
 
 const siteUrl = "https://dessiecity.gov.et";
@@ -316,12 +324,13 @@ export default function RootLayout({
           }}
         />
       </head>
-      <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
+      <body className={`${geistSans.variable} ${geistMono.variable} ${notoEthiopic.variable} antialiased`}>
         <ThemeProvider attribute="class" defaultTheme="light" enableSystem disableTransitionOnChange>
           <LangProvider>
             {children}
           </LangProvider>
           <Toaster />
+          <CookieConsent />
         </ThemeProvider>
       </body>
     </html>

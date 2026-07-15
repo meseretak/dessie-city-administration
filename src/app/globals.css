@@ -434,3 +434,19 @@ font.translated-rtl {
   box-shadow: none !important;
   border: none !important;
 }
+
+/* ===== ETHIOPIC / AMHARIC FONT ===== */
+/* Apply Noto Sans Ethiopic for any Ethiopic script characters */
+:lang(am),
+.lang-am,
+[data-lang="am"] {
+  font-family: var(--font-ethiopic), 'Noto Sans Ethiopic', system-ui, sans-serif;
+}
+
+/* Ensure Ethiopic characters always render with the correct font */
+@supports (font-family: 'Noto Sans Ethiopic') {
+  /* Unicode Ethiopic block: U+1200–U+137F */
+  *:not(code):not(pre) {
+    font-family: var(--font-geist-sans), var(--font-ethiopic), 'Noto Sans Ethiopic', system-ui, sans-serif;
+  }
+}
