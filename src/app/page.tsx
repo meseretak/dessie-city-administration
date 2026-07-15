@@ -1,4 +1,4 @@
-'use client'
+﻿'use client'
 
 import { useState, useEffect, useRef } from 'react'
 import { useTheme } from 'next-themes'
@@ -13,7 +13,11 @@ import { useToast } from '@/hooks/use-toast'
 import {
   Search, X, Menu, ChevronDown, Bot, Send, Phone, Mail,
   Facebook, Twitter, Instagram, Youtube, Linkedin, FileText,
-  ChevronRight, Sun, Moon, Shield, Loader2, Languages
+  ChevronRight, Sun, Moon, Shield, Loader2, Languages,
+  Home as HomeIcon, Info, Crown, Settings, Bell, PhoneCall,
+  Newspaper, Briefcase, Gavel, FolderOpen, Hotel, Map, Mountain,
+  Baby, FileCheck, Building, MapPin, Receipt, Stethoscope, GraduationCap,
+  Bus, Droplets, MessageSquareWarning, CalendarDays, ArrowRight
 } from 'lucide-react'
 import type { PageId } from '@/lib/types'
 import { NAV_ITEMS } from '@/lib/types'
@@ -76,24 +80,64 @@ export default function Home() {
 
   const navItems = dbMenuItems ?? NAV_ITEMS
 
+  // Icon map for nav items
+  const navIcons: Record<string, React.ElementType> = {
+    'HOME': HomeIcon, 'ABOUT': Info, 'MAYOR': Crown,
+    'SERVICES': Settings, 'ANNOUNCEMENTS': Bell, 'CONTACT': PhoneCall,
+    'News & Media': Newspaper, 'Vacancies': Briefcase, 'Bids & Tenders': Gavel,
+    'City Projects': FolderOpen, 'Tourism & Culture': Mountain, 'Hotels': Hotel,
+    'All Services': Settings,
+    'Birth Registration': Baby, 'Business License': FileCheck,
+    'Building Permit': Building, 'Land Services': MapPin, 'Tax Payment': Receipt,
+    'Health Services': Stethoscope, 'Education': GraduationCap,
+    'Transportation': Bus, 'Water & Electricity': Droplets,
+    'Complaints': MessageSquareWarning, 'Appointments': CalendarDays,
+  }
+
   // Translate nav label based on current language
   const navLabel = (label: string): string => {
     if (lang === 'en') return label
     const map: Record<string, string> = {
-      'HOME': 'ዋና ገጽ', 'ABOUT': 'ስለ ከተማ', 'MAYOR': 'ከንቲባ',
-      'SERVICES': 'አገልግሎቶች', 'ANNOUNCEMENTS': 'ማስታወቂያዎች', 'CONTACT': 'ያግኙን',
-      'All Services': 'ሁሉም አገልግሎቶች', 'News & Media': 'ዜናና ሚዲያ',
-      'Vacancies': 'ክፍት ቦታዎች', 'Bids & Tenders': 'ጨረታዎች',
-      'City Projects': 'የከተማ ፕሮጀክቶች', 'Tourism & Culture': 'ቱሪዝምና ባህል',
-      'Hotels': 'ሆቴሎች',
+      'HOME': 'á‹‹áŠ“ áŒˆáŒ½', 'ABOUT': 'áˆµáˆˆ áŠ¨á‰°áˆ›', 'MAYOR': 'áŠ¨áŠ•á‰²á‰£',
+      'SERVICES': 'áŠ áŒˆáˆáŒáˆŽá‰¶á‰½', 'ANNOUNCEMENTS': 'áˆ›áˆµá‰³á‹ˆá‰‚á‹«á‹Žá‰½', 'CONTACT': 'á‹«áŒáŠ™áŠ•',
+      'All Services': 'áˆáˆ‰áˆ áŠ áŒˆáˆáŒáˆŽá‰¶á‰½', 'News & Media': 'á‹œáŠ“áŠ“ áˆšá‹²á‹«',
+      'Vacancies': 'áŠ­áá‰µ á‰¦á‰³á‹Žá‰½', 'Bids & Tenders': 'áŒ¨áˆ¨á‰³á‹Žá‰½',
+      'City Projects': 'á‹¨áŠ¨á‰°áˆ› á•áˆ®áŒ€áŠ­á‰¶á‰½', 'Tourism & Culture': 'á‰±áˆªá‹áˆáŠ“ á‰£áˆ…áˆ',
+      'Hotels': 'áˆ†á‰´áˆŽá‰½', 'Birth Registration': 'á‹¨áˆá‹°á‰µ áˆá‹áŒˆá‰£',
+      'Business License': 'á‹¨áŠ•áŒá‹µ áˆá‰ƒá‹µ', 'Building Permit': 'á‹¨áŒáŠ•á‰£á‰³ áˆá‰ƒá‹µ',
+      'Land Services': 'á‹¨áˆ˜áˆ¬á‰µ áŠ áŒˆáˆáŒáˆŽá‰¶á‰½', 'Tax Payment': 'áŒá‰¥áˆ­ áŠ­áá‹«',
+      'Health Services': 'á‹¨áŒ¤áŠ“ áŠ áŒˆáˆáŒáˆŽá‰¶á‰½', 'Education': 'á‰µáˆáˆ…áˆ­á‰µ',
+      'Transportation': 'á‰µáˆ«áŠ•áˆµá–áˆ­á‰µ', 'Water & Electricity': 'á‹áˆƒáŠ“ áŠ¤áˆŒáŠ­á‰µáˆªáŠ­',
+      'Complaints': 'á‰…áˆ¬á‰³á‹Žá‰½', 'Appointments': 'á‰€áŒ áˆ®á‹Žá‰½',
     }
     return map[label] || label
+  }
+
+  // Sub-menu items for pages that have no DB children
+  const getSubMenuItems = (pageId: string): { id: PageId; label: string }[] => {
+    const subMenus: Record<string, { id: PageId; label: string }[]> = {
+      'about': [
+        { id: 'about', label: lang === 'am' ? 'áˆµáˆˆ á‹°áˆ´' : 'About Dessie' },
+        { id: 'tourism', label: lang === 'am' ? 'á‰±áˆªá‹áˆáŠ“ á‰£áˆ…áˆ' : 'Tourism & Culture' },
+        { id: 'projects', label: lang === 'am' ? 'á•áˆ®áŒ€áŠ­á‰¶á‰½' : 'City Projects' },
+        { id: 'transparency', label: lang === 'am' ? 'áŒáˆáŒ½áŠá‰µ' : 'Transparency' },
+      ],
+      'mayor': [
+        { id: 'mayor', label: lang === 'am' ? 'áŠ¨áŠ•á‰²á‰£' : "Mayor's Profile" },
+        { id: 'about', label: lang === 'am' ? 'áŠ áˆµá‰°á‹³á‹°áˆ­' : 'Administration' },
+      ],
+      'contact': [
+        { id: 'contact', label: lang === 'am' ? 'á‹«áŒáŠ™áŠ•' : 'Contact Us' },
+        { id: 'services', label: lang === 'am' ? 'áŠ áŒˆáˆáŒáˆŽá‰¶á‰½' : 'Request Service' },
+      ],
+    }
+    return subMenus[pageId] || []
   }
 
   // Chat widget state
   const [chatOpen, setChatOpen] = useState(false)
   const [chatMessages, setChatMessages] = useState<{ role: 'bot' | 'user'; text: string }[]>([
-    { role: 'bot', text: 'Welcome to Dessie City! 🏛️' },
+    { role: 'bot', text: 'Welcome to Dessie City! ðŸ›ï¸' },
     { role: 'bot', text: 'I can help you with services, news, vacancies, bids, tourism, and more. Ask me anything!' },
   ])
   const [chatInput, setChatInput] = useState('')
@@ -126,7 +170,7 @@ export default function Home() {
   const [newsletterEmail, setNewsletterEmail] = useState('')
   const [newsletterLoading, setNewsletterLoading] = useState(false)
 
-  // Dropdown state — supports multiple dropdowns by nav label
+  // Dropdown state â€” supports multiple dropdowns by nav label
   const [openDropdown, setOpenDropdown] = useState<string | null>(null)
   const dropdownTimeout = useRef<NodeJS.Timeout | null>(null)
 
@@ -280,89 +324,113 @@ export default function Home() {
             </div>
           </button>
 
-          {/* Center: Desktop Nav — pushed right with ml-auto */}
+          {/* Center: Desktop Nav */}
           <nav className="hidden xl:flex items-center gap-0.5 ml-auto">
-            {navItems.map((item) => (
-              <div
-                key={item.label}
-                className="relative mega-nav-trigger"
-                onMouseEnter={() => item.children ? handleDropdownEnter(item.label) : undefined}
-                onMouseLeave={() => item.children ? handleDropdownLeave() : undefined}
-              >
-                <button
-                  onClick={() => navigateTo(item.id)}
-                  className={`gov-nav-link px-3 py-2 rounded-md text-[0.78rem] font-medium flex items-center gap-1 transition-all ${
-                    currentPage === item.id
-                      ? 'text-white bg-[#1a6b3c] shadow-md shadow-[#1a6b3c]/20'
-                      : 'text-[#333] hover:text-[#1a6b3c] hover:bg-[#1a6b3c]/5'
-                  }`}
+            {navItems.map((item) => {
+              const NavIcon = navIcons[item.label] || HomeIcon
+              const subItems = item.children && item.children.length > 0
+                ? item.children
+                : getSubMenuItems(item.id)
+              const hasDropdown = subItems.length > 0
+              return (
+                <div
+                  key={item.label}
+                  className="relative"
+                  onMouseEnter={() => hasDropdown ? handleDropdownEnter(item.label) : undefined}
+                  onMouseLeave={() => hasDropdown ? handleDropdownLeave() : undefined}
                 >
-                  {navLabel(item.label)}
-                  {item.children && <ChevronDown className="w-3 h-3" />}
-                </button>
-
-                {/* Dropdown for Services / Announcements */}
-                {item.children && openDropdown === item.label && (
-                  <div
-                    className="mega-nav-dropdown absolute top-full left-1/2 -translate-x-1/2 mt-1 bg-background border border-border rounded-xl shadow-2xl p-5 z-[70]"
-                    style={{ width: item.label === 'SERVICES' ? '600px' : '280px' }}
-                    onMouseEnter={() => handleDropdownEnter(item.label)}
-                    onMouseLeave={() => handleDropdownLeave()}
+                  <button
+                    onClick={() => navigateTo(item.id)}
+                    className={`flex items-center gap-1.5 px-3 py-2 rounded-lg text-[0.76rem] font-semibold transition-all ${
+                      currentPage === item.id
+                        ? 'text-white bg-[#1a6b3c] shadow-md'
+                        : 'text-[#333] hover:text-[#1a6b3c] hover:bg-[#1a6b3c]/8'
+                    }`}
                   >
-                    {item.label === 'SERVICES' ? (
-                      <div>
-                        <button
-                          onClick={() => { navigateTo('services'); setOpenDropdown(null) }}
-                          className="w-full text-left px-3 py-2 rounded-lg text-sm font-semibold text-[#1a6b3c] dark:text-green-400 hover:bg-[#1a6b3c]/5 mb-2"
-                        >
-                          {lang === 'am' ? 'ሁሉም አገልግሎቶች →' : 'View All Services →'}
-                        </button>
-                        <div className="grid grid-cols-3 gap-1">
-                        {item.children.map((child) => (
-                          <button
-                            key={child.label}
-                            onClick={() => {
-                              if (child.label.startsWith('──')) {
-                                navigateTo(child.id as PageId)
-                              } else if (child.id === 'services') {
-                                navigateTo('services')
-                              } else {
-                                navigateTo('service-detail', { serviceId: child.label })
-                              }
-                              setOpenDropdown(null)
-                            }}
-                            className={`text-left px-3 py-2.5 rounded-lg text-sm transition-colors ${
-                              child.label.startsWith('──')
-                                ? 'text-[#1a6b3c] dark:text-green-400 font-semibold hover:bg-[#1a6b3c]/5 mt-2'
-                                : 'text-muted-foreground hover:text-[#1a6b3c] dark:hover:text-green-400 hover:bg-muted/50'
-                            }`}
-                          >
-                            {navLabel(child.label.replace('── ', ''))}
-                          </button>
-                        ))}
+                    <NavIcon className="w-3.5 h-3.5 shrink-0" />
+                    {navLabel(item.label)}
+                    {hasDropdown && <ChevronDown className={`w-3 h-3 transition-transform duration-200 ${openDropdown === item.label ? 'rotate-180' : ''}`} />}
+                  </button>
+
+                  {/* Beautiful Dropdown */}
+                  {hasDropdown && openDropdown === item.label && (
+                    <div
+                      className="absolute top-full left-1/2 -translate-x-1/2 mt-2 bg-white border border-[#e2e8e0] rounded-2xl shadow-2xl z-[70] overflow-hidden"
+                      style={{ minWidth: item.label === 'SERVICES' ? '580px' : '240px' }}
+                      onMouseEnter={() => handleDropdownEnter(item.label)}
+                      onMouseLeave={() => handleDropdownLeave()}
+                    >
+                      {/* Dropdown header */}
+                      <div className="bg-gradient-to-r from-[#0d4a28] to-[#1a6b3c] px-4 py-3 flex items-center gap-2">
+                        <NavIcon className="w-4 h-4 text-[#c8a415]" />
+                        <span className="text-white font-bold text-sm">{navLabel(item.label)}</span>
+                      </div>
+
+                      {item.label === 'SERVICES' ? (
+                        <div className="p-4">
+                          <div className="grid grid-cols-3 gap-2 mb-3">
+                            {subItems.filter(c => !c.label.startsWith('â”€â”€')).slice(0, 12).map((child) => {
+                              const ChildIcon = navIcons[child.label] || FileText
+                              return (
+                                <button
+                                  key={child.label}
+                                  onClick={() => {
+                                    if (child.id === 'services') navigateTo('services')
+                                    else navigateTo('service-detail', { serviceId: child.label })
+                                    setOpenDropdown(null)
+                                  }}
+                                  className="flex items-center gap-2 px-3 py-2.5 rounded-xl text-sm text-left transition-all hover:bg-[#1a6b3c]/8 hover:text-[#1a6b3c] group border border-transparent hover:border-[#1a6b3c]/20"
+                                >
+                                  <div className="w-7 h-7 rounded-lg bg-[#0d4a28]/8 group-hover:bg-[#1a6b3c] flex items-center justify-center shrink-0 transition-all">
+                                    <ChildIcon className="w-3.5 h-3.5 text-[#0d4a28] group-hover:text-white" />
+                                  </div>
+                                  <span className="text-[12px] font-medium text-gray-700 group-hover:text-[#1a6b3c] leading-tight">{navLabel(child.label.replace('â”€â”€ ', ''))}</span>
+                                </button>
+                              )
+                            })}
+                          </div>
+                          <div className="border-t border-[#e2e8e0] pt-2 flex gap-2">
+                            {subItems.filter(c => c.label.startsWith('â”€â”€')).map((child) => {
+                              const ChildIcon = navIcons[child.label.replace('â”€â”€ ', '')] || Map
+                              return (
+                                <button
+                                  key={child.label}
+                                  onClick={() => { navigateTo(child.id as PageId); setOpenDropdown(null) }}
+                                  className="flex items-center gap-2 flex-1 px-3 py-2 rounded-xl text-sm font-semibold text-[#1a6b3c] hover:bg-[#1a6b3c] hover:text-white border border-[#1a6b3c]/20 transition-all group"
+                                >
+                                  <ChildIcon className="w-3.5 h-3.5" />
+                                  {navLabel(child.label.replace('â”€â”€ ', ''))}
+                                  <ArrowRight className="w-3 h-3 ml-auto" />
+                                </button>
+                              )
+                            })}
+                          </div>
                         </div>
-                      </div>
-                    ) : (
-                      <div className="space-y-1">
-                        {item.children.map((child) => (
-                          <button
-                            key={child.label}
-                            onClick={() => {
-                              navigateTo(child.id as PageId)
-                              setOpenDropdown(null)
-                            }}
-                            className="w-full text-left px-3 py-3 rounded-lg text-sm text-muted-foreground hover:text-[#1a6b3c] dark:hover:text-green-400 hover:bg-muted/50 transition-colors flex items-center gap-2"
-                          >
-                            {navLabel(child.label)}
-                            <ChevronRight className="w-3 h-3 ml-auto opacity-50" />
-                          </button>
-                        ))}
-                      </div>
-                    )}
-                  </div>
-                )}
-              </div>
-            ))}
+                      ) : (
+                        <div className="p-2">
+                          {subItems.map((child) => {
+                            const ChildIcon = navIcons[child.label] || FileText
+                            return (
+                              <button
+                                key={child.label}
+                                onClick={() => { navigateTo(child.id as PageId); setOpenDropdown(null) }}
+                                className="w-full flex items-center gap-3 px-3 py-3 rounded-xl text-sm transition-all hover:bg-[#1a6b3c]/8 hover:text-[#1a6b3c] group"
+                              >
+                                <div className="w-8 h-8 rounded-xl bg-[#0d4a28]/8 group-hover:bg-[#1a6b3c] flex items-center justify-center shrink-0 transition-all">
+                                  <ChildIcon className="w-4 h-4 text-[#0d4a28] group-hover:text-white" />
+                                </div>
+                                <span className="font-medium text-gray-700 group-hover:text-[#1a6b3c]">{navLabel(child.label)}</span>
+                                <ChevronRight className="w-3.5 h-3.5 ml-auto text-gray-400 group-hover:text-[#1a6b3c]" />
+                              </button>
+                            )
+                          })}
+                        </div>
+                      )}
+                    </div>
+                  )}
+                </div>
+              )
+            })}
           </nav>
 
           {/* Right: Actions */}
@@ -415,14 +483,14 @@ export default function Home() {
                           <p className="text-xs font-semibold text-muted-foreground mb-2 uppercase tracking-wider">Quick Search</p>
                           <div className="flex flex-wrap gap-2">
                             {[
-                              { label: '🏛️ Services', page: 'services' as const },
-                              { label: '📰 News', page: 'news' as const },
-                              { label: '💼 Vacancies', page: 'vacancy' as const },
-                              { label: '📋 Bids', page: 'bids' as const },
-                              { label: '🏨 Hotels', page: 'hotels' as const },
-                              { label: '🏔️ Tourism', page: 'tourism' as const },
-                              { label: '📢 Announcements', page: 'announcements' as const },
-                              { label: '📞 Contact', page: 'contact' as const },
+                              { label: 'ðŸ›ï¸ Services', page: 'services' as const },
+                              { label: 'ðŸ“° News', page: 'news' as const },
+                              { label: 'ðŸ’¼ Vacancies', page: 'vacancy' as const },
+                              { label: 'ðŸ“‹ Bids', page: 'bids' as const },
+                              { label: 'ðŸ¨ Hotels', page: 'hotels' as const },
+                              { label: 'ðŸ”ï¸ Tourism', page: 'tourism' as const },
+                              { label: 'ðŸ“¢ Announcements', page: 'announcements' as const },
+                              { label: 'ðŸ“ž Contact', page: 'contact' as const },
                             ].map(item => (
                               <button key={item.page} onClick={() => { setSearchOpen(false); navigateTo(item.page) }}
                                 className="px-3 py-1.5 text-xs font-medium bg-[#f0fdf4] hover:bg-[#0d4a28] hover:text-white text-[#0d4a28] rounded-lg border border-[#1a6b3c]/20 transition-all">
@@ -440,7 +508,7 @@ export default function Home() {
               </Tooltip>
             </TooltipProvider>
 
-            {/* Language Toggle — built-in EN/AM */}
+            {/* Language Toggle â€” built-in EN/AM */}
             <TooltipProvider>
               <Tooltip>
                 <TooltipTrigger asChild>
@@ -452,7 +520,7 @@ export default function Home() {
                     aria-label="Toggle language"
                   >
                     <Languages className="w-3.5 h-3.5" />
-                    <span className="hidden sm:inline">{lang === 'en' ? 'አማ' : 'EN'}</span>
+                    <span className="hidden sm:inline">{lang === 'en' ? 'áŠ áˆ›' : 'EN'}</span>
                   </Button>
                 </TooltipTrigger>
                 <TooltipContent>{lang === 'en' ? 'Switch to Amharic' : 'Switch to English'}</TooltipContent>
@@ -497,7 +565,7 @@ export default function Home() {
                         style={{ backgroundColor: ac.color }}
                         aria-label={ac.label}
                       >
-                        {accentColor === ac.color && <span className="flex items-center justify-center w-full h-full">✓</span>}
+                        {accentColor === ac.color && <span className="flex items-center justify-center w-full h-full">âœ“</span>}
                       </button>
                     ))}
                   </div>
@@ -509,58 +577,63 @@ export default function Home() {
                   className="w-full flex items-center gap-2 px-4 py-2 mb-2 rounded-md bg-[#f0fdf4] text-[#0d4a28] text-sm font-semibold border border-[#1a6b3c]/20"
                 >
                   <Languages className="w-4 h-4" />
-                  {lang === 'en' ? 'አማርኛ (Switch to Amharic)' : 'English (ወደ እንግሊዝኛ)'}
+                  {lang === 'en' ? 'áŠ áˆ›áˆ­áŠ› (Switch to Amharic)' : 'English (á‹ˆá‹° áŠ¥áŠ•áŒáˆŠá‹áŠ›)'}
                 </button>
-                <nav className="flex flex-col gap-1">
-                  {navItems.map((item) => (
-                    <div key={item.label}>
-                      <button
-                        onClick={() => {
-                          if (item.children) {
-                            setOpenDropdown(openDropdown === item.label ? null : item.label)
-                          } else {
-                            navigateTo(item.id)
-                          }
-                        }}
-                        className={`gov-nav-link w-full px-4 py-3 text-left flex items-center justify-between rounded-md transition-colors ${
-                          currentPage === item.id
-                            ? 'text-[#1a6b3c] dark:text-green-400 bg-[#1a6b3c]/5 font-medium'
-                            : 'text-muted-foreground hover:text-[#1a6b3c] dark:hover:text-green-400 hover:bg-muted/50'
-                        }`}
-                      >
-                        {navLabel(item.label)}
-                        {item.children && <ChevronDown className={`w-3 h-3 transition-transform ${openDropdown === item.label ? 'rotate-180' : ''}`} />}
-                      </button>
-                      {/* Mobile dropdown children */}
-                      {item.children && openDropdown === item.label && (
-                        <div className="pl-6 space-y-0.5 mt-1 mb-2">
-                          {item.children.map((child) => (
-                            <button
-                              key={child.label}
-                              onClick={() => {
-                                if (child.label.startsWith('──')) {
-                                  navigateTo(child.id as PageId)
-                                } else if (child.id === 'services') {
-                                  navigateTo('services')
-                                } else if (child.id === 'service-detail') {
-                                  navigateTo('service-detail', { serviceId: child.label })
-                                } else {
-                                  navigateTo(child.id as PageId)
-                                }
-                              }}
-                              className={`w-full text-left px-4 py-2 text-sm rounded-md transition-colors ${
-                                child.label.startsWith('──')
-                                  ? 'text-[#1a6b3c] dark:text-green-400 font-semibold hover:bg-[#1a6b3c]/5'
-                                  : 'text-muted-foreground hover:text-[#1a6b3c] dark:hover:text-green-400 hover:bg-muted/50'
-                              }`}
-                            >
-                              {navLabel(child.label.replace('── ', ''))}
-                            </button>
-                          ))}
-                        </div>
-                      )}
-                    </div>
-                  ))}
+                <nav className="flex flex-col gap-0.5">
+                  {navItems.map((item) => {
+                    const NavIcon = navIcons[item.label] || HomeIcon
+                    const subItems = item.children && item.children.length > 0
+                      ? item.children
+                      : getSubMenuItems(item.id)
+                    const hasDropdown = subItems.length > 0
+                    return (
+                      <div key={item.label}>
+                        <button
+                          onClick={() => {
+                            if (hasDropdown) {
+                              setOpenDropdown(openDropdown === item.label ? null : item.label)
+                            } else {
+                              navigateTo(item.id)
+                            }
+                          }}
+                          className={`w-full px-3 py-3 text-left flex items-center gap-3 rounded-xl transition-colors ${
+                            currentPage === item.id
+                              ? 'text-white bg-[#1a6b3c] font-semibold'
+                              : 'text-gray-700 hover:text-[#1a6b3c] hover:bg-[#1a6b3c]/8'
+                          }`}
+                        >
+                          <div className={`w-8 h-8 rounded-lg flex items-center justify-center ${currentPage === item.id ? 'bg-white/20' : 'bg-[#0d4a28]/10'}`}>
+                            <NavIcon className={`w-4 h-4 ${currentPage === item.id ? 'text-white' : 'text-[#0d4a28]'}`} />
+                          </div>
+                          <span className="flex-1 text-sm font-medium">{navLabel(item.label)}</span>
+                          {hasDropdown && <ChevronDown className={`w-4 h-4 transition-transform ${openDropdown === item.label ? 'rotate-180' : ''}`} />}
+                        </button>
+                        {hasDropdown && openDropdown === item.label && (
+                          <div className="ml-4 mt-0.5 mb-1 bg-[#f8faf8] rounded-xl border border-[#e2e8e0] overflow-hidden">
+                            {subItems.map((child) => {
+                              const ChildIcon = navIcons[child.label.replace('â”€â”€ ', '')] || FileText
+                              return (
+                                <button
+                                  key={child.label}
+                                  onClick={() => {
+                                    if (child.label.startsWith('â”€â”€')) navigateTo(child.id as PageId)
+                                    else if (child.id === 'services') navigateTo('services')
+                                    else if (child.id === 'service-detail') navigateTo('service-detail', { serviceId: child.label })
+                                    else navigateTo(child.id as PageId)
+                                  }}
+                                  className="w-full flex items-center gap-2.5 px-3 py-2.5 text-sm text-gray-600 hover:text-[#1a6b3c] hover:bg-[#1a6b3c]/8 transition-colors border-b border-[#e2e8e0] last:border-0"
+                                >
+                                  <ChildIcon className="w-3.5 h-3.5 text-[#1a6b3c] shrink-0" />
+                                  {navLabel(child.label.replace('â”€â”€ ', ''))}
+                                  <ChevronRight className="w-3 h-3 ml-auto text-gray-400" />
+                                </button>
+                              )
+                            })}
+                          </div>
+                        )}
+                      </div>
+                    )
+                  })}
                   <Separator className="my-3" />
                 </nav>
                 {/* Mobile bottom accent color indicator */}
@@ -576,7 +649,7 @@ export default function Home() {
         <div className="bg-[#f0f4f0] dark:bg-[#0a1a0e] border-b border-border px-4 py-3">
           <div className="max-w-7xl mx-auto flex items-center gap-2 text-sm">
             <button onClick={() => navigateTo('home')} className="text-muted-foreground hover:text-[#1a6b3c] dark:hover:text-green-400 transition-colors">
-              {lang === 'am' ? 'ዋና ገጽ' : 'Home'}
+              {lang === 'am' ? 'á‹‹áŠ“ áŒˆáŒ½' : 'Home'}
             </button>
             <ChevronRight className="w-3 h-3 text-muted-foreground" />
             <span className="text-[#1a6b3c] dark:text-green-400 font-medium">
@@ -639,15 +712,15 @@ export default function Home() {
 
             {/* Column 2: Quick Links */}
             <div>
-              <h4 className="text-white font-semibold text-sm tracking-wider uppercase mb-4">{lang === 'am' ? 'ፈጣን አገናኞች' : 'Quick Links'}</h4>
+              <h4 className="text-white font-semibold text-sm tracking-wider uppercase mb-4">{lang === 'am' ? 'áˆáŒ£áŠ• áŠ áŒˆáŠ“áŠžá‰½' : 'Quick Links'}</h4>
               <ul className="space-y-2">
                 {[
-                  { en: 'Home', am: 'ዋና ገጽ', page: 'home' as PageId },
-                  { en: 'About Dessie', am: 'ስለ ደሴ', page: 'about' as PageId },
-                  { en: "Mayor's Office", am: 'የከንቲባ ቢሮ', page: 'mayor' as PageId },
-                  { en: 'All Services', am: 'ሁሉም አገልግሎቶች', page: 'services' as PageId },
-                  { en: 'Announcements', am: 'ማስታወቂያዎች', page: 'announcements' as PageId },
-                  { en: 'Contact Us', am: 'ያግኙን', page: 'contact' as PageId },
+                  { en: 'Home', am: 'á‹‹áŠ“ áŒˆáŒ½', page: 'home' as PageId },
+                  { en: 'About Dessie', am: 'áˆµáˆˆ á‹°áˆ´', page: 'about' as PageId },
+                  { en: "Mayor's Office", am: 'á‹¨áŠ¨áŠ•á‰²á‰£ á‰¢áˆ®', page: 'mayor' as PageId },
+                  { en: 'All Services', am: 'áˆáˆ‰áˆ áŠ áŒˆáˆáŒáˆŽá‰¶á‰½', page: 'services' as PageId },
+                  { en: 'Announcements', am: 'áˆ›áˆµá‰³á‹ˆá‰‚á‹«á‹Žá‰½', page: 'announcements' as PageId },
+                  { en: 'Contact Us', am: 'á‹«áŒáŠ™áŠ•', page: 'contact' as PageId },
                 ].map((link) => (
                   <li key={link.en}>
                     <button
@@ -663,14 +736,14 @@ export default function Home() {
 
             {/* Column 3: Services */}
             <div>
-              <h4 className="text-white font-semibold text-sm tracking-wider uppercase mb-4">{lang === 'am' ? 'አገልግሎቶች' : 'Services'}</h4>
+              <h4 className="text-white font-semibold text-sm tracking-wider uppercase mb-4">{lang === 'am' ? 'áŠ áŒˆáˆáŒáˆŽá‰¶á‰½' : 'Services'}</h4>
               <ul className="space-y-2">
                 {[
-                  { en: 'Birth Registration', am: 'የልደት ምዝገባ' },
-                  { en: 'Business License', am: 'የንግድ ፈቃድ' },
-                  { en: 'Building Permit', am: 'የግንባታ ፈቃድ' },
-                  { en: 'Land Services', am: 'የመሬት አገልግሎቶች' },
-                  { en: 'Tax Payment', am: 'ግብር ክፍያ' },
+                  { en: 'Birth Registration', am: 'á‹¨áˆá‹°á‰µ áˆá‹áŒˆá‰£' },
+                  { en: 'Business License', am: 'á‹¨áŠ•áŒá‹µ áˆá‰ƒá‹µ' },
+                  { en: 'Building Permit', am: 'á‹¨áŒáŠ•á‰£á‰³ áˆá‰ƒá‹µ' },
+                  { en: 'Land Services', am: 'á‹¨áˆ˜áˆ¬á‰µ áŠ áŒˆáˆáŒáˆŽá‰¶á‰½' },
+                  { en: 'Tax Payment', am: 'áŒá‰¥áˆ­ áŠ­áá‹«' },
                 ].map((svc) => (
                   <li key={svc.en}>
                     <button
@@ -686,15 +759,15 @@ export default function Home() {
 
             {/* Column 4: Resources */}
             <div>
-              <h4 className="text-white font-semibold text-sm tracking-wider uppercase mb-4">{lang === 'am' ? 'ሰነዶች' : 'Resources'}</h4>
+              <h4 className="text-white font-semibold text-sm tracking-wider uppercase mb-4">{lang === 'am' ? 'áˆ°áŠá‹¶á‰½' : 'Resources'}</h4>
               <ul className="space-y-2">
                 {[
-                  { en: 'Proclamations', am: 'አዋጆች' },
-                  { en: 'Regulations', am: 'ደንቦች' },
-                  { en: 'Official Documents', am: 'ይፋዊ ሰነዶች' },
-                  { en: 'Application Forms', am: 'ማመልከቻ ቅጾች' },
-                  { en: 'Annual Reports', am: 'ዓመታዊ ሪፖርቶች' },
-                  { en: 'City Plans', am: 'የከተማ እቅዶች' },
+                  { en: 'Proclamations', am: 'áŠ á‹‹áŒ†á‰½' },
+                  { en: 'Regulations', am: 'á‹°áŠ•á‰¦á‰½' },
+                  { en: 'Official Documents', am: 'á‹­á‹á‹Š áˆ°áŠá‹¶á‰½' },
+                  { en: 'Application Forms', am: 'áˆ›áˆ˜áˆáŠ¨á‰» á‰…áŒ¾á‰½' },
+                  { en: 'Annual Reports', am: 'á‹“áˆ˜á‰³á‹Š áˆªá–áˆ­á‰¶á‰½' },
+                  { en: 'City Plans', am: 'á‹¨áŠ¨á‰°áˆ› áŠ¥á‰…á‹¶á‰½' },
                 ].map((res) => (
                   <li key={res.en}>
                     <button
@@ -710,7 +783,7 @@ export default function Home() {
 
             {/* Column 5: Connect */}
             <div>
-              <h4 className="text-white font-semibold text-sm tracking-wider uppercase mb-4">{lang === 'am' ? 'ያግኙን' : 'Connect'}</h4>
+              <h4 className="text-white font-semibold text-sm tracking-wider uppercase mb-4">{lang === 'am' ? 'á‹«áŒáŠ™áŠ•' : 'Connect'}</h4>
               <div className="flex gap-2 mb-4">
                 {[Facebook, Twitter, Instagram, Youtube].map((Icon, i) => (
                   <button
@@ -722,7 +795,7 @@ export default function Home() {
                   </button>
                 ))}
               </div>
-              <p className="text-sm text-white/50 mb-3">{lang === 'am' ? 'በኢሜይል ዝማኔዎችን ያግኙ' : 'Get updates via email'}</p>
+              <p className="text-sm text-white/50 mb-3">{lang === 'am' ? 'á‰ áŠ¢áˆœá‹­áˆ á‹áˆ›áŠ”á‹Žá‰½áŠ• á‹«áŒáŠ™' : 'Get updates via email'}</p>
               <form onSubmit={handleNewsletterSubmit} className="flex gap-2">
                 <Input
                   value={newsletterEmail}
@@ -745,7 +818,7 @@ export default function Home() {
         <div className="border-t border-white/10">
           <div className="max-w-7xl mx-auto px-4 py-4 flex flex-col sm:flex-row items-center justify-between gap-2">
             <p className="text-xs text-white/40 leading-relaxed">
-              © 2025 Dessie City Administration. All Rights Reserved. | Amhara Region, Federal Democratic Republic of Ethiopia
+              Â© 2025 Dessie City Administration. All Rights Reserved. | Amhara Region, Federal Democratic Republic of Ethiopia
             </p>
             <div className="flex items-center gap-3">
               <p className="text-xs text-white/40">
