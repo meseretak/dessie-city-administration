@@ -428,25 +428,22 @@ export default function Home() {
               </Tooltip>
             </TooltipProvider>
 
-            {/* Language Toggle — uses GoogleTranslate component */}
+            {/* Language Toggle — built-in EN/AM */}
             <TooltipProvider>
               <Tooltip>
                 <TooltipTrigger asChild>
                   <Button
                     variant="ghost"
                     size="sm"
-                    className="h-8 px-2 text-xs font-semibold gap-1"
-                    onClick={() => {
-                      const btn = document.getElementById('gt-toggle-btn') as HTMLButtonElement | null
-                      if (btn) btn.click()
-                    }}
+                    className="h-8 px-2 text-xs font-semibold gap-1 border border-[#1a6b3c]/20 hover:border-[#1a6b3c]"
+                    onClick={toggleLang}
                     aria-label="Toggle language"
                   >
                     <Languages className="w-3.5 h-3.5" />
-                    <span className="hidden sm:inline">አማ / EN</span>
+                    <span className="hidden sm:inline">{lang === 'en' ? 'አማ' : 'EN'}</span>
                   </Button>
                 </TooltipTrigger>
-                <TooltipContent>Switch to Amharic / English</TooltipContent>
+                <TooltipContent>{lang === 'en' ? 'Switch to Amharic' : 'Switch to English'}</TooltipContent>
               </Tooltip>
             </TooltipProvider>
 
@@ -496,14 +493,11 @@ export default function Home() {
                 <Separator className="mb-4" />
                 {/* Language toggle mobile */}
                 <button
-                  onClick={() => {
-                    const btn = document.getElementById('gt-toggle-btn') as HTMLButtonElement | null
-                    if (btn) btn.click()
-                  }}
-                  className="w-full flex items-center gap-2 px-4 py-2 mb-2 rounded-md bg-[#f0fdf4] text-[#0d4a28] text-sm font-semibold"
+                  onClick={toggleLang}
+                  className="w-full flex items-center gap-2 px-4 py-2 mb-2 rounded-md bg-[#f0fdf4] text-[#0d4a28] text-sm font-semibold border border-[#1a6b3c]/20"
                 >
                   <Languages className="w-4 h-4" />
-                  አማርኛ / English
+                  {lang === 'en' ? 'አማርኛ (Switch to Amharic)' : 'English (ወደ እንግሊዝኛ)'}
                 </button>
                 <nav className="flex flex-col gap-1">
                   {navItems.map((item) => (
