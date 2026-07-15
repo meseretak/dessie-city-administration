@@ -6,6 +6,7 @@ import { Card, CardContent } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 import { Separator } from '@/components/ui/separator'
+import { useEffect, useState } from 'react'
 import {
   Star,
   MapPin,
@@ -61,68 +62,74 @@ const amenityIcons: Record<string, React.ElementType> = {
   'VIP Lounge': Award,
 }
 
-const hotels = [
+// Fallback hotels if DB is empty
+const fallbackHotels = [
   {
     name: 'Dessie Grand Hotel',
-    stars: 4,
+    rating: 4,
     image: '/hotel-building.png',
-    description:
-      'The flagship luxury hotel in the heart of Dessie. Features 120 modern rooms, a rooftop restaurant with panoramic mountain views, conference facilities, and a full-service spa.',
+    description: 'The flagship luxury hotel in the heart of Dessie. Features 120 modern rooms, a rooftop restaurant with panoramic mountain views, conference facilities, and a full-service spa.',
     location: 'City Center',
-    price: 'ETB 3,500 - 8,000/night',
-    amenities: ['Free WiFi', 'Room Service', 'Restaurant', 'Parking'],
+    priceRange: 'ETB 3,500 - 8,000/night',
+    amenities: '["Free WiFi","Room Service","Restaurant","Parking"]',
   },
   {
     name: 'Mountain View Lodge',
-    stars: 4,
+    rating: 4,
     image: '/hotel-pool.png',
-    description:
-      'Perched on the hills overlooking Dessie, this boutique lodge offers breathtaking sunrise views, an infinity pool, and an intimate atmosphere perfect for relaxation.',
+    description: 'Perched on the hills overlooking Dessie, this boutique lodge offers breathtaking sunrise views, an infinity pool, and an intimate atmosphere perfect for relaxation.',
     location: 'Hillside, Kebele 02',
-    price: 'ETB 2,800 - 6,500/night',
-    amenities: ['Pool', 'Free WiFi', 'Restaurant', 'Shuttle'],
+    priceRange: 'ETB 2,800 - 6,500/night',
+    amenities: '["Pool","Free WiFi","Restaurant","Shuttle"]',
   },
   {
     name: 'Blue Nile Hotel',
-    stars: 3,
+    rating: 3,
     image: '/hotel-lobby.png',
-    description:
-      'A well-established business hotel known for its warm Ethiopian hospitality. Located near government offices with excellent conference rooms and traditional restaurant.',
+    description: 'A well-established business hotel known for its warm Ethiopian hospitality. Located near government offices with excellent conference rooms and traditional restaurant.',
     location: 'Piazza Area',
-    price: 'ETB 1,800 - 4,000/night',
-    amenities: ['Conference Hall', 'WiFi', 'Restaurant', 'Bar'],
+    priceRange: 'ETB 1,800 - 4,000/night',
+    amenities: '["Conference Hall","WiFi","Restaurant","Bar"]',
   },
   {
     name: 'Tana International',
-    stars: 4,
+    rating: 4,
     image: '/hotel-room.png',
-    description:
-      'Modern international-standard hotel with 85 rooms, fitness center, and multiple dining options. Popular among business travelers and tourists visiting the Amhara region.',
+    description: 'Modern international-standard hotel with 85 rooms, fitness center, and multiple dining options. Popular among business travelers and tourists visiting the Amhara region.',
     location: 'Bole Road',
-    price: 'ETB 2,500 - 5,500/night',
-    amenities: ['Fitness', 'WiFi', 'Room Service', 'Airport Shuttle'],
+    priceRange: 'ETB 2,500 - 5,500/night',
+    amenities: '["Fitness","WiFi","Room Service","Airport Shuttle"]',
   },
   {
     name: 'Wollo Heritage Hotel',
-    stars: 3,
+    rating: 3,
     image: '/hotel-food.png',
-    description:
-      'Experience authentic Ethiopian culture at this heritage boutique hotel. Features traditional architecture, cultural performances, and the best Ethiopian cuisine in the city.',
+    description: 'Experience authentic Ethiopian culture at this heritage boutique hotel. Features traditional architecture, cultural performances, and the best Ethiopian cuisine in the city.',
     location: 'Old Town, Kebele 04',
-    price: 'ETB 1,500 - 3,500/night',
-    amenities: ['Cultural Shows', 'WiFi', 'Restaurant', 'Garden'],
+    priceRange: 'ETB 1,500 - 3,500/night',
+    amenities: '["Cultural Shows","WiFi","Restaurant","Garden"]',
   },
   {
     name: 'Starlight Resort & Spa',
-    stars: 5,
+    rating: 5,
     image: '/hotel-building.png',
-    description:
-      "Dessie's premier 5-star resort featuring luxury spa treatments, Olympic-sized swimming pool, fine dining, and exclusive suites with private balconies overlooking the valley.",
+    description: "Dessie's premier 5-star resort featuring luxury spa treatments, Olympic-sized swimming pool, fine dining, and exclusive suites with private balconies overlooking the valley.",
     location: 'Outskirts, Kombolcha Road',
-    price: 'ETB 5,000 - 15,000/night',
-    amenities: ['Spa', 'Pool', 'Restaurant', 'VIP Lounge'],
+    priceRange: 'ETB 5,000 - 15,000/night',
+    amenities: '["Spa","Pool","Restaurant","VIP Lounge"]',
   },
 ]
+
+type HotelItem = {
+  id?: string
+  name: string
+  rating: number
+  image?: string | null
+  description: string
+  location: string
+  priceRange: string
+  amenities: string | string[]
+}
 
 const reasons = [
   {
@@ -146,6 +153,23 @@ const reasons = [
 ]
 
 export default function HotelsPage() {
+  const [hotels, setHotels] = useState<HotelItem[]>(fallbackHotels)
+
+  useEffect(() => {
+    fetch('/api/admin/hotels')
+      .then(r => r.json())
+      .then(data => {
+        if (Array.isArray(data) && data.length > 0) setHotels(data)
+      })
+      .catch(() => {})
+  }, [])
+
+  // Helper: parse amenities from string or array
+  const getAmenities = (amenities: string | string[]): string[] => {
+    if (Array.isArray(amenities)) return amenities
+    try { return JSON.parse(amenities) } catch { return [] }
+  }
+
   return (
     <div className="min-h-screen">
       {/* 1. Hero Banner */}
@@ -240,12 +264,16 @@ export default function HotelsPage() {
             variants={staggerContainer}
             className="grid md:grid-cols-2 lg:grid-cols-3 gap-6"
           >
-            {hotels.map((hotel) => (
-              <motion.div key={hotel.name} variants={fadeInUp}>
+            {hotels.map((hotel) => {
+              const amenities = getAmenities(hotel.amenities)
+              const stars = Number(hotel.rating) || 3
+              const imgSrc = hotel.image || '/hotel-building.png'
+              return (
+              <motion.div key={hotel.id || hotel.name} variants={fadeInUp}>
                 <Card className="group h-full border-0 overflow-hidden hover:shadow-lg transition-shadow duration-300">
                   <div className="relative h-52 overflow-hidden">
                     <Image
-                      src={hotel.image}
+                      src={imgSrc}
                       alt={hotel.name}
                       fill
                       className="object-cover group-hover:scale-105 transition-transform duration-500"
@@ -258,7 +286,7 @@ export default function HotelsPage() {
                         <Star
                           key={s}
                           className={`w-4 h-4 ${
-                            s < hotel.stars
+                            s < stars
                               ? 'text-[#c8a415] fill-[#c8a415]'
                               : 'text-gray-300'
                           }`}
@@ -285,14 +313,16 @@ export default function HotelsPage() {
                         <MapPin className="w-3 h-3 mr-1" />
                         {hotel.location}
                       </Badge>
-                      <Badge variant="secondary" className="text-xs">
-                        {hotel.price}
-                      </Badge>
+                      {hotel.priceRange && (
+                        <Badge variant="secondary" className="text-xs">
+                          {hotel.priceRange}
+                        </Badge>
+                      )}
                     </div>
 
                     {/* Amenities */}
                     <div className="flex items-center gap-3 mb-4 mt-auto">
-                      {hotel.amenities.map((amenity) => {
+                      {amenities.slice(0, 4).map((amenity) => {
                         const AmenityIcon = amenityIcons[amenity] || BedDouble
                         return (
                           <div
@@ -322,7 +352,9 @@ export default function HotelsPage() {
                   </CardContent>
                 </Card>
               </motion.div>
-            ))}
+              )
+            })}
+          </motion.div>
           </motion.div>
         </div>
       </section>

@@ -14,7 +14,7 @@ import {
   ChevronLeft, ChevronDown, Building, Stethoscope, Zap, Bus, Receipt,
   FileCheck, ArrowRight, Twitter, Globe, Music
 } from 'lucide-react'
-import { useState, useCallback } from 'react'
+import { useState, useCallback, useEffect } from 'react'
 
 const fadeInUp = {
   hidden: { opacity: 0, y: 30 },
@@ -232,14 +232,56 @@ function SocialLinks({ social, size = 'sm' }: { social: Record<string, string>; 
   )
 }
 
+type DbCabinetMember = {
+  id: string
+  name: string
+  title: string
+  department: string
+  photo?: string | null
+  bio: string
+  email?: string | null
+  phone?: string | null
+  socialLinks?: string | null
+  order?: number
+}
+
 export default function MayorPage() {
   const [cabinetPage, setCabinetPage] = useState(0)
   const CABINET_PER_PAGE = 4
-  const [selectedMember, setSelectedMember] = useState<typeof cabinetMembers[0] | null>(null)
+  const [dbCabinet, setDbCabinet] = useState<DbCabinetMember[]>([])
+  const [dbMayorInfo, setDbMayorInfo] = useState<{ name: string; photo: string; title: string } | null>(null)
+  const [selectedMember, setSelectedMember] = useState<any | null>(null)
   const [selectedOrg, setSelectedOrg] = useState<{ title: string; bio: string; photo: string; name: string; role?: string; email?: string; phone?: string; social?: any } | null>(null)
 
-  const totalCabinetPages = Math.ceil(cabinetMembers.length / CABINET_PER_PAGE)
-  const pageMembers = cabinetMembers.slice(cabinetPage * CABINET_PER_PAGE, (cabinetPage + 1) * CABINET_PER_PAGE)
+  useEffect(() => {
+    fetch('/api/admin/cabinet-members')
+      .then(r => r.json())
+      .then((data: DbCabinetMember[]) => {
+        if (Array.isArray(data) && data.length > 0) {
+          setDbCabinet(data)
+          // Detect mayor from title/department
+          const mayor = data.find(m =>
+            m.title?.toLowerCase().includes('mayor') || m.department?.toLowerCase().includes('mayor') || m.order === 1
+          )
+          if (mayor) {
+            setDbMayorInfo({
+              name: mayor.name,
+              photo: mayor.photo || '/mayor-photo.png',
+              title: mayor.title,
+            })
+          }
+        }
+      })
+      .catch(() => {})
+  }, [])
+
+  // Use DB data if available, fallback to hardcoded
+  const displayCabinet = dbCabinet.length > 0 ? dbCabinet : cabinetMembers
+  const mayorName = dbMayorInfo?.name || mayorInfo.name
+  const mayorPhoto = dbMayorInfo?.photo || mayorInfo.photo
+
+  const totalCabinetPages = Math.ceil(displayCabinet.length / CABINET_PER_PAGE)
+  const pageMembers = displayCabinet.slice(cabinetPage * CABINET_PER_PAGE, (cabinetPage + 1) * CABINET_PER_PAGE)
 
   return (
     <main>
@@ -266,7 +308,7 @@ export default function MayorPage() {
                 {/* Photo side */}
                 <div className="md:col-span-2 bg-gradient-to-b from-[#0d4a28] to-[#1a6b3c] p-8 flex flex-col items-center justify-center relative">
                   <div className="relative">
-                    <img src={mayorInfo.photo} alt={mayorInfo.name} className="w-44 h-56 md:w-52 md:h-64 rounded-2xl object-cover object-top shadow-2xl border-[3px] border-[#c8a415]/50" />
+                    <img src={mayorPhoto} alt={mayorName} className="w-44 h-56 md:w-52 md:h-64 rounded-2xl object-cover object-top shadow-2xl border-[3px] border-[#c8a415]/50" />
                     <div className="absolute -bottom-3 -right-3 bg-[#c8a415] text-white rounded-xl px-3 py-1.5 shadow-lg flex items-center gap-1.5">
                       <Landmark className="w-3.5 h-3.5" />
                       <span className="text-[9px] font-bold tracking-wider">MAYOR</span>
@@ -281,8 +323,8 @@ export default function MayorPage() {
                   <Badge className="bg-[#c8a415]/10 text-[#c8a415] border-[#c8a415]/30 font-medium px-4 py-1.5 mb-4 w-fit">
                     <Award className="w-3 h-3 mr-1.5" /> Elected Official
                   </Badge>
-                  <h2 className="text-3xl md:text-4xl font-bold text-[#0d4a28] mb-1">{mayorInfo.name}</h2>
-                  <p className="text-[#1a6b3c] font-semibold text-lg md:text-xl mb-4">{mayorInfo.title}</p>
+                  <h2 className="text-3xl md:text-4xl font-bold text-[#0d4a28] mb-1">{mayorName}</h2>
+                  <p className="text-[#1a6b3c] font-semibold text-lg md:text-xl mb-4">{dbMayorInfo?.title || mayorInfo.title}</p>
                   <div className="flex flex-wrap items-center gap-4 text-muted-foreground text-sm mb-4">
                     <span className="flex items-center gap-1.5"><Calendar className="w-4 h-4" /> Appointed: {mayorInfo.appointed}</span>
                     <span className="text-border">|</span>
@@ -364,10 +406,10 @@ export default function MayorPage() {
                 <p>I invite every citizen to actively participate in shaping our city&apos;s future. Use this portal to access services, share your feedback, and stay informed. Together, we will build a Dessie that future generations will be proud of.</p>
               </div>
               <div className="mt-8 pt-6 border-t border-border flex items-center gap-3">
-                <img src={mayorInfo.photo} alt={mayorInfo.name} className="w-10 h-10 rounded-full object-cover object-top border-2 border-[#1a6b3c]/20" />
+                <img src={mayorPhoto} alt={mayorName} className="w-10 h-10 rounded-full object-cover object-top border-2 border-[#1a6b3c]/20" />
                 <div>
-                  <p className="font-semibold text-[#0d4a28] text-sm">{mayorInfo.name}</p>
-                  <p className="text-xs text-muted-foreground">{mayorInfo.title}</p>
+                  <p className="font-semibold text-[#0d4a28] text-sm">{mayorName}</p>
+                  <p className="text-xs text-muted-foreground">{dbMayorInfo?.title || mayorInfo.title}</p>
                 </div>
               </div>
             </motion.div>
@@ -479,8 +521,13 @@ export default function MayorPage() {
             {/* Member Cards Grid with pagination */}
             <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-5">
               <AnimatePresence mode="wait">
-                {pageMembers.map((member, idx) => {
-                  const Icon = member.icon
+                {pageMembers.map((member: any, idx) => {
+                  const Icon = member.icon || Users
+                  const cardColor = member.color || '#1a6b3c'
+                  const photoSrc = member.photo || '/official-deputy.png'
+                  const socialData = member.social || (member.socialLinks ? (() => { try { return JSON.parse(member.socialLinks) } catch { return {} } })() : {})
+                  const emailDisplay = member.email ? String(member.email).split('@')[0] : ''
+                  const phoneDisplay = member.phone ? String(member.phone).split(' ').slice(-1)[0] : ''
                   return (
                     <motion.div
                       key={`${cabinetPage}-${member.name}`}
@@ -489,13 +536,13 @@ export default function MayorPage() {
                       exit={{ opacity: 0, y: -20 }}
                       transition={{ duration: 0.3, delay: idx * 0.08 }}
                     >
-                      <Card className="h-full border border-[#e2e8e0] hover:shadow-xl transition-all group cursor-pointer hover:-translate-y-1 overflow-hidden" onClick={() => setSelectedMember(member)}>
+                      <Card className="h-full border border-[#e2e8e0] hover:shadow-xl transition-all group cursor-pointer hover:-translate-y-1 overflow-hidden" onClick={() => setSelectedMember({ ...member, color: cardColor, photo: photoSrc, social: socialData })}>
                         {/* Top accent bar */}
-                        <div className="h-1 w-full" style={{ backgroundColor: member.color }} />
+                        <div className="h-1 w-full" style={{ backgroundColor: cardColor }} />
                         <CardContent className="p-5 flex flex-col items-center text-center">
                           <div className="relative mb-3">
-                            <img src={member.photo} alt={member.name} className="w-20 h-20 rounded-full object-cover object-top shadow-md border-[3px] border-white group-hover:border-[#c8a415] transition-all" />
-                            <div className="absolute -bottom-1 -right-1 w-7 h-7 rounded-lg flex items-center justify-center text-white shadow-md border-2 border-white" style={{ backgroundColor: member.color }}>
+                            <img src={photoSrc} alt={member.name} className="w-20 h-20 rounded-full object-cover object-top shadow-md border-[3px] border-white group-hover:border-[#c8a415] transition-all" />
+                            <div className="absolute -bottom-1 -right-1 w-7 h-7 rounded-lg flex items-center justify-center text-white shadow-md border-2 border-white" style={{ backgroundColor: cardColor }}>
                               <Icon className="w-3.5 h-3.5" />
                             </div>
                           </div>
@@ -504,15 +551,19 @@ export default function MayorPage() {
                           {/* Brief bio preview */}
                           <p className="text-[10px] text-[#6b7280] leading-relaxed line-clamp-2 mb-3">{member.bio}</p>
                           {/* Social icons */}
-                          <SocialLinks social={member.social} size="sm" />
+                          {Object.keys(socialData).length > 0 && <SocialLinks social={socialData} size="sm" />}
                           {/* Quick info pills */}
                           <div className="mt-3 flex items-center gap-1.5 flex-wrap justify-center">
-                            <span className="inline-flex items-center gap-1 text-[9px] text-muted-foreground bg-[#f0fdf4] rounded-md px-2 py-1">
-                              <Mail className="w-2.5 h-2.5" /> {member.email.split('@')[0]}
-                            </span>
-                            <span className="inline-flex items-center gap-1 text-[9px] text-muted-foreground bg-[#f0fdf4] rounded-md px-2 py-1">
-                              <Phone className="w-2.5 h-2.5" /> {member.phone.split(' ').slice(-1)[0]}
-                            </span>
+                            {emailDisplay && (
+                              <span className="inline-flex items-center gap-1 text-[9px] text-muted-foreground bg-[#f0fdf4] rounded-md px-2 py-1">
+                                <Mail className="w-2.5 h-2.5" /> {emailDisplay}
+                              </span>
+                            )}
+                            {phoneDisplay && (
+                              <span className="inline-flex items-center gap-1 text-[9px] text-muted-foreground bg-[#f0fdf4] rounded-md px-2 py-1">
+                                <Phone className="w-2.5 h-2.5" /> {phoneDisplay}
+                              </span>
+                            )}
                           </div>
                           <div className="mt-3 flex items-center gap-1 text-[10px] text-[#6b7280] group-hover:text-[#1a6b3c] transition-colors">
                             <span>View full profile</span>
@@ -619,15 +670,19 @@ export default function MayorPage() {
           {selectedMember && (
             <>
               <div className="bg-gradient-to-r from-[#0d4a28] to-[#1a6b3c] p-6 flex flex-col sm:flex-row items-center gap-5">
-                <img src={selectedMember.photo} alt={selectedMember.name} className="w-24 h-24 rounded-2xl object-cover object-top shadow-xl border-2 border-white/20" />
+                <img src={selectedMember.photo || '/official-deputy.png'} alt={selectedMember.name} className="w-24 h-24 rounded-2xl object-cover object-top shadow-xl border-2 border-white/20" />
                 <div className="text-center sm:text-left">
                   <h3 className="text-xl font-bold text-white">{selectedMember.name}</h3>
                   <p className="text-[#c8a415] text-sm font-semibold mt-1">{selectedMember.title}</p>
                   <div className="flex items-center justify-center sm:justify-start gap-2 mt-3">
-                    <div className="w-6 h-6 rounded-md flex items-center justify-center text-white" style={{ backgroundColor: selectedMember.color }}>
-                      <selectedMember.icon className="w-3.5 h-3.5" />
-                    </div>
-                    <SocialLinks social={selectedMember.social} size="sm" />
+                    {selectedMember.icon && (
+                      <div className="w-6 h-6 rounded-md flex items-center justify-center text-white" style={{ backgroundColor: selectedMember.color || '#1a6b3c' }}>
+                        <selectedMember.icon className="w-3.5 h-3.5" />
+                      </div>
+                    )}
+                    {selectedMember.social && Object.keys(selectedMember.social).length > 0 && (
+                      <SocialLinks social={selectedMember.social} size="sm" />
+                    )}
                   </div>
                 </div>
               </div>
@@ -651,21 +706,27 @@ export default function MayorPage() {
                 )}
                 <Separator />
                 <div className="grid grid-cols-2 gap-3">
-                  <div className="bg-[#f8faf8] rounded-lg p-3">
-                    <p className="text-[10px] text-[#6b7280] font-semibold uppercase tracking-wider">Office</p>
-                    <p className="text-xs text-[#1a1a1a] font-medium mt-1">{selectedMember.office}</p>
-                  </div>
-                  <div className="bg-[#f8faf8] rounded-lg p-3">
-                    <p className="text-[10px] text-[#6b7280] font-semibold uppercase tracking-wider">Email</p>
-                    <p className="text-xs text-[#1a1a1a] font-medium mt-1">{selectedMember.email}</p>
-                  </div>
-                  <div className="bg-[#f8faf8] rounded-lg p-3">
-                    <p className="text-[10px] text-[#6b7280] font-semibold uppercase tracking-wider">Phone</p>
-                    <p className="text-xs text-[#1a1a1a] font-medium mt-1">{selectedMember.phone}</p>
-                  </div>
+                  {selectedMember.office && (
+                    <div className="bg-[#f8faf8] rounded-lg p-3">
+                      <p className="text-[10px] text-[#6b7280] font-semibold uppercase tracking-wider">Office</p>
+                      <p className="text-xs text-[#1a1a1a] font-medium mt-1">{selectedMember.office}</p>
+                    </div>
+                  )}
+                  {selectedMember.email && (
+                    <div className="bg-[#f8faf8] rounded-lg p-3">
+                      <p className="text-[10px] text-[#6b7280] font-semibold uppercase tracking-wider">Email</p>
+                      <p className="text-xs text-[#1a1a1a] font-medium mt-1">{selectedMember.email}</p>
+                    </div>
+                  )}
+                  {selectedMember.phone && (
+                    <div className="bg-[#f8faf8] rounded-lg p-3">
+                      <p className="text-[10px] text-[#6b7280] font-semibold uppercase tracking-wider">Phone</p>
+                      <p className="text-xs text-[#1a1a1a] font-medium mt-1">{selectedMember.phone}</p>
+                    </div>
+                  )}
                   <div className="bg-[#f8faf8] rounded-lg p-3">
                     <p className="text-[10px] text-[#6b7280] font-semibold uppercase tracking-wider">Department</p>
-                    <p className="text-xs text-[#1a1a1a] font-medium mt-1">{selectedMember.title}</p>
+                    <p className="text-xs text-[#1a1a1a] font-medium mt-1">{selectedMember.department || selectedMember.title}</p>
                   </div>
                 </div>
               </div>

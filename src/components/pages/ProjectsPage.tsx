@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { motion } from 'framer-motion'
 import { Card, CardContent } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
@@ -97,8 +97,40 @@ function getProgressColor(p: number) {
   return 'bg-orange-500'
 }
 
+type DbProject = {
+  id: string
+  title: string
+  category: string
+  status: string
+  description: string
+  budget?: string | null
+  startDate?: string | null
+  endDate?: string | null
+  progress: number
+  image?: string | null
+}
+
 export default function ProjectsPage() {
   const [activeFilter, setActiveFilter] = useState<Filter>('All')
+  const [dbProjects, setDbProjects] = useState<DbProject[]>([])
+
+  useEffect(() => {
+    fetch('/api/admin/projects')
+      .then(r => r.json())
+      .then(data => { if (Array.isArray(data)) setDbProjects(data) })
+      .catch(() => {})
+  }, [])
+
+  // Merge: DB projects take priority, fall back to hardcoded if DB is empty
+  const activeOngoing = dbProjects.length > 0
+    ? dbProjects.filter(p => (p.status || '').toLowerCase().includes('progress') || (p.status || '').toLowerCase().includes('ongoing'))
+    : ongoingProjects
+  const activeCompleted = dbProjects.length > 0
+    ? dbProjects.filter(p => (p.status || '').toLowerCase().includes('complet'))
+    : completedProjects
+  const activePlanned = dbProjects.length > 0
+    ? dbProjects.filter(p => (p.status || '').toLowerCase().includes('plan'))
+    : plannedProjects
 
   return (
     <div className="min-h-screen">
@@ -151,30 +183,30 @@ export default function ProjectsPage() {
             <motion.h2 initial="hidden" whileInView="visible" viewport={{ once: true }} custom={0} variants={fadeUp} className="gov-section-title text-3xl font-bold text-[#0d4a28] mb-2 text-center">ONGOING PROJECTS</motion.h2>
             <motion.div initial="hidden" whileInView="visible" viewport={{ once: true }} custom={1} variants={fadeUp} className="w-16 h-1 bg-[#c8a415] mx-auto mb-10" />
             <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-              {ongoingProjects.map((p, i) => (
-                <motion.div key={p.title} initial="hidden" whileInView="visible" viewport={{ once: true }} custom={i} variants={fadeUp}>
+              {(dbProjects.length > 0 ? activeOngoing : ongoingProjects).map((p: any, i) => (
+                <motion.div key={p.id || p.title} initial="hidden" whileInView="visible" viewport={{ once: true }} custom={i} variants={fadeUp}>
                   <Card className="h-full hover:shadow-lg transition-shadow border-0">
                     <div className="h-28 bg-gradient-to-br from-[#1a6b3c] to-[#0d4a28] flex items-center justify-center">
-                      <p.icon className="w-12 h-12 text-white/80" />
+                      {p.icon ? <p.icon className="w-12 h-12 text-white/80" /> : <HardHat className="w-12 h-12 text-white/80" />}
                     </div>
                     <CardContent className="p-5">
                       <div className="flex items-center justify-between mb-2">
                         <h3 className="font-bold text-foreground text-sm">{p.title}</h3>
                         <Badge className="bg-[#1a6b3c] text-white text-[10px]">ONGOING</Badge>
                       </div>
-                      <p className="text-muted-foreground text-xs leading-relaxed mb-4">{p.desc}</p>
+                      <p className="text-muted-foreground text-xs leading-relaxed mb-4">{p.description || p.desc}</p>
                       <div className="mb-2">
                         <div className="flex justify-between text-xs mb-1">
                           <span className="text-muted-foreground">Progress</span>
-                          <span className="font-semibold text-[#1a6b3c]">{p.progress}%</span>
+                          <span className="font-semibold text-[#1a6b3c]">{p.progress || 0}%</span>
                         </div>
                         <div className="w-full h-2 bg-gray-200 rounded-full overflow-hidden">
-                          <motion.div initial={{ width: 0 }} whileInView={{ width: `${p.progress}%` }} viewport={{ once: true }} transition={{ duration: 1, delay: 0.3 }} className={`h-full rounded-full ${getProgressColor(p.progress)}`} />
+                          <motion.div initial={{ width: 0 }} whileInView={{ width: `${p.progress || 0}%` }} viewport={{ once: true }} transition={{ duration: 1, delay: 0.3 }} className={`h-full rounded-full ${getProgressColor(p.progress || 0)}`} />
                         </div>
                       </div>
                       <div className="flex items-center justify-between text-xs text-muted-foreground mt-3">
-                        <span className="flex items-center gap-1"><DollarSign className="w-3 h-3" />{p.budget}</span>
-                        <span className="flex items-center gap-1"><Clock className="w-3 h-3" />{p.start} – {p.end}</span>
+                        {(p.budget) && <span className="flex items-center gap-1"><DollarSign className="w-3 h-3" />{p.budget}</span>}
+                        {(p.start || p.startDate) && <span className="flex items-center gap-1"><Clock className="w-3 h-3" />{p.start || p.startDate} – {p.end || p.endDate || '—'}</span>}
                       </div>
                     </CardContent>
                   </Card>
@@ -192,20 +224,21 @@ export default function ProjectsPage() {
             <motion.h2 initial="hidden" whileInView="visible" viewport={{ once: true }} custom={0} variants={fadeUp} className="gov-section-title text-3xl font-bold text-[#0d4a28] mb-2 text-center">COMPLETED PROJECTS</motion.h2>
             <motion.div initial="hidden" whileInView="visible" viewport={{ once: true }} custom={1} variants={fadeUp} className="w-16 h-1 bg-[#c8a415] mx-auto mb-10" />
             <div className="grid md:grid-cols-2 gap-6">
-              {completedProjects.map((p, i) => (
-                <motion.div key={p.title} initial="hidden" whileInView="visible" viewport={{ once: true }} custom={i} variants={fadeUp}>
+              {(dbProjects.length > 0 ? activeCompleted : completedProjects).map((p: any, i) => (
+                <motion.div key={p.id || p.title} initial="hidden" whileInView="visible" viewport={{ once: true }} custom={i} variants={fadeUp}>
                   <Card className="h-full hover:shadow-lg transition-shadow border border-gray-200 bg-gray-50/50">
                     <CardContent className="p-6">
                       <div className="flex items-center justify-between mb-2">
                         <h3 className="font-bold text-foreground">{p.title}</h3>
                         <Badge variant="outline" className="text-xs text-[#1a6b3c] border-[#1a6b3c]">COMPLETED</Badge>
                       </div>
-                      <p className="text-xs text-muted-foreground mb-2 flex items-center gap-1"><Calendar className="w-3 h-3" />{p.date}</p>
-                      <p className="text-muted-foreground text-sm leading-relaxed mb-3">{p.summary}</p>
-                      <div className="flex items-center gap-2 text-xs text-[#1a6b3c] font-semibold">
-                        <TrendingUp className="w-3.5 h-3.5" />
-                        {p.impact}
-                      </div>
+                      <p className="text-xs text-muted-foreground mb-2 flex items-center gap-1"><Calendar className="w-3 h-3" />{p.date || p.endDate || p.startDate || '—'}</p>
+                      <p className="text-muted-foreground text-sm leading-relaxed mb-3">{p.description || p.summary}</p>
+                      {p.impact && (
+                        <div className="flex items-center gap-2 text-xs text-[#1a6b3c] font-semibold">
+                          <TrendingUp className="w-3.5 h-3.5" />{p.impact}
+                        </div>
+                      )}
                     </CardContent>
                   </Card>
                 </motion.div>
@@ -222,15 +255,15 @@ export default function ProjectsPage() {
             <motion.h2 initial="hidden" whileInView="visible" viewport={{ once: true }} custom={0} variants={fadeUp} className="gov-section-title text-3xl font-bold text-[#0d4a28] mb-2 text-center">PLANNED PROJECTS</motion.h2>
             <motion.div initial="hidden" whileInView="visible" viewport={{ once: true }} custom={1} variants={fadeUp} className="w-16 h-1 bg-[#c8a415] mx-auto mb-10" />
             <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
-              {plannedProjects.map((p, i) => (
-                <motion.div key={p.title} initial="hidden" whileInView="visible" viewport={{ once: true }} custom={i} variants={fadeUp}>
+              {(dbProjects.length > 0 ? activePlanned : plannedProjects).map((p: any, i) => (
+                <motion.div key={p.id || p.title} initial="hidden" whileInView="visible" viewport={{ once: true }} custom={i} variants={fadeUp}>
                   <Card className="h-full hover:shadow-lg transition-shadow border border-dashed border-gray-300">
                     <CardContent className="p-6 text-center">
                       <div className="w-12 h-12 rounded-full bg-[#1a6b3c]/10 flex items-center justify-center mx-auto mb-4">
-                        <p.icon className="w-6 h-6 text-[#1a6b3c]" />
+                        {p.icon ? <p.icon className="w-6 h-6 text-[#1a6b3c]" /> : <Target className="w-6 h-6 text-[#1a6b3c]" />}
                       </div>
                       <h3 className="font-bold text-foreground mb-2">{p.title}</h3>
-                      <p className="text-muted-foreground text-sm leading-relaxed">{p.desc}</p>
+                      <p className="text-muted-foreground text-sm leading-relaxed">{p.description || p.desc}</p>
                     </CardContent>
                   </Card>
                 </motion.div>
