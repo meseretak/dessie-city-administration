@@ -82,7 +82,7 @@ export async function POST(req: NextRequest) {
       } else if (matched.response === '__DYNAMIC_NEWS__') {
         const news = await db.newsArticle.findMany({ where: { approvalStatus: 'approved' }, take: 5, select: { title: true, category: true, createdAt: true }, orderBy: { createdAt: 'desc' } })
         response = news.length
-          ? `**Latest News from Dessie City**:\n${news.map((n, i) => `${i + 1}. **${n.title}** — ${n.category} (${n.createdAt.toLocaleDateString()})`).join('\n\n')}\n\nVisit the News & Media section for the full articles.`
+          ? `**Latest News from Dessie City**:\n${news.map((n: any, i: number) => `${i + 1}. **${n.title}** — ${n.category}`).join('\n\n')}\n\nVisit the News & Media section for the full articles.`
           : 'No recent news articles found. Please check back soon!'
       } else {
         response = matched.response

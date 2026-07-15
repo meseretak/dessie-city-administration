@@ -338,22 +338,61 @@ export default function Home() {
                         <Search className="w-4 h-4" />
                       </Button>
                     </DialogTrigger>
-                    <DialogContent className="sm:max-w-md">
+                    <DialogContent className="sm:max-w-lg">
                       <div className="flex flex-col gap-4">
-                        <h3 className="text-lg font-semibold">Search Dessie City</h3>
+                        <h3 className="text-lg font-semibold flex items-center gap-2">
+                          <Search className="w-5 h-5 text-[#0d4a28]" /> Search Dessie City
+                        </h3>
                         <div className="relative">
                           <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
                           <Input
                             value={searchQuery}
                             onChange={(e) => setSearchQuery(e.target.value)}
-                            placeholder="Search services, news, departments..."
-                            className="pl-10"
+                            onKeyDown={(e) => {
+                              if (e.key === 'Enter' && searchQuery.trim()) {
+                                const q = searchQuery.toLowerCase()
+                                setSearchOpen(false)
+                                if (q.includes('news') || q.includes('press') || q.includes('media')) navigateTo('news')
+                                else if (q.includes('job') || q.includes('vacancy') || q.includes('career') || q.includes('work')) navigateTo('vacancy')
+                                else if (q.includes('bid') || q.includes('tender') || q.includes('procurement')) navigateTo('bids')
+                                else if (q.includes('hotel') || q.includes('stay') || q.includes('accommodation')) navigateTo('hotels')
+                                else if (q.includes('service') || q.includes('license') || q.includes('permit') || q.includes('tax') || q.includes('birth') || q.includes('registration')) navigateTo('services')
+                                else if (q.includes('mayor') || q.includes('cabinet') || q.includes('leader')) navigateTo('mayor')
+                                else if (q.includes('project') || q.includes('construction') || q.includes('infrastructure')) navigateTo('projects')
+                                else if (q.includes('about') || q.includes('history') || q.includes('dessie')) navigateTo('about')
+                                else if (q.includes('contact') || q.includes('phone') || q.includes('email') || q.includes('address')) navigateTo('contact')
+                                else if (q.includes('tourism') || q.includes('heritage') || q.includes('culture') || q.includes('visit')) navigateTo('tourism')
+                                else if (q.includes('announcement') || q.includes('notice')) navigateTo('announcements')
+                                else navigateTo('services')
+                              }
+                            }}
+                            placeholder="Search services, news, vacancies, bids..."
+                            className="pl-10 h-12 text-base"
                             autoFocus
                           />
                         </div>
-                        <div className="text-sm text-muted-foreground">
-                          Try: &quot;business license&quot;, &quot;mayor&quot;, &quot;tax payment&quot;
+                        {/* Quick links */}
+                        <div>
+                          <p className="text-xs font-semibold text-muted-foreground mb-2 uppercase tracking-wider">Quick Search</p>
+                          <div className="flex flex-wrap gap-2">
+                            {[
+                              { label: '🏛️ Services', page: 'services' as const },
+                              { label: '📰 News', page: 'news' as const },
+                              { label: '💼 Vacancies', page: 'vacancy' as const },
+                              { label: '📋 Bids', page: 'bids' as const },
+                              { label: '🏨 Hotels', page: 'hotels' as const },
+                              { label: '🏔️ Tourism', page: 'tourism' as const },
+                              { label: '📢 Announcements', page: 'announcements' as const },
+                              { label: '📞 Contact', page: 'contact' as const },
+                            ].map(item => (
+                              <button key={item.page} onClick={() => { setSearchOpen(false); navigateTo(item.page) }}
+                                className="px-3 py-1.5 text-xs font-medium bg-[#f0fdf4] hover:bg-[#0d4a28] hover:text-white text-[#0d4a28] rounded-lg border border-[#1a6b3c]/20 transition-all">
+                                {item.label}
+                              </button>
+                            ))}
+                          </div>
                         </div>
+                        <p className="text-xs text-muted-foreground">Press Enter to search or click a quick link above</p>
                       </div>
                     </DialogContent>
                   </Dialog>
