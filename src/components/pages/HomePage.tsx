@@ -337,16 +337,13 @@ const cabinetMembers = [
   { name: 'W/ro Selamawit Bekele', role: 'Head of Social Affairs', photo: '/official-speaker.png' },
 ]
 
-const homeNews = [
-  { title: 'DESSIE SMART CITY CONTROL CENTER LAUNCHED', date: 'Jul 12, 2025', category: 'Smart City', image: '/dessie-smart-center.png', excerpt: 'The new smart city monitoring center features a massive CCTV wall with real-time surveillance of the entire city — a major milestone in digital governance.' },
-  { title: 'MODERN ONE-STOP SERVICE CENTER OPENS FOR CITIZENS', date: 'Jul 10, 2025', category: 'News', image: '/dessie-service-counter.png', excerpt: 'Dessie citizens can now access 40+ government services at a single modern center staffed with professional officers in uniform.' },
-  { title: 'NEW CITIZEN SERVICE HALL WITH INTEGRATED SERVICES', date: 'Jul 8, 2025', category: 'Infrastructure', image: '/dessie-service-center.png', excerpt: 'The state-of-the-art service hall integrates Ethiopost, telecom, banking, and government services under one elegant roof.' },
-  { title: 'STATE-OF-THE-ART CONFERENCE HALL OPENS AT CITY ADMIN', date: 'Jul 5, 2025', category: 'News', image: '/dessie-conference-hall.png', excerpt: 'The smart conference hall features digital screens, smart microphone systems, and the Dessie City Administration emblem on display.' },
-  { title: 'DESSIE CITY HALL INAUGURATED — A NEW ERA OF GOVERNANCE', date: 'Jul 2, 2025', category: 'Press Release', image: '/dessie-city-hall-night.png', excerpt: 'The newly built Dessie City Administration building, illuminated beautifully at night, marks a new era of transparent and modern governance.' },
-  { title: 'CITY HALL — THE SEAT OF DESSIE ADMINISTRATION', date: 'Jun 28, 2025', category: 'News', image: '/dessie-city-hall-day.png', excerpt: 'The grand staircase and beautifully landscaped entrance of Dessie City Hall symbolize the city\'s progress and commitment to excellence.' },
-  { title: 'ANNUAL DESSIE CULTURAL FESTIVAL DATES ANNOUNCED', date: 'Jun 25, 2025', category: 'Culture', image: '/news-culture.png', excerpt: 'The week-long festival will showcase traditional music, dance, crafts, and cuisine from the Amhara Region.' },
-  { title: 'NEW CITY HOSPITAL WING INAUGURATED WITH 200 BEDS', date: 'Jun 20, 2025', category: 'Health', image: '/news-health.png', excerpt: 'The new wing features modern medical equipment, pediatric wards, and a 24/7 emergency department serving residents.' },
-  { title: 'MODERN WATER TREATMENT PLANT BEGINS OPERATIONS', date: 'Jun 15, 2025', category: 'Infrastructure', image: '/news-infrastructure.png', excerpt: 'The new facility provides clean drinking water to an additional 100,000 residents across Dessie.' },
+const staticHomeNews = [
+  { id: 'static-1', title: 'DESSIE SMART CITY CONTROL CENTER LAUNCHED', date: 'Jul 12, 2025', category: 'Smart City', image: '/news-smart-city.png', excerpt: 'The new smart city monitoring center features a massive CCTV wall with real-time surveillance of the entire city — a major milestone in digital governance.' },
+  { id: 'static-2', title: 'MODERN ONE-STOP SERVICE CENTER OPENS FOR CITIZENS', date: 'Jul 10, 2025', category: 'News', image: '/news-meeting.png', excerpt: 'Dessie citizens can now access 40+ government services at a single modern center staffed with professional officers in uniform.' },
+  { id: 'static-3', title: 'NEW CITIZEN SERVICE HALL WITH INTEGRATED SERVICES', date: 'Jul 8, 2025', category: 'Infrastructure', image: '/news-infrastructure.png', excerpt: 'The state-of-the-art service hall integrates Ethiopost, telecom, banking, and government services under one elegant roof.' },
+  { id: 'static-4', title: 'ANNUAL DESSIE CULTURAL FESTIVAL DATES ANNOUNCED', date: 'Jun 25, 2025', category: 'Culture', image: '/news-culture.png', excerpt: 'The week-long festival will showcase traditional music, dance, crafts, and cuisine from the Amhara Region.' },
+  { id: 'static-5', title: 'NEW CITY HOSPITAL WING INAUGURATED WITH 200 BEDS', date: 'Jun 20, 2025', category: 'Health', image: '/news-health.png', excerpt: 'The new wing features modern medical equipment, pediatric wards, and a 24/7 emergency department.' },
+  { id: 'static-6', title: 'MODERN WATER TREATMENT PLANT BEGINS OPERATIONS', date: 'Jun 15, 2025', category: 'Infrastructure', image: '/news-infrastructure.png', excerpt: 'The new facility provides clean drinking water to an additional 100,000 residents across Dessie.' },
 ]
 
 const socialIcons = [
@@ -408,6 +405,32 @@ export default function HomePage({ navigateTo }: { navigateTo: (page: PageId, ex
   const { lang } = useLang()
   const isAm = lang === 'am'
   const { toast } = useToast()
+
+  // Fetch news from DB — shows library news and all published articles
+  const [homeNews, setHomeNews] = useState(staticHomeNews as any[])
+  useEffect(() => {
+    fetch('/api/admin/news')
+      .then(r => r.ok ? r.json() : [])
+      .then((data: any[]) => {
+        const published = data.filter(a => a.approvalStatus === 'approved' || a.status === 'published')
+        if (published.length > 0) {
+          const mapped = published.map(a => ({
+            id: a.id,
+            title: a.title,
+            date: new Date(a.createdAt).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }),
+            category: a.category || 'News',
+            image: (() => {
+              const img = a.image || '/news-meeting.png'
+              if (img.trim().startsWith('[')) { try { const arr = JSON.parse(img); return arr[0] || '/news-meeting.png' } catch { return '/news-meeting.png' } }
+              return img
+            })(),
+            excerpt: a.excerpt || '',
+          }))
+          setHomeNews(mapped)
+        }
+      })
+      .catch(() => {})
+  }, [])
 
   /* ── Slider State ── */
   const [currentSlide, setCurrentSlide] = useState(0)
@@ -564,8 +587,8 @@ export default function HomePage({ navigateTo }: { navigateTo: (page: PageId, ex
   const visibleHotels = hotels.slice(hotelStart, hotelStart + 3)
   const projectStart = projectPage * 4
   const visibleProjects = featuredProjects.slice(projectStart, projectStart + 4)
-  const newsStart = newsPage * 5
-  const visibleNews = homeNews.slice(newsStart, newsStart + 5)
+  const newsStart = newsPage * 6
+  const visibleNews = homeNews.slice(newsStart, newsStart + 6)
 
   /* ── Jobs & Bids filtered & paginated slices ── */
   const jbFilterOptions = useMemo(() => {
@@ -913,33 +936,33 @@ export default function HomePage({ navigateTo }: { navigateTo: (page: PageId, ex
                 </button>
               </div>
 
-              {/* News Cards — tall with full excerpt */}
-              <div className="space-y-3">
-                {visibleNews.slice(newsPage * 3, (newsPage + 1) * 3).map((item, i) => (
-                  <motion.div key={item.title + i}
+              {/* News Cards — compact, 6 per page */}
+              <div className="space-y-2">
+                {visibleNews.map((item, i) => (
+                  <motion.div key={(item.id || item.title) + i}
                     initial={{ opacity: 0, x: 10 }} whileInView={{ opacity: 1, x: 0 }}
-                    viewport={{ once: true }} transition={{ delay: i * 0.07 }}>
-                    <Card className="cursor-pointer hover:shadow-xl transition-all duration-300 border-0 shadow-md group bg-white overflow-hidden"
-                      onClick={() => navigateTo('news')}>
+                    viewport={{ once: true }} transition={{ delay: i * 0.05 }}>
+                    <Card className="cursor-pointer hover:shadow-lg transition-all duration-200 border-0 shadow-sm group bg-white overflow-hidden"
+                      onClick={() => item.id && !item.id.startsWith('static') ? navigateTo('news-detail', { newsId: item.id }) : navigateTo('news')}>
                       <CardContent className="p-0 flex">
-                        {/* Image — taller and wider */}
-                        <div className="w-32 h-28 shrink-0 overflow-hidden relative">
-                          <img src={item.image} alt={item.title}
-                            className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" />
+                        {/* Image — compact */}
+                        <div className="w-24 h-20 shrink-0 overflow-hidden relative">
+                          <img src={item.image || '/news-meeting.png'} alt={item.title}
+                            className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
+                            onError={(e) => { (e.currentTarget as HTMLImageElement).src = '/news-meeting.png' }} />
                           <div className="absolute inset-0 bg-gradient-to-r from-transparent to-black/10" />
                         </div>
                         {/* Content */}
-                        <div className="flex-1 p-4 min-w-0 flex flex-col justify-between">
+                        <div className="flex-1 px-3 py-2 min-w-0 flex flex-col justify-between">
                           <div>
-                            <div className="flex items-center gap-2 mb-2">
-                              <span className="text-[10px] font-bold bg-[#c62828] text-white px-2 py-0.5 rounded">{item.category}</span>
-                              <span className="text-[10px] text-[#9ca3af] font-medium">{item.date}</span>
+                            <div className="flex items-center gap-1.5 mb-1">
+                              <span className="text-[9px] font-bold bg-[#c62828] text-white px-1.5 py-0.5 rounded">{item.category}</span>
+                              <span className="text-[9px] text-[#9ca3af] font-medium">{item.date}</span>
                             </div>
-                            <h4 className="font-extrabold text-[#1a1a1a] text-sm leading-snug group-hover:text-[#c62828] transition-colors line-clamp-2 mb-1">{item.title}</h4>
-                            <p className="text-[11px] text-[#6b7280] line-clamp-2 leading-relaxed">{item.excerpt}</p>
+                            <h4 className="font-extrabold text-[#1a1a1a] text-[12px] leading-snug group-hover:text-[#c62828] transition-colors line-clamp-2">{item.title}</h4>
                           </div>
-                          <div className="flex items-center gap-1 text-[10px] font-bold text-[#c62828] mt-2 opacity-0 group-hover:opacity-100 transition-opacity">
-                            Read More <ArrowRight className="w-2.5 h-2.5" />
+                          <div className="flex items-center gap-1 text-[10px] font-bold text-[#c62828] opacity-0 group-hover:opacity-100 transition-opacity">
+                            {isAm ? 'ተጨማሪ' : 'Read More'} <ArrowRight className="w-2.5 h-2.5" />
                           </div>
                         </div>
                       </CardContent>
@@ -949,16 +972,16 @@ export default function HomePage({ navigateTo }: { navigateTo: (page: PageId, ex
               </div>
 
               {/* Pagination */}
-              <div className="mt-4 flex items-center justify-between">
+              <div className="mt-3 flex items-center justify-between">
                 <div className="flex gap-1.5">
-                  {Array.from({ length: Math.ceil(homeNews.length / 3) }, (_, i) => (
+                  {Array.from({ length: Math.ceil(homeNews.length / 6) }, (_, i) => (
                     <button key={i} onClick={() => setNewsPage(i)}
                       className={`transition-all rounded-full ${newsPage === i ? 'bg-[#c62828] w-6 h-2' : 'bg-[#e2e8e0] w-2 h-2 hover:bg-[#c62828]/40'}`} />
                   ))}
                 </div>
                 <button onClick={() => navigateTo('news')}
                   className="text-xs font-bold text-[#c62828] flex items-center gap-1 hover:gap-2 transition-all">
-                  ALL NEWS & MEDIA <ArrowRight className="w-3.5 h-3.5" />
+                  {isAm ? 'ሁሉም ዜናዎች' : 'ALL NEWS'} <ArrowRight className="w-3.5 h-3.5" />
                 </button>
               </div>
             </motion.div>
