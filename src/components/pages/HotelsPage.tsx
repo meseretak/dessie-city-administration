@@ -7,6 +7,7 @@ import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 import { Separator } from '@/components/ui/separator'
 import { useEffect, useState } from 'react'
+import { useLang } from '@/lib/LangContext'
 import {
   Star,
   MapPin,
@@ -153,6 +154,8 @@ const reasons = [
 ]
 
 export default function HotelsPage() {
+  const { lang } = useLang()
+  const isAm = lang === 'am'
   const [hotels, setHotels] = useState<HotelItem[]>(fallbackHotels)
 
   useEffect(() => {
@@ -189,7 +192,7 @@ export default function HotelsPage() {
             transition={{ duration: 0.6, ease: 'easeOut' }}
             className="text-4xl md:text-6xl font-bold text-white tracking-wide"
           >
-            HOTELS &amp; ACCOMMODATION
+            {isAm ? 'ሆቴሎችና ማደሪያዎች' : 'HOTELS & ACCOMMODATION'}
           </motion.h1>
           <motion.p
             initial={{ opacity: 0, y: 30 }}

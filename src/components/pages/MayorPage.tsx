@@ -15,6 +15,7 @@ import {
   FileCheck, ArrowRight, Twitter, Globe, Music
 } from 'lucide-react'
 import { useState, useCallback, useEffect } from 'react'
+import { useLang } from '@/lib/LangContext'
 
 const fadeInUp = {
   hidden: { opacity: 0, y: 30 },
@@ -246,6 +247,8 @@ type DbCabinetMember = {
 }
 
 export default function MayorPage() {
+  const { lang } = useLang()
+  const isAm = lang === 'am'
   const [cabinetPage, setCabinetPage] = useState(0)
   const CABINET_PER_PAGE = 4
   const [dbCabinet, setDbCabinet] = useState<DbCabinetMember[]>([])
@@ -292,10 +295,10 @@ export default function MayorPage() {
           <div className="absolute bottom-6 left-1/3 w-24 h-24 rounded-full border border-white/20" />
         </div>
         <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6 }} className="relative z-10">
-          <p className="text-[#c8a415] text-sm tracking-[0.2em] font-semibold mb-3 uppercase">Leadership</p>
-          <h1 className="text-3xl md:text-5xl font-bold text-white tracking-wide mb-4">OFFICE OF THE MAYOR</h1>
+          <p className="text-[#c8a415] text-sm tracking-[0.2em] font-semibold mb-3 uppercase">{isAm ? 'አመራር' : 'Leadership'}</p>
+          <h1 className="text-3xl md:text-5xl font-bold text-white tracking-wide mb-4">{isAm ? 'የከንቲባ ቢሮ' : 'OFFICE OF THE MAYOR'}</h1>
           <Separator className="w-20 mx-auto bg-[#c8a415] h-0.5 mb-4" />
-          <p className="text-white/70 text-sm tracking-widest uppercase">Home / Mayor</p>
+          <p className="text-white/70 text-sm tracking-widest uppercase">{isAm ? 'ዋና ገጽ / ከንቲባ' : 'Home / Mayor'}</p>
         </motion.div>
       </section>
 

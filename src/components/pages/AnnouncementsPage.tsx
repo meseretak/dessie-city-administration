@@ -6,6 +6,7 @@ import { Tabs, TabsList, TabsTrigger, TabsContent } from '@/components/ui/tabs'
 import { Card, CardContent } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
+import { useLang } from '@/lib/LangContext'
 import { FileText, Calendar, Briefcase, DollarSign, Clock, Building2, Gavel, ChevronRight, AlertTriangle } from 'lucide-react'
 
 interface AnnouncementsPageProps {
@@ -66,6 +67,8 @@ function StatusBadge({ status }: { status: 'Open' | 'Closed' | 'Awarded' }) {
 }
 
 export default function AnnouncementsPage({ navigateTo }: AnnouncementsPageProps) {
+  const { lang } = useLang()
+  const isAm = lang === 'am'
   const [dbNews, setDbNews] = useState<any[]>([])
   const [dbAnnouncements, setDbAnnouncements] = useState<any[]>([])
 
@@ -96,8 +99,8 @@ export default function AnnouncementsPage({ navigateTo }: AnnouncementsPageProps
       <section className="bg-[#0d4a28] py-16 px-4">
         <div className="max-w-7xl mx-auto text-center">
           <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5 }}>
-            <h1 className="text-4xl md:text-5xl font-extrabold text-white uppercase tracking-wider gov-heading-display">Announcements</h1>
-            <p className="mt-4 text-green-200 text-lg">News, vacancies, and procurement opportunities from Dessie City Administration</p>
+            <h1 className="text-4xl md:text-5xl font-extrabold text-white uppercase tracking-wider gov-heading-display">{isAm ? 'ማስታወቂያዎች' : 'Announcements'}</h1>
+            <p className="mt-4 text-green-200 text-lg">{isAm ? 'ዜናዎች፣ ክፍት የስራ ቦታዎችና ጨረታዎች ከደሴ ከተማ አስተዳደር' : 'News, vacancies, and procurement opportunities from Dessie City Administration'}</p>
             <nav className="mt-3 text-green-300/70 text-sm">
               <span className="cursor-pointer hover:text-white transition-colors" onClick={() => navigateTo('home')}>Home</span>
               <span className="mx-2">/</span>
@@ -112,17 +115,11 @@ export default function AnnouncementsPage({ navigateTo }: AnnouncementsPageProps
         <div className="max-w-7xl mx-auto px-4 py-4">
           <Tabs defaultValue="news" className="w-full">
             <TabsList className="h-auto p-1 bg-[#f0f4f0] rounded-lg">
-              <TabsTrigger
-                value="news"
-                className="data-[state=active]:bg-[#1a6b3c] data-[state=active]:text-white px-6 py-2.5 text-sm font-semibold uppercase tracking-wider rounded-md transition-all"
-              >
-                News &amp; Media
+              <TabsTrigger value="news" className="data-[state=active]:bg-[#1a6b3c] data-[state=active]:text-white px-6 py-2.5 text-sm font-semibold uppercase tracking-wider rounded-md transition-all">
+                {isAm ? 'ዜናዎች' : 'News & Media'}
               </TabsTrigger>
-              <TabsTrigger
-                value="vacancies"
-                className="data-[state=active]:bg-[#1a6b3c] data-[state=active]:text-white px-6 py-2.5 text-sm font-semibold uppercase tracking-wider rounded-md transition-all"
-              >
-                Vacancies
+              <TabsTrigger value="vacancies" className="data-[state=active]:bg-[#1a6b3c] data-[state=active]:text-white px-6 py-2.5 text-sm font-semibold uppercase tracking-wider rounded-md transition-all">
+                {isAm ? 'ክፍት ቦታዎች' : 'Vacancies'}
               </TabsTrigger>
               <TabsTrigger
                 value="bids"

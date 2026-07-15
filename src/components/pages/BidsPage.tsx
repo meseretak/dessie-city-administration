@@ -2,7 +2,8 @@
 
 import { useState, useMemo, useCallback, useEffect } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
-import { PageId } from '@/lib/types'
+import type { PageId } from '@/lib/types'
+import { useLang } from '@/lib/LangContext'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
@@ -593,6 +594,8 @@ function TenderRowList({
 
 // ─── Main Component ──────────────────────────────────────────────────
 export default function BidsPage({ navigateTo }: BidsPageProps) {
+  const { lang } = useLang()
+  const isAm = lang === 'am'
   const [category, setCategory] = useState('All')
   const [status, setStatus] = useState('All')
   const [search, setSearch] = useState('')
@@ -676,7 +679,7 @@ export default function BidsPage({ navigateTo }: BidsPageProps) {
         <div className="max-w-7xl mx-auto text-center">
           <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5 }}>
             <Gavel className="w-12 h-12 text-[#c8a415] mx-auto mb-4" />
-            <h1 className="text-4xl md:text-5xl font-extrabold text-white uppercase tracking-wider gov-heading-display">Bids & Tenders</h1>
+            <h1 className="text-4xl md:text-5xl font-extrabold text-white uppercase tracking-wider gov-heading-display">{isAm ? 'ጨረታዎችና ግዢዎች' : 'Bids & Tenders'}</h1>
             <p className="mt-4 text-green-200 text-lg max-w-2xl mx-auto">Procurement opportunities and tender announcements from Dessie City Administration</p>
           </motion.div>
         </div>

@@ -4,6 +4,7 @@ import { motion } from 'framer-motion'
 import { Card, CardContent } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 import { Separator } from '@/components/ui/separator'
+import { useLang } from '@/lib/LangContext'
 import {
   Users, Mountain, MapPin, Building2, Calendar, Globe, Languages, CloudSun,
   Eye, Target, Heart, Shield, Lightbulb, Scale, Handshake,
@@ -23,24 +24,27 @@ const staggerContainer = {
 }
 
 export default function AboutPage() {
+  const { lang } = useLang()
+  const isAm = lang === 'am'
+
   const keyFacts = [
-    { icon: Users, label: 'Population', value: '450,000+', color: '#1a6b3c' },
-    { icon: Mountain, label: 'Elevation', value: '2,470m', color: '#c8a415' },
-    { icon: MapPin, label: 'Area', value: '25.4 km²', color: '#1a6b3c' },
-    { icon: Building2, label: 'Kebeles', value: '12', color: '#c8a415' },
-    { icon: Clock, label: 'Founded', value: 'Late 19th Century', color: '#1a6b3c' },
-    { icon: Globe, label: 'Region', value: 'Amhara', color: '#c8a415' },
-    { icon: Languages, label: 'Language', value: 'Amharic', color: '#1a6b3c' },
-    { icon: CloudSun, label: 'Climate', value: 'Subtropical Highland', color: '#c8a415' },
+    { icon: Users, label: isAm ? 'ህዝብ' : 'Population', value: '450,000+', color: '#1a6b3c' },
+    { icon: Mountain, label: isAm ? 'ከፍታ' : 'Elevation', value: '2,470m', color: '#c8a415' },
+    { icon: MapPin, label: isAm ? 'ስፋት' : 'Area', value: '25.4 km²', color: '#1a6b3c' },
+    { icon: Building2, label: isAm ? 'ቀበሌዎች' : 'Kebeles', value: '12', color: '#c8a415' },
+    { icon: Clock, label: isAm ? 'የተመሰረተበት' : 'Founded', value: isAm ? 'የ19ኛው ክ/ዘ መገባደጃ' : 'Late 19th Century', color: '#1a6b3c' },
+    { icon: Globe, label: isAm ? 'ክልል' : 'Region', value: isAm ? 'አማራ' : 'Amhara', color: '#c8a415' },
+    { icon: Languages, label: isAm ? 'ቋንቋ' : 'Language', value: isAm ? 'አማርኛ' : 'Amharic', color: '#1a6b3c' },
+    { icon: CloudSun, label: isAm ? 'የአየር ፀባይ' : 'Climate', value: isAm ? 'ሞቃታማ ደጋ' : 'Subtropical Highland', color: '#c8a415' },
   ]
 
   const coreValues = [
-    { label: 'Transparency', icon: Eye },
-    { label: 'Accountability', icon: Shield },
-    { label: 'Citizen First', icon: Heart },
-    { label: 'Innovation', icon: Lightbulb },
-    { label: 'Integrity', icon: Scale },
-    { label: 'Inclusiveness', icon: Handshake },
+    { label: isAm ? 'ግልጽነት' : 'Transparency', icon: Eye },
+    { label: isAm ? 'ተጠያቂነት' : 'Accountability', icon: Shield },
+    { label: isAm ? 'ዜጋ ቅድሚያ' : 'Citizen First', icon: Heart },
+    { label: isAm ? 'ፈጠራ' : 'Innovation', icon: Lightbulb },
+    { label: isAm ? 'ታማኝነት' : 'Integrity', icon: Scale },
+    { label: isAm ? 'አካታችነት' : 'Inclusiveness', icon: Handshake },
   ]
 
   const timeline = [
@@ -75,8 +79,8 @@ export default function AboutPage() {
           <div className="absolute top-8 right-16 w-20 h-20 rounded-full border border-white/20" />
         </div>
         <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6 }} className="relative z-10">
-          <p className="text-[#c8a415] text-sm tracking-[0.2em] font-semibold mb-3 uppercase">Discover Our City</p>
-          <h1 className="text-3xl md:text-5xl font-bold text-white tracking-wide mb-4">ABOUT DESSIE CITY</h1>
+          <p className="text-[#c8a415] text-sm tracking-[0.2em] font-semibold mb-3 uppercase">{isAm ? 'ከተማችንን ያውቁ' : 'Discover Our City'}</p>
+          <h1 className="text-3xl md:text-5xl font-bold text-white tracking-wide mb-4">{isAm ? 'ስለ ደሴ ከተማ' : 'ABOUT DESSIE CITY'}</h1>
           <Separator className="w-20 mx-auto bg-[#c8a415] h-0.5 mb-4" />
           <p className="text-white/70 text-sm tracking-widest uppercase">Home / About</p>
         </motion.div>

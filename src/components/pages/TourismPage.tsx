@@ -5,6 +5,7 @@ import { Card, CardContent } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 import { Separator } from '@/components/ui/separator'
+import { useLang } from '@/lib/LangContext'
 import {
   Mountain,
   Landmark,
@@ -76,12 +77,14 @@ const tips = [
 ]
 
 export default function TourismPage() {
+  const { lang } = useLang()
+  const isAm = lang === 'am'
   return (
     <div className="min-h-screen">
       {/* Page Banner */}
       <section className="bg-[#0d4a28] py-20 px-4 text-center relative overflow-hidden">
         <div className="absolute inset-0 opacity-10" style={{ backgroundImage: 'radial-gradient(circle at 2px 2px, rgba(255,255,255,0.3) 1px, transparent 0)', backgroundSize: '32px 32px' }} />
-        <motion.h1 initial={{ opacity: 0, y: -20 }} animate={{ opacity: 1, y: 0 }} className="text-4xl md:text-5xl font-bold text-white tracking-wide">DISCOVER DESSIE</motion.h1>
+        <motion.h1 initial={{ opacity: 0, y: -20 }} animate={{ opacity: 1, y: 0 }} className="text-4xl md:text-5xl font-bold text-white tracking-wide">{isAm ? 'ደሴን ያስሱ' : 'DISCOVER DESSIE'}</motion.h1>
         <motion.p initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.2 }} className="text-green-200 mt-4 text-lg md:text-xl max-w-2xl mx-auto">A city rich in history, culture, and natural beauty</motion.p>
       </section>
 

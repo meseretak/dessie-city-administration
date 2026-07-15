@@ -7,6 +7,7 @@ import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 import { Progress } from '@/components/ui/progress'
 import { Separator } from '@/components/ui/separator'
+import { useLang } from '@/lib/LangContext'
 import {
   TrendingUp,
   CheckCircle,
@@ -111,6 +112,8 @@ type DbProject = {
 }
 
 export default function ProjectsPage() {
+  const { lang } = useLang()
+  const isAm = lang === 'am'
   const [activeFilter, setActiveFilter] = useState<Filter>('All')
   const [dbProjects, setDbProjects] = useState<DbProject[]>([])
 
@@ -137,7 +140,7 @@ export default function ProjectsPage() {
       {/* Page Banner */}
       <section className="bg-[#0d4a28] py-20 px-4 text-center relative overflow-hidden">
         <div className="absolute inset-0 opacity-10" style={{ backgroundImage: 'radial-gradient(circle at 2px 2px, rgba(255,255,255,0.3) 1px, transparent 0)', backgroundSize: '32px 32px' }} />
-        <motion.h1 initial={{ opacity: 0, y: -20 }} animate={{ opacity: 1, y: 0 }} className="text-4xl md:text-5xl font-bold text-white tracking-wide">CITY PROJECTS</motion.h1>
+        <motion.h1 initial={{ opacity: 0, y: -20 }} animate={{ opacity: 1, y: 0 }} className="text-4xl md:text-5xl font-bold text-white tracking-wide">{isAm ? 'የከተማ ፕሮጀክቶች' : 'CITY PROJECTS'}</motion.h1>
         <motion.p initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.2 }} className="text-green-200 mt-4 text-lg md:text-xl max-w-2xl mx-auto">Transforming Dessie through strategic infrastructure investments</motion.p>
       </section>
 

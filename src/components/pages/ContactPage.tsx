@@ -8,6 +8,7 @@ import { Input } from '@/components/ui/input'
 import { Textarea } from '@/components/ui/textarea'
 import { Label } from '@/components/ui/label'
 import { Separator } from '@/components/ui/separator'
+import { useLang } from '@/lib/LangContext'
 import {
   Accordion,
   AccordionContent,
@@ -88,6 +89,8 @@ const faqs = [
 const deptOptions = ["Mayor's Office", 'Finance', 'Infrastructure', 'Social Affairs', 'Legal', 'Health', 'Education', 'Other']
 
 export default function ContactPage() {
+  const { lang } = useLang()
+  const isAm = lang === 'am'
   const { toast } = useToast()
   const [sending, setSending] = useState(false)
   const [form, setForm] = useState({ name: '', email: '', phone: '', department: '', subject: '', message: '' })
@@ -120,8 +123,8 @@ export default function ContactPage() {
       {/* Page Banner */}
       <section className="bg-[#0d4a28] py-20 px-4 text-center relative overflow-hidden">
         <div className="absolute inset-0 opacity-10" style={{ backgroundImage: 'radial-gradient(circle at 2px 2px, rgba(255,255,255,0.3) 1px, transparent 0)', backgroundSize: '32px 32px' }} />
-        <motion.h1 initial={{ opacity: 0, y: -20 }} animate={{ opacity: 1, y: 0 }} className="text-4xl md:text-5xl font-bold text-white tracking-wide">CONTACT US</motion.h1>
-        <motion.p initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.2 }} className="text-green-200 mt-4 text-lg md:text-xl">We&apos;re here to serve you</motion.p>
+        <motion.h1 initial={{ opacity: 0, y: -20 }} animate={{ opacity: 1, y: 0 }} className="text-4xl md:text-5xl font-bold text-white tracking-wide">{isAm ? 'ያግኙን' : 'CONTACT US'}</motion.h1>
+        <motion.p initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.2 }} className="text-green-200 mt-4 text-lg md:text-xl">{isAm ? 'ለማገልገል ዝግጁ ነን' : "We're here to serve you"}</motion.p>
       </section>
 
       {/* Contact Info Cards */}
@@ -175,28 +178,28 @@ export default function ContactPage() {
       {/* Contact Form */}
       <section className="bg-white py-16 px-4">
         <div className="max-w-3xl mx-auto">
-          <motion.h2 initial="hidden" whileInView="visible" viewport={{ once: true }} custom={0} variants={fadeUp} className="gov-section-title text-3xl font-bold text-[#0d4a28] mb-2 text-center">SEND US A MESSAGE</motion.h2>
+          <motion.h2 initial="hidden" whileInView="visible" viewport={{ once: true }} custom={0} variants={fadeUp} className="gov-section-title text-3xl font-bold text-[#0d4a28] mb-2 text-center">{isAm ? 'መልዕክት ይላኩ' : 'SEND US A MESSAGE'}</motion.h2>
           <motion.div initial="hidden" whileInView="visible" viewport={{ once: true }} custom={1} variants={fadeUp} className="w-16 h-1 bg-[#c8a415] mx-auto mb-10" />
           <motion.form initial="hidden" whileInView="visible" viewport={{ once: true }} custom={2} variants={fadeUp} onSubmit={handleSubmit} className="space-y-5">
             <div className="grid sm:grid-cols-2 gap-4">
               <div>
-                <Label className="text-sm font-semibold mb-1.5 block">Name *</Label>
-                <Input placeholder="Your full name" value={form.name} onChange={e => setForm({ ...form, name: e.target.value })} />
+                <Label className="text-sm font-semibold mb-1.5 block">{isAm ? 'ስም *' : 'Name *'}</Label>
+                <Input placeholder={isAm ? 'ሙሉ ስምዎ' : 'Your full name'} value={form.name} onChange={e => setForm({ ...form, name: e.target.value })} />
               </div>
               <div>
-                <Label className="text-sm font-semibold mb-1.5 block">Email *</Label>
+                <Label className="text-sm font-semibold mb-1.5 block">{isAm ? 'ኢሜይል *' : 'Email *'}</Label>
                 <Input type="email" placeholder="you@example.com" value={form.email} onChange={e => setForm({ ...form, email: e.target.value })} />
               </div>
             </div>
             <div className="grid sm:grid-cols-2 gap-4">
               <div>
-                <Label className="text-sm font-semibold mb-1.5 block">Phone (Optional)</Label>
+                <Label className="text-sm font-semibold mb-1.5 block">{isAm ? 'ስልክ (አማራጭ)' : 'Phone (Optional)'}</Label>
                 <Input placeholder="+251-XX-XXX-XXXX" value={form.phone} onChange={e => setForm({ ...form, phone: e.target.value })} />
               </div>
               <div>
-                <Label className="text-sm font-semibold mb-1.5 block">Department *</Label>
+                <Label className="text-sm font-semibold mb-1.5 block">{isAm ? 'ዲፓርትመንት *' : 'Department *'}</Label>
                 <Select value={form.department} onValueChange={v => setForm({ ...form, department: v })}>
-                  <SelectTrigger><SelectValue placeholder="Select department" /></SelectTrigger>
+                  <SelectTrigger><SelectValue placeholder={isAm ? 'ዲፓርትመንት ይምረጡ' : 'Select department'} /></SelectTrigger>
                   <SelectContent>
                     {deptOptions.map(d => <SelectItem key={d} value={d}>{d}</SelectItem>)}
                   </SelectContent>
@@ -204,15 +207,15 @@ export default function ContactPage() {
               </div>
             </div>
             <div>
-              <Label className="text-sm font-semibold mb-1.5 block">Subject *</Label>
-              <Input placeholder="Brief subject" value={form.subject} onChange={e => setForm({ ...form, subject: e.target.value })} />
+              <Label className="text-sm font-semibold mb-1.5 block">{isAm ? 'ርዕሰ ጉዳይ *' : 'Subject *'}</Label>
+              <Input placeholder={isAm ? 'ጉዳዩን በአጭሩ ይጻፉ' : 'Brief subject'} value={form.subject} onChange={e => setForm({ ...form, subject: e.target.value })} />
             </div>
             <div>
-              <Label className="text-sm font-semibold mb-1.5 block">Message *</Label>
-              <Textarea placeholder="Write your message here..." rows={5} value={form.message} onChange={e => setForm({ ...form, message: e.target.value })} />
+              <Label className="text-sm font-semibold mb-1.5 block">{isAm ? 'መልዕክት *' : 'Message *'}</Label>
+              <Textarea placeholder={isAm ? 'መልዕክትዎን እዚህ ይጻፉ...' : 'Write your message here...'} rows={5} value={form.message} onChange={e => setForm({ ...form, message: e.target.value })} />
             </div>
             <Button type="submit" disabled={sending} className="w-full bg-[#1a6b3c] hover:bg-[#0d4a28] text-white font-semibold">
-              {sending ? 'Sending...' : 'SEND MESSAGE'} <Send className="w-4 h-4 ml-2" />
+              {sending ? (isAm ? 'እየተላከ ነው...' : 'Sending...') : (isAm ? 'መልዕክት ላክ' : 'SEND MESSAGE')} <Send className="w-4 h-4 ml-2" />
             </Button>
           </motion.form>
         </div>

@@ -2,7 +2,8 @@
 
 import { useState, useMemo, useCallback, useEffect } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
-import { PageId } from '@/lib/types'
+import type { PageId } from '@/lib/types'
+import { useLang } from '@/lib/LangContext'
 import { Badge } from '@/components/ui/badge'
 import { Input } from '@/components/ui/input'
 import { Button } from '@/components/ui/button'
@@ -922,6 +923,8 @@ function EmptyState({ hasActiveFilters }: { hasActiveFilters: boolean }) {
 // ─── Main Component ──────────────────────────────────────────────────────────
 
 export default function VacancyPage({ navigateTo }: VacancyPageProps) {
+  const { lang } = useLang()
+  const isAm = lang === 'am'
   const [department, setDepartment] = useState('All')
   const [type, setType] = useState<'All' | 'Permanent' | 'Contract'>('All')
   const [salaryRange, setSalaryRange] = useState<SalaryRange>('all')
@@ -1054,11 +1057,10 @@ export default function VacancyPage({ navigateTo }: VacancyPageProps) {
               <Briefcase className="w-8 h-8 text-[#c8a415]" />
             </div>
             <h1 className="text-4xl md:text-5xl font-extrabold text-white uppercase tracking-wider gov-heading-display">
-              Job Vacancies
+              {isAm ? 'የስራ ክፍት ቦታዎች' : 'Job Vacancies'}
             </h1>
             <p className="mt-4 text-green-200/80 text-lg max-w-2xl mx-auto leading-relaxed">
-              Current employment opportunities at Dessie City Administration. Browse open
-              positions and apply before the deadline.
+              {isAm ? 'በደሴ ከተማ አስተዳደር ውስጥ ያሉ ክፍት የስራ ቦታዎች። ቃለ-ምልልስ ቀን ከመሄዱ በፊት ያመልክቱ።' : 'Current employment opportunities at Dessie City Administration. Browse open positions and apply before the deadline.'}
             </p>
           </motion.div>
         </div>
@@ -1125,7 +1127,7 @@ export default function VacancyPage({ navigateTo }: VacancyPageProps) {
                 <div className="relative">
                   <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
                   <Input
-                    placeholder="Search vacancies..."
+                    placeholder={isAm ? 'ክፍት ቦታዎችን ፈልግ...' : 'Search vacancies...'}
                     value={search}
                     onChange={(e) => updateSearch(e.target.value)}
                     className="pl-9 bg-white border-[#e2e8e0]"

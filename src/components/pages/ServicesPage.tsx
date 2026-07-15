@@ -7,7 +7,8 @@ import { Badge } from '@/components/ui/badge'
 import { Separator } from '@/components/ui/separator'
 import { Input } from '@/components/ui/input'
 import { Button } from '@/components/ui/button'
-import { PageId } from '@/lib/types'
+import type { PageId } from '@/lib/types'
+import { useLang } from '@/lib/LangContext'
 import {
   Baby, FileCheck, Building, MapPin, Receipt, Heart, Stethoscope, GraduationCap,
   Bus, Droplets, MessageSquareWarning, CalendarDays, Search, ChevronRight,
@@ -110,6 +111,8 @@ const steps = [
 ]
 
 export default function ServicesPage({ navigateTo }: ServicesPageProps) {
+  const { lang } = useLang()
+  const isAm = lang === 'am'
   const [searchQuery, setSearchQuery] = useState('')
 
   const filteredServices = services.filter(
@@ -127,11 +130,11 @@ export default function ServicesPage({ navigateTo }: ServicesPageProps) {
           <div className="absolute bottom-4 right-1/4 w-28 h-28 rounded-full border border-white/20" />
         </div>
         <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6 }} className="relative z-10">
-          <p className="text-[#c8a415] text-sm tracking-[0.2em] font-semibold mb-3 uppercase">Municipal Services</p>
-          <h1 className="text-3xl md:text-5xl font-bold text-white tracking-wide mb-4">CITIZEN SERVICES</h1>
+          <p className="text-[#c8a415] text-sm tracking-[0.2em] font-semibold mb-3 uppercase">{isAm ? 'የህዝብ አገልግሎቶች' : 'Municipal Services'}</p>
+          <h1 className="text-3xl md:text-5xl font-bold text-white tracking-wide mb-4">{isAm ? 'የዜጎች አገልግሎቶች' : 'CITIZEN SERVICES'}</h1>
           <Separator className="w-20 mx-auto bg-[#c8a415] h-0.5 mb-4" />
-          <p className="text-white/70 text-sm tracking-widest uppercase">Home / Services</p>
-          <p className="text-white/60 text-sm mt-3 max-w-xl mx-auto">All government services available online and at city offices</p>
+          <p className="text-white/70 text-sm tracking-widest uppercase">{isAm ? 'ዋና ገጽ / አገልግሎቶች' : 'Home / Services'}</p>
+          <p className="text-white/60 text-sm mt-3 max-w-xl mx-auto">{isAm ? 'ሁሉም የመንግስት አገልግሎቶች በዲጂታልና በቢሮ ይገኛሉ' : 'All government services available online and at city offices'}</p>
         </motion.div>
       </section>
 
@@ -141,7 +144,7 @@ export default function ServicesPage({ navigateTo }: ServicesPageProps) {
           <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }} className="relative">
             <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-muted-foreground" />
             <Input
-              placeholder="Search services... (e.g., birth registration, tax, license)"
+              placeholder={isAm ? 'አገልግሎቶችን ፈልግ... (ለምሳሌ፡ የልደት ምዝገባ፣ ታክስ)' : 'Search services... (e.g., birth registration, tax, license)'}
               className="pl-12 pr-4 py-6 h-14 text-base rounded-xl border-[#1a6b3c]/20 focus:border-[#1a6b3c] shadow-lg"
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}

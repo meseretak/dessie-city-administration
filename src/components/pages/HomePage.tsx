@@ -9,6 +9,7 @@ import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { Textarea } from '@/components/ui/textarea'
 import { Skeleton } from '@/components/ui/skeleton'
+import { useLang } from '@/lib/LangContext'
 import {
   Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger, DialogFooter
 } from '@/components/ui/dialog'
@@ -341,6 +342,8 @@ function GreenPagination({
 
 /* ─────────────────── Main Component ─────────────────── */
 export default function HomePage({ navigateTo }: { navigateTo: (page: PageId, extra?: any) => void }) {
+  const { lang } = useLang()
+  const isAm = lang === 'am'
   const { toast } = useToast()
 
   /* ── Slider State ── */
@@ -821,9 +824,9 @@ export default function HomePage({ navigateTo }: { navigateTo: (page: PageId, ex
                     <div className="w-8 h-8 rounded-lg bg-[#c62828] flex items-center justify-center">
                       <Newspaper className="w-4 h-4 text-white" />
                     </div>
-                    <span className="text-xs font-bold text-[#c62828] uppercase tracking-widest">Latest Updates</span>
+                    <span className="text-xs font-bold text-[#c62828] uppercase tracking-widest">{isAm ? 'የቅርብ ጊዜ ዝማኔዎች' : 'Latest Updates'}</span>
                   </div>
-                  <h2 className="text-2xl font-extrabold text-[#1a1a1a]">LATEST NEWS</h2>
+                  <h2 className="text-2xl font-extrabold text-[#1a1a1a]">{isAm ? 'የቅርብ ጊዜ ዜናዎች' : 'LATEST NEWS'}</h2>
                   <div className="h-1 w-16 bg-[#c62828] rounded-full mt-1" />
                 </div>
                 <button onClick={() => navigateTo('news')}
@@ -1384,7 +1387,7 @@ export default function HomePage({ navigateTo }: { navigateTo: (page: PageId, ex
                 </div>
                 <span className="text-[10px] font-bold text-[#0d4a28] uppercase tracking-widest">Open Opportunities</span>
               </div>
-              <h2 className="text-xl md:text-2xl font-extrabold text-[#0d4a28]">VACANCIES & BIDS</h2>
+              <h2 className="text-xl md:text-2xl font-extrabold text-[#0d4a28]">{isAm ? 'ክፍት ቦታዎችና ጨረታዎች' : 'VACANCIES & BIDS'}</h2>
               <div className="h-0.5 w-14 bg-[#c8a415] rounded-full mt-1" />
             </div>
 
@@ -1629,7 +1632,7 @@ export default function HomePage({ navigateTo }: { navigateTo: (page: PageId, ex
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between mb-6">
             <div>
-              <h2 className="text-2xl md:text-3xl font-bold text-[#1a1a1a] gov-section-title inline-block">HERITAGE & HISTORICAL PLACES</h2>
+              <h2 className="text-2xl md:text-3xl font-bold text-[#1a1a1a] gov-section-title inline-block">{isAm ? 'ቅርስና ታሪካዊ ቦታዎች' : 'HERITAGE & HISTORICAL PLACES'}</h2>
               <div className="h-0.5 w-16 bg-[#c8a415] rounded-full mt-1" />
             </div>
             <Button variant="outline" size="sm" className="border-[#1a6b3c] text-[#1a6b3c] hover:bg-[#1a6b3c] hover:text-white text-xs font-bold" onClick={() => navigateTo('tourism')}>VIEW ALL</Button>
@@ -1673,7 +1676,7 @@ export default function HomePage({ navigateTo }: { navigateTo: (page: PageId, ex
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between mb-6">
             <div>
-              <h2 className="text-2xl md:text-3xl font-bold text-[#1a1a1a] gov-section-title inline-block">DESSIE CITY LANDMARKS</h2>
+              <h2 className="text-2xl md:text-3xl font-bold text-[#1a1a1a] gov-section-title inline-block">{isAm ? 'የደሴ ከተማ ታዋቂ ቦታዎች' : 'DESSIE CITY LANDMARKS'}</h2>
               <div className="h-0.5 w-16 bg-[#c8a415] rounded-full mt-1" />
             </div>
           </div>
@@ -1761,8 +1764,8 @@ export default function HomePage({ navigateTo }: { navigateTo: (page: PageId, ex
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex flex-col sm:flex-row items-center gap-4">
             <div className="flex-1 text-center sm:text-left">
-              <h2 className="text-xl font-bold text-white mb-0.5">STAY INFORMED</h2>
-              <p className="text-white/70 text-sm">Get the latest news and announcements from Dessie City Administration.</p>
+              <h2 className="text-xl font-bold text-white mb-0.5">{isAm ? 'ወቅታዊ ሁን' : 'STAY INFORMED'}</h2>
+              <p className="text-white/70 text-sm">{isAm ? 'ከደሴ ከተማ አስተዳደር የቅርብ ጊዜ ዜናዎች ያግኙ።' : 'Get the latest news and announcements from Dessie City Administration.'}</p>
             </div>
             <div className="flex gap-2 w-full sm:w-auto">
               <Input
@@ -1798,7 +1801,7 @@ export default function HomePage({ navigateTo }: { navigateTo: (page: PageId, ex
             transition={{ duration: 0.5 }}
           >
             <h2 className="text-2xl md:text-3xl font-bold text-[#1a1a1a] gov-section-title inline-block mb-2">
-              RESOURCES &amp; DOCUMENTS
+              RESOURCES &amp; {isAm ? 'ሰነዶች' : 'DOCUMENTS'}
             </h2>
             <p className="text-[#6b7280] text-sm mb-6">Access official documents, proclamations, regulations, and application forms</p>
 
@@ -1980,8 +1983,8 @@ export default function HomePage({ navigateTo }: { navigateTo: (page: PageId, ex
             {/* Emergency Contacts — 1/3 */}
             <div className="lg:col-span-1">
               <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.5, delay: 0.1 }}>
-                <h2 className="text-xl font-bold text-[#1a1a1a] gov-section-title inline-block mb-2">EMERGENCY CONTACTS</h2>
-                <p className="text-[#6b7280] text-sm mb-4">24/7 emergency services</p>
+                <h2 className="text-xl font-bold text-[#1a1a1a] gov-section-title inline-block mb-2">{isAm ? 'ድንገተኛ ጥሪዎች' : 'EMERGENCY CONTACTS'}</h2>
+                <p className="text-[#6b7280] text-sm mb-4">{isAm ? '24/7 ድንገተኛ አገልግሎቶች' : '24/7 emergency services'}</p>
                 <div className="grid grid-cols-1 gap-1.5">
                   {[
                     { label: 'Police Emergency', number: '911', icon: Shield, color: '#1a6b3c', bg: '#f0fdf4' },
