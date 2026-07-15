@@ -325,7 +325,7 @@ export default function Home() {
           </button>
 
           {/* Center: Desktop Nav */}
-          <nav className="hidden xl:flex items-center gap-0.5 ml-auto">
+          <nav className="hidden xl:flex items-center gap-0.5 ml-auto" style={{ fontFamily: "var(--font-ethiopic), 'Noto Sans Ethiopic', var(--font-geist-sans), system-ui, sans-serif" }}>
             {navItems.map((item) => {
               const NavIcon = navIcons[item.label] || HomeIcon
               const subItems = item.children && item.children.length > 0
@@ -646,7 +646,7 @@ export default function Home() {
 
       {/* ============ BREADCRUMB ============ */}
       {currentPage !== 'home' && (
-        <div className="bg-[#f0f4f0] dark:bg-[#0a1a0e] border-b border-border px-4 py-3">
+        <div className="bg-[#f0f4f0] dark:bg-[#0a1a0e] border-b border-border px-4 py-3" style={{ fontFamily: "var(--font-ethiopic), var(--font-geist-sans), system-ui" }}>
           <div className="max-w-7xl mx-auto flex items-center gap-2 text-sm">
             <button onClick={() => navigateTo('home')} className="text-muted-foreground hover:text-[#1a6b3c] dark:hover:text-green-400 transition-colors">
               {lang === 'am' ? 'á‹‹áŠ“ áŒˆáŒ½' : 'Home'}
