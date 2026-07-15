@@ -76,6 +76,20 @@ export default function Home() {
 
   const navItems = dbMenuItems ?? NAV_ITEMS
 
+  // Translate nav label based on current language
+  const navLabel = (label: string): string => {
+    if (lang === 'en') return label
+    const map: Record<string, string> = {
+      'HOME': 'ዋና ገጽ', 'ABOUT': 'ስለ ከተማ', 'MAYOR': 'ከንቲባ',
+      'SERVICES': 'አገልግሎቶች', 'ANNOUNCEMENTS': 'ማስታወቂያዎች', 'CONTACT': 'ያግኙን',
+      'All Services': 'ሁሉም አገልግሎቶች', 'News & Media': 'ዜናና ሚዲያ',
+      'Vacancies': 'ክፍት ቦታዎች', 'Bids & Tenders': 'ጨረታዎች',
+      'City Projects': 'የከተማ ፕሮጀክቶች', 'Tourism & Culture': 'ቱሪዝምና ባህል',
+      'Hotels': 'ሆቴሎች',
+    }
+    return map[label] || label
+  }
+
   // Chat widget state
   const [chatOpen, setChatOpen] = useState(false)
   const [chatMessages, setChatMessages] = useState<{ role: 'bot' | 'user'; text: string }[]>([
@@ -283,7 +297,7 @@ export default function Home() {
                       : 'text-[#333] hover:text-[#1a6b3c] hover:bg-[#1a6b3c]/5'
                   }`}
                 >
-                  {item.label}
+                  {navLabel(item.label)}
                   {item.children && <ChevronDown className="w-3 h-3" />}
                 </button>
 
@@ -301,7 +315,7 @@ export default function Home() {
                           onClick={() => { navigateTo('services'); setOpenDropdown(null) }}
                           className="w-full text-left px-3 py-2 rounded-lg text-sm font-semibold text-[#1a6b3c] dark:text-green-400 hover:bg-[#1a6b3c]/5 mb-2"
                         >
-                          View All Services →
+                          {lang === 'am' ? 'ሁሉም አገልግሎቶች →' : 'View All Services →'}
                         </button>
                         <div className="grid grid-cols-3 gap-1">
                         {item.children.map((child) => (
@@ -309,8 +323,6 @@ export default function Home() {
                             key={child.label}
                             onClick={() => {
                               if (child.label.startsWith('──')) {
-                                // Separator-like items: Tourism & Projects
-                                const label = child.label.replace('── ', '').trim()
                                 navigateTo(child.id as PageId)
                               } else if (child.id === 'services') {
                                 navigateTo('services')
@@ -325,7 +337,7 @@ export default function Home() {
                                 : 'text-muted-foreground hover:text-[#1a6b3c] dark:hover:text-green-400 hover:bg-muted/50'
                             }`}
                           >
-                            {child.label.replace('── ', '')}
+                            {navLabel(child.label.replace('── ', ''))}
                           </button>
                         ))}
                         </div>
@@ -341,7 +353,7 @@ export default function Home() {
                             }}
                             className="w-full text-left px-3 py-3 rounded-lg text-sm text-muted-foreground hover:text-[#1a6b3c] dark:hover:text-green-400 hover:bg-muted/50 transition-colors flex items-center gap-2"
                           >
-                            {child.label}
+                            {navLabel(child.label)}
                             <ChevronRight className="w-3 h-3 ml-auto opacity-50" />
                           </button>
                         ))}
@@ -516,7 +528,7 @@ export default function Home() {
                             : 'text-muted-foreground hover:text-[#1a6b3c] dark:hover:text-green-400 hover:bg-muted/50'
                         }`}
                       >
-                        {item.label}
+                        {navLabel(item.label)}
                         {item.children && <ChevronDown className={`w-3 h-3 transition-transform ${openDropdown === item.label ? 'rotate-180' : ''}`} />}
                       </button>
                       {/* Mobile dropdown children */}
@@ -542,7 +554,7 @@ export default function Home() {
                                   : 'text-muted-foreground hover:text-[#1a6b3c] dark:hover:text-green-400 hover:bg-muted/50'
                               }`}
                             >
-                              {child.label.replace('── ', '')}
+                              {navLabel(child.label.replace('── ', ''))}
                             </button>
                           ))}
                         </div>
@@ -564,7 +576,7 @@ export default function Home() {
         <div className="bg-[#f0f4f0] dark:bg-[#0a1a0e] border-b border-border px-4 py-3">
           <div className="max-w-7xl mx-auto flex items-center gap-2 text-sm">
             <button onClick={() => navigateTo('home')} className="text-muted-foreground hover:text-[#1a6b3c] dark:hover:text-green-400 transition-colors">
-              Home
+              {lang === 'am' ? 'ዋና ገጽ' : 'Home'}
             </button>
             <ChevronRight className="w-3 h-3 text-muted-foreground" />
             <span className="text-[#1a6b3c] dark:text-green-400 font-medium">
@@ -630,19 +642,19 @@ export default function Home() {
               <h4 className="text-white font-semibold text-sm tracking-wider uppercase mb-4">{lang === 'am' ? 'ፈጣን አገናኞች' : 'Quick Links'}</h4>
               <ul className="space-y-2">
                 {[
-                  { label: 'Home', page: 'home' as PageId },
-                  { label: 'About Dessie', page: 'about' as PageId },
-                  { label: "Mayor's Office", page: 'mayor' as PageId },
-                  { label: 'All Services', page: 'services' as PageId },
-                  { label: 'Announcements', page: 'announcements' as PageId },
-                  { label: 'Contact Us', page: 'contact' as PageId },
+                  { en: 'Home', am: 'ዋና ገጽ', page: 'home' as PageId },
+                  { en: 'About Dessie', am: 'ስለ ደሴ', page: 'about' as PageId },
+                  { en: "Mayor's Office", am: 'የከንቲባ ቢሮ', page: 'mayor' as PageId },
+                  { en: 'All Services', am: 'ሁሉም አገልግሎቶች', page: 'services' as PageId },
+                  { en: 'Announcements', am: 'ማስታወቂያዎች', page: 'announcements' as PageId },
+                  { en: 'Contact Us', am: 'ያግኙን', page: 'contact' as PageId },
                 ].map((link) => (
-                  <li key={link.label}>
+                  <li key={link.en}>
                     <button
                       onClick={() => navigateTo(link.page)}
                       className="text-sm text-white/50 hover:text-green-400 transition-colors"
                     >
-                      {link.label}
+                      {lang === 'am' ? link.am : link.en}
                     </button>
                   </li>
                 ))}
@@ -651,15 +663,21 @@ export default function Home() {
 
             {/* Column 3: Services */}
             <div>
-              <h4 className="text-white font-semibold text-sm tracking-wider uppercase mb-4">Services</h4>
+              <h4 className="text-white font-semibold text-sm tracking-wider uppercase mb-4">{lang === 'am' ? 'አገልግሎቶች' : 'Services'}</h4>
               <ul className="space-y-2">
-                {['Birth Registration', 'Business License', 'Building Permit', 'Land Services', 'Tax Payment'].map((svc) => (
-                  <li key={svc}>
+                {[
+                  { en: 'Birth Registration', am: 'የልደት ምዝገባ' },
+                  { en: 'Business License', am: 'የንግድ ፈቃድ' },
+                  { en: 'Building Permit', am: 'የግንባታ ፈቃድ' },
+                  { en: 'Land Services', am: 'የመሬት አገልግሎቶች' },
+                  { en: 'Tax Payment', am: 'ግብር ክፍያ' },
+                ].map((svc) => (
+                  <li key={svc.en}>
                     <button
-                      onClick={() => navigateTo('service-detail', { serviceId: svc })}
+                      onClick={() => navigateTo('service-detail', { serviceId: svc.en })}
                       className="text-sm text-white/50 hover:text-green-400 transition-colors"
                     >
-                      {svc}
+                      {lang === 'am' ? svc.am : svc.en}
                     </button>
                   </li>
                 ))}
@@ -668,24 +686,22 @@ export default function Home() {
 
             {/* Column 4: Resources */}
             <div>
-              <h4 className="text-white font-semibold text-sm tracking-wider uppercase mb-4">Resources</h4>
+              <h4 className="text-white font-semibold text-sm tracking-wider uppercase mb-4">{lang === 'am' ? 'ሰነዶች' : 'Resources'}</h4>
               <ul className="space-y-2">
                 {[
-                  { label: 'Proclamations', icon: FileText },
-                  { label: 'Regulations', icon: FileText },
-                  { label: 'Official Documents', icon: FileText },
-                  { label: 'Application Forms', icon: FileText },
-                  { label: 'Annual Reports', icon: FileText },
-                  { label: 'City Plans', icon: FileText },
+                  { en: 'Proclamations', am: 'አዋጆች' },
+                  { en: 'Regulations', am: 'ደንቦች' },
+                  { en: 'Official Documents', am: 'ይፋዊ ሰነዶች' },
+                  { en: 'Application Forms', am: 'ማመልከቻ ቅጾች' },
+                  { en: 'Annual Reports', am: 'ዓመታዊ ሪፖርቶች' },
+                  { en: 'City Plans', am: 'የከተማ እቅዶች' },
                 ].map((res) => (
-                  <li key={res.label}>
+                  <li key={res.en}>
                     <button
-                      onClick={() => {
-                        document.getElementById('resources-section')?.scrollIntoView({ behavior: 'smooth' })
-                      }}
+                      onClick={() => { document.getElementById('resources-section')?.scrollIntoView({ behavior: 'smooth' }) }}
                       className="text-sm text-white/50 hover:text-green-400 transition-colors flex items-center gap-1.5"
                     >
-                      <res.icon className="w-3 h-3" /> {res.label}
+                      <FileText className="w-3 h-3" /> {lang === 'am' ? res.am : res.en}
                     </button>
                   </li>
                 ))}
@@ -694,7 +710,7 @@ export default function Home() {
 
             {/* Column 5: Connect */}
             <div>
-              <h4 className="text-white font-semibold text-sm tracking-wider uppercase mb-4">Connect</h4>
+              <h4 className="text-white font-semibold text-sm tracking-wider uppercase mb-4">{lang === 'am' ? 'ያግኙን' : 'Connect'}</h4>
               <div className="flex gap-2 mb-4">
                 {[Facebook, Twitter, Instagram, Youtube].map((Icon, i) => (
                   <button
@@ -706,7 +722,7 @@ export default function Home() {
                   </button>
                 ))}
               </div>
-              <p className="text-sm text-white/50 mb-3">Get updates via email</p>
+              <p className="text-sm text-white/50 mb-3">{lang === 'am' ? 'በኢሜይል ዝማኔዎችን ያግኙ' : 'Get updates via email'}</p>
               <form onSubmit={handleNewsletterSubmit} className="flex gap-2">
                 <Input
                   value={newsletterEmail}
