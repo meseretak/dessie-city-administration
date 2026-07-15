@@ -428,7 +428,7 @@ export default function Home() {
               </Tooltip>
             </TooltipProvider>
 
-            {/* Language Toggle — triggers Google Translate */}
+            {/* Language Toggle — uses GoogleTranslate component */}
             <TooltipProvider>
               <Tooltip>
                 <TooltipTrigger asChild>
@@ -437,13 +437,8 @@ export default function Home() {
                     size="sm"
                     className="h-8 px-2 text-xs font-semibold gap-1"
                     onClick={() => {
-                      // Click the Google Translate dropdown to toggle language
-                      const el = document.querySelector('.goog-te-combo') as HTMLSelectElement | null
-                      if (el) {
-                        const current = el.value
-                        el.value = current === 'am' ? 'en' : 'am'
-                        el.dispatchEvent(new Event('change'))
-                      }
+                      const btn = document.getElementById('gt-toggle-btn') as HTMLButtonElement | null
+                      if (btn) btn.click()
                     }}
                     aria-label="Toggle language"
                   >
@@ -502,11 +497,8 @@ export default function Home() {
                 {/* Language toggle mobile */}
                 <button
                   onClick={() => {
-                    const el = document.querySelector('.goog-te-combo') as HTMLSelectElement | null
-                    if (el) {
-                      el.value = el.value === 'am' ? 'en' : 'am'
-                      el.dispatchEvent(new Event('change'))
-                    }
+                    const btn = document.getElementById('gt-toggle-btn') as HTMLButtonElement | null
+                    if (btn) btn.click()
                   }}
                   className="w-full flex items-center gap-2 px-4 py-2 mb-2 rounded-md bg-[#f0fdf4] text-[#0d4a28] text-sm font-semibold"
                 >
