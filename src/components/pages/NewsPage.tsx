@@ -30,9 +30,22 @@ interface Article {
   createdAt: string
 }
 
-const categoryTabsEn = ['All', 'News', 'Smart City', 'Infrastructure', 'Press Release', 'Event', 'Health', 'Culture', 'Technology']
-const categoryTabsAm = ['ሁሉም', 'ዜና', 'ስማርት ሲቲ', 'መሠረተ ልማት', 'ፕሬስ ሪሊዝ', 'ዝግጅት', 'ጤና', 'ባህል', 'ቴክኖሎጂ']
+const categoryTabsEn = ['All', 'News', 'Smart City', 'Infrastructure', 'Press Release', 'Event', 'Health', 'Culture', 'Technology', 'Education']
+const categoryTabsAm = ['ሁሉም', 'ዜና', 'ስማርት ሲቲ', 'መሠረተ ልማት', 'ፕሬስ ሪሊዝ', 'ዝግጅት', 'ጤና', 'ባህል', 'ቴክኖሎጂ', 'ትምህርት']
 const categoryTabs = categoryTabsEn
+
+/** Get the first image from a field that may be a single URL or a JSON array */
+function getFirstImage(raw?: string, fallback = '/news-meeting.png'): string {
+  if (!raw) return fallback
+  const r = raw.trim()
+  if (r.startsWith('[')) {
+    try {
+      const arr = JSON.parse(r)
+      return Array.isArray(arr) && arr.length > 0 ? arr[0] : fallback
+    } catch { /* fall through */ }
+  }
+  return r || fallback
+}
 const ITEMS_PER_PAGE = 6
 
 const events = [
@@ -153,7 +166,7 @@ export default function NewsPage({ navigateTo, lang = 'en' }: NewsPageProps) {
                       <div className="flex flex-col sm:flex-row">
                         {/* Image — bigger */}
                         <div className="w-full sm:w-56 h-48 sm:h-44 shrink-0 overflow-hidden relative">
-                          <img src={article.image || '/news-meeting.png'} alt={article.title}
+                          <img src={getFirstImage(article.image)} alt={article.title}
                             className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
                           <div className="absolute inset-0 bg-gradient-to-t from-black/30 to-transparent" />
                           <span className="absolute top-3 left-3 text-[10px] font-bold bg-[#c62828] text-white px-2 py-1 rounded">
@@ -243,7 +256,7 @@ export default function NewsPage({ navigateTo, lang = 'en' }: NewsPageProps) {
                   <div key={i} className="p-3 flex gap-3 hover:bg-[#f8faf8] transition-colors cursor-pointer group"
                     onClick={() => navigateTo('news-detail', { newsId: a.id })}>
                     <div className="w-14 h-14 rounded-lg overflow-hidden shrink-0">
-                      <img src={a.image || '/news-meeting.png'} alt="" className="w-full h-full object-cover group-hover:scale-105 transition-transform" />
+                      <img src={getFirstImage(a.image)} alt="" className="w-full h-full object-cover group-hover:scale-105 transition-transform" />
                     </div>
                     <div className="flex-1 min-w-0">
                       <p className="text-xs font-bold text-[#1a1a1a] group-hover:text-[#c62828] transition-colors line-clamp-2">{a.title}</p>

@@ -201,28 +201,10 @@ const heroSlides = [
     tag: 'TECHNOLOGY',
   },
   {
-    image: 'https://images.unsplash.com/photo-1573804633927-bfcbcd909acd?w=1600&q=90&fit=crop',
-    title: 'ዲጂታል ደሴ — Digital Future',
-    subtitle: 'Smart Technology Powering Every Citizen — IoT, AI & Digital Governance for All',
-    tag: 'TECHNOLOGY',
-  },
-  {
-    image: 'https://images.unsplash.com/photo-1547036967-23d11aacaee0?w=1600&q=90&fit=crop',
-    title: 'ደሴ — የደጋማ ምድር ዕንቁ',
-    subtitle: 'Nestled in the Ethiopian Highlands — A City of Ancient Culture, Heritage & Modern Growth',
-    tag: 'CULTURE & HERITAGE',
-  },
-  {
     image: '/heritage-landscape.png',
     title: 'ደሴ — የባህልና ቅርስ ከተማ',
     subtitle: 'Rich Amhara Culture, Ancient Heritage & Highland Traditions of Dessie',
-    tag: 'CULTURE',
-  },
-  {
-    image: 'https://images.unsplash.com/photo-1559136555-9303baea8ebd?w=1600&q=90&fit=crop',
-    title: 'ፈጠራና ኢኮኖሚ — Innovation Hub',
-    subtitle: 'Dessie Industrial Zone — Creating 15,000+ Jobs & Driving Amhara Region Economy',
-    tag: 'ECONOMY',
+    tag: 'CULTURE & HERITAGE',
   },
   {
     image: '/heritage-church.png',
@@ -240,6 +222,12 @@ const heroSlides = [
     image: '/project-smart-city.png',
     title: 'Digital Dessie — ዲጂታል ደሴ',
     subtitle: 'Smart Governance, E-Services & IoT Infrastructure for 450,000+ Residents',
+    tag: 'TECHNOLOGY',
+  },
+  {
+    image: '/news-smart-city.png',
+    title: 'ቴክኖሎጂ ለሁሉም — Tech For All',
+    subtitle: 'Smart City Sensors, Digital Kiosks & Modern Governance Across Dessie City',
     tag: 'TECHNOLOGY',
   },
   {
@@ -265,6 +253,12 @@ const heroSlides = [
     title: 'ደሴ — ከአየር ላይ',
     subtitle: 'Aerial View of Dessie — A Growing City Nestled in the Ethiopian Highlands',
     tag: 'CITY VIEW',
+  },
+  {
+    image: '/news-health.png',
+    title: 'ጤናና ትምህርት — Health & Education',
+    subtitle: 'Quality Health Services & Modern Education for Every Dessie Resident',
+    tag: 'HEALTH',
   },
 ]
 

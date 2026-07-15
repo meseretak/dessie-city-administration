@@ -318,23 +318,7 @@ export default function RootLayout({
         />
       </head>
       <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
-        {/* Google Translate init — must be in body before widget renders */}
-        <script
-          dangerouslySetInnerHTML={{
-            __html: `
-              function googleTranslateElementInit() {
-                new google.translate.TranslateElement({
-                  pageLanguage: 'en',
-                  includedLanguages: 'am,en',
-                  layout: google.translate.TranslateElement.InlineLayout.SIMPLE,
-                  autoDisplay: false,
-                  gaTrack: false
-                }, 'google_translate_element');
-              }
-            `,
-          }}
-        />
-        <script src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit" async />
+      <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
         <ThemeProvider attribute="class" defaultTheme="light" enableSystem disableTransitionOnChange>
           <LangProvider>
             {children}
