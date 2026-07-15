@@ -738,15 +738,35 @@ function NewsSection({ isChecker }: { isChecker: boolean }) {
               </div>
             </div>
             <div className="space-y-2">
-              <Label>Image URL</Label>
-              <Input value={form.image} onChange={e => setForm(p => ({ ...p, image: e.target.value }))} placeholder="https://..." />
+              <Label>Image URL <span className="text-red-500">*</span> <span className="text-xs text-muted-foreground">(required — shown in news list)</span></Label>
+              {form.image && (
+                <div className="w-full h-36 rounded-lg overflow-hidden border border-[#e2e8e0] mb-1">
+                  <img src={form.image} alt="preview" className="w-full h-full object-cover"
+                    onError={e => { (e.currentTarget as HTMLImageElement).style.display='none' }} />
+                </div>
+              )}
+              <Input value={form.image} onChange={e => setForm(p => ({ ...p, image: e.target.value }))}
+                placeholder="/news-meeting.png or https://..." className={!form.image ? 'border-red-300' : ''} required />
+              <div className="flex flex-wrap gap-1.5 mt-1">
+                <p className="w-full text-[10px] text-muted-foreground font-semibold uppercase tracking-wider">Quick select:</p>
+                {['/news-meeting.png','/news-smart-city.png','/news-health.png','/news-culture.png',
+                  '/news-infrastructure.png','/dessie-city-hall.png','/dessie-smart-center.png',
+                  '/heritage-landscape.png','/heritage-church.png','/heritage-market.png',
+                  '/news-library-opening.jpg','/news-library-interior.jpg'].map(img => (
+                  <button key={img} type="button" onClick={() => setForm(p => ({ ...p, image: img }))}
+                    className={`w-12 h-12 rounded overflow-hidden border-2 transition-all ${form.image === img ? 'border-[#0d4a28] scale-110 shadow-md' : 'border-transparent opacity-60 hover:opacity-100'}`}>
+                    <img src={img} alt="" className="w-full h-full object-cover"
+                      onError={e => { (e.currentTarget as HTMLImageElement).style.display='none' }} />
+                  </button>
+                ))}
+              </div>
             </div>
           </div>
           <DialogFooter>
             <Button variant="outline" onClick={() => setDialogOpen(false)}>Cancel</Button>
             <Button
               onClick={handleSave}
-              disabled={saving || !form.title || !form.content}
+              disabled={saving || !form.title || !form.content || !form.image}
               className="text-white"
               style={{ backgroundColor: '#0d4a28' }}
             >

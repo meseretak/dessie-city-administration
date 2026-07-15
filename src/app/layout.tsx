@@ -327,7 +327,8 @@ export default function RootLayout({
                   pageLanguage: 'en',
                   includedLanguages: 'am,en',
                   layout: google.translate.TranslateElement.InlineLayout.SIMPLE,
-                  autoDisplay: false
+                  autoDisplay: false,
+                  gaTrack: false
                 }, 'google_translate_element');
               }
             `,
