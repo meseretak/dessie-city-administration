@@ -1511,6 +1511,24 @@ function SimpleSection({ model, label, isChecker, fields }: { model: string; lab
                 <Label>{f.charAt(0).toUpperCase() + f.slice(1)}</Label>
                 {f === 'content' || f === 'description' || f === 'bio' ? (
                   <Textarea value={form[f] || ''} onChange={e => setForm(p => ({ ...p, [f]: e.target.value }))} rows={3} />
+                ) : (f === 'photo' || f === 'image') ? (
+                  <div className="space-y-2">
+                    {form[f] && (
+                      <div className="relative w-24 h-24 rounded-lg overflow-hidden border border-[#e2e8e0]">
+                        <img src={form[f]} alt="preview" className="w-full h-full object-cover" onError={e => { (e.currentTarget as HTMLImageElement).src = '/dessie-logo.png' }} />
+                      </div>
+                    )}
+                    <Input value={form[f] || ''} onChange={e => setForm(p => ({ ...p, [f]: e.target.value }))} placeholder="Enter image URL (e.g. /mayor-photo.png)" />
+                    <div className="flex flex-wrap gap-1.5">
+                      <p className="w-full text-[10px] text-muted-foreground font-semibold uppercase">Quick select:</p>
+                      {['/mayor-photo.png','/official-logo.png','/dessie-city-hall.png','/dessie-smart-center.png','/dessie-service-center.png','/news-meeting.png','/news-smart-city.png','/news-health.png','/news-culture.png','/heritage-landscape.png'].map(img => (
+                        <button key={img} type="button" onClick={() => setForm(p => ({ ...p, [f]: img }))}
+                          className={`w-10 h-10 rounded overflow-hidden border-2 transition-all ${form[f] === img ? 'border-[#0d4a28] scale-110' : 'border-transparent opacity-60 hover:opacity-100'}`}>
+                          <img src={img} alt="" className="w-full h-full object-cover" onError={e => { (e.currentTarget as HTMLImageElement).style.display='none' }} />
+                        </button>
+                      ))}
+                    </div>
+                  </div>
                 ) : (
                   <Input value={form[f] || ''} onChange={e => setForm(p => ({ ...p, [f]: e.target.value }))} placeholder={f} />
                 )}
