@@ -428,7 +428,7 @@ export default function Home() {
               </Tooltip>
             </TooltipProvider>
 
-            {/* Language Toggle */}
+            {/* Language Toggle — triggers Google Translate */}
             <TooltipProvider>
               <Tooltip>
                 <TooltipTrigger asChild>
@@ -436,14 +436,22 @@ export default function Home() {
                     variant="ghost"
                     size="sm"
                     className="h-8 px-2 text-xs font-semibold gap-1"
-                    onClick={toggleLang}
+                    onClick={() => {
+                      // Click the Google Translate dropdown to toggle language
+                      const el = document.querySelector('.goog-te-combo') as HTMLSelectElement | null
+                      if (el) {
+                        const current = el.value
+                        el.value = current === 'am' ? 'en' : 'am'
+                        el.dispatchEvent(new Event('change'))
+                      }
+                    }}
                     aria-label="Toggle language"
                   >
                     <Languages className="w-3.5 h-3.5" />
-                    <span className="hidden sm:inline">{lang === 'en' ? 'አማ' : 'EN'}</span>
+                    <span className="hidden sm:inline">አማ / EN</span>
                   </Button>
                 </TooltipTrigger>
-                <TooltipContent>{lang === 'en' ? 'Switch to Amharic' : 'Switch to English'}</TooltipContent>
+                <TooltipContent>Switch to Amharic / English</TooltipContent>
               </Tooltip>
             </TooltipProvider>
 
@@ -493,11 +501,17 @@ export default function Home() {
                 <Separator className="mb-4" />
                 {/* Language toggle mobile */}
                 <button
-                  onClick={toggleLang}
+                  onClick={() => {
+                    const el = document.querySelector('.goog-te-combo') as HTMLSelectElement | null
+                    if (el) {
+                      el.value = el.value === 'am' ? 'en' : 'am'
+                      el.dispatchEvent(new Event('change'))
+                    }
+                  }}
                   className="w-full flex items-center gap-2 px-4 py-2 mb-2 rounded-md bg-[#f0fdf4] text-[#0d4a28] text-sm font-semibold"
                 >
                   <Languages className="w-4 h-4" />
-                  {lang === 'en' ? 'አማርኛ (Amharic)' : 'English'}
+                  አማርኛ / English
                 </button>
                 <nav className="flex flex-col gap-1">
                   {navItems.map((item) => (

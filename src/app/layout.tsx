@@ -4,6 +4,7 @@ import "./globals.css";
 import { Toaster } from "@/components/ui/toaster";
 import { ThemeProvider } from "next-themes";
 import { LangProvider } from "@/lib/LangContext";
+import GoogleTranslate from "@/components/GoogleTranslate";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -322,6 +323,7 @@ export default function RootLayout({
             {children}
           </LangProvider>
           <Toaster />
+          <GoogleTranslate />
         </ThemeProvider>
       </body>
     </html>

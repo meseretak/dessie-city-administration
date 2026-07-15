@@ -398,3 +398,36 @@
   from { transform: scale(1.0); }
   to { transform: scale(1.1); }
 }
+
+/* ===== GOOGLE TRANSLATE — hide default toolbar, keep functional ===== */
+.goog-te-banner-frame,
+.goog-te-banner-frame.skiptranslate,
+.goog-logo-link,
+.goog-te-gadget-icon,
+#goog-gt-tt,
+.goog-tooltip,
+.goog-tooltip:hover,
+.goog-text-highlight {
+  display: none !important;
+}
+
+/* Hide top bar Google injects */
+body {
+  top: 0 !important;
+  position: static !important;
+}
+iframe.goog-te-banner-frame {
+  display: none !important;
+}
+
+/* Hide the Google Translate wrapper div (we use our own button) */
+.google-translate-wrapper {
+  display: none !important;
+}
+
+/* Keep translated text readable */
+font.translated-ltr,
+font.translated-rtl {
+  background: none !important;
+  box-shadow: none !important;
+}

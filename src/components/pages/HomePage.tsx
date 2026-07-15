@@ -188,15 +188,78 @@ const statCards = [
 ]
 
 const heroSlides = [
-  { image: '/dessie-city-hall.png', title: 'ደሴ ከተማ አስተዳደር', subtitle: 'Welcome to Dessie City Administration — Serving 500,000+ Citizens with Excellence' },
-  { image: '/dessie-smart-center.png', title: 'Dessie Smart City 2025', subtitle: 'Advanced Digital Control Center — Real-Time City Monitoring & Governance' },
-  { image: '/city-aerial.png', title: 'Dessie — City of Progress', subtitle: 'A Growing Urban Center in the Heart of Amhara Region, Ethiopia' },
-  { image: '/dessie-service-counter.png', title: 'Modern Citizen Service Center', subtitle: 'Fast & Efficient Government Services — Over 40 Services Under One Roof' },
-  { image: '/heritage-landscape.png', title: 'Natural Beauty of Dessie', subtitle: 'Nestled in the Highlands — A City of Culture, Heritage & Growth' },
-  { image: '/dessie-conference-hall.png', title: 'Smart Conference & Meeting Hall', subtitle: 'State-of-the-Art Governance Infrastructure for Modern Administration' },
-  { image: '/dessie-service-center.png', title: 'Integrated One-Stop Service Hall', subtitle: 'All Government Services — Ethiopost, Telecom & Digital Services Under One Roof' },
-  { image: '/news-infrastructure.png', title: 'Modern Infrastructure Development', subtitle: 'Building Roads, Water Systems & Utilities for All 12 Kebeles of Dessie' },
-  { image: '/project-smart-city.png', title: 'Smart City Digital Platform', subtitle: 'Access 40+ Government Services Online — Faster, Easier, Transparent' },
+  {
+    image: '/dessie-city-hall.png',
+    title: 'ደሴ ከተማ አስተዳደር',
+    subtitle: 'Welcome to Dessie City Administration — Serving 500,000+ Citizens with Excellence',
+    tag: 'GOVERNANCE',
+  },
+  {
+    image: '/dessie-smart-center.png',
+    title: 'Dessie Smart City 2025',
+    subtitle: 'Advanced Digital Control Center — Real-Time City Monitoring & Governance',
+    tag: 'TECHNOLOGY',
+  },
+  {
+    image: '/heritage-landscape.png',
+    title: 'ደሴ — የባህልና ቅርስ ከተማ',
+    subtitle: 'Rich Amhara Culture, Ancient Heritage & Highland Traditions of Dessie',
+    tag: 'CULTURE & HERITAGE',
+  },
+  {
+    image: '/heritage-church.png',
+    title: 'ቅዱስ ቦታዎችና ታሪክ',
+    subtitle: 'Historic Ethiopian Orthodox Churches & Sacred Sites of Wollo — Centuries of Faith',
+    tag: 'HISTORY',
+  },
+  {
+    image: '/heritage-market.png',
+    title: 'ደሴ ገበያ — ባህላዊ ሕይወት',
+    subtitle: 'The Vibrant Dessie Merkato — Traditional Trade, Crafts & Community Life',
+    tag: 'CULTURE',
+  },
+  {
+    image: '/project-smart-city.png',
+    title: 'Digital Dessie — ዲጂታል ደሴ',
+    subtitle: 'Smart Governance, E-Services & IoT Infrastructure for 450,000+ Residents',
+    tag: 'TECHNOLOGY',
+  },
+  {
+    image: '/dessie-service-center.png',
+    title: 'ዘመናዊ አገልግሎት ማዕከል',
+    subtitle: 'Integrated One-Stop Service Hall — All Government Services Under One Roof',
+    tag: 'SERVICES',
+  },
+  {
+    image: '/news-infrastructure.png',
+    title: 'Building the Future of ደሴ',
+    subtitle: 'Modern Roads, Water Systems & Urban Infrastructure for All 12 Kebeles',
+    tag: 'INFRASTRUCTURE',
+  },
+  {
+    image: '/heritage-fortress.png',
+    title: 'ደሴ ምሽግ — ታሪካዊ ቅርስ',
+    subtitle: 'Yekatit 12 Monument — Honoring the Brave History of Dessie City',
+    tag: 'HERITAGE',
+  },
+  {
+    image: '/dessie-conference-hall.png',
+    title: 'Modern Governance Infrastructure',
+    subtitle: 'State-of-the-Art Conference & Meeting Halls Powering Dessie Administration',
+    tag: 'GOVERNANCE',
+  },
+  {
+    image: '/news-smart-city.png',
+    title: 'ቴክኖሎጂ ለሁሉም — Tech For All',
+    subtitle: 'Smart City Sensors, Digital Kiosks & Public WiFi Across Dessie City',
+    tag: 'TECHNOLOGY',
+  },
+  {
+    image: '/city-aerial.png',
+    title: 'ደሴ — ከአየር ላይ',
+    subtitle: 'Aerial View of Dessie — A Growing City Nestled in the Ethiopian Highlands',
+    tag: 'CITY VIEW',
+  },
 ]
 
 const hotelImagesAll = [
@@ -562,6 +625,21 @@ export default function HomePage({ navigateTo }: { navigateTo: (page: PageId, ex
           >
             WELCOME TO DESSIE — AMHARA REGION, ETHIOPIA
           </motion.span>
+
+          {/* Slide tag badge */}
+          {heroSlides[currentSlide].tag && (
+            <motion.div
+              key={`tag-${currentSlide}`}
+              initial={{ opacity: 0, scale: 0.8 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ duration: 0.4, delay: 0.15 }}
+              className="mt-3 inline-block"
+            >
+              <span className="bg-[#c8a415] text-white text-[10px] font-black tracking-[0.2em] px-4 py-1.5 rounded-full uppercase shadow-lg">
+                {heroSlides[currentSlide].tag}
+              </span>
+            </motion.div>
+          )}
 
           <motion.h1
             className="mt-4 text-4xl md:text-6xl lg:text-7xl font-black tracking-wide text-white"
