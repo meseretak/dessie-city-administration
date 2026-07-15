@@ -193,6 +193,9 @@ const heroSlides = [
   { image: '/dessie-service-counter.png', title: 'Modern Citizen Service Center', subtitle: 'Fast & Efficient Government Services — Over 40 Services Under One Roof' },
   { image: '/heritage-landscape.png', title: 'Natural Beauty of Dessie', subtitle: 'Nestled in the Highlands — A City of Culture, Heritage & Growth' },
   { image: '/dessie-conference-hall.png', title: 'Smart Conference & Meeting Hall', subtitle: 'State-of-the-Art Governance Infrastructure for Modern Administration' },
+  { image: '/dessie-service-center.png', title: 'Integrated One-Stop Service Hall', subtitle: 'All Government Services — Ethiopost, Telecom & Digital Services Under One Roof' },
+  { image: '/news-infrastructure.png', title: 'Modern Infrastructure Development', subtitle: 'Building Roads, Water Systems & Utilities for All 12 Kebeles of Dessie' },
+  { image: '/project-smart-city.png', title: 'Smart City Digital Platform', subtitle: 'Access 40+ Government Services Online — Faster, Easier, Transparent' },
 ]
 
 const hotelImagesAll = [
