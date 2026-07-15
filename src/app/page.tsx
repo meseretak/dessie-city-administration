@@ -13,10 +13,12 @@ import { useToast } from '@/hooks/use-toast'
 import {
   Search, X, Menu, ChevronDown, Bot, Send, Phone, Mail,
   Facebook, Twitter, Instagram, Youtube, Linkedin, FileText,
-  ChevronRight, Sun, Moon, Shield, Loader2
+  ChevronRight, Sun, Moon, Shield, Loader2, Languages
 } from 'lucide-react'
 import type { PageId } from '@/lib/types'
 import { NAV_ITEMS } from '@/lib/types'
+import { useLang } from '@/lib/LangContext'
+import { t } from '@/lib/i18n'
 import HomePage from '@/components/pages/HomePage'
 import AboutPage from '@/components/pages/AboutPage'
 import MayorPage from '@/components/pages/MayorPage'
@@ -48,6 +50,31 @@ export default function Home() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
   const { theme, setTheme } = useTheme()
   const { toast } = useToast()
+  const { lang, toggle: toggleLang } = useLang()
+
+  // Dynamic menu from DB (falls back to NAV_ITEMS if empty)
+  const [dbMenuItems, setDbMenuItems] = useState<typeof NAV_ITEMS | null>(null)
+  useEffect(() => {
+    fetch('/api/admin/menu-items')
+      .then(r => r.ok ? r.json() : [])
+      .then((data: any[]) => {
+        if (!Array.isArray(data) || data.length === 0) return
+        // Build NavItem structure from DB
+        const built = data
+          .filter((item: any) => !item.parentId && item.isVisible !== 0 && item.isVisible !== false)
+          .map((item: any) => ({
+            id: (item.pageId || 'home') as PageId,
+            label: item.label,
+            children: (item.children || [])
+              .filter((c: any) => c.isVisible !== 0 && c.isVisible !== false)
+              .map((c: any) => ({ id: (c.pageId || 'home') as PageId, label: c.label })),
+          }))
+        if (built.length > 0) setDbMenuItems(built)
+      })
+      .catch(() => {})
+  }, [])
+
+  const navItems = dbMenuItems ?? NAV_ITEMS
 
   // Chat widget state
   const [chatOpen, setChatOpen] = useState(false)
@@ -112,8 +139,8 @@ export default function Home() {
       case 'announcements': return <AnnouncementsPage navigateTo={navigateTo} />
       case 'vacancy': return <VacancyPage navigateTo={navigateTo} />
       case 'vacancy-detail': return <VacancyDetailPage vacancyId={selectedVacancyId} navigateTo={navigateTo} />
-      case 'news': return <NewsPage navigateTo={navigateTo} />
-      case 'news-detail': return <NewsDetailPage newsId={selectedNewsId} navigateTo={navigateTo} />
+      case 'news': return <NewsPage navigateTo={navigateTo} lang={lang} />
+      case 'news-detail': return <NewsDetailPage newsId={selectedNewsId} navigateTo={navigateTo} lang={lang} />
       case 'bids': return <BidsPage navigateTo={navigateTo} />
       case 'bids-detail': return <BidsDetailPage bidId={selectedBidId} navigateTo={navigateTo} />
       case 'tourism': return <TourismPage />
@@ -179,10 +206,10 @@ export default function Home() {
 
   // Get breadcrumb label for current page
   const getBreadcrumbLabel = () => {
-    const item = NAV_ITEMS.find(n => n.id === currentPage)
+    const item = navItems.find(n => n.id === currentPage)
     if (item) return item.label
     // Check children
-    for (const nav of NAV_ITEMS) {
+    for (const nav of navItems) {
       if (nav.children) {
         const child = nav.children.find(c => c.id === currentPage)
         if (child) return `${nav.label} / ${child.label}`
@@ -241,7 +268,7 @@ export default function Home() {
 
           {/* Center: Desktop Nav — pushed right with ml-auto */}
           <nav className="hidden xl:flex items-center gap-0.5 ml-auto">
-            {NAV_ITEMS.map((item) => (
+            {navItems.map((item) => (
               <div
                 key={item.label}
                 className="relative mega-nav-trigger"
@@ -401,6 +428,25 @@ export default function Home() {
               </Tooltip>
             </TooltipProvider>
 
+            {/* Language Toggle */}
+            <TooltipProvider>
+              <Tooltip>
+                <TooltipTrigger asChild>
+                  <Button
+                    variant="ghost"
+                    size="sm"
+                    className="h-8 px-2 text-xs font-semibold gap-1"
+                    onClick={toggleLang}
+                    aria-label="Toggle language"
+                  >
+                    <Languages className="w-3.5 h-3.5" />
+                    <span className="hidden sm:inline">{lang === 'en' ? 'አማ' : 'EN'}</span>
+                  </Button>
+                </TooltipTrigger>
+                <TooltipContent>{lang === 'en' ? 'Switch to Amharic' : 'Switch to English'}</TooltipContent>
+              </Tooltip>
+            </TooltipProvider>
+
             {/* Dark Mode Toggle */}
             <TooltipProvider>
               <Tooltip>
@@ -445,8 +491,16 @@ export default function Home() {
                   </div>
                 </div>
                 <Separator className="mb-4" />
+                {/* Language toggle mobile */}
+                <button
+                  onClick={toggleLang}
+                  className="w-full flex items-center gap-2 px-4 py-2 mb-2 rounded-md bg-[#f0fdf4] text-[#0d4a28] text-sm font-semibold"
+                >
+                  <Languages className="w-4 h-4" />
+                  {lang === 'en' ? 'አማርኛ (Amharic)' : 'English'}
+                </button>
                 <nav className="flex flex-col gap-1">
-                  {NAV_ITEMS.map((item) => (
+                  {navItems.map((item) => (
                     <div key={item.label}>
                       <button
                         onClick={() => {
@@ -573,7 +627,7 @@ export default function Home() {
 
             {/* Column 2: Quick Links */}
             <div>
-              <h4 className="text-white font-semibold text-sm tracking-wider uppercase mb-4">Quick Links</h4>
+              <h4 className="text-white font-semibold text-sm tracking-wider uppercase mb-4">{lang === 'am' ? 'ፈጣን አገናኞች' : 'Quick Links'}</h4>
               <ul className="space-y-2">
                 {[
                   { label: 'Home', page: 'home' as PageId },

@@ -377,7 +377,7 @@ export default function AdminPanel() {
           {activeSection === 'hotels' && <SimpleSection model="hotels" label="Hotel" isChecker={isChecker} fields={['name','location','rating','priceRange','description','phone','email','image']} />}
           {activeSection === 'cabinet' && <SimpleSection model="cabinet-members" label="Cabinet Member" isChecker={isChecker} fields={['name','title','department','bio','email','phone','photo']} />}
           {activeSection === 'sliders' && <SimpleSection model="sliders" label="Slider Image" isChecker={isChecker} fields={['title','subtitle','image','sliderType','tag','link']} />}
-          {activeSection === 'menu' && <SimpleSection model="menu-items" label="Menu Item" isChecker={isChecker} fields={['label','pageId','order','icon']} />}
+          {activeSection === 'menu' && <MenuSection isChecker={isChecker} />}
           {activeSection === 'contacts' && <InboxSection model="contacts" label="Contact Messages" />}
           {activeSection === 'service-requests' && <InboxSection model="service-requests" label="Service Requests" />}
           {activeSection === 'approvals' && <ApprovalSection isChecker={isChecker} />}
@@ -1708,6 +1708,261 @@ function SettingsSection() {
         ))}
         {settings.length === 0 && <p className="text-center text-muted-foreground py-8 text-sm">No settings configured yet</p>}
       </div>
+    </div>
+  )
+}
+
+/* ========================= MENU SECTION ========================= */
+const ALL_PAGES = [
+  { value: 'home', label: 'Home' },
+  { value: 'about', label: 'About' },
+  { value: 'mayor', label: "Mayor's Office" },
+  { value: 'services', label: 'Services' },
+  { value: 'announcements', label: 'Announcements' },
+  { value: 'news', label: 'News & Media' },
+  { value: 'vacancy', label: 'Vacancies' },
+  { value: 'bids', label: 'Bids & Tenders' },
+  { value: 'tourism', label: 'Tourism & Culture' },
+  { value: 'projects', label: 'City Projects' },
+  { value: 'hotels', label: 'Hotels' },
+  { value: 'transparency', label: 'Transparency' },
+  { value: 'contact', label: 'Contact' },
+]
+
+interface MenuItem {
+  id: string
+  label: string
+  pageId: string
+  parentId?: string | null
+  order: number
+  isVisible: number | boolean
+  children?: MenuItem[]
+}
+
+function MenuSection({ isChecker }: { isChecker: boolean }) {
+  const { toast } = useToast()
+  const [items, setItems] = useState<MenuItem[]>([])
+  const [loading, setLoading] = useState(true)
+  const [dialogOpen, setDialogOpen] = useState(false)
+  const [editingItem, setEditingItem] = useState<MenuItem | null>(null)
+  const [saving, setSaving] = useState(false)
+  const [form, setForm] = useState({ label: '', pageId: 'home', parentId: '', order: '0' })
+
+  const fetchItems = useCallback(async () => {
+    setLoading(true)
+    try {
+      const res = await fetch('/api/admin/menu-items')
+      if (res.ok) setItems(await res.json())
+    } catch { /* ignore */ }
+    setLoading(false)
+  }, [])
+
+  useEffect(() => { fetchItems() }, [fetchItems])
+
+  const openCreate = (parentId?: string) => {
+    setEditingItem(null)
+    setForm({ label: '', pageId: 'home', parentId: parentId || '', order: String(items.length + 1) })
+    setDialogOpen(true)
+  }
+
+  const openEdit = (item: MenuItem) => {
+    setEditingItem(item)
+    setForm({ label: item.label, pageId: item.pageId, parentId: item.parentId || '', order: String(item.order) })
+    setDialogOpen(true)
+  }
+
+  const handleSave = async () => {
+    if (!form.label.trim() || !form.pageId) return
+    setSaving(true)
+    try {
+      const payload = {
+        label: form.label.trim(),
+        pageId: form.pageId,
+        parentId: form.parentId || null,
+        order: parseInt(form.order) || 0,
+        isVisible: true,
+        isOpenInNew: false,
+      }
+      const url = editingItem ? `/api/admin/menu-items?id=${editingItem.id}` : '/api/admin/menu-items'
+      const method = editingItem ? 'PUT' : 'POST'
+      const res = await fetch(url, { method, headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) })
+      if (res.ok) {
+        toast({ title: editingItem ? 'Menu item updated' : 'Menu item added', description: 'Navigation will update on next page load.' })
+        setDialogOpen(false)
+        fetchItems()
+      } else {
+        const d = await res.json()
+        toast({ title: 'Error', description: d.error || 'Save failed', variant: 'destructive' })
+      }
+    } catch {
+      toast({ title: 'Network error', variant: 'destructive' })
+    } finally { setSaving(false) }
+  }
+
+  const handleDelete = async (id: string) => {
+    if (!confirm('Delete this menu item? Sub-items will also be removed.')) return
+    try {
+      const res = await fetch(`/api/admin/menu-items?id=${id}`, { method: 'DELETE' })
+      if (res.ok) { toast({ title: 'Deleted' }); fetchItems() }
+    } catch { toast({ title: 'Error', variant: 'destructive' }) }
+  }
+
+  const handleToggleVisible = async (item: MenuItem) => {
+    try {
+      const res = await fetch(`/api/admin/menu-items?id=${item.id}`, {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ ...item, isVisible: !item.isVisible, parentId: item.parentId || null }),
+      })
+      if (res.ok) fetchItems()
+    } catch { /* ignore */ }
+  }
+
+  return (
+    <div className="space-y-4">
+      <div className="flex items-center justify-between">
+        <div>
+          <p className="text-sm text-muted-foreground">{items.length} top-level menu items</p>
+          <p className="text-xs text-muted-foreground mt-0.5">Changes apply to the website navigation after next page load.</p>
+        </div>
+        <Button onClick={() => openCreate()} className="text-white" style={{ backgroundColor: '#0d4a28' }}>
+          <Plus className="h-4 w-4 mr-2" /> Add Menu Item
+        </Button>
+      </div>
+
+      {loading ? (
+        <TableSkeleton rows={5} cols={3} />
+      ) : items.length === 0 ? (
+        <Card className="border-0 shadow-sm">
+          <CardContent className="py-10 text-center text-muted-foreground text-sm">
+            No menu items found. Add your first menu item above.
+          </CardContent>
+        </Card>
+      ) : (
+        <div className="space-y-2">
+          {items.map(item => (
+            <Card key={item.id} className="border-0 shadow-sm overflow-hidden">
+              {/* Top-level item */}
+              <div className="flex items-center gap-3 px-4 py-3 bg-[#0d4a2808] border-b border-[#e2e8e0]">
+                <div className="flex items-center gap-2 flex-1 min-w-0">
+                  <Menu className="h-4 w-4 text-[#0d4a28] shrink-0" />
+                  <span className="font-bold text-sm text-[#0d4a28] truncate">{item.label}</span>
+                  <Badge variant="outline" className="text-[10px] border-[#1a6b3c] text-[#1a6b3c] shrink-0">{item.pageId}</Badge>
+                  <span className="text-[10px] text-muted-foreground">order: {item.order}</span>
+                </div>
+                <div className="flex items-center gap-1 shrink-0">
+                  <Button size="sm" variant="ghost" className="h-7 text-xs"
+                    onClick={() => handleToggleVisible(item)}
+                    title={item.isVisible ? 'Visible — click to hide' : 'Hidden — click to show'}>
+                    {item.isVisible ? (
+                      <span className="text-green-600 font-medium text-xs">Visible</span>
+                    ) : (
+                      <span className="text-red-400 font-medium text-xs">Hidden</span>
+                    )}
+                  </Button>
+                  <Button size="icon" variant="ghost" className="h-7 w-7" onClick={() => openCreate(item.id)} title="Add sub-item">
+                    <Plus className="h-3.5 w-3.5 text-[#1a6b3c]" />
+                  </Button>
+                  <Button size="icon" variant="ghost" className="h-7 w-7" onClick={() => openEdit(item)}>
+                    <Pencil className="h-3.5 w-3.5" />
+                  </Button>
+                  <Button size="icon" variant="ghost" className="h-7 w-7 text-red-500 hover:text-red-700 hover:bg-red-50" onClick={() => handleDelete(item.id)}>
+                    <Trash2 className="h-3.5 w-3.5" />
+                  </Button>
+                </div>
+              </div>
+
+              {/* Sub-items */}
+              {item.children && item.children.length > 0 && (
+                <div className="divide-y divide-[#f0f0f0]">
+                  {item.children.map(child => (
+                    <div key={child.id} className="flex items-center gap-3 px-4 py-2.5 pl-8">
+                      <ChevronDown className="h-3.5 w-3.5 text-muted-foreground shrink-0 rotate-[-90deg]" />
+                      <div className="flex items-center gap-2 flex-1 min-w-0">
+                        <span className="text-sm text-gray-700 truncate">{child.label}</span>
+                        <Badge variant="secondary" className="text-[10px] shrink-0">{child.pageId}</Badge>
+                      </div>
+                      <div className="flex items-center gap-1 shrink-0">
+                        <Button size="icon" variant="ghost" className="h-7 w-7" onClick={() => openEdit(child)}>
+                          <Pencil className="h-3.5 w-3.5" />
+                        </Button>
+                        <Button size="icon" variant="ghost" className="h-7 w-7 text-red-500 hover:text-red-700 hover:bg-red-50" onClick={() => handleDelete(child.id)}>
+                          <Trash2 className="h-3.5 w-3.5" />
+                        </Button>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              )}
+            </Card>
+          ))}
+        </div>
+      )}
+
+      {/* Add / Edit Dialog */}
+      <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
+        <DialogContent className="max-w-md">
+          <DialogHeader>
+            <DialogTitle style={{ color: '#0d4a28' }}>
+              {editingItem ? 'Edit Menu Item' : form.parentId ? 'Add Sub-Menu Item' : 'Add Menu Item'}
+            </DialogTitle>
+          </DialogHeader>
+          <div className="space-y-4">
+            <div className="space-y-1.5">
+              <Label>Label (display name)</Label>
+              <Input
+                value={form.label}
+                onChange={e => setForm(p => ({ ...p, label: e.target.value }))}
+                placeholder="e.g. HOME, ABOUT, SERVICES..."
+                autoFocus
+              />
+            </div>
+            <div className="space-y-1.5">
+              <Label>Links to Page</Label>
+              <Select value={form.pageId} onValueChange={v => setForm(p => ({ ...p, pageId: v }))}>
+                <SelectTrigger><SelectValue placeholder="Select page" /></SelectTrigger>
+                <SelectContent>
+                  {ALL_PAGES.map(p => (
+                    <SelectItem key={p.value} value={p.value}>{p.label}</SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+              <p className="text-[10px] text-muted-foreground">Which page does this link open?</p>
+            </div>
+            {!form.parentId && (
+              <div className="space-y-1.5">
+                <Label>Parent Menu (optional)</Label>
+                <Select value={form.parentId || 'none'} onValueChange={v => setForm(p => ({ ...p, parentId: v === 'none' ? '' : v }))}>
+                  <SelectTrigger><SelectValue placeholder="Top-level (no parent)" /></SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="none">Top-level (no parent)</SelectItem>
+                    {items.map(i => (
+                      <SelectItem key={i.id} value={i.id}>{i.label}</SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              </div>
+            )}
+            <div className="space-y-1.5">
+              <Label>Order (1 = first)</Label>
+              <Input
+                type="number"
+                value={form.order}
+                onChange={e => setForm(p => ({ ...p, order: e.target.value }))}
+                min="0"
+                className="w-24"
+              />
+            </div>
+          </div>
+          <DialogFooter>
+            <Button variant="outline" onClick={() => setDialogOpen(false)}>Cancel</Button>
+            <Button onClick={handleSave} disabled={saving || !form.label.trim()} className="text-white" style={{ backgroundColor: '#0d4a28' }}>
+              {saving && <Loader2 className="h-4 w-4 animate-spin mr-2" />}
+              {editingItem ? 'Update' : 'Add'}
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
     </div>
   )
 }

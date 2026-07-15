@@ -2,7 +2,8 @@
 
 import { useState, useEffect } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
-import { PageId } from '@/lib/types'
+import type { PageId } from '@/lib/types'
+import type { Lang } from '@/lib/i18n'
 import { Badge } from '@/components/ui/badge'
 import { Input } from '@/components/ui/input'
 import { Skeleton } from '@/components/ui/skeleton'
@@ -13,6 +14,7 @@ import {
 
 interface NewsPageProps {
   navigateTo: (page: PageId, extra?: Record<string, string>) => void
+  lang?: Lang
 }
 
 interface Article {
@@ -28,7 +30,9 @@ interface Article {
   createdAt: string
 }
 
-const categoryTabs = ['All', 'News', 'Smart City', 'Infrastructure', 'Press Release', 'Event', 'Health', 'Culture', 'Technology']
+const categoryTabsEn = ['All', 'News', 'Smart City', 'Infrastructure', 'Press Release', 'Event', 'Health', 'Culture', 'Technology']
+const categoryTabsAm = ['ሁሉም', 'ዜና', 'ስማርት ሲቲ', 'መሠረተ ልማት', 'ፕሬስ ሪሊዝ', 'ዝግጅት', 'ጤና', 'ባህል', 'ቴክኖሎጂ']
+const categoryTabs = categoryTabsEn
 const ITEMS_PER_PAGE = 6
 
 const events = [
@@ -40,7 +44,7 @@ const events = [
   { title: 'Digital Literacy Workshop', date: 'Aug 12, 2025', location: 'Public Library', desc: 'Free computer and internet skills workshop.' },
 ]
 
-export default function NewsPage({ navigateTo }: NewsPageProps) {
+export default function NewsPage({ navigateTo, lang = 'en' }: NewsPageProps) {
   const [articles, setArticles] = useState<Article[]>([])
   const [loading, setLoading] = useState(true)
   const [activeTab, setActiveTab] = useState('All')
@@ -80,16 +84,16 @@ export default function NewsPage({ navigateTo }: NewsPageProps) {
             <div>
               <div className="flex items-center gap-2 mb-2">
                 <Newspaper className="w-6 h-6 text-[#c8a415]" />
-                <span className="text-green-300 text-sm font-medium uppercase tracking-widest">Media Center</span>
+                <span className="text-green-300 text-sm font-medium uppercase tracking-widest">{lang === 'am' ? 'ሚዲያ ማዕከል' : 'Media Center'}</span>
               </div>
-              <h1 className="text-3xl md:text-4xl font-extrabold text-white uppercase tracking-wider">NEWS & ANNOUNCEMENTS</h1>
-              <p className="mt-2 text-green-200 text-sm">Latest updates from Dessie City Administration</p>
+              <h1 className="text-3xl md:text-4xl font-extrabold text-white uppercase tracking-wider">{lang === 'am' ? 'ዜናዎችና ማስታወቂያዎች' : 'NEWS & ANNOUNCEMENTS'}</h1>
+              <p className="mt-2 text-green-200 text-sm">{lang === 'am' ? 'ከደሴ ከተማ አስተዳደር የቅርብ ጊዜ ዝማኔዎች' : 'Latest updates from Dessie City Administration'}</p>
             </div>
             {/* Search */}
             <div className="relative w-full md:w-72">
               <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-white/50" />
               <Input
-                placeholder="Search news..."
+                placeholder={lang === 'am' ? 'ዜናዎችን ፈልግ...' : 'Search news...'}
                 value={search}
                 onChange={e => handleSearch(e.target.value)}
                 className="pl-10 bg-white/10 border-white/20 text-white placeholder:text-white/50 focus:border-[#c8a415]"
@@ -103,10 +107,10 @@ export default function NewsPage({ navigateTo }: NewsPageProps) {
       <div className="bg-white border-b border-[#e2e8e0] sticky top-16 z-30">
         <div className="max-w-7xl mx-auto px-4">
           <div className="flex gap-1 overflow-x-auto py-3 no-scrollbar">
-            {categoryTabs.map(tab => (
+            {categoryTabs.map((tab, idx) => (
               <button key={tab} onClick={() => handleTabChange(tab)}
                 className={`px-4 py-2 rounded-lg text-xs font-bold uppercase tracking-wider whitespace-nowrap transition-all ${activeTab === tab ? 'bg-[#0d4a28] text-white shadow-sm' : 'bg-[#f0f4f0] text-[#555] hover:bg-[#e8f5e9] hover:text-[#0d4a28]'}`}>
-                {tab}
+                {lang === 'am' ? (categoryTabsAm[idx] || tab) : tab}
               </button>
             ))}
           </div>
@@ -133,8 +137,8 @@ export default function NewsPage({ navigateTo }: NewsPageProps) {
             ) : pagedArticles.length === 0 ? (
               <div className="text-center py-16 bg-white rounded-2xl">
                 <Newspaper className="w-14 h-14 mx-auto mb-3 text-[#d1d5db]" />
-                <p className="font-bold text-[#374151]">No articles found</p>
-                <p className="text-sm text-[#9ca3af] mt-1">Try a different category or search term</p>
+                <p className="font-bold text-[#374151]">{lang === 'am' ? 'ምንም ጽሁፎች አልተገኙም' : 'No articles found'}</p>
+                <p className="text-sm text-[#9ca3af] mt-1">{lang === 'am' ? 'ሌላ ምድብ ወይም ቃል ይሞክሩ' : 'Try a different category or search term'}</p>
               </div>
             ) : (
               <AnimatePresence mode="wait">
@@ -175,7 +179,7 @@ export default function NewsPage({ navigateTo }: NewsPageProps) {
                             <p className="text-sm text-[#6b7280] leading-relaxed line-clamp-3">{article.excerpt}</p>
                           </div>
                           <div className="mt-4 flex items-center gap-1.5 text-sm font-bold text-[#c62828]">
-                            <Eye className="w-4 h-4" /> Read Full Article <ArrowRight className="w-4 h-4" />
+                            <Eye className="w-4 h-4" /> {lang === 'am' ? 'ሙሉ ጽሁፍ አንብብ' : 'Read Full Article'} <ArrowRight className="w-4 h-4" />
                           </div>
                         </div>
                       </div>

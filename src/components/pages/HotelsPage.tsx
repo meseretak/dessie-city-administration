@@ -355,7 +355,6 @@ export default function HotelsPage() {
               )
             })}
           </motion.div>
-          </motion.div>
         </div>
       </section>
 
