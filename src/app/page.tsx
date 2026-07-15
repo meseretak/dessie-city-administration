@@ -13,7 +13,7 @@ import { useToast } from '@/hooks/use-toast'
 import {
   Search, X, Menu, ChevronDown, Bot, Send, Phone, Mail,
   Facebook, Twitter, Instagram, Youtube, Linkedin, FileText,
-  ChevronRight, Sun, Moon, Palette, Shield, Loader2
+  ChevronRight, Sun, Moon, Shield, Loader2
 } from 'lucide-react'
 import type { PageId } from '@/lib/types'
 import { NAV_ITEMS } from '@/lib/types'
@@ -436,7 +436,7 @@ export default function Home() {
                         key={ac.color}
                         onClick={() => { setAccentColor(ac.color); document.documentElement.style.setProperty('--accent-color', ac.color) }}
                         className={`w-9 h-9 rounded-full border-2 transition-all duration-200 hover:scale-110 shadow-sm ${accentColor === ac.color ? 'border-[#1a1a1a] scale-110 ring-2 ring-offset-1' : 'border-transparent'}`}
-                        style={{ backgroundColor: ac.color, ringColor: ac.color }}
+                        style={{ backgroundColor: ac.color }}
                         aria-label={ac.label}
                       >
                         {accentColor === ac.color && <span className="flex items-center justify-center w-full h-full">✓</span>}
