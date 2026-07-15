@@ -1,4 +1,4 @@
-@import "tailwindcss";
+﻿@import "tailwindcss";
 @import "tw-animate-css";
 
 @source "../components/**/*.tsx";
@@ -399,57 +399,38 @@
   to { transform: scale(1.1); }
 }
 
-/* ===== GOOGLE TRANSLATE — hide default toolbar, keep functional ===== */
+/* ===== GOOGLE TRANSLATE — keep functional, hide banner only ===== */
 
-/* Hide the top banner Google injects */
+/*
+  DO NOT use display:none on .goog-te-combo or the widget div.
+  Google Translate won't work if it can't find the select element.
+  Only hide the top banner bar that shifts the page.
+*/
+
+body { top: 0px !important; }
+
 .goog-te-banner-frame,
 .goog-te-banner-frame.skiptranslate,
-.VIpgJd-ZVi9od-ORHb-OEVmcd {
+.VIpgJd-ZVi9od-ORHb-OEVmcd,
+.VIpgJd-ZVi9od-SmfZ-OEVmcd {
   display: none !important;
-  visibility: hidden !important;
+  height: 0 !important;
 }
 
-/* Prevent Google from shifting the body down */
-body {
-  top: 0px !important;
-  position: static !important;
-}
-
-/* Hide all Google Translate UI except the select (we keep it hidden but functional) */
-.goog-logo-link,
-.goog-te-gadget-icon,
-.goog-te-gadget-simple,
-#goog-gt-tt,
-.goog-tooltip,
-.goog-tooltip:hover,
-.goog-text-highlight,
-.goog-te-spinner-pos {
-  display: none !important;
-}
-
-/* Hide the iframe that Google injects for the banner */
-iframe.goog-te-banner-frame,
 iframe.skiptranslate {
   display: none !important;
   height: 0 !important;
 }
 
-/* Keep translated font wrappers invisible but functional */
+#goog-gt-tt,
+.goog-tooltip,
+.goog-tooltip:hover {
+  display: none !important;
+}
+
 font.translated-ltr,
 font.translated-rtl {
   background: none !important;
   box-shadow: none !important;
   border: none !important;
-}
-
-/* The hidden widget container */
-#google_translate_element {
-  position: absolute !important;
-  top: -9999px !important;
-  left: -9999px !important;
-  width: 1px !important;
-  height: 1px !important;
-  overflow: hidden !important;
-  opacity: 0 !important;
-  pointer-events: none !important;
 }

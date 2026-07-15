@@ -201,10 +201,28 @@ const heroSlides = [
     tag: 'TECHNOLOGY',
   },
   {
+    image: 'https://images.unsplash.com/photo-1573804633927-bfcbcd909acd?w=1600&q=90&fit=crop',
+    title: 'ዲጂታል ደሴ — Digital Future',
+    subtitle: 'Smart Technology Powering Every Citizen — IoT, AI & Digital Governance for All',
+    tag: 'TECHNOLOGY',
+  },
+  {
+    image: 'https://images.unsplash.com/photo-1547036967-23d11aacaee0?w=1600&q=90&fit=crop',
+    title: 'ደሴ — የደጋማ ምድር ዕንቁ',
+    subtitle: 'Nestled in the Ethiopian Highlands — A City of Ancient Culture, Heritage & Modern Growth',
+    tag: 'CULTURE & HERITAGE',
+  },
+  {
     image: '/heritage-landscape.png',
     title: 'ደሴ — የባህልና ቅርስ ከተማ',
     subtitle: 'Rich Amhara Culture, Ancient Heritage & Highland Traditions of Dessie',
-    tag: 'CULTURE & HERITAGE',
+    tag: 'CULTURE',
+  },
+  {
+    image: 'https://images.unsplash.com/photo-1559136555-9303baea8ebd?w=1600&q=90&fit=crop',
+    title: 'ፈጠራና ኢኮኖሚ — Innovation Hub',
+    subtitle: 'Dessie Industrial Zone — Creating 15,000+ Jobs & Driving Amhara Region Economy',
+    tag: 'ECONOMY',
   },
   {
     image: '/heritage-church.png',
@@ -241,18 +259,6 @@ const heroSlides = [
     title: 'ደሴ ምሽግ — ታሪካዊ ቅርስ',
     subtitle: 'Yekatit 12 Monument — Honoring the Brave History of Dessie City',
     tag: 'HERITAGE',
-  },
-  {
-    image: '/dessie-conference-hall.png',
-    title: 'Modern Governance Infrastructure',
-    subtitle: 'State-of-the-Art Conference & Meeting Halls Powering Dessie Administration',
-    tag: 'GOVERNANCE',
-  },
-  {
-    image: '/news-smart-city.png',
-    title: 'ቴክኖሎጂ ለሁሉም — Tech For All',
-    subtitle: 'Smart City Sensors, Digital Kiosks & Public WiFi Across Dessie City',
-    tag: 'TECHNOLOGY',
   },
   {
     image: '/city-aerial.png',

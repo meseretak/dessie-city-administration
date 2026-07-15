@@ -1,94 +1,154 @@
 'use client'
 
-import { useEffect, useState } from 'react'
+import { useEffect, useState, useRef } from 'react'
 import { Languages } from 'lucide-react'
 
 declare global {
   interface Window {
     googleTranslateElementInit?: () => void
     google?: any
-    dessieTranslateTo?: (lang: string) => void
   }
 }
 
 export default function GoogleTranslate() {
-  const [ready, setReady] = useState(false)
-  const [currentLang, setCurrentLang] = useState<'en' | 'am'>('en')
+  const [isAmharic, setIsAmharic] = useState(false)
+  const [loaded, setLoaded] = useState(false)
+  const retryRef = useRef<ReturnType<typeof setInterval> | null>(null)
 
   useEffect(() => {
     if (document.getElementById('google-translate-script')) {
-      setReady(true)
+      // Script already loaded — just wait for combo
+      waitForCombo()
       return
     }
 
     window.googleTranslateElementInit = () => {
-      new window.google.translate.TranslateElement(
-        {
-          pageLanguage: 'en',
-          includedLanguages: 'am,en',
-          layout: window.google.translate.TranslateElement.InlineLayout.SIMPLE,
-          autoDisplay: false,
-        },
-        'google_translate_element'
-      )
-      // Mark ready after a short delay so the combo is injected
-      setTimeout(() => setReady(true), 800)
+      try {
+        new window.google.translate.TranslateElement(
+          {
+            pageLanguage: 'en',
+            includedLanguages: 'am,en',
+            layout: window.google.translate.TranslateElement.InlineLayout.SIMPLE,
+            autoDisplay: false,
+          },
+          'google_translate_element'
+        )
+      } catch (e) {
+        console.warn('GT init error', e)
+      }
+      waitForCombo()
     }
 
     const script = document.createElement('script')
     script.id = 'google-translate-script'
-    script.src = '//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit'
+    script.src = 'https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit'
     script.async = true
-    document.body.appendChild(script)
-  }, [])
+    script.defer = true
+    document.head.appendChild(script)
 
-  // Expose a global helper so page.tsx button can call it
-  useEffect(() => {
-    window.dessieTranslateTo = (lang: string) => {
-      const sel = document.querySelector('.goog-te-combo') as HTMLSelectElement | null
-      if (!sel) return
-      sel.value = lang
-      sel.dispatchEvent(new Event('change'))
-      setCurrentLang(lang === 'am' ? 'am' : 'en')
+    return () => {
+      if (retryRef.current) clearInterval(retryRef.current)
     }
   }, [])
 
-  const toggle = () => {
-    const next = currentLang === 'en' ? 'am' : 'en'
-    const sel = document.querySelector('.goog-te-combo') as HTMLSelectElement | null
-    if (sel) {
-      sel.value = next === 'am' ? 'am' : ''
-      sel.dispatchEvent(new Event('change'))
-      setCurrentLang(next)
-    } else {
-      // Google hasn't loaded yet — try again in 1s
-      setTimeout(() => {
-        const s = document.querySelector('.goog-te-combo') as HTMLSelectElement | null
-        if (s) {
-          s.value = next === 'am' ? 'am' : ''
-          s.dispatchEvent(new Event('change'))
-          setCurrentLang(next)
-        }
-      }, 1000)
+  function waitForCombo() {
+    let attempts = 0
+    retryRef.current = setInterval(() => {
+      const combo = document.querySelector('.goog-te-combo') as HTMLSelectElement | null
+      attempts++
+      if (combo) {
+        clearInterval(retryRef.current!)
+        setLoaded(true)
+        // Detect current language from cookie
+        const ck = document.cookie.match(/googtrans=\/en\/(\w+)/)
+        if (ck && ck[1] === 'am') setIsAmharic(true)
+      }
+      if (attempts > 30) clearInterval(retryRef.current!) // give up after 15s
+    }, 500)
+  }
+
+  function switchLanguage() {
+    const combo = document.querySelector('.goog-te-combo') as HTMLSelectElement | null
+    if (!combo) {
+      // Not ready yet — try clicking after a delay
+      setTimeout(switchLanguage, 600)
+      return
     }
+    const next = isAmharic ? '' : 'am'
+    combo.value = next
+    // Must fire both change and input events
+    combo.dispatchEvent(new Event('change', { bubbles: true }))
+    combo.dispatchEvent(new Event('input', { bubbles: true }))
+    setIsAmharic(!isAmharic)
   }
 
   return (
     <>
-      {/* Hidden widget — Google injects the actual select here */}
-      <div id="google_translate_element" style={{ position: 'absolute', top: -9999, left: -9999, width: 1, height: 1, overflow: 'hidden' }} />
+      {/*
+        Google REQUIRES this element to be in the DOM and reachable.
+        We position it off-screen but NOT display:none — that breaks GT.
+      */}
+      <div
+        id="google_translate_element"
+        style={{
+          position: 'fixed',
+          bottom: 0,
+          right: 0,
+          width: '1px',
+          height: '1px',
+          overflow: 'hidden',
+          opacity: 0,
+          pointerEvents: 'none',
+          zIndex: -1,
+        }}
+      />
 
-      {/* Our visible toggle button — rendered as a fixed pill so it always works */}
+      {/* Floating language toggle button — always visible bottom-right */}
       <button
         id="gt-toggle-btn"
-        onClick={toggle}
-        title={currentLang === 'en' ? 'Switch to Amharic / አማርኛ' : 'Switch to English'}
-        className="fixed bottom-6 right-6 z-[9999] flex items-center gap-2 bg-[#0d4a28] hover:bg-[#1a6b3c] text-white text-xs font-bold px-4 py-2.5 rounded-full shadow-xl transition-all hover:scale-105 border-2 border-[#c8a415]"
-        style={{ fontFamily: 'system-ui, sans-serif' }}
+        onClick={switchLanguage}
+        title={isAmharic ? 'Switch to English' : 'Switch to Amharic / አማርኛ'}
+        style={{
+          position: 'fixed',
+          bottom: '24px',
+          right: '24px',
+          zIndex: 99999,
+          display: 'flex',
+          alignItems: 'center',
+          gap: '8px',
+          backgroundColor: '#0d4a28',
+          color: 'white',
+          border: '2px solid #c8a415',
+          borderRadius: '9999px',
+          padding: '10px 18px',
+          fontSize: '13px',
+          fontWeight: 700,
+          cursor: 'pointer',
+          boxShadow: '0 4px 20px rgba(0,0,0,0.35)',
+          transition: 'all 0.2s',
+          fontFamily: 'system-ui, sans-serif',
+          letterSpacing: '0.02em',
+          opacity: 1,
+        }}
+        onMouseEnter={e => (e.currentTarget.style.backgroundColor = '#1a6b3c')}
+        onMouseLeave={e => (e.currentTarget.style.backgroundColor = '#0d4a28')}
       >
-        <Languages className="w-4 h-4 shrink-0" />
-        <span>{currentLang === 'en' ? 'አማርኛ' : 'English'}</span>
-        <span className="text-[#c8a415] font-black ml-0.5">{currentLang === 'en' ? '🇪🇹' : '🌐'}</span>
+        {/* Language icon SVG inline so no import issues */}
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+          <path d="m5 8 6 6"/>
+          <path d="m4 14 6-6 2-3"/>
+          <path d="M2 5h12"/>
+          <path d="M7 2h1"/>
+          <path d="m22 22-5-10-5 10"/>
+          <path d="M14 18h6"/>
+        </svg>
+        <span style={{ fontFamily: 'Noto Sans Ethiopic, system-ui, sans-serif' }}>
+          {isAmharic ? 'English' : 'አማርኛ'}
+        </span>
+        <span style={{ fontSize: '16px' }}>{isAmharic ? '🌐' : '🇪🇹'}</span>
+        {!loaded && (
+          <span style={{ fontSize: '10px', opacity: 0.7, marginLeft: '2px' }}>...</span>
+        )}
       </button>
     </>
   )
