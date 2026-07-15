@@ -305,12 +305,6 @@ export default function Home() {
                       </div>
                     ) : (
                       <div className="space-y-1">
-                        <button
-                          onClick={() => { navigateTo('announcements'); setOpenDropdown(null) }}
-                          className="w-full text-left px-3 py-2 rounded-lg text-sm font-semibold text-[#1a6b3c] dark:text-green-400 hover:bg-[#1a6b3c]/5 mb-2"
-                        >
-                          View All Announcements →
-                        </button>
                         {item.children.map((child) => (
                           <button
                             key={child.label}
@@ -654,17 +648,10 @@ export default function Home() {
               </p>
               <button
                 onClick={() => navigateTo('admin')}
-                className="text-xs text-white/30 hover:text-[#c8a415] transition-colors flex items-center gap-1"
+                className="text-xs text-white/10 hover:text-white/30 transition-colors flex items-center gap-1 opacity-0 hover:opacity-100"
               >
-                <Shield className="w-3 h-3" /> Admin
+                <Shield className="w-3 h-3" />
               </button>
-              <a
-                href="/admin"
-                onClick={(e) => e.stopPropagation()}
-                className="text-xs text-white/30 hover:text-[#c8a415] transition-colors flex items-center gap-1"
-              >
-                <Shield className="w-3 h-3" /> Admin Panel
-              </a>
             </div>
           </div>
         </div>

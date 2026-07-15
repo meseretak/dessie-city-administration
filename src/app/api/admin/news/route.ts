@@ -1,6 +1,6 @@
 import { db } from '@/lib/db'
 import { NextRequest, NextResponse } from 'next/server'
-import { z } from 'zod/v4'
+import { z } from 'zod'
 import { cookies } from 'next/headers'
 
 const ADMIN_SESSION = 'dessie_admin_session'

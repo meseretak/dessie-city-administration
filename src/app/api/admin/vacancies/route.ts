@@ -1,6 +1,6 @@
 import { db } from '@/lib/db'
 import { NextRequest, NextResponse } from 'next/server'
-import { z } from 'zod/v4'
+import { z } from 'zod'
 
 const vacancySchema = z.object({
   title: z.string().min(1),

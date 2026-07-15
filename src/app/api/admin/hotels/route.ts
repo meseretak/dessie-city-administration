@@ -1,20 +1,30 @@
 import { db } from '@/lib/db'
 import { NextRequest, NextResponse } from 'next/server'
-import { z } from 'zod/v4'
+import { cookies } from 'next/headers'
 
-const hotelSchema = z.object({
-  name: z.string().min(1),
-  location: z.string().min(1),
-  rating: z.number().int().min(1).max(5),
-  priceRange: z.string().min(1),
-  description: z.string().min(1),
-  phone: z.string().optional(),
-  email: z.string().email().optional().or(z.literal('')),
-  image: z.string().optional(),
-  amenities: z.string().default('[]'),
-  featured: z.boolean().default(false),
-  status: z.string().default('active'),
-})
+const ADMIN_SESSION = 'dessie_admin_session'
+async function getAdminId() {
+  const cookieStore = await cookies()
+  const session = cookieStore.get(ADMIN_SESSION)?.value
+  if (!session) return null
+  try { return JSON.parse(session).id } catch { return null }
+}
+
+function parseHotelData(body: any) {
+  return {
+    name: String(body.name || '').substring(0, 200),
+    location: String(body.location || '').substring(0, 200),
+    rating: Math.min(5, Math.max(1, parseInt(String(body.rating || '3')) || 3)),
+    priceRange: String(body.priceRange || '').substring(0, 100),
+    description: String(body.description || '').substring(0, 2000),
+    phone: body.phone ? String(body.phone).substring(0, 50) : null,
+    email: body.email ? String(body.email).substring(0, 100) : null,
+    image: body.image ? String(body.image).substring(0, 500) : null,
+    amenities: body.amenities || '[]',
+    featured: body.featured === true || body.featured === 'true' || body.featured === '1',
+    status: body.status || 'active',
+  }
+}
 
 export async function GET() {
   try {
@@ -28,27 +38,19 @@ export async function GET() {
 
 export async function POST(req: NextRequest) {
   try {
+    const adminId = await getAdminId()
     const body = await req.json()
-    const data = hotelSchema.parse(body)
+    if (!body.name) return NextResponse.json({ error: 'Name is required' }, { status: 400 })
 
-    const adminRole = req.headers.get('x-admin-role') || 'admin'
-    const adminId = req.headers.get('x-admin-id') || ''
-    const approvalStatus = adminRole === 'super_admin' ? 'approved' : 'pending'
+    const data = parseHotelData(body)
+    const isSuperAdmin = adminId ? await db.adminUser.findUnique({ where: { id: adminId }, select: { role: true } }) : null
+    const approvalStatus = isSuperAdmin?.role === 'super_admin' ? 'approved' : 'pending'
 
     const hotel = await db.hotel.create({
-      data: {
-        ...data,
-        approvalStatus,
-        createdBy: adminId || null,
-        approvedBy: adminRole === 'super_admin' ? adminId : null,
-        approvedAt: adminRole === 'super_admin' ? new Date() : null,
-      },
+      data: { ...data, approvalStatus, createdBy: adminId || null },
     })
     return NextResponse.json(hotel, { status: 201 })
-  } catch (error: unknown) {
-    if (error instanceof z.ZodError) {
-      return NextResponse.json({ error: error.message }, { status: 400 })
-    }
+  } catch (error) {
     console.error('Hotels POST error:', error)
     return NextResponse.json({ error: 'Failed to create hotel' }, { status: 500 })
   }
@@ -61,30 +63,14 @@ export async function PUT(req: NextRequest) {
     if (!id) return NextResponse.json({ error: 'Missing id' }, { status: 400 })
 
     const body = await req.json()
-    const data = hotelSchema.parse(body)
+    const data = parseHotelData(body)
+    const adminId = await getAdminId()
+    const isSuperAdmin = adminId ? await db.adminUser.findUnique({ where: { id: adminId }, select: { role: true } }) : null
+    const approvalStatus = isSuperAdmin?.role === 'super_admin' ? 'approved' : 'pending'
 
-    const adminRole = req.headers.get('x-admin-role') || 'admin'
-    const adminId = req.headers.get('x-admin-id') || ''
-
-    const existing = await db.hotel.findUnique({ where: { id } })
-    if (!existing) return NextResponse.json({ error: 'Hotel not found' }, { status: 404 })
-
-    const approvalStatus = adminRole === 'super_admin' ? 'approved' : (existing.approvalStatus === 'approved' ? 'pending' : existing.approvalStatus)
-
-    const hotel = await db.hotel.update({
-      where: { id },
-      data: {
-        ...data,
-        approvalStatus,
-        approvedBy: adminRole === 'super_admin' ? adminId : null,
-        approvedAt: adminRole === 'super_admin' ? new Date() : null,
-      },
-    })
+    const hotel = await db.hotel.update({ where: { id }, data: { ...data, approvalStatus } })
     return NextResponse.json(hotel)
-  } catch (error: unknown) {
-    if (error instanceof z.ZodError) {
-      return NextResponse.json({ error: error.message }, { status: 400 })
-    }
+  } catch (error) {
     console.error('Hotels PUT error:', error)
     return NextResponse.json({ error: 'Failed to update hotel' }, { status: 500 })
   }
@@ -95,10 +81,6 @@ export async function DELETE(req: NextRequest) {
     const { searchParams } = new URL(req.url)
     const id = searchParams.get('id')
     if (!id) return NextResponse.json({ error: 'Missing id' }, { status: 400 })
-
-    const existing = await db.hotel.findUnique({ where: { id } })
-    if (!existing) return NextResponse.json({ error: 'Hotel not found' }, { status: 404 })
-
     await db.hotel.delete({ where: { id } })
     return NextResponse.json({ success: true })
   } catch (error) {

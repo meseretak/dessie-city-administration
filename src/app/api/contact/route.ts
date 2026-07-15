@@ -1,46 +1,29 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { db } from '@/lib/db'
-import { z } from 'zod'
-
-const contactSchema = z.object({
-  name: z.string().min(2, 'Name must be at least 2 characters'),
-  email: z.string().email('Valid email is required'),
-  subject: z.string().min(3, 'Subject must be at least 3 characters'),
-  message: z.string().min(10, 'Message must be at least 10 characters'),
-})
 
 export async function POST(request: NextRequest) {
   try {
     const body = await request.json()
+    const { name, email, subject, message, phone } = body
 
-    const result = contactSchema.safeParse(body)
-    if (!result.success) {
-      return NextResponse.json(
-        { success: false, error: result.error.issues[0].message },
-        { status: 400 }
-      )
-    }
+    if (!name || name.length < 2) return NextResponse.json({ success: false, error: 'Name required' }, { status: 400 })
+    if (!email || !email.includes('@')) return NextResponse.json({ success: false, error: 'Valid email required' }, { status: 400 })
+    if (!subject || subject.length < 3) return NextResponse.json({ success: false, error: 'Subject required' }, { status: 400 })
+    if (!message || message.length < 5) return NextResponse.json({ success: false, error: 'Message required' }, { status: 400 })
 
     const contactMessage = await db.contactMessage.create({
       data: {
-        name: result.data.name,
-        email: result.data.email,
-        subject: result.data.subject,
-        message: result.data.message,
+        name: String(name).substring(0, 100),
+        email: String(email).substring(0, 200),
+        subject: String(subject).substring(0, 300),
+        message: String(message).substring(0, 2000),
+        status: 'unread',
       },
     })
 
-    return NextResponse.json({
-      success: true,
-      data: {
-        id: contactMessage.id,
-      },
-    })
+    return NextResponse.json({ success: true, data: { id: contactMessage.id } })
   } catch (error) {
-    console.error('Contact form submission error:', error)
-    return NextResponse.json(
-      { success: false, error: 'Failed to send message. Please try again.' },
-      { status: 500 }
-    )
+    console.error('Contact form error:', error)
+    return NextResponse.json({ success: false, error: 'Failed to send message. Please try again.' }, { status: 500 })
   }
 }
