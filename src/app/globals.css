@@ -435,18 +435,12 @@ font.translated-rtl {
   border: none !important;
 }
 
-/* ===== ETHIOPIC / AMHARIC FONT ===== */
-/* Apply Noto Sans Ethiopic for any Ethiopic script characters */
-:lang(am),
-.lang-am,
-[data-lang="am"] {
-  font-family: var(--font-ethiopic), 'Noto Sans Ethiopic', system-ui, sans-serif;
+/* ===== ETHIOPIC / AMHARIC FONT — Universal ===== */
+/* Noto Sans Ethiopic loaded via link tag in layout.tsx */
+/* Apply to ALL elements so Amharic text always renders correctly */
+*, *::before, *::after {
+  font-family: var(--font-geist-sans), 'Noto Sans Ethiopic', -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
 }
-
-/* Ensure Ethiopic characters always render with the correct font */
-@supports (font-family: 'Noto Sans Ethiopic') {
-  /* Unicode Ethiopic block: U+1200–U+137F */
-  *:not(code):not(pre) {
-    font-family: var(--font-geist-sans), var(--font-ethiopic), 'Noto Sans Ethiopic', system-ui, sans-serif;
-  }
+code, pre, kbd, samp {
+  font-family: var(--font-geist-mono), monospace !important;
 }

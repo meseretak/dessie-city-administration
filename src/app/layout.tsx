@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono, Noto_Sans_Ethiopic } from "next/font/google";
+import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import { Toaster } from "@/components/ui/toaster";
 import { ThemeProvider } from "next-themes";
@@ -14,13 +14,6 @@ const geistSans = Geist({
 const geistMono = Geist_Mono({
   variable: "--font-geist-mono",
   subsets: ["latin"],
-});
-
-const notoEthiopic = Noto_Sans_Ethiopic({
-  variable: "--font-ethiopic",
-  subsets: ["ethiopic"],
-  weight: ["400", "500", "600", "700", "800"],
-  display: "swap",
 });
 
 const siteUrl = "https://dessiecity.gov.et";
@@ -195,6 +188,13 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <head>
+        {/* Noto Sans Ethiopic — direct Google Fonts link for reliable Amharic rendering */}
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
+        <link
+          href="https://fonts.googleapis.com/css2?family=Noto+Sans+Ethiopic:wght@400;500;600;700;800;900&display=swap"
+          rel="stylesheet"
+        />
         {/* JSON-LD Structured Data */}
         <script
           type="application/ld+json"
@@ -324,7 +324,7 @@ export default function RootLayout({
           }}
         />
       </head>
-      <body className={`${geistSans.variable} ${geistMono.variable} ${notoEthiopic.variable} antialiased`}>
+      <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
         <ThemeProvider attribute="class" defaultTheme="light" enableSystem disableTransitionOnChange>
           <LangProvider>
             {children}
