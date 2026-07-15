@@ -1533,23 +1533,70 @@ export default function HomePage({ navigateTo }: { navigateTo: (page: PageId, ex
                 {jbVisible.map((item: any, idx: number) => (
                   jbTab === 'vacancies' ? (
                     <motion.div key={item.id} initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: idx * 0.04 }}>
-                      <Card className="cursor-pointer hover:shadow-md transition-all border-0 shadow-sm group bg-white overflow-hidden"
+                      <Card className="cursor-pointer hover:shadow-lg transition-all border-0 shadow-sm group bg-white overflow-hidden"
                         onClick={() => navigateTo('vacancy-detail', { vacancyId: item.id })}>
                         <div className="h-0.5 bg-gradient-to-r from-[#0d4a28] to-[#1a6b3c] opacity-0 group-hover:opacity-100 transition-opacity" />
-                        <CardContent className="p-3 flex items-center gap-3">
-                          <div className="w-9 h-9 rounded-lg bg-gradient-to-br from-[#0d4a28] to-[#1a6b3c] flex items-center justify-center shrink-0">
-                            <Briefcase className="w-4 h-4 text-white" />
-                          </div>
-                          <div className="flex-1 min-w-0">
-                            <div className="flex items-center gap-1.5 mb-0.5">
-                              <span className="text-[9px] font-bold bg-[#f0fdf4] text-[#0d4a28] border border-[#1a6b3c]/20 px-1.5 py-0.5 rounded">{item.type}</span>
-                              <span className="text-[9px] text-[#9ca3af] truncate max-w-[120px]">{item.department}</span>
+                        <CardContent className="p-3.5">
+                          <div className="flex items-start gap-3">
+                            <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-[#0d4a28] to-[#1a6b3c] flex items-center justify-center shrink-0 shadow-sm">
+                              <Briefcase className="w-4.5 h-4.5 text-white" />
                             </div>
-                            <h4 className="font-bold text-[#1a1a1a] text-xs group-hover:text-[#0d4a28] transition-colors line-clamp-1">{item.title}</h4>
+                            <div className="flex-1 min-w-0">
+                              {/* Title */}
+                              <h4 className="font-bold text-[#1a1a1a] text-[13px] group-hover:text-[#0d4a28] transition-colors line-clamp-1 mb-1">{item.title}</h4>
+                              {/* Badges row */}
+                              <div className="flex flex-wrap items-center gap-1.5 mb-1.5">
+                                {/* Job type */}
+                                <span className={`text-[9px] font-bold px-2 py-0.5 rounded-full border ${
+                                  item.type === 'Contract' ? 'bg-[#fff7ed] text-[#c2410c] border-[#c2410c]/20' :
+                                  item.type === 'Part-time' ? 'bg-[#eff6ff] text-[#1d4ed8] border-[#1d4ed8]/20' :
+                                  'bg-[#f0fdf4] text-[#0d4a28] border-[#1a6b3c]/20'
+                                }`}>
+                                  {item.type === 'Permanent' ? '⏱ Full-Time' : item.type === 'Contract' ? '📋 Contract' : item.type === 'Part-time' ? '🕐 Part-Time' : `💼 ${item.type || 'Full-Time'}`}
+                                </span>
+                                {/* Location */}
+                                <span className="text-[9px] text-[#6b7280] flex items-center gap-0.5">
+                                  <MapPin className="w-2.5 h-2.5" />{item.location || 'Dessie, Ethiopia'}
+                                </span>
+                                {/* Remote badge if applicable */}
+                                {(item.type === 'Remote' || item.location?.toLowerCase().includes('remote')) && (
+                                  <span className="text-[9px] font-bold bg-[#f0f9ff] text-[#0369a1] border border-[#0369a1]/20 px-2 py-0.5 rounded-full">🌐 Remote</span>
+                                )}
+                              </div>
+                              {/* Department */}
+                              <p className="text-[10px] text-[#9ca3af] truncate">{item.department}</p>
+                            </div>
+                            {/* Right: salary + deadline */}
+                            <div className="text-right shrink-0 ml-1">
+                              {item.salary && item.salary !== 'Negotiable' && item.salary !== 'Competitive' ? (
+                                <p className="text-[11px] font-extrabold text-[#c8a415]">{item.salary}</p>
+                              ) : (
+                                <p className="text-[9px] text-[#9ca3af] italic">{isAm ? 'ደሞዝ ይደራደሩ' : 'Negotiable'}</p>
+                              )}
+                              {item.deadline && (
+                                <p className={`text-[9px] mt-0.5 font-medium ${
+                                  new Date(item.deadline) < new Date(Date.now() + 7*24*60*60*1000)
+                                    ? 'text-red-500' : 'text-[#9ca3af]'
+                                }`}>
+                                  {new Date(item.deadline) < new Date(Date.now() + 7*24*60*60*1000) ? '🔴 ' : '📅 '}
+                                  {item.deadline}
+                                </p>
+                              )}
+                              {/* Status badge */}
+                              <span className="mt-1 inline-block text-[8px] font-bold bg-[#dcfce7] text-[#166534] px-1.5 py-0.5 rounded-full">
+                                ● {isAm ? 'ክፍት' : 'Open'}
+                              </span>
+                            </div>
                           </div>
-                          <div className="text-right shrink-0">
-                            <p className="text-xs font-extrabold text-[#c8a415]">{item.salary}</p>
-                            <p className="text-[9px] text-[#9ca3af]">{item.deadline}</p>
+                          {/* Description preview */}
+                          {item.description && (
+                            <p className="text-[10px] text-[#6b7280] mt-2 line-clamp-1 leading-relaxed pl-13">{item.description}</p>
+                          )}
+                          {/* Apply CTA */}
+                          <div className="mt-2 flex items-center justify-between pl-13">
+                            <span className="text-[9px] text-[#0d4a28] font-bold opacity-0 group-hover:opacity-100 transition-opacity flex items-center gap-1">
+                              {isAm ? 'ዝርዝር ይመልከቱ' : 'View Details'} <ArrowRight className="w-2.5 h-2.5" />
+                            </span>
                           </div>
                         </CardContent>
                       </Card>
