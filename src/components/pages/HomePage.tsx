@@ -25,7 +25,7 @@ import {
   ChevronDown, ChevronLeft, ChevronRight, Users, Ruler, Landmark,
   Banknote, UserCheck, Factory, Route, CheckCircle, Mountain, Music,
   Star, CloudSun, Droplets, Wind, Sunrise, ArrowRight, Sparkles,
-  Clock, Gavel, Navigation, Phone, Building, Mail, Shield, Download, BookOpen, Scale, ClipboardList, Newspaper, Search
+  Clock, Gavel, Navigation, Phone, Building, Mail, Shield, Download, BookOpen, Scale, ClipboardList, Newspaper, Search, User, Share2, CalendarDays
 } from 'lucide-react'
 
 /* ─────────────────── Animated Counter ─────────────────── */
@@ -777,38 +777,35 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* ═══════════════════ 2. CITIZEN SERVICES + VACANCIES ═══════════════════ */}
+      {/* ═══════════════════ 2. CITIZEN SERVICES ═══════════════════ */}
       <section id="services" className="py-14 bg-gradient-to-b from-white to-[#f8faf8]">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid grid-cols-1 xl:grid-cols-5 gap-10 items-start">
+          <motion.div className="w-full"
+            initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, margin: '-60px' }} transition={{ duration: 0.5 }}>
 
-            {/* ══ LEFT: Citizen Services (3 cols out of 5) ══ */}
-            <motion.div className="xl:col-span-3 order-1"
-              initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, margin: '-60px' }} transition={{ duration: 0.5 }}>
-
-              {/* Section Header */}
-              <div className="flex items-end justify-between mb-8">
-                <div>
-                  <div className="flex items-center gap-2 mb-2">
-                    <div className="w-8 h-8 rounded-lg bg-[#0d4a28] flex items-center justify-center">
-                      <Building className="w-4 h-4 text-white" />
-                    </div>
-                    <span className="text-xs font-bold text-[#0d4a28] uppercase tracking-widest">Government Services</span>
+            {/* Section Header */}
+            <div className="flex items-end justify-between mb-8">
+              <div>
+                <div className="flex items-center gap-2 mb-2">
+                  <div className="w-8 h-8 rounded-lg bg-[#0d4a28] flex items-center justify-center">
+                    <Building className="w-4 h-4 text-white" />
                   </div>
-                  <h2 className="text-2xl md:text-3xl font-extrabold text-[#0d4a28] tracking-tight">CITIZEN SERVICES</h2>
-                  <div className="h-1 w-20 bg-gradient-to-r from-[#c8a415] via-[#c8a415]/60 to-transparent rounded-full mt-2" />
-                  <p className="mt-2 text-[#6b7280] text-sm">Fast, secure, and convenient government services.</p>
+                  <span className="text-xs font-bold text-[#0d4a28] uppercase tracking-widest">Government Services</span>
                 </div>
-                <Button variant="outline" size="sm"
-                  className="hidden sm:flex border-[#0d4a28] text-[#0d4a28] hover:bg-[#0d4a28] hover:text-white font-bold tracking-wider text-xs gap-1"
-                  onClick={() => navigateTo('services')}>
-                  ALL SERVICES <ArrowRight className="w-3 h-3" />
-                </Button>
+                <h2 className="text-2xl md:text-3xl font-extrabold text-[#0d4a28] tracking-tight">CITIZEN SERVICES</h2>
+                <div className="h-1 w-20 bg-gradient-to-r from-[#c8a415] via-[#c8a415]/60 to-transparent rounded-full mt-2" />
+                <p className="mt-2 text-[#6b7280] text-sm">Fast, secure, and convenient government services.</p>
               </div>
+              <Button variant="outline" size="sm"
+                className="hidden sm:flex border-[#0d4a28] text-[#0d4a28] hover:bg-[#0d4a28] hover:text-white font-bold tracking-wider text-xs gap-1"
+                onClick={() => navigateTo('services')}>
+                ALL SERVICES <ArrowRight className="w-3 h-3" />
+              </Button>
+            </div>
 
-              {/* 2×2 Service Cards */}
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            {/* Service Cards */}
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
                 {visibleServices.map((card, i) => {
                   const Icon = card.icon
                   return (
@@ -923,86 +920,120 @@ export default function HomePage() {
                 </div>
               </div>
 
-              <Button variant="outline" size="sm" className="sm:hidden w-full mt-4 border-[#0d4a28] text-[#0d4a28] font-bold"
-                onClick={() => navigateTo('services')}>
-                VIEW ALL SERVICES <ArrowRight className="w-3 h-3 ml-1" />
-              </Button>
-            </motion.div>
+            <Button variant="outline" size="sm" className="sm:hidden w-full mt-6 border-[#0d4a28] text-[#0d4a28] font-bold"
+              onClick={() => navigateTo('services')}>
+              VIEW ALL SERVICES <ArrowRight className="w-3 h-3 ml-1" />
+            </Button>
+          </motion.div>
+        </div>
+      </section>
 
-            {/* ══ RIGHT: Latest News ══ */}
-            <motion.div className="xl:col-span-2 order-2"
-              initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, margin: '-60px' }} transition={{ duration: 0.5, delay: 0.15 }}>
-
-              {/* Header */}
-              <div className="flex items-end justify-between mb-4">
-                <div>
-                  <div className="flex items-center gap-2 mb-1">
-                    <div className="w-8 h-8 rounded-lg bg-[#c62828] flex items-center justify-center">
-                      <Newspaper className="w-4 h-4 text-white" />
-                    </div>
-                    <span className="text-xs font-bold text-[#c62828] uppercase tracking-widest">{isAm ? 'የቅርብ ጊዜ ዝማኔዎች' : 'Latest Updates'}</span>
+      {/* ═══════════════════ 2.5 LATEST NEWS ═══════════════════ */}
+      <section id="latest-news" className="py-16 bg-white">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, margin: '-60px' }} transition={{ duration: 0.5 }}>
+            
+            {/* Header */}
+            <div className="flex flex-col md:flex-row md:items-end justify-between mb-10 gap-4">
+              <div>
+                <div className="flex items-center gap-2 mb-2">
+                  <div className="w-8 h-8 rounded-lg bg-[#c62828] flex items-center justify-center">
+                    <Newspaper className="w-4 h-4 text-white" />
                   </div>
-                  <h2 className="text-2xl font-extrabold text-[#1a1a1a]">{isAm ? 'የቅርብ ጊዜ ዜናዎች' : 'LATEST NEWS'}</h2>
-                  <div className="h-1 w-16 bg-[#c62828] rounded-full mt-1" />
+                  <span className="text-xs font-bold text-[#c62828] uppercase tracking-widest">{isAm ? 'የቅርብ ጊዜ ዝማኔዎች' : 'Latest Updates'}</span>
                 </div>
-                <button onClick={() => navigateTo('news')}
-                  className="flex items-center gap-1 text-xs font-bold text-[#c62828] hover:gap-2 transition-all border border-[#c62828]/30 px-2.5 py-1.5 rounded-lg hover:bg-[#c62828]/5">
-                  VIEW ALL <ArrowRight className="w-3 h-3" />
+                <h2 className="text-3xl md:text-4xl font-extrabold text-[#1a1a1a] tracking-tight">{isAm ? 'የቅርብ ጊዜ ዜናዎች' : 'LATEST NEWS'}</h2>
+                <div className="h-1.5 w-24 bg-[#c62828] rounded-full mt-3" />
+              </div>
+              <button onClick={() => navigateTo('news')}
+                className="flex items-center gap-2 text-sm font-bold text-[#c62828] hover:gap-3 transition-all border-2 border-[#c62828]/20 px-6 py-2.5 rounded-xl hover:bg-[#c62828] hover:text-white hover:border-[#c62828]">
+                {isAm ? 'ሁሉም ዜናዎች ይመልከቱ' : 'VIEW ALL NEWS'} <ArrowRight className="w-4 h-4" />
+              </button>
+            </div>
+
+            {/* News Grid (3 Columns) */}
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+              {visibleNews.map((item, i) => (
+                <motion.div key={(item.id || item.title) + i}
+                  initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }} transition={{ delay: i * 0.1 }}>
+                  <Card className="h-full flex flex-col cursor-pointer hover:shadow-2xl transition-all duration-300 border border-gray-100 shadow-md group bg-white overflow-hidden rounded-2xl"
+                    onClick={() => item.id && !item.id.startsWith('static') ? navigateTo('news-detail', { newsId: item.id }) : navigateTo('news')}>
+                    
+                    {/* Large Image Cover */}
+                    <div className="relative h-56 w-full overflow-hidden">
+                      <img src={item.image || '/news-meeting.png'} alt={item.title}
+                        className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 ease-out"
+                        onError={(e) => { (e.currentTarget as HTMLImageElement).src = '/news-meeting.png' }} />
+                      <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-60" />
+                      
+                      {/* Category Badge */}
+                      <div className="absolute top-4 left-4 bg-[#c62828] text-white px-3 py-1 rounded-full text-[10px] font-black uppercase tracking-wider shadow-lg">
+                        {item.category || 'News'}
+                      </div>
+                    </div>
+
+                    <CardContent className="p-6 flex-1 flex flex-col">
+                      {/* Meta info (Date & Author) */}
+                      <div className="flex justify-between items-center text-xs font-semibold text-gray-500 mb-4 border-b border-gray-100 pb-3">
+                        <span className="flex items-center gap-1.5"><CalendarDays className="w-3.5 h-3.5 text-[#c62828]" /> {item.date}</span>
+                        <span className="flex items-center gap-1.5"><User className="w-3.5 h-3.5 text-[#c62828]" /> {item.author || item.createdBy || 'Admin'}</span>
+                      </div>
+                      
+                      {/* Title & Excerpt */}
+                      <h4 className="font-extrabold text-[#1a1a1a] text-lg leading-tight group-hover:text-[#c62828] transition-colors line-clamp-2 mb-3">
+                        {item.title}
+                      </h4>
+                      <p className="text-gray-600 text-sm leading-relaxed line-clamp-3 mb-6 flex-1">
+                        {item.excerpt || item.title}
+                      </p>
+
+                      {/* Footer (Likes, Share, Read More) */}
+                      <div className="flex items-center justify-between pt-4 border-t border-gray-100 mt-auto">
+                        <div className="flex gap-4">
+                          <button className="flex items-center gap-1.5 text-gray-400 hover:text-[#c62828] transition-colors" onClick={(e) => { e.stopPropagation(); }}>
+                            <Heart className="w-4 h-4" /> <span className="text-xs font-bold">{Math.floor(Math.random() * 200) + 20}</span>
+                          </button>
+                          <button className="flex items-center gap-1.5 text-gray-400 hover:text-blue-600 transition-colors" onClick={(e) => { e.stopPropagation(); }}>
+                            <Share2 className="w-4 h-4" /> <span className="text-xs font-bold">Share</span>
+                          </button>
+                        </div>
+                        <span className="flex items-center gap-1 text-[11px] font-black uppercase tracking-wider text-[#c62828] opacity-0 group-hover:opacity-100 transition-all -translate-x-2 group-hover:translate-x-0">
+                          {isAm ? 'ተጨማሪ' : 'READ MORE'} <ArrowRight className="w-3.5 h-3.5" />
+                        </span>
+                      </div>
+                    </CardContent>
+                  </Card>
+                </motion.div>
+              ))}
+            </div>
+
+            {/* Pagination Controls */}
+            <div className="mt-12 flex flex-col sm:flex-row items-center justify-between gap-4 border-t border-gray-200 pt-6">
+              <span className="text-sm font-semibold text-gray-500">
+                Showing {newsStart + 1}–{Math.min(newsStart + 6, homeNews.length)} of {homeNews.length} news articles
+              </span>
+              <div className="flex items-center gap-2">
+                <button onClick={() => setNewsPage(p => Math.max(0, p - 1))} disabled={newsPage === 0}
+                  className="w-10 h-10 rounded-xl border-2 border-gray-200 flex items-center justify-center disabled:opacity-30 hover:border-[#c62828] hover:bg-[#c62828] hover:text-white transition-all text-gray-500">
+                  <ChevronLeft className="w-5 h-5" />
                 </button>
-              </div>
-
-              {/* News Cards — compact, 6 per page */}
-              <div className="space-y-2">
-                {visibleNews.map((item, i) => (
-                  <motion.div key={(item.id || item.title) + i}
-                    initial={{ opacity: 0, x: 10 }} whileInView={{ opacity: 1, x: 0 }}
-                    viewport={{ once: true }} transition={{ delay: i * 0.05 }}>
-                    <Card className="cursor-pointer hover:shadow-lg transition-all duration-200 border-0 shadow-sm group bg-white overflow-hidden"
-                      onClick={() => item.id && !item.id.startsWith('static') ? navigateTo('news-detail', { newsId: item.id }) : navigateTo('news')}>
-                      <CardContent className="p-0 flex">
-                        {/* Image — compact */}
-                        <div className="w-24 h-20 shrink-0 overflow-hidden relative">
-                          <img src={item.image || '/news-meeting.png'} alt={item.title}
-                            className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
-                            onError={(e) => { (e.currentTarget as HTMLImageElement).src = '/news-meeting.png' }} />
-                          <div className="absolute inset-0 bg-gradient-to-r from-transparent to-black/10" />
-                        </div>
-                        {/* Content */}
-                        <div className="flex-1 px-3 py-2 min-w-0 flex flex-col justify-between">
-                          <div>
-                            <div className="flex items-center gap-1.5 mb-1">
-                              <span className="text-[9px] font-bold bg-[#c62828] text-white px-1.5 py-0.5 rounded">{item.category}</span>
-                              <span className="text-[9px] text-[#9ca3af] font-medium">{item.date}</span>
-                            </div>
-                            <h4 className="font-extrabold text-[#1a1a1a] text-[12px] leading-snug group-hover:text-[#c62828] transition-colors line-clamp-2">{item.title}</h4>
-                          </div>
-                          <div className="flex items-center gap-1 text-[10px] font-bold text-[#c62828] opacity-0 group-hover:opacity-100 transition-opacity">
-                            {isAm ? 'ተጨማሪ' : 'Read More'} <ArrowRight className="w-2.5 h-2.5" />
-                          </div>
-                        </div>
-                      </CardContent>
-                    </Card>
-                  </motion.div>
-                ))}
-              </div>
-
-              {/* Pagination */}
-              <div className="mt-3 flex items-center justify-between">
-                <div className="flex gap-1.5">
+                <div className="flex gap-2 mx-2">
                   {Array.from({ length: Math.ceil(homeNews.length / 6) }, (_, i) => (
                     <button key={i} onClick={() => setNewsPage(i)}
-                      className={`transition-all rounded-full ${newsPage === i ? 'bg-[#c62828] w-6 h-2' : 'bg-[#e2e8e0] w-2 h-2 hover:bg-[#c62828]/40'}`} />
+                      className={`transition-all rounded-full ${newsPage === i ? 'bg-[#c62828] w-8 h-2.5' : 'bg-gray-300 w-2.5 h-2.5 hover:bg-[#c62828]/50'}`} />
                   ))}
                 </div>
-                <button onClick={() => navigateTo('news')}
-                  className="text-xs font-bold text-[#c62828] flex items-center gap-1 hover:gap-2 transition-all">
-                  {isAm ? 'ሁሉም ዜናዎች' : 'ALL NEWS'} <ArrowRight className="w-3.5 h-3.5" />
+                <button onClick={() => setNewsPage(p => Math.min(Math.ceil(homeNews.length / 6) - 1, p + 1))} disabled={newsPage >= Math.ceil(homeNews.length / 6) - 1}
+                  className="w-10 h-10 rounded-xl border-2 border-gray-200 flex items-center justify-center disabled:opacity-30 hover:border-[#c62828] hover:bg-[#c62828] hover:text-white transition-all text-gray-500">
+                  <ChevronRight className="w-5 h-5" />
                 </button>
               </div>
-            </motion.div>
-
-          </div>
+            </div>
+            
+          </motion.div>
         </div>
       </section>
 
