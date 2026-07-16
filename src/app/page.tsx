@@ -125,21 +125,45 @@ export default function Home() {
     const subMenus: Record<string, { id: PageId; label: string }[]> = {
       'about': [
         { id: 'about', label: lang === 'am' ? 'áˆµáˆˆ á‹°áˆ´' : 'About Dessie' },
-        { id: 'tourism', label: lang === 'am' ? 'á‰±áˆªá‹áˆáŠ“ á‰£áˆ…áˆ' : 'Tourism & Culture' },
-        { id: 'projects', label: lang === 'am' ? 'á•áˆ®áŒ€áŠ­á‰¶á‰½' : 'City Projects' },
-        { id: 'transparency', label: lang === 'am' ? 'áŒáˆáŒ½áŠá‰µ' : 'Transparency' },
+        { id: 'tourism', label: lang === 'am' ? 'á‰±áˆªá‹ áˆ áŠ“ á‰£áˆ…áˆ ' : 'Tourism & Culture' },
+        { id: 'projects', label: lang === 'am' ? 'á •áˆ®áŒ€áŠ­á‰¶á‰½' : 'City Projects' },
+        { id: 'transparency', label: lang === 'am' ? 'áŒ áˆ áŒ½áŠ á‰µ' : 'Transparency' },
       ],
       'mayor': [
         { id: 'mayor', label: lang === 'am' ? 'áŠ¨áŠ•á‰²á‰£' : "Mayor's Profile" },
         { id: 'about', label: lang === 'am' ? 'áŠ áˆµá‰°á‹³á‹°áˆ­' : 'Administration' },
       ],
       'contact': [
-        { id: 'contact', label: lang === 'am' ? 'á‹«áŒáŠ™áŠ•' : 'Contact Us' },
-        { id: 'services', label: lang === 'am' ? 'áŠ áŒˆáˆáŒáˆŽá‰¶á‰½' : 'Request Service' },
+        { id: 'contact', label: lang === 'am' ? 'ያግኙን' : 'Contact Us' },
+        { id: 'services', label: lang === 'am' ? 'አገልግሎቶች' : 'Request Service' },
+      ],
+      'services': [
+        { id: 'services', label: lang === 'am' ? 'ሁሉም አገልግሎቶች' : 'All Services' },
+        { id: 'service-detail', label: 'Birth Registration' },
+        { id: 'service-detail', label: 'Business License' },
+        { id: 'service-detail', label: 'Building Permit' },
+        { id: 'service-detail', label: 'Land Services' },
+        { id: 'service-detail', label: 'Tax Payment' },
+        { id: 'service-detail', label: 'Health Services' },
+        { id: 'service-detail', label: 'Education' },
+        { id: 'service-detail', label: 'Transportation' },
+        { id: 'service-detail', label: 'Water & Electricity' },
+        { id: 'service-detail', label: 'Complaints & Feedback' },
       ],
     }
     return subMenus[pageId] || []
   }
+
+  // Force Google Translate to re-translate when SPA page changes
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      const combo = document.querySelector('.goog-te-combo') as HTMLSelectElement | null
+      if (combo && combo.value) {
+        combo.dispatchEvent(new Event('change'))
+      }
+    }, 150) // wait for new DOM to render
+    return () => clearTimeout(timer)
+  }, [currentPage])
 
   // Chat widget state
   const [chatOpen, setChatOpen] = useState(false)
@@ -309,7 +333,6 @@ export default function Home() {
                 <Icon className="w-3 h-3 text-white" />
               </button>
             ))}
-            <div id="google_translate_element" className="ml-2 flex items-center translate-y-[2px]" />
           </div>
         </div>
       </div>
@@ -495,8 +518,8 @@ export default function Home() {
                               { label: 'ðŸ“° News', page: 'news' as const },
                               { label: 'ðŸ’¼ Vacancies', page: 'vacancy' as const },
                               { label: 'ðŸ“‹ Bids', page: 'bids' as const },
-                              { label: 'ðŸ¨ Hotels', page: 'hotels' as const },
-                              { label: 'ðŸ”ï¸ Tourism', page: 'tourism' as const },
+                              { label: 'ðŸ ¨ Hotels', page: 'hotels' as const },
+                              { label: 'ðŸ ”ï¸  Tourism', page: 'tourism' as const },
                               { label: 'ðŸ“¢ Announcements', page: 'announcements' as const },
                               { label: 'ðŸ“ž Contact', page: 'contact' as const },
                             ].map(item => (
@@ -513,25 +536,6 @@ export default function Home() {
                   </Dialog>
                 </TooltipTrigger>
                 <TooltipContent>Search</TooltipContent>
-              </Tooltip>
-            </TooltipProvider>
-
-            {/* Language Toggle â€” built-in EN/AM */}
-            <TooltipProvider>
-              <Tooltip>
-                <TooltipTrigger asChild>
-                  <Button
-                    variant="ghost"
-                    size="sm"
-                    className="h-8 px-2 text-xs font-semibold gap-1 border border-[#1a6b3c]/20 hover:border-[#1a6b3c]"
-                    onClick={toggleLang}
-                    aria-label="Toggle language"
-                  >
-                    <Languages className="w-3.5 h-3.5" />
-                    <span className="hidden sm:inline">{lang === 'en' ? 'áŠ áˆ›' : 'EN'}</span>
-                  </Button>
-                </TooltipTrigger>
-                <TooltipContent>{lang === 'en' ? 'Switch to Amharic' : 'Switch to English'}</TooltipContent>
               </Tooltip>
             </TooltipProvider>
 
@@ -573,7 +577,7 @@ export default function Home() {
                         style={{ backgroundColor: ac.color }}
                         aria-label={ac.label}
                       >
-                        {accentColor === ac.color && <span className="flex items-center justify-center w-full h-full">âœ“</span>}
+                        {accentColor === ac.color && <span className="flex items-center justify-center w-full h-full">✓</span>}
                       </button>
                     ))}
                   </div>
