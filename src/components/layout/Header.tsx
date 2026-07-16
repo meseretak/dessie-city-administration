@@ -104,6 +104,7 @@ export default function Header({ navItems }: { navItems: NavItem[] }) {
     if (id === 'vacancy-detail') return `/vacancies/${encodeURIComponent(label)}`;
     if (id === 'news-detail') return `/news/${encodeURIComponent(label)}`;
     if (id === 'bids-detail') return `/bids/${encodeURIComponent(label)}`;
+    if (id === 'vacancy') return '/vacancies';
     return `/${id.toLowerCase()}`;
   };
 
