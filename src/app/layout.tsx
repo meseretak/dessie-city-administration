@@ -334,17 +334,16 @@ export default function RootLayout({
         <Script
           id="google-translate-init"
           strategy="afterInteractive"
-          dangerouslySetInnerHTML={{
-            __html: `
-              function googleTranslateElementInit() {
-                new window.google.translate.TranslateElement(
-                  { pageLanguage: 'en', includedLanguages: 'en,am', layout: window.google.translate.TranslateElement.InlineLayout.SIMPLE },
-                  'google_translate_element'
-                );
-              }
-            `,
-          }}
-        />
+        >
+          {`
+            function googleTranslateElementInit() {
+              new window.google.translate.TranslateElement(
+                { pageLanguage: 'en' },
+                'google_translate_element'
+              );
+            }
+          `}
+        </Script>
         <Script
           id="google-translate-script"
           strategy="afterInteractive"
