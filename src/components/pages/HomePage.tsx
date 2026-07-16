@@ -1146,16 +1146,8 @@ export default function HomePage() {
                         {item.excerpt || item.title}
                       </p>
 
-                      {/* Footer (Likes, Share, Read More) */}
-                      <div className="flex items-center justify-between pt-4 border-t border-gray-100 mt-auto">
-                        <div className="flex gap-4">
-                          <button className="flex items-center gap-1.5 text-gray-400 hover:text-[#c62828] transition-colors" onClick={(e) => { e.stopPropagation(); }}>
-                            <Heart className="w-4 h-4" /> <span className="text-xs font-bold">{Math.floor(Math.random() * 200) + 20}</span>
-                          </button>
-                          <button className="flex items-center gap-1.5 text-gray-400 hover:text-blue-600 transition-colors" onClick={(e) => { e.stopPropagation(); }}>
-                            <Share2 className="w-4 h-4" /> <span className="text-xs font-bold">Share</span>
-                          </button>
-                        </div>
+                      {/* Footer (Read More) */}
+                      <div className="flex items-center justify-end pt-4 border-t border-gray-100 mt-auto">
                         <span className="flex items-center gap-1 text-[11px] font-black uppercase tracking-wider text-[#c62828] opacity-0 group-hover:opacity-100 transition-all -translate-x-2 group-hover:translate-x-0">
                           {isAm ? 'ተጨማሪ' : 'READ MORE'} <ArrowRight className="w-3.5 h-3.5" />
                         </span>
