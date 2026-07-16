@@ -1,12 +1,23 @@
 'use client';
 import { useEffect } from 'react';
-import Link from 'next/link';
 import { RefreshCcw, AlertOctagon, Home } from 'lucide-react';
 
 export default function ErrorPage({ error, reset }: { error: Error & { digest?: string }, reset: () => void }) {
   useEffect(() => {
     console.error('Global Application Error:', error);
+    // Automatically recover from deployment chunk mismatches
+    if (error.name === 'ChunkLoadError' || error.message.includes('Failed to load chunk')) {
+      window.location.reload();
+    }
   }, [error]);
+
+  const handleReset = () => {
+    if (error.name === 'ChunkLoadError' || error.message.includes('Failed to load chunk')) {
+      window.location.reload();
+    } else {
+      reset();
+    }
+  };
 
   return (
     <div className="min-h-[80vh] flex flex-col items-center justify-center bg-gray-50 px-4">
@@ -24,20 +35,20 @@ export default function ErrorPage({ error, reset }: { error: Error & { digest?: 
 
         <div className="flex flex-col gap-3">
           <button 
-            onClick={() => reset()}
+            onClick={handleReset}
             className="w-full px-6 py-3 bg-[#0d4a28] text-white font-semibold rounded-xl hover:bg-[#1a6b3c] transition-all flex items-center justify-center gap-2"
           >
             <RefreshCcw className="w-4 h-4" />
             Try Again
           </button>
           
-          <Link 
+          <a 
             href="/"
             className="w-full px-6 py-3 bg-gray-50 text-gray-700 font-medium rounded-xl hover:bg-gray-100 transition-all flex items-center justify-center gap-2 border border-gray-200"
           >
             <Home className="w-4 h-4" />
             Return to Homepage
-          </Link>
+          </a>
         </div>
       </div>
     </div>
