@@ -5,8 +5,10 @@ import {
   Search, Sun, Moon, Menu, ChevronDown, ChevronRight, Languages,
   Home as HomeIcon, Info, Crown, Settings, Bell, PhoneCall, Newspaper,
   Briefcase, Gavel, FolderOpen, Mountain, Hotel, Baby, FileCheck,
-  Building, MapPin, Receipt, Stethoscope, GraduationCap, Bus,
-  Droplets, MessageSquareWarning, CalendarDays, FileText
+  Building, MapPin, Receipt, Heart, Stethoscope, GraduationCap,
+  Bus, Droplets, MessageSquareWarning, CalendarDays, ArrowRight, 
+  ShieldCheck, Scale, Leaf, Landmark, Factory, Wheat, Lightbulb, 
+  Users, Monitor
 } from 'lucide-react';
 import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
@@ -194,42 +196,97 @@ export default function Header({ navItems }: { navItems: NavItem[] }) {
                       </div>
                       
                       {item.label === 'SERVICES' ? (
-                        <div className="p-4 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
-                          {subItems.map((cat) => {
-                            if (cat.id === 'services') return null;
-                            const hasChildren = cat.items && cat.items.length > 0;
-                            
-                            if (hasChildren) {
-                              return (
-                                <div key={cat.id} className="flex flex-col">
-                                  <h4 className="text-xs font-bold text-[#1a6b3c] mb-2 uppercase tracking-wider">{navLabel(cat.label)}</h4>
-                                  <div className="flex flex-col gap-1">
-                                    {cat.items?.map((child: any) => {
-                                      const ChildIcon = navIcons[child.label] || FileText;
-                                      return (
-                                        <Link key={child.label} href={resolveHref(child.id, child.label)} onClick={() => setOpenDropdown(null)} className="flex items-center gap-2 px-2 py-1.5 rounded-lg text-[13px] text-left transition-all hover:bg-[#1a6b3c]/8 hover:text-[#1a6b3c] group border border-transparent hover:border-[#1a6b3c]/20">
-                                          <div className="w-6 h-6 rounded-md bg-[#0d4a28]/8 group-hover:bg-[#1a6b3c] flex items-center justify-center shrink-0 transition-all">
-                                            <ChildIcon className="w-3 h-3 text-[#0d4a28] group-hover:text-white" />
-                                          </div>
-                                          <span className="font-medium text-gray-700 group-hover:text-[#1a6b3c] leading-tight">{navLabel(child.label)}</span>
-                                        </Link>
-                                      );
-                                    })}
-                                  </div>
-                                </div>
-                              );
-                            } else {
-                              const ChildIcon = navIcons[cat.label] || FileText;
-                              return (
-                                <Link key={cat.label} href={resolveHref(cat.id, cat.label)} onClick={() => setOpenDropdown(null)} className="flex items-center gap-3 px-3 py-2.5 rounded-xl text-[13px] text-left transition-all hover:bg-[#1a6b3c]/8 hover:text-[#1a6b3c] group border border-transparent hover:border-[#1a6b3c]/20 h-fit">
-                                  <div className="w-8 h-8 rounded-lg bg-[#0d4a28]/8 group-hover:bg-[#1a6b3c] flex items-center justify-center shrink-0 transition-all">
-                                    <ChildIcon className="w-4 h-4 text-[#0d4a28] group-hover:text-white" />
-                                  </div>
-                                  <span className="font-medium text-gray-700 group-hover:text-[#1a6b3c] leading-tight">{navLabel(cat.label)}</span>
-                                </Link>
-                              );
-                            }
-                          })}
+                        <div className="p-5 grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-6 max-h-[75vh] overflow-y-auto w-full max-w-[1200px] bg-[#fdfdfd]">
+                          {/* 1. Education */}
+                          <div className="flex flex-col gap-2">
+                            <h4 className="flex items-center gap-2 text-[13px] font-extrabold text-[#0d4a28] mb-1 uppercase tracking-wider border-b border-[#1a6b3c]/20 pb-2">
+                              <div className="w-6 h-6 rounded bg-[#1a6b3c]/10 flex items-center justify-center"><GraduationCap className="w-3.5 h-3.5 text-[#1a6b3c]" /></div> Education
+                            </h4>
+                            <Link href="/services/schools" onClick={() => setOpenDropdown(null)} className="text-[12px] font-medium text-gray-600 hover:text-[#1a6b3c] hover:bg-[#1a6b3c]/5 px-2 py-1.5 rounded transition-all">Public Schools</Link>
+                            <Link href="/services/scholarships" onClick={() => setOpenDropdown(null)} className="text-[12px] font-medium text-gray-600 hover:text-[#1a6b3c] hover:bg-[#1a6b3c]/5 px-2 py-1.5 rounded transition-all">Scholarships</Link>
+                            <Link href="/services/tvet" onClick={() => setOpenDropdown(null)} className="text-[12px] font-medium text-gray-600 hover:text-[#1a6b3c] hover:bg-[#1a6b3c]/5 px-2 py-1.5 rounded transition-all">TVET Colleges</Link>
+                          </div>
+                          {/* 2. Agriculture */}
+                          <div className="flex flex-col gap-2">
+                            <h4 className="flex items-center gap-2 text-[13px] font-extrabold text-[#0d4a28] mb-1 uppercase tracking-wider border-b border-[#1a6b3c]/20 pb-2">
+                              <div className="w-6 h-6 rounded bg-[#1a6b3c]/10 flex items-center justify-center"><Wheat className="w-3.5 h-3.5 text-[#1a6b3c]" /></div> Agriculture
+                            </h4>
+                            <Link href="/services/farming" onClick={() => setOpenDropdown(null)} className="text-[12px] font-medium text-gray-600 hover:text-[#1a6b3c] hover:bg-[#1a6b3c]/5 px-2 py-1.5 rounded transition-all">Farming Permits</Link>
+                            <Link href="/services/veterinary" onClick={() => setOpenDropdown(null)} className="text-[12px] font-medium text-gray-600 hover:text-[#1a6b3c] hover:bg-[#1a6b3c]/5 px-2 py-1.5 rounded transition-all">Veterinary Services</Link>
+                            <Link href="/services/fertilizer" onClick={() => setOpenDropdown(null)} className="text-[12px] font-medium text-gray-600 hover:text-[#1a6b3c] hover:bg-[#1a6b3c]/5 px-2 py-1.5 rounded transition-all">Fertilizer Supply</Link>
+                          </div>
+                          {/* 3. Health */}
+                          <div className="flex flex-col gap-2">
+                            <h4 className="flex items-center gap-2 text-[13px] font-extrabold text-[#0d4a28] mb-1 uppercase tracking-wider border-b border-[#1a6b3c]/20 pb-2">
+                              <div className="w-6 h-6 rounded bg-[#1a6b3c]/10 flex items-center justify-center"><Stethoscope className="w-3.5 h-3.5 text-[#1a6b3c]" /></div> Health
+                            </h4>
+                            <Link href="/services/hospitals" onClick={() => setOpenDropdown(null)} className="text-[12px] font-medium text-gray-600 hover:text-[#1a6b3c] hover:bg-[#1a6b3c]/5 px-2 py-1.5 rounded transition-all">City Hospitals</Link>
+                            <Link href="/services/clinics" onClick={() => setOpenDropdown(null)} className="text-[12px] font-medium text-gray-600 hover:text-[#1a6b3c] hover:bg-[#1a6b3c]/5 px-2 py-1.5 rounded transition-all">Local Clinics</Link>
+                            <Link href="/services/vaccination" onClick={() => setOpenDropdown(null)} className="text-[12px] font-medium text-gray-600 hover:text-[#1a6b3c] hover:bg-[#1a6b3c]/5 px-2 py-1.5 rounded transition-all">Vaccination</Link>
+                          </div>
+                          {/* 4. Trade & Industry */}
+                          <div className="flex flex-col gap-2">
+                            <h4 className="flex items-center gap-2 text-[13px] font-extrabold text-[#0d4a28] mb-1 uppercase tracking-wider border-b border-[#1a6b3c]/20 pb-2">
+                              <div className="w-6 h-6 rounded bg-[#1a6b3c]/10 flex items-center justify-center"><Factory className="w-3.5 h-3.5 text-[#1a6b3c]" /></div> Trade
+                            </h4>
+                            <Link href="/services/Business%20License" onClick={() => setOpenDropdown(null)} className="text-[12px] font-medium text-gray-600 hover:text-[#1a6b3c] hover:bg-[#1a6b3c]/5 px-2 py-1.5 rounded transition-all">Business License</Link>
+                            <Link href="/services/investment" onClick={() => setOpenDropdown(null)} className="text-[12px] font-medium text-gray-600 hover:text-[#1a6b3c] hover:bg-[#1a6b3c]/5 px-2 py-1.5 rounded transition-all">Investment Permits</Link>
+                            <Link href="/services/markets" onClick={() => setOpenDropdown(null)} className="text-[12px] font-medium text-gray-600 hover:text-[#1a6b3c] hover:bg-[#1a6b3c]/5 px-2 py-1.5 rounded transition-all">Market Regulations</Link>
+                          </div>
+                          {/* 5. Infrastructure */}
+                          <div className="flex flex-col gap-2">
+                            <h4 className="flex items-center gap-2 text-[13px] font-extrabold text-[#0d4a28] mb-1 uppercase tracking-wider border-b border-[#1a6b3c]/20 pb-2">
+                              <div className="w-6 h-6 rounded bg-[#1a6b3c]/10 flex items-center justify-center"><Building className="w-3.5 h-3.5 text-[#1a6b3c]" /></div> Infrastructure
+                            </h4>
+                            <Link href="/services/Building%20Permit" onClick={() => setOpenDropdown(null)} className="text-[12px] font-medium text-gray-600 hover:text-[#1a6b3c] hover:bg-[#1a6b3c]/5 px-2 py-1.5 rounded transition-all">Building Permits</Link>
+                            <Link href="/services/roads" onClick={() => setOpenDropdown(null)} className="text-[12px] font-medium text-gray-600 hover:text-[#1a6b3c] hover:bg-[#1a6b3c]/5 px-2 py-1.5 rounded transition-all">Road Construction</Link>
+                            <Link href="/services/planning" onClick={() => setOpenDropdown(null)} className="text-[12px] font-medium text-gray-600 hover:text-[#1a6b3c] hover:bg-[#1a6b3c]/5 px-2 py-1.5 rounded transition-all">Urban Planning</Link>
+                          </div>
+                          {/* 6. Land & Housing */}
+                          <div className="flex flex-col gap-2">
+                            <h4 className="flex items-center gap-2 text-[13px] font-extrabold text-[#0d4a28] mb-1 uppercase tracking-wider border-b border-[#1a6b3c]/20 pb-2">
+                              <div className="w-6 h-6 rounded bg-[#1a6b3c]/10 flex items-center justify-center"><MapPin className="w-3.5 h-3.5 text-[#1a6b3c]" /></div> Land
+                            </h4>
+                            <Link href="/services/Land%20Services" onClick={() => setOpenDropdown(null)} className="text-[12px] font-medium text-gray-600 hover:text-[#1a6b3c] hover:bg-[#1a6b3c]/5 px-2 py-1.5 rounded transition-all">Cadastre</Link>
+                            <Link href="/services/deeds" onClick={() => setOpenDropdown(null)} className="text-[12px] font-medium text-gray-600 hover:text-[#1a6b3c] hover:bg-[#1a6b3c]/5 px-2 py-1.5 rounded transition-all">Title Deeds</Link>
+                            <Link href="/services/housing" onClick={() => setOpenDropdown(null)} className="text-[12px] font-medium text-gray-600 hover:text-[#1a6b3c] hover:bg-[#1a6b3c]/5 px-2 py-1.5 rounded transition-all">Public Housing</Link>
+                          </div>
+                          {/* 7. Civil Services */}
+                          <div className="flex flex-col gap-2">
+                            <h4 className="flex items-center gap-2 text-[13px] font-extrabold text-[#0d4a28] mb-1 uppercase tracking-wider border-b border-[#1a6b3c]/20 pb-2">
+                              <div className="w-6 h-6 rounded bg-[#1a6b3c]/10 flex items-center justify-center"><Heart className="w-3.5 h-3.5 text-[#1a6b3c]" /></div> Civil
+                            </h4>
+                            <Link href="/services/Birth%20Registration" onClick={() => setOpenDropdown(null)} className="text-[12px] font-medium text-gray-600 hover:text-[#1a6b3c] hover:bg-[#1a6b3c]/5 px-2 py-1.5 rounded transition-all">Birth & Death</Link>
+                            <Link href="/services/Marriage%20Registration" onClick={() => setOpenDropdown(null)} className="text-[12px] font-medium text-gray-600 hover:text-[#1a6b3c] hover:bg-[#1a6b3c]/5 px-2 py-1.5 rounded transition-all">Marriage</Link>
+                            <Link href="/services/id-cards" onClick={() => setOpenDropdown(null)} className="text-[12px] font-medium text-gray-600 hover:text-[#1a6b3c] hover:bg-[#1a6b3c]/5 px-2 py-1.5 rounded transition-all">Resident ID Cards</Link>
+                          </div>
+                          {/* 8. Finance & Tax */}
+                          <div className="flex flex-col gap-2">
+                            <h4 className="flex items-center gap-2 text-[13px] font-extrabold text-[#0d4a28] mb-1 uppercase tracking-wider border-b border-[#1a6b3c]/20 pb-2">
+                              <div className="w-6 h-6 rounded bg-[#1a6b3c]/10 flex items-center justify-center"><Receipt className="w-3.5 h-3.5 text-[#1a6b3c]" /></div> Finance
+                            </h4>
+                            <Link href="/services/Tax%20Payment" onClick={() => setOpenDropdown(null)} className="text-[12px] font-medium text-gray-600 hover:text-[#1a6b3c] hover:bg-[#1a6b3c]/5 px-2 py-1.5 rounded transition-all">Pay Property Tax</Link>
+                            <Link href="/services/business-tax" onClick={() => setOpenDropdown(null)} className="text-[12px] font-medium text-gray-600 hover:text-[#1a6b3c] hover:bg-[#1a6b3c]/5 px-2 py-1.5 rounded transition-all">Business Tax</Link>
+                            <Link href="/services/fines" onClick={() => setOpenDropdown(null)} className="text-[12px] font-medium text-gray-600 hover:text-[#1a6b3c] hover:bg-[#1a6b3c]/5 px-2 py-1.5 rounded transition-all">Municipal Fines</Link>
+                          </div>
+                          {/* 9. Utilities & Transit */}
+                          <div className="flex flex-col gap-2">
+                            <h4 className="flex items-center gap-2 text-[13px] font-extrabold text-[#0d4a28] mb-1 uppercase tracking-wider border-b border-[#1a6b3c]/20 pb-2">
+                              <div className="w-6 h-6 rounded bg-[#1a6b3c]/10 flex items-center justify-center"><Droplets className="w-3.5 h-3.5 text-[#1a6b3c]" /></div> Utilities
+                            </h4>
+                            <Link href="/services/Water%20&%20Electricity" onClick={() => setOpenDropdown(null)} className="text-[12px] font-medium text-gray-600 hover:text-[#1a6b3c] hover:bg-[#1a6b3c]/5 px-2 py-1.5 rounded transition-all">Water Supply</Link>
+                            <Link href="/services/Transportation" onClick={() => setOpenDropdown(null)} className="text-[12px] font-medium text-gray-600 hover:text-[#1a6b3c] hover:bg-[#1a6b3c]/5 px-2 py-1.5 rounded transition-all">Public Transit</Link>
+                            <Link href="/services/waste" onClick={() => setOpenDropdown(null)} className="text-[12px] font-medium text-gray-600 hover:text-[#1a6b3c] hover:bg-[#1a6b3c]/5 px-2 py-1.5 rounded transition-all">Waste Management</Link>
+                          </div>
+                          {/* 10. Social & Tourism */}
+                          <div className="flex flex-col gap-2">
+                            <h4 className="flex items-center gap-2 text-[13px] font-extrabold text-[#0d4a28] mb-1 uppercase tracking-wider border-b border-[#1a6b3c]/20 pb-2">
+                              <div className="w-6 h-6 rounded bg-[#1a6b3c]/10 flex items-center justify-center"><Users className="w-3.5 h-3.5 text-[#1a6b3c]" /></div> Social
+                            </h4>
+                            <Link href="/tourism" onClick={() => setOpenDropdown(null)} className="text-[12px] font-medium text-gray-600 hover:text-[#1a6b3c] hover:bg-[#1a6b3c]/5 px-2 py-1.5 rounded transition-all">Tourism Guide</Link>
+                            <Link href="/services/youth" onClick={() => setOpenDropdown(null)} className="text-[12px] font-medium text-gray-600 hover:text-[#1a6b3c] hover:bg-[#1a6b3c]/5 px-2 py-1.5 rounded transition-all">Youth Programs</Link>
+                            <Link href="/services/women" onClick={() => setOpenDropdown(null)} className="text-[12px] font-medium text-gray-600 hover:text-[#1a6b3c] hover:bg-[#1a6b3c]/5 px-2 py-1.5 rounded transition-all">Women Empowerment</Link>
+                          </div>
                         </div>
                       ) : (
                         <div className="p-2">
