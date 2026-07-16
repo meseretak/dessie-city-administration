@@ -941,7 +941,7 @@ export default function HomePage() {
                   </div>
                   <span className="text-xs font-bold text-[#0d4a28] uppercase tracking-widest">Open Opportunities</span>
                 </div>
-                <h2 className="text-2xl md:text-3xl font-extrabold text-white bg-[#3b82f6] px-2 py-1 inline-block tracking-tight mb-2">
+                <h2 className="text-2xl md:text-3xl font-extrabold text-[#0d4a28] tracking-tight mb-2">
                   VACANCIES & BIDS
                 </h2>
                 <div className="h-1 w-20 bg-gradient-to-r from-[#c8a415] via-[#c8a415]/60 to-transparent rounded-full" />

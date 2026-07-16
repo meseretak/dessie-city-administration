@@ -481,8 +481,9 @@ html, body {
 code, pre, kbd, samp {
   font-family: var(--font-geist-mono), 'Courier New', monospace !important;
 }
-.VIpgJd-ZVi9od-aZ2wEe-wOHMyf, 
-.goog-te-gadget-icon, 
+/* Hide Google Translate widget elements */
+.VIpgJd-ZVi9od-aZ2wEe-wOHMyf,
+.goog-te-gadget-icon,
 .goog-logo-link {
   display: none !important;
 }
