@@ -338,7 +338,7 @@ export default function RootLayout({
           {`
             function googleTranslateElementInit() {
               new window.google.translate.TranslateElement(
-                { pageLanguage: 'en' },
+                { pageLanguage: 'en', includedLanguages: 'am,en' },
                 'google_translate_element'
               );
             }

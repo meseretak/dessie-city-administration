@@ -154,16 +154,38 @@ export default function Home() {
     return subMenus[pageId] || []
   }
 
-  // Force Google Translate to re-translate when SPA page changes
+  // Force Google Translate to re-translate when SPA page or selected detail item changes
   useEffect(() => {
-    const timer = setTimeout(() => {
+    const triggerTranslation = () => {
       const combo = document.querySelector('.goog-te-combo') as HTMLSelectElement | null
       if (combo && combo.value) {
         combo.dispatchEvent(new Event('change', { bubbles: true }))
       }
-    }, 150) // wait for new DOM to render
+    }
+
+    const timer = setTimeout(triggerTranslation, 150) // wait for new DOM to render
     return () => clearTimeout(timer)
-  }, [currentPage])
+  }, [currentPage, selectedServiceId, selectedVacancyId, selectedNewsId, selectedBidId])
+
+  // Global fetch interceptor to guarantee dynamic content from APIs gets translated
+  useEffect(() => {
+    if (typeof window === 'undefined') return
+    const originalFetch = window.fetch
+    window.fetch = async (...args) => {
+      const response = await originalFetch(...args)
+      // After any fetch completes, give React 300ms to update the DOM, then re-translate
+      setTimeout(() => {
+        const combo = document.querySelector('.goog-te-combo') as HTMLSelectElement | null
+        if (combo && combo.value) {
+          combo.dispatchEvent(new Event('change', { bubbles: true }))
+        }
+      }, 300)
+      return response
+    }
+    return () => {
+      window.fetch = originalFetch
+    }
+  }, [])
 
   // Chat widget state
   const [chatOpen, setChatOpen] = useState(false)
