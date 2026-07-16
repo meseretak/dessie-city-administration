@@ -300,7 +300,7 @@ export default function Header({ navItems }: { navItems: NavItem[] }) {
                 </Button>
               </SheetTrigger>
               <SheetContent side="right" className="w-80 pt-10">
-                <button onClick={toggleLang} className="w-full flex items-center gap-2 px-4 py-2 mb-2 rounded-md bg-[#f0fdf4] text-[#0d4a28] text-sm font-semibold border border-[#1a6b3c]/20">
+                <button onClick={toggle} className="w-full flex items-center gap-2 px-4 py-2 mb-2 rounded-md bg-[#f0fdf4] text-[#0d4a28] text-sm font-semibold border border-[#1a6b3c]/20">
                   <Languages className="w-4 h-4" />
                   {lang === 'en' ? 'አማርኛ (Switch to Amharic)' : 'English (ወደ እንግሊዝኛ)'}
                 </button>
