@@ -1,5 +1,4 @@
-﻿@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+Ethiopic:wght@400;500;600;700;800&display=swap');
-@import "tailwindcss";
+﻿@import "tailwindcss";
 @import "tw-animate-css";
 
 @source "../components/**/*.tsx";
@@ -437,11 +436,17 @@ font.translated-rtl {
 }
 
 /* ===== ETHIOPIC / AMHARIC FONT — Universal ===== */
-/* Noto Sans Ethiopic loaded via link tag in layout.tsx */
-/* Apply to ALL elements so Amharic text always renders correctly */
+/*
+ * Noto Sans Ethiopic is loaded via <link> in layout.tsx
+ * We add it as a fallback to EVERY element so Amharic text renders correctly
+ * without any special class or lang attribute
+ */
+html, body {
+  font-family: -apple-system, BlinkMacSystemFont, 'Geist', 'Noto Sans Ethiopic', 'Ethiopic', system-ui, sans-serif !important;
+}
 *, *::before, *::after {
-  font-family: var(--font-geist-sans), 'Noto Sans Ethiopic', -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
+  font-family: inherit;
 }
 code, pre, kbd, samp {
-  font-family: var(--font-geist-mono), monospace !important;
+  font-family: var(--font-geist-mono), 'Courier New', monospace !important;
 }
