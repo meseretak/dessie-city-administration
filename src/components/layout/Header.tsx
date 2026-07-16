@@ -29,7 +29,7 @@ type NavItem = {
 };
 
 export default function Header({ navItems }: { navItems: NavItem[] }) {
-  const { lang, toggleLang } = useLang();
+  const { lang, toggle } = useLang();
   const { theme, setTheme } = useTheme();
   const pathname = usePathname();
   const router = useRouter();
@@ -270,7 +270,17 @@ export default function Header({ navItems }: { navItems: NavItem[] }) {
               </Tooltip>
             </TooltipProvider>
 
-            <div id="google_translate_element" className="flex items-center" />
+            <TooltipProvider>
+              <Tooltip>
+                <TooltipTrigger asChild>
+                  <Button variant="ghost" size="sm" className="h-8 gap-1 font-semibold text-xs text-[#0d4a28] hover:text-[#c8a415] transition-colors bg-[#f1f5f9] hover:bg-[#e2e8f0]" onClick={toggle} aria-label="Toggle language">
+                    <Languages className="w-4 h-4" />
+                    {lang === 'en' ? 'አማርኛ' : 'EN'}
+                  </Button>
+                </TooltipTrigger>
+                <TooltipContent>{lang === 'en' ? 'ወደ አማርኛ ቀይር' : 'Switch to English'}</TooltipContent>
+              </Tooltip>
+            </TooltipProvider>
 
             <TooltipProvider>
               <Tooltip>

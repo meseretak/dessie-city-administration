@@ -10,7 +10,6 @@ import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
 import Chatbot from "@/components/layout/Chatbot";
 // import VisitorCounter from "@/components/VisitorCounter";
-import GoogleTranslateFix from "@/components/GoogleTranslateFix";
 import { db } from "@/lib/db";
 
 const geistSans = Geist({
@@ -375,7 +374,6 @@ export default async function RootLayout({
         />
       </head>
       <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
-        <GoogleTranslateFix />
         <ThemeProvider attribute="class" defaultTheme="light" enableSystem disableTransitionOnChange>
           <LangProvider initialLang={initialLang}>
             <div className="min-h-screen flex flex-col">
@@ -391,24 +389,6 @@ export default async function RootLayout({
           <Toaster />
           <CookieConsent />
         </ThemeProvider>
-        <Script
-          id="google-translate-init"
-          strategy="afterInteractive"
-        >
-          {`
-            function googleTranslateElementInit() {
-              new window.google.translate.TranslateElement(
-                { pageLanguage: 'en', includedLanguages: 'am,en', autoDisplay: false },
-                'google_translate_element'
-              );
-            }
-          `}
-        </Script>
-        <Script
-          id="google-translate-script"
-          strategy="afterInteractive"
-          src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"
-        />
       </body>
     </html>
   );
