@@ -933,51 +933,51 @@ export default function HomePage() {
               initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, margin: '-60px' }} transition={{ duration: 0.5, delay: 0.2 }}>
               
-              {/* Dark Card Container */}
-              <div className="bg-gradient-to-br from-[#0d4a28] via-[#0f5a32] to-[#0d4a28] rounded-2xl p-5 flex flex-col h-full shadow-xl border border-[#1a6b3c]/30 relative overflow-hidden">
-                {/* Decorative circles */}
-                <div className="absolute -top-10 -right-10 w-40 h-40 bg-white/[0.03] rounded-full" />
-                <div className="absolute -bottom-8 -left-8 w-32 h-32 bg-[#c8a415]/[0.06] rounded-full" />
+              {/* Card Container — warm light theme */}
+              <div className="bg-gradient-to-br from-[#fefcf3] via-[#fef9e7] to-[#fdf6e3] rounded-2xl p-5 flex flex-col h-full shadow-lg border border-[#c8a415]/20 relative overflow-hidden">
+                {/* Decorative elements */}
+                <div className="absolute -top-10 -right-10 w-40 h-40 bg-[#c8a415]/[0.05] rounded-full" />
+                <div className="absolute -bottom-8 -left-8 w-32 h-32 bg-[#0d4a28]/[0.03] rounded-full" />
                 
                 {/* Header */}
                 <div className="relative mb-5">
                   <div className="flex items-center gap-2 mb-3">
-                    <div className="w-9 h-9 rounded-xl bg-[#c8a415] flex items-center justify-center shadow-lg shadow-[#c8a415]/30">
+                    <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-[#c8a415] to-[#b08e10] flex items-center justify-center shadow-md shadow-[#c8a415]/25">
                       <Briefcase className="w-4 h-4 text-white" />
                     </div>
                     <div>
                       <span className="text-[10px] font-bold text-[#c8a415] uppercase tracking-[0.15em] block">Open Opportunities</span>
-                      <h2 className="text-lg font-extrabold text-white tracking-tight leading-tight">
+                      <h2 className="text-lg font-extrabold text-[#1a1a1a] tracking-tight leading-tight">
                         VACANCIES & BIDS
                       </h2>
                     </div>
                   </div>
-                  <div className="h-0.5 w-full bg-gradient-to-r from-[#c8a415] via-[#c8a415]/40 to-transparent rounded-full" />
+                  <div className="h-0.5 w-full bg-gradient-to-r from-[#c8a415] via-[#c8a415]/30 to-transparent rounded-full" />
                 </div>
 
                 {/* Tab Switcher */}
-                <div className="flex items-center gap-1 mb-5 bg-white/10 backdrop-blur-sm rounded-xl p-1 border border-white/10 self-stretch">
+                <div className="flex items-center gap-1 mb-5 bg-white rounded-xl p-1 border border-[#e2e8e0] shadow-sm self-stretch">
                   <button
                     onClick={() => { setJbTab('vacancies'); setJbPage(0); }}
                     className={`flex-1 flex items-center justify-center gap-1.5 px-3 py-2 rounded-lg text-xs font-bold transition-all ${
-                      jbTab === 'vacancies' ? 'bg-[#c8a415] text-white shadow-md' : 'text-white/60 hover:text-white'
+                      jbTab === 'vacancies' ? 'bg-[#0d4a28] text-white shadow-md' : 'text-[#6b7280] hover:text-[#0d4a28]'
                     }`}
                   >
                     <Briefcase className="w-3.5 h-3.5" />
                     Vacancies
-                    <span className={`px-1.5 py-0.5 rounded-md text-[9px] ${jbTab === 'vacancies' ? 'bg-white/20 text-white' : 'bg-white/10 text-white/50'}`}>
+                    <span className={`px-1.5 py-0.5 rounded-md text-[9px] ${jbTab === 'vacancies' ? 'bg-white/20 text-white' : 'bg-[#f0f0f0] text-[#6b7280]'}`}>
                       {latestVacancies.length}
                     </span>
                   </button>
                   <button
                     onClick={() => { setJbTab('bids'); setJbPage(0); }}
                     className={`flex-1 flex items-center justify-center gap-1.5 px-3 py-2 rounded-lg text-xs font-bold transition-all ${
-                      jbTab === 'bids' ? 'bg-[#c8a415] text-white shadow-md' : 'text-white/60 hover:text-white'
+                      jbTab === 'bids' ? 'bg-[#0d4a28] text-white shadow-md' : 'text-[#6b7280] hover:text-[#0d4a28]'
                     }`}
                   >
                     <Gavel className="w-3.5 h-3.5" />
                     Bids
-                    <span className={`px-1.5 py-0.5 rounded-md text-[9px] ${jbTab === 'bids' ? 'bg-white/20 text-white' : 'bg-white/10 text-white/50'}`}>
+                    <span className={`px-1.5 py-0.5 rounded-md text-[9px] ${jbTab === 'bids' ? 'bg-white/20 text-white' : 'bg-[#f0f0f0] text-[#6b7280]'}`}>
                       {latestBids.length}
                     </span>
                   </button>
@@ -987,44 +987,66 @@ export default function HomePage() {
                 <div className="flex-1 flex flex-col gap-3 relative">
                   {loadingJB ? (
                     Array.from({ length: 4 }).map((_, i) => (
-                      <div key={i} className="bg-white/10 rounded-xl p-4 animate-pulse">
-                        <div className="h-4 bg-white/10 rounded w-3/4 mb-3"></div>
-                        <div className="h-3 bg-white/10 rounded w-1/2"></div>
+                      <div key={i} className="bg-white rounded-xl p-4 border border-[#e2e8e0] animate-pulse">
+                        <div className="h-4 bg-gray-100 rounded w-3/4 mb-3"></div>
+                        <div className="h-3 bg-gray-100 rounded w-1/2"></div>
                       </div>
                     ))
                   ) : jbVisible.length > 0 ? (
-                    jbVisible.map((item, i) => (
-                      <div key={item.id || i} 
-                           className="bg-white/[0.08] backdrop-blur-sm rounded-xl p-4 border border-white/[0.08] hover:bg-white/[0.14] hover:border-[#c8a415]/30 transition-all cursor-pointer group"
-                           onClick={() => navigateTo(jbTab === 'vacancies' ? 'vacancy-detail' : 'bids-detail', jbTab === 'vacancies' ? { vacancyId: item.id } : { bidId: item.id })}>
-                        <div className="flex items-start gap-3">
-                          <div className={`w-8 h-8 rounded-lg flex items-center justify-center shrink-0 mt-0.5 ${jbTab === 'vacancies' ? 'bg-[#c8a415]/20' : 'bg-white/10'}`}>
-                            {jbTab === 'vacancies' ? <Briefcase className="w-3.5 h-3.5 text-[#c8a415]" /> : <Gavel className="w-3.5 h-3.5 text-[#c8a415]" />}
-                          </div>
-                          <div className="flex-1 min-w-0">
-                            <h4 className="font-bold text-white text-sm group-hover:text-[#c8a415] transition-colors line-clamp-2 leading-snug">
-                              {item.title}
-                            </h4>
-                            <div className="flex items-center gap-3 mt-2">
-                              <span className="flex items-center gap-1 text-white/50 text-[11px]">
-                                <CalendarDays className="w-3 h-3 text-[#c8a415]/70" /> 
-                                {item.deadline ? new Date(item.deadline).toLocaleDateString('en-US', { month: 'short', day: 'numeric' }) : item.closingDate ? new Date(item.closingDate).toLocaleDateString('en-US', { month: 'short', day: 'numeric' }) : 'Open'}
-                              </span>
-                              <span className="font-bold text-[#c8a415] text-[9px] uppercase tracking-wider px-1.5 py-0.5 bg-[#c8a415]/15 rounded-md">
+                    jbVisible.map((item, i) => {
+                      // Job type badge styling
+                      const jobType = item.type || ''
+                      const typeLabel = jobType || (jbTab === 'bids' ? 'Tender' : 'Full Time')
+                      const typeLower = typeLabel.toLowerCase()
+                      const typeStyle = typeLower.includes('remote') 
+                        ? 'bg-blue-50 text-blue-700 border-blue-200'
+                        : typeLower.includes('contract') 
+                        ? 'bg-orange-50 text-orange-700 border-orange-200'
+                        : typeLower.includes('part')
+                        ? 'bg-purple-50 text-purple-700 border-purple-200'
+                        : typeLower.includes('tender') || typeLower.includes('bid')
+                        ? 'bg-amber-50 text-amber-700 border-amber-200'
+                        : 'bg-emerald-50 text-emerald-700 border-emerald-200'
+
+                      return (
+                        <div key={item.id || i} 
+                             className="bg-white rounded-xl p-4 border border-[#e2e8e0] hover:shadow-md hover:border-[#c8a415]/40 transition-all cursor-pointer group"
+                             onClick={() => navigateTo(jbTab === 'vacancies' ? 'vacancy-detail' : 'bids-detail', jbTab === 'vacancies' ? { vacancyId: item.id } : { bidId: item.id })}>
+                          <div className="flex items-start gap-3">
+                            <div className={`w-8 h-8 rounded-lg flex items-center justify-center shrink-0 mt-0.5 ${jbTab === 'vacancies' ? 'bg-[#0d4a28]/10' : 'bg-[#c8a415]/10'}`}>
+                              {jbTab === 'vacancies' ? <Briefcase className="w-3.5 h-3.5 text-[#0d4a28]" /> : <Gavel className="w-3.5 h-3.5 text-[#c8a415]" />}
+                            </div>
+                            <div className="flex-1 min-w-0">
+                              <h4 className="font-bold text-[#1a1a1a] text-sm group-hover:text-[#0d4a28] transition-colors line-clamp-2 leading-snug">
+                                {item.title}
+                              </h4>
+                              <div className="flex flex-wrap items-center gap-2 mt-2">
+                                {/* Job type badge */}
+                                <span className={`inline-flex items-center text-[9px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-full border ${typeStyle}`}>
+                                  {typeLabel}
+                                </span>
+                                {/* Deadline */}
+                                <span className="flex items-center gap-1 text-[#6b7280] text-[11px]">
+                                  <CalendarDays className="w-3 h-3 text-[#c8a415]" /> 
+                                  {item.deadline ? new Date(item.deadline).toLocaleDateString('en-US', { month: 'short', day: 'numeric' }) : item.closingDate ? new Date(item.closingDate).toLocaleDateString('en-US', { month: 'short', day: 'numeric' }) : 'Open'}
+                                </span>
+                              </div>
+                              {/* Department/Category */}
+                              <span className="inline-block mt-1.5 font-semibold text-[#0d4a28] text-[9px] uppercase tracking-wider px-1.5 py-0.5 bg-[#0d4a28]/8 rounded">
                                 {item.department || item.category || 'General'}
                               </span>
                             </div>
+                            <ArrowRight className="w-4 h-4 text-gray-300 group-hover:text-[#0d4a28] transition-colors shrink-0 mt-1" />
                           </div>
-                          <ArrowRight className="w-4 h-4 text-white/20 group-hover:text-[#c8a415] transition-colors shrink-0 mt-1" />
                         </div>
-                      </div>
-                    ))
+                      )
+                    })
                   ) : (
-                    <div className="bg-white/[0.06] rounded-xl p-8 text-center flex flex-col items-center justify-center flex-1">
-                      <div className="w-12 h-12 rounded-full bg-white/10 flex items-center justify-center mb-3">
-                        {jbTab === 'vacancies' ? <Briefcase className="w-5 h-5 text-white/30" /> : <Gavel className="w-5 h-5 text-white/30" />}
+                    <div className="bg-white rounded-xl p-8 border border-[#e2e8e0] text-center flex flex-col items-center justify-center flex-1">
+                      <div className="w-12 h-12 rounded-full bg-gray-50 flex items-center justify-center mb-3">
+                        {jbTab === 'vacancies' ? <Briefcase className="w-5 h-5 text-gray-300" /> : <Gavel className="w-5 h-5 text-gray-300" />}
                       </div>
-                      <p className="text-sm font-medium text-white/40">No open {jbTab} at the moment.</p>
+                      <p className="text-sm font-medium text-gray-400">No open {jbTab} at the moment.</p>
                     </div>
                   )}
                 </div>
@@ -1033,21 +1055,21 @@ export default function HomePage() {
                 {jbData.length > JB_PER_PAGE && (
                   <div className="mt-4 flex items-center justify-center gap-2">
                     <button onClick={() => setJbPage(p => Math.max(0, p - 1))} disabled={jbPage === 0}
-                      className="w-7 h-7 rounded-lg border border-white/15 flex items-center justify-center disabled:opacity-30 hover:border-[#c8a415] hover:bg-[#c8a415] hover:text-white text-white/50 transition-all">
+                      className="w-7 h-7 rounded-lg border border-[#e2e8e0] flex items-center justify-center disabled:opacity-30 hover:border-[#0d4a28] hover:bg-[#0d4a28] hover:text-white transition-all">
                       <ChevronLeft className="w-3 h-3" />
                     </button>
-                    <span className="text-[10px] font-bold text-white/40">
+                    <span className="text-[10px] font-bold text-[#9ca3af]">
                       {jbPage + 1} / {Math.ceil(jbData.length / JB_PER_PAGE)}
                     </span>
                     <button onClick={() => setJbPage(p => Math.min(Math.ceil(jbData.length / JB_PER_PAGE) - 1, p + 1))} disabled={jbPage >= Math.ceil(jbData.length / JB_PER_PAGE) - 1}
-                      className="w-7 h-7 rounded-lg border border-white/15 flex items-center justify-center disabled:opacity-30 hover:border-[#c8a415] hover:bg-[#c8a415] hover:text-white text-white/50 transition-all">
+                      className="w-7 h-7 rounded-lg border border-[#e2e8e0] flex items-center justify-center disabled:opacity-30 hover:border-[#0d4a28] hover:bg-[#0d4a28] hover:text-white transition-all">
                       <ChevronRight className="w-3 h-3" />
                     </button>
                   </div>
                 )}
 
                 {/* View All Button */}
-                <button className="mt-4 w-full bg-[#c8a415] hover:bg-[#b08e10] text-white font-bold text-xs px-4 py-3 rounded-xl transition-all hover:scale-[1.02] shadow-lg shadow-[#c8a415]/20 flex items-center justify-center gap-2 uppercase tracking-wider"
+                <button className="mt-4 w-full bg-gradient-to-r from-[#0d4a28] to-[#1a6b3c] hover:from-[#0a3d22] hover:to-[#155d33] text-white font-bold text-xs px-4 py-3 rounded-xl transition-all hover:scale-[1.02] shadow-md flex items-center justify-center gap-2 uppercase tracking-wider"
                   onClick={() => navigateTo(jbTab === 'vacancies' ? 'vacancies' : 'bids')}>
                   VIEW ALL {jbTab.toUpperCase()} <ArrowRight className="w-4 h-4" />
                 </button>
