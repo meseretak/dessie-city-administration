@@ -1673,22 +1673,7 @@ export default function HomePage() {
         </div>
       </section>
 
-                    {i + 1}
-                  </button>
-                ))}
-                <button onClick={() => setJbPage(p => p + 1)} disabled={(jbPage + 1) * JB_PER_PAGE >= jbData.length}
-                  className="w-8 h-8 rounded-lg border border-[#e2e8e0] flex items-center justify-center disabled:opacity-30 hover:border-[#0d4a28] hover:bg-[#0d4a28] hover:text-white transition-all">
-                  <ChevronRight className="w-3.5 h-3.5" />
-                </button>
-              </div>
-            )}
-            <button onClick={() => navigateTo(jbTab === 'vacancies' ? 'vacancy' : 'bids')}
-              className="flex items-center gap-1.5 text-xs font-bold text-[#0d4a28] hover:gap-2.5 transition-all">
-              VIEW ALL <ArrowRight className="w-3.5 h-3.5" />
-            </button>
-          </div>
-        </div>
-      </section>
+
 
       {/* ═══════════════════ 7. FEATURED PROJECTS ═══════════════════ */}
       <section className="py-10 bg-[#f8faf8]">
