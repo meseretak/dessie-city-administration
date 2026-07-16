@@ -1,3 +1,9 @@
+
+export const metadata = {
+  title: 'Job Vacancies - Dessie City',
+  description: 'Current job openings and career opportunities at Dessie City Administration.',
+};
+
 "use client"
 import PageComponent from "@/components/pages/VacancyPage";
 import { useRouter } from "next/navigation";

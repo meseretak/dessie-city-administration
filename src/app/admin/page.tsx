@@ -1,3 +1,9 @@
+
+export const metadata = {
+  title: 'Admin Dashboard - Dessie City',
+  description: 'Secure administration portal for Dessie City content management.',
+};
+
 'use client'
 
 import dynamic from 'next/dynamic'

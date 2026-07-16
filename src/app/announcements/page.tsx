@@ -1,3 +1,9 @@
+
+export const metadata = {
+  title: 'Announcements - Dessie City',
+  description: 'Official announcements and notices from the Dessie City Administration.',
+};
+
 "use client"
 import PageComponent from "@/components/pages/AnnouncementsPage";
 import { useRouter } from "next/navigation";

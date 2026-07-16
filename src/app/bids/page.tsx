@@ -1,3 +1,9 @@
+
+export const metadata = {
+  title: 'Bids & Tenders - Dessie City',
+  description: 'Current public procurement, bids, and tender notices in Dessie City.',
+};
+
 "use client"
 import PageComponent from "@/components/pages/BidsPage";
 import { useRouter } from "next/navigation";

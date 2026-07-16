@@ -1,3 +1,9 @@
+
+export const metadata = {
+  title: 'News & Media - Dessie City',
+  description: 'Latest news, press releases, and media updates from Dessie City.',
+};
+
 'use client'
 import NewsPage from '@/components/pages/NewsPage';
 import { useRouter } from 'next/navigation';

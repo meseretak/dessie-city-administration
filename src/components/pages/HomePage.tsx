@@ -1115,7 +1115,7 @@ export default function HomePage() {
                     
                     {/* Large Image Cover */}
                     <div className="relative h-56 w-full overflow-hidden">
-                      <img src={item.image || '/news-meeting.png'} alt={item.title}
+                      <img loading="lazy" src={item.image || '/news-meeting.png'} alt={item.title}
                         className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 ease-out"
                         onError={(e) => { (e.currentTarget as HTMLImageElement).src = '/news-meeting.png' }} />
                       <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-60" />
@@ -1243,19 +1243,19 @@ export default function HomePage() {
                         onClick={() => setHotelImageIndices(prev => ({ ...prev, [globalIdx]: 0 }))}
                         className={`w-16 h-12 rounded overflow-hidden border-2 transition-colors ${activeImg === 0 ? 'border-[#1a6b3c]' : 'border-transparent opacity-70 hover:opacity-100'}`}
                       >
-                        <img src={imgs[0]} alt="" className="w-full h-full object-cover" />
+                        <img loading="lazy" src={imgs[0]} alt="" className="w-full h-full object-cover" />
                       </button>
                       <button
                         onClick={() => setHotelImageIndices(prev => ({ ...prev, [globalIdx]: 1 }))}
                         className={`w-16 h-12 rounded overflow-hidden border-2 transition-colors ${activeImg === 1 ? 'border-[#1a6b3c]' : 'border-transparent opacity-70 hover:opacity-100'}`}
                       >
-                        <img src={imgs[1]} alt="" className="w-full h-full object-cover" />
+                        <img loading="lazy" src={imgs[1]} alt="" className="w-full h-full object-cover" />
                       </button>
                       <button
                         onClick={() => setHotelImageIndices(prev => ({ ...prev, [globalIdx]: 2 }))}
                         className={`w-16 h-12 rounded overflow-hidden border-2 transition-colors ${activeImg === 2 ? 'border-[#1a6b3c]' : 'border-transparent opacity-70 hover:opacity-100'}`}
                       >
-                        <img src={imgs[2]} alt="" className="w-full h-full object-cover" />
+                        <img loading="lazy" src={imgs[2]} alt="" className="w-full h-full object-cover" />
                       </button>
                     </div>
                     <CardContent className="p-4">
@@ -1512,12 +1512,12 @@ export default function HomePage() {
               {/* Side peek cards (decorative) */}
               <div className="hidden lg:block absolute top-1/2 -translate-y-1/2 -left-[calc(50%-280px)] opacity-30 pointer-events-none">
                 <div className="w-40 h-52 rounded-xl overflow-hidden shadow-lg rotate-[-3deg]">
-                  <img src={promoSlides[(promoSlide - 1 + promoSlides.length) % promoSlides.length].image} alt="" className="w-full h-full object-cover" />
+                  <img loading="lazy" src={promoSlides[(promoSlide - 1 + promoSlides.length) % promoSlides.length].image} alt="" className="w-full h-full object-cover" />
                 </div>
               </div>
               <div className="hidden lg:block absolute top-1/2 -translate-y-1/2 -right-[calc(50%-280px)] opacity-30 pointer-events-none">
                 <div className="w-40 h-52 rounded-xl overflow-hidden shadow-lg rotate-[3deg]">
-                  <img src={promoSlides[(promoSlide + 1) % promoSlides.length].image} alt="" className="w-full h-full object-cover" />
+                  <img loading="lazy" src={promoSlides[(promoSlide + 1) % promoSlides.length].image} alt="" className="w-full h-full object-cover" />
                 </div>
               </div>
             </div>
@@ -1570,7 +1570,7 @@ export default function HomePage() {
                 className={`w-12 h-12 rounded-full overflow-hidden border-2 transition-all shadow-sm ${idx === promoSlide ? 'border-[#c8a415] scale-110 shadow-md' : 'border-gray-200 opacity-60'}`}
                 aria-label={slide.title}
               >
-                <img src={slide.image} alt="" className="w-full h-full object-cover" />
+                <img loading="lazy" src={slide.image} alt="" className="w-full h-full object-cover" />
               </button>
             ))}
           </div>
@@ -1600,7 +1600,7 @@ export default function HomePage() {
               <div className="relative">
                 {/* Gold ring */}
                 <div className="w-48 h-60 sm:w-56 sm:h-72 rounded-2xl overflow-hidden border-[3px] border-[#c8a415]/60 shadow-2xl shadow-black/30 relative z-10">
-                  <img src="/mayor-photo.png" alt="Hon. Samuel Mollalign" className="w-full h-full object-cover object-top" />
+                  <img loading="lazy" src="/mayor-photo.png" alt="Hon. Samuel Mollalign" className="w-full h-full object-cover object-top" />
                 </div>
                 {/* Background accent */}
                 <div className="absolute -bottom-3 -right-3 w-full h-full rounded-2xl border-2 border-[#c8a415]/20 z-0" />
@@ -1701,7 +1701,7 @@ export default function HomePage() {
               >
                 <Card className="h-full border border-[#e2e8e0] hover:shadow-lg hover:-translate-y-1 transition-all duration-300 overflow-hidden cursor-pointer" onClick={() => navigateTo('projects')}>
                   <div className="h-36 overflow-hidden">
-                    <img src={proj.image} alt={proj.title} className="w-full h-full object-cover hover:scale-105 transition-transform duration-500" />
+                    <img loading="lazy" src={proj.image} alt={proj.title} className="w-full h-full object-cover hover:scale-105 transition-transform duration-500" />
                   </div>
                   <CardContent className="p-4">
                     <h3 className="font-bold text-[#1a1a1a] text-sm mb-1">{proj.title}</h3>
@@ -1796,7 +1796,7 @@ export default function HomePage() {
               <motion.div key={place.name} initial={{ opacity: 0, y: 16 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.4, delay: i * 0.08 }}>
                 <Card className="h-full border border-[#e2e8e0] hover:shadow-lg hover:-translate-y-1 transition-all duration-300 overflow-hidden">
                   <div className="h-44 overflow-hidden">
-                    <img src={place.image} alt={place.name} className="w-full h-full object-cover hover:scale-105 transition-transform duration-500" />
+                    <img loading="lazy" src={place.image} alt={place.name} className="w-full h-full object-cover hover:scale-105 transition-transform duration-500" />
                   </div>
                   <CardContent className="p-4">
                     <h3 className="font-bold text-[#1a1a1a] text-sm mb-1">{place.name}</h3>
@@ -1839,7 +1839,7 @@ export default function HomePage() {
               <motion.div key={landmark.name} initial={{ opacity: 0, y: 16 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.4, delay: i * 0.07 }}>
                 <div className="bg-white rounded-xl overflow-hidden border border-[#e2e8e0] hover:shadow-lg hover:-translate-y-1 transition-all duration-300">
                   <div className="relative h-40 overflow-hidden">
-                    <img src={landmark.image} alt={landmark.name} className="w-full h-full object-cover" />
+                    <img loading="lazy" src={landmark.image} alt={landmark.name} className="w-full h-full object-cover" />
                     <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent" />
                     <div className="absolute bottom-0 left-0 right-0 p-3">
                       <h3 className="text-white font-bold text-xs leading-tight">{landmark.name}</h3>
