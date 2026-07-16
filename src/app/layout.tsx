@@ -10,6 +10,7 @@ import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
 import Chatbot from "@/components/layout/Chatbot";
 import VisitorCounter from "@/components/VisitorCounter";
+import GoogleTranslateFix from "@/components/GoogleTranslateFix";
 import { db } from "@/lib/db";
 
 const geistSans = Geist({
@@ -367,6 +368,7 @@ export default async function RootLayout({
         />
       </head>
       <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
+        <GoogleTranslateFix />
         <ThemeProvider attribute="class" defaultTheme="light" enableSystem disableTransitionOnChange>
           <LangProvider>
             <div className="min-h-screen flex flex-col">
