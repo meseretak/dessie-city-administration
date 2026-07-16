@@ -1117,7 +1117,7 @@ export default function HomePage() {
                     <div className="relative h-56 w-full overflow-hidden">
                       <img loading="lazy" src={item.image || '/news-council-1.png'} alt={item.title}
                         className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 ease-out"
-                        onError={(e) => { (e.currentTarget as HTMLImageElement).src = '/news-council-1.png' }} />
+                        onError={(e) => { const t = e.currentTarget as HTMLImageElement; t.onerror = null; t.src = '/news-council-1.png'; }} />
                       <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-60" />
                       
                       {/* Category Badge */}
