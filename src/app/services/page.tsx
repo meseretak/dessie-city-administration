@@ -1,9 +1,4 @@
 
-export const metadata = {
-  title: 'Citizen Services - Dessie City',
-  description: 'Access digital citizen services, licenses, and registrations for Dessie residents.',
-};
-
 "use client"
 import PageComponent from "@/components/pages/ServicesPage";
 import { useRouter } from "next/navigation";
