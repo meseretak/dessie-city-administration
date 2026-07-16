@@ -71,7 +71,13 @@ export default function Home() {
             label: item.label,
             children: (item.children || [])
               .filter((c: any) => c.isVisible !== 0 && c.isVisible !== false)
-              .map((c: any) => ({ id: (c.pageId || 'home') as PageId, label: c.label })),
+              .map((c: any) => ({ 
+                id: (c.pageId || 'home') as PageId, 
+                label: c.label,
+                items: (c.items || [])
+                  .filter((sub: any) => sub.isVisible !== 0 && sub.isVisible !== false)
+                  .map((sub: any) => ({ id: (sub.pageId || 'home') as PageId, label: sub.label }))
+              })),
           }))
         if (built.length > 0) setDbMenuItems(built)
       })

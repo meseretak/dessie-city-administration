@@ -37,8 +37,8 @@ export const NAV_ITEMS: NavItem[] = [
     label: 'SERVICES',
     children: [
       { id: 'services', label: 'All Services' },
-      { 
-        id: 'cat-civil', 
+      {
+        id: 'cat-civil',
         label: 'Civil Registration',
         items: [
           { id: 'service-detail', label: 'Birth Registration' },
