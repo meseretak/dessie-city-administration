@@ -126,18 +126,16 @@ export default function ServicesPage({ navigateTo }: ServicesPageProps) {
               <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
                 {filteredServices.map((service) => (
                   <motion.div key={service.title} variants={fadeInUp}>
-                    <Card className="h-full border border-gray-100 hover:border-[#c8a415]/40 shadow-sm hover:shadow-2xl transition-all duration-500 group cursor-pointer bg-white overflow-hidden relative flex flex-col" onClick={() => navigateTo('service-detail', { serviceId: service.title })}>
-                      {/* Hover background gradient */}
-                      <div className="absolute inset-0 bg-gradient-to-br from-[#0d4a28]/[0.02] to-[#c8a415]/[0.05] opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-                      
-                      {/* Top colored accent line */}
-                      <div className="absolute top-0 left-0 right-0 h-1.5 bg-gradient-to-r from-[#0d4a28] via-[#1a6b3c] to-[#c8a415] transform scale-x-0 group-hover:scale-x-100 transition-transform duration-500 origin-left z-20" />
+                    <Card className="h-full border border-gray-100 hover:border-[#1a6b3c]/30 shadow-sm hover:shadow-xl transition-all duration-300 group cursor-pointer bg-white overflow-hidden relative flex flex-col" onClick={() => navigateTo('service-detail', { serviceId: service.title })}>
+                      {/* Top colored accent line always slightly visible, full on hover */}
+                      <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-[#0d4a28] via-[#1a6b3c] to-[#c8a415] transform scale-x-75 opacity-50 group-hover:scale-x-100 group-hover:opacity-100 transition-all duration-500 origin-left z-20" />
 
                       <CardContent className="p-7 flex flex-col h-full relative z-10">
                         {/* Icon & Title Header */}
                         <div className="flex items-start gap-4 mb-5">
-                          <div className="w-14 h-14 rounded-2xl bg-[#f8faf8] border border-[#e5e7eb] flex items-center justify-center shrink-0 group-hover:bg-gradient-to-br group-hover:from-[#0d4a28] group-hover:to-[#1a6b3c] group-hover:border-transparent transition-all duration-500 shadow-sm group-hover:shadow-lg group-hover:shadow-[#1a6b3c]/30 group-hover:-translate-y-1">
-                            <service.icon className="w-7 h-7 text-[#0d4a28] group-hover:text-white transition-colors duration-500" />
+                          {/* Always colorful icon container */}
+                          <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-[#0d4a28]/10 to-[#1a6b3c]/5 border border-[#1a6b3c]/10 flex items-center justify-center shrink-0 group-hover:bg-gradient-to-br group-hover:from-[#0d4a28] group-hover:to-[#1a6b3c] group-hover:border-transparent transition-all duration-300 shadow-sm group-hover:shadow-[#1a6b3c]/30 group-hover:scale-105">
+                            <service.icon className="w-7 h-7 text-[#0d4a28] group-hover:text-white transition-colors duration-300" />
                           </div>
                           <h3 className="text-lg font-extrabold text-gray-900 group-hover:text-[#0d4a28] transition-colors duration-300 pt-1 leading-snug">{service.title}</h3>
                         </div>
@@ -149,7 +147,7 @@ export default function ServicesPage({ navigateTo }: ServicesPageProps) {
                         <ul className="space-y-3 mb-8">
                           {service.features.map((f) => (
                             <li key={f} className="flex items-start gap-3 text-[13px] text-gray-500 group-hover:text-gray-600 transition-colors duration-300 font-medium">
-                              <div className="w-5 h-5 rounded-full bg-[#f0fdf4] flex items-center justify-center shrink-0 mt-0.5 group-hover:bg-[#1a6b3c]/10 transition-colors">
+                              <div className="w-5 h-5 rounded-full bg-[#1a6b3c]/10 flex items-center justify-center shrink-0 mt-0.5 group-hover:bg-[#1a6b3c]/20 transition-colors">
                                 <CircleDot className="w-3 h-3 text-[#1a6b3c]" />
                               </div>
                               {f}
@@ -158,12 +156,14 @@ export default function ServicesPage({ navigateTo }: ServicesPageProps) {
                         </ul>
                         
                         {/* Footer Action */}
-                        <div className="mt-auto pt-5 border-t border-gray-100 flex items-center justify-between">
+                        <div className="mt-auto pt-5 border-t border-gray-50 flex items-center justify-between">
                           <span className="text-[10px] font-bold text-gray-400 uppercase tracking-widest flex items-center gap-1.5">
-                            <div className="w-1.5 h-1.5 rounded-full bg-[#c8a415] group-hover:animate-pulse" />
+                            <div className="w-1.5 h-1.5 rounded-full bg-[#c8a415]" />
                             Official Service
                           </span>
-                          <div className="flex items-center gap-1.5 text-[#0d4a28] text-[11px] font-bold px-3 py-1.5 rounded-full bg-[#f0fdf4] group-hover:bg-[#0d4a28] group-hover:text-white transition-all duration-300 transform translate-x-4 opacity-0 group-hover:translate-x-0 group-hover:opacity-100 border border-[#0d4a28]/10 group-hover:border-[#0d4a28]">
+                          
+                          {/* Always visible but highlights on hover */}
+                          <div className="flex items-center gap-1.5 text-[#0d4a28] text-[11px] font-bold px-3 py-1.5 rounded-full bg-[#1a6b3c]/10 group-hover:bg-[#0d4a28] group-hover:text-white transition-all duration-300">
                             <span>{isAm ? 'አገልግሎቱን ይጠቀሙ' : 'ACCESS SERVICE'}</span>
                             <ArrowRight className="w-3.5 h-3.5" />
                           </div>
