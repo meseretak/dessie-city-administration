@@ -1,4 +1,4 @@
-﻿@import "tailwindcss";
+@import "tailwindcss";
 @import "tw-animate-css";
 
 @source "../components/**/*.tsx";
@@ -397,6 +397,37 @@
 @keyframes ken-burns-zoom {
   from { transform: scale(1.0); }
   to { transform: scale(1.1); }
+}
+
+/* ===== GOOGLE TRANSLATE CUSTOMIZATION ===== */
+/* Hide the Google Translate top banner */
+.VIpgJd-ZVi9od-ORHb-OEVmcd {
+  display: none !important;
+}
+.skiptranslate iframe {
+  display: none !important;
+}
+body {
+  top: 0px !important; 
+}
+/* Style the dropdown */
+.goog-te-combo {
+  padding: 4px 8px;
+  border-radius: 6px;
+  border: 1px solid var(--border);
+  background-color: var(--background);
+  color: var(--foreground);
+  font-size: 14px;
+  outline: none;
+  font-family: var(--font-geist-sans);
+}
+.goog-te-gadget {
+  font-size: 0px !important;
+  display: flex;
+  align-items: center;
+}
+.goog-logo-link {
+  display: none !important;
 }
 
 /* ===== GOOGLE TRANSLATE — keep functional, hide banner only ===== */

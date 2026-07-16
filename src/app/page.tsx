@@ -1,4 +1,4 @@
-﻿'use client'
+'use client'
 
 import { useState, useEffect, useRef } from 'react'
 import { useTheme } from 'next-themes'
@@ -309,6 +309,7 @@ export default function Home() {
                 <Icon className="w-3 h-3 text-white" />
               </button>
             ))}
+            <div id="google_translate_element" className="ml-2 flex items-center translate-y-[2px]" />
           </div>
         </div>
       </div>

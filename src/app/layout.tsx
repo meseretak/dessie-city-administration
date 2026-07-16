@@ -330,6 +330,19 @@ export default function RootLayout({
           <Toaster />
           <CookieConsent />
         </ThemeProvider>
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `
+              function googleTranslateElementInit() {
+                new window.google.translate.TranslateElement(
+                  { pageLanguage: 'en', includedLanguages: 'en,am', layout: window.google.translate.TranslateElement.InlineLayout.SIMPLE },
+                  'google_translate_element'
+                );
+              }
+            `,
+          }}
+        />
+        <script src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit" async defer></script>
       </body>
     </html>
   );
