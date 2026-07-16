@@ -189,76 +189,34 @@ const statCards = [
 
 const heroSlides = [
   {
-    image: '/dessie-city-hall.png',
-    title: 'ደሴ ከተማ አስተዳደር',
-    subtitle: 'Welcome to Dessie City Administration — Serving 500,000+ Citizens with Excellence',
-    tag: 'GOVERNANCE',
-  },
-  {
-    image: '/dessie-smart-center.png',
+    image: '/images/slider/slider_smart_city_1784237536479.png',
     title: 'Dessie Smart City 2025',
     subtitle: 'Advanced Digital Control Center — Real-Time City Monitoring & Governance',
     tag: 'TECHNOLOGY',
   },
   {
-    image: '/heritage-landscape.png',
-    title: 'ደሴ — የባህልና ቅርስ ከተማ',
+    image: '/images/slider/slider_mountains_1784237554732.png',
+    title: 'ደሴ — የተራሮች እንቁ',
+    subtitle: 'Dessie City — Nestled in the Breathtaking Mountains of Wollo',
+    tag: 'LANDSCAPE & NATURE',
+  },
+  {
+    image: '/images/slider/slider_culture_1784237526640.png',
+    title: 'የወሎ ባህልና ትውፊት',
     subtitle: 'Rich Amhara Culture, Ancient Heritage & Highland Traditions of Dessie',
     tag: 'CULTURE & HERITAGE',
   },
   {
-    image: '/heritage-church.png',
-    title: 'ቅዱስ ቦታዎችና ታሪክ',
-    subtitle: 'Historic Ethiopian Orthodox Churches & Sacred Sites of Wollo — Centuries of Faith',
-    tag: 'HISTORY',
-  },
-  {
-    image: '/heritage-market.png',
+    image: '/images/slider/slider_market_1784237546014.png',
     title: 'ደሴ ገበያ — ባህላዊ ሕይወት',
     subtitle: 'The Vibrant Dessie Merkato — Traditional Trade, Crafts & Community Life',
     tag: 'CULTURE',
   },
   {
-    image: '/project-smart-city.png',
-    title: 'Digital Dessie — ዲጂታል ደሴ',
-    subtitle: 'Smart Governance, E-Services & IoT Infrastructure for 450,000+ Residents',
-    tag: 'TECHNOLOGY',
-  },
-  {
-    image: '/news-smart-city.png',
-    title: 'ቴክኖሎጂ ለሁሉም — Tech For All',
-    subtitle: 'Smart City Sensors, Digital Kiosks & Modern Governance Across Dessie City',
-    tag: 'TECHNOLOGY',
-  },
-  {
-    image: '/dessie-service-center.png',
-    title: 'ዘመናዊ አገልግሎት ማዕከል',
-    subtitle: 'Integrated One-Stop Service Hall — All Government Services Under One Roof',
-    tag: 'SERVICES',
-  },
-  {
-    image: '/news-infrastructure.png',
-    title: 'Building the Future of ደሴ',
-    subtitle: 'Modern Roads, Water Systems & Urban Infrastructure for All 12 Kebeles',
-    tag: 'INFRASTRUCTURE',
-  },
-  {
-    image: '/heritage-fortress.png',
-    title: 'ደሴ ምሽግ — ታሪካዊ ቅርስ',
-    subtitle: 'Yekatit 12 Monument — Honoring the Brave History of Dessie City',
-    tag: 'HERITAGE',
-  },
-  {
-    image: '/city-aerial.png',
-    title: 'ደሴ — ከአየር ላይ',
-    subtitle: 'Aerial View of Dessie — A Growing City Nestled in the Ethiopian Highlands',
-    tag: 'CITY VIEW',
-  },
-  {
-    image: '/news-health.png',
-    title: 'ጤናና ትምህርት — Health & Education',
-    subtitle: 'Quality Health Services & Modern Education for Every Dessie Resident',
-    tag: 'HEALTH',
+    image: '/images/slider/slider_women_1784237563940.png',
+    title: 'የወሎ ቆንጆዎች — ውበትና ኩራት',
+    subtitle: 'Celebrating the Joyful Spirit and Elegant Traditional Dress of Dessie Women',
+    tag: 'PEOPLE',
   },
 ]
 
@@ -635,19 +593,22 @@ export default function HomePage() {
       {/* ═══════════════════ 1. HERO IMAGE SLIDER ═══════════════════ */}
       <section className="relative h-[55vh] sm:h-[65vh] overflow-hidden">
         {/* Slides */}
-        <AnimatePresence mode="wait">
+        <AnimatePresence>
           <motion.div
             key={currentSlide}
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            transition={{ duration: 0.8 }}
+            transition={{ duration: 1.2, ease: 'easeInOut' }}
             className="absolute inset-0"
           >
-            <img
+            <motion.img
+              initial={{ scale: 1 }}
+              animate={{ scale: 1.05 }}
+              transition={{ duration: 6, ease: 'linear' }}
               src={heroSlides[currentSlide].image}
               alt={`Dessie City Slide ${currentSlide + 1}`}
-              className="w-full h-full object-cover ken-burns"
+              className="w-full h-full object-cover"
             />
             <div className="absolute inset-0 bg-gradient-to-b from-black/40 via-black/30 to-black/60" />
           </motion.div>
