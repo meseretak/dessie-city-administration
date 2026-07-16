@@ -98,22 +98,29 @@ export default function Home() {
   const navLabel = (label: string): string => {
     if (lang === 'en') return label
     const map: Record<string, string> = {
-      'HOME': 'á‹‹áŠ“ áŒˆáŒ½', 'ABOUT': 'áˆµáˆˆ áŠ¨á‰°áˆ›', 'MAYOR': 'áŠ¨áŠ•á‰²á‰£',
-      'SERVICES': 'áŠ áŒˆáˆáŒáˆŽá‰¶á‰½', 'ANNOUNCEMENTS': 'áˆ›áˆµá‰³á‹ˆá‰‚á‹«á‹Žá‰½', 'CONTACT': 'á‹«áŒáŠ™áŠ•',
-      'All Services': 'áˆáˆ‰áˆ áŠ áŒˆáˆáŒáˆŽá‰¶á‰½', 'News & Media': 'á‹œáŠ“áŠ“ áˆšá‹²á‹«',
-      'Vacancies': 'áŠ­áá‰µ á‰¦á‰³á‹Žá‰½', 'Bids & Tenders': 'áŒ¨áˆ¨á‰³á‹Žá‰½',
-      'City Projects': 'á‹¨áŠ¨á‰°áˆ› á•áˆ®áŒ€áŠ­á‰¶á‰½', 'Tourism & Culture': 'á‰±áˆªá‹áˆáŠ“ á‰£áˆ…áˆ',
-      'Hotels': 'áˆ†á‰´áˆŽá‰½', 'Birth Registration': 'á‹¨áˆá‹°á‰µ áˆá‹áŒˆá‰£',
-      'Business License': 'á‹¨áŠ•áŒá‹µ áˆá‰ƒá‹µ', 'Building Permit': 'á‹¨áŒáŠ•á‰£á‰³ áˆá‰ƒá‹µ',
-      'Land Services': 'á‹¨áˆ˜áˆ¬á‰µ áŠ áŒˆáˆáŒáˆŽá‰¶á‰½', 'Tax Payment': 'áŒá‰¥áˆ­ áŠ­áá‹«',
-      'Health Services': 'á‹¨áŒ¤áŠ“ áŠ áŒˆáˆáŒáˆŽá‰¶á‰½', 'Education': 'á‰µáˆáˆ…áˆ­á‰µ',
-      'Transportation': 'á‰µáˆ«áŠ•áˆµá–áˆ­á‰µ', 'Water & Electricity': 'á‹áˆƒáŠ“ áŠ¤áˆŒáŠ­á‰µáˆªáŠ­',
-      'Complaints': 'á‰…áˆ¬á‰³á‹Žá‰½', 'Appointments': 'á‰€áŒ áˆ®á‹Žá‰½',
+      'HOME': 'ዋና ገጽ', 'ABOUT': 'ስለ ከተማ', 'MAYOR': 'ከንቲባ',
+      'SERVICES': 'አገልግሎቶች', 'ANNOUNCEMENTS': 'ማስታወቂያዎች', 'CONTACT': 'ያግኙን',
+      'All Services': 'ሁሉም አገልግሎቶች', 'News & Media': 'ዜናዎች',
+      'Vacancies': 'ክፍት ቦታዎች', 'Bids & Tenders': 'ጨረታዎች',
+      'City Projects': 'የከተማ ፕሮጀክቶች', 'Tourism & Culture': 'ቱሪዝምና ባህል',
+      'Hotels': 'ሆቴሎች', 'Hotels & Stay': 'ሆቴሎች',
+      'Birth Registration': 'የልደት ምዝገባ',
+      'Business License': 'የንግድ ፈቃድ', 'Building Permit': 'የግንባታ ፈቃድ',
+      'Land Services': 'የመሬት አገልግሎቶች', 'Tax Payment': 'ግብር ክፍያ',
+      'Health Services': 'የጤና አገልግሎቶች', 'Education': 'ትምህርት',
+      'Transportation': 'ትራንስፖርት', 'Water & Electricity': 'ውሃና ኤሌክትሪክ',
+      'Complaints & Feedback': 'ቅሬታዎች', 'Appointments': 'ቀጠሮዎች',
+      "Mayor's Profile": 'የከንቲባ ፕሮፋይል', 'Cabinet Members': 'ካቢኔ አባላት',
+      'About Dessie': 'ስለ ደሴ', 'Transparency': 'ግልጽነት',
+      "Mayor's Office": 'የከንቲባ ቢሮ', 'Contact Us': 'ያግኙን',
+      'Request Service': 'አገልግሎት ጥያቄ', 'Agriculture': 'ግብርና',
+      'Digital Services': 'ዲጂታል አገልግሎቶች', 'ID & Documents': 'መታወቂያና ሰነዶች',
+      'Marriage Registration': 'የጋብቻ ምዝገባ',
     }
     return map[label] || label
   }
 
-  // Sub-menu items for pages that have no DB children
+  // Sub-menu items for pages that have no DB children// Sub-menu items for pages that have no DB children
   const getSubMenuItems = (pageId: string): { id: PageId; label: string }[] => {
     const subMenus: Record<string, { id: PageId; label: string }[]> = {
       'about': [
