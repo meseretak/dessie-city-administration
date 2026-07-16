@@ -9,7 +9,7 @@ import Script from "next/script";
 import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
 import Chatbot from "@/components/layout/Chatbot";
-import VisitorCounter from "@/components/VisitorCounter";
+// import VisitorCounter from "@/components/VisitorCounter";
 import GoogleTranslateFix from "@/components/GoogleTranslateFix";
 import { db } from "@/lib/db";
 
@@ -376,7 +376,7 @@ export default async function RootLayout({
               <main className="flex-1">
                 {children}
               </main>
-              <VisitorCounter />
+              {/* <VisitorCounter /> */}
               <Footer />
             </div>
             <Chatbot />
