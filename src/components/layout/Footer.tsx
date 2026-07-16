@@ -143,10 +143,13 @@ export default function Footer() {
         </div>
 
         <div className="border-t border-white/10 mt-12 pt-8 flex flex-col md:flex-row items-center justify-between gap-4">
-          <p className="text-xs text-white/40">
+          <p className="text-xs text-white/40 text-center md:text-left">
             &copy; {new Date().getFullYear()} Dessie City Administration. All rights reserved.
           </p>
-          <div className="flex items-center gap-4 text-xs text-white/40">
+          <div className="text-xs text-white/40 text-center flex items-center gap-1.5">
+            {lang === 'am' ? 'በመሰረት አቃሉ የተገነባ' : 'Developed by'} <span className="font-semibold text-white/70">Meseret Akalu</span> <span className="text-[#c8a415]">&bull;</span> <a href="tel:+251912465247" className="hover:text-green-400 transition-colors">0912465247</a>
+          </div>
+          <div className="flex items-center justify-center gap-4 text-xs text-white/40">
             <Link href="/privacy" className="hover:text-green-400 transition-colors">Privacy Policy</Link>
             <Link href="/terms" className="hover:text-green-400 transition-colors">Terms of Service</Link>
             <Link href="/accessibility" className="hover:text-green-400 transition-colors">Accessibility</Link>
