@@ -11,26 +11,26 @@ export default function CabinetPage() {
   // Placeholder data - this can be hooked up to DB later
   const cabinetMembers = [
     {
-      name: isAm ? "አቶ መሀመድ ሰይድ" : "Mr. Mohammed Seid",
+      name: isAm ? "አቶ አሸናፊ ዓለማየሁ" : "Mr. Ashenafi Alemayhu",
       role: isAm ? "የከተማው ከንቲባ" : "City Mayor",
       department: isAm ? "የከንቲባ ጽ/ቤት" : "Mayor's Office",
-      image: "https://images.unsplash.com/photo-1560250097-0b93528c311a?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
+      image: "/cabinet_ashenafi.png",
       email: "mayor@dessiecity.gov.et",
       phone: "+251-33-111-XXXX"
     },
     {
-      name: isAm ? "ወ/ሮ ፋጡማ አሊ" : "Mrs. Fatuma Ali",
+      name: isAm ? "አቶ ሽመልስ ጌታቸው" : "Mr. Shemels Getachew",
       role: isAm ? "ምክትል ከንቲባ" : "Deputy Mayor",
       department: isAm ? "የከተማ ልማት" : "Urban Development",
-      image: "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
+      image: "/cabinet_shemels.png",
       email: "deputy@dessiecity.gov.et",
       phone: "+251-33-111-XXXX"
     },
     {
-      name: isAm ? "አቶ ሀሰን አህመድ" : "Mr. Hassen Ahmed",
+      name: isAm ? "አቶ ሰይድ ካሳው" : "Mr. Seid Kassawu",
       role: isAm ? "የካቢኔ አባል" : "Cabinet Member",
       department: isAm ? "ትምህርት ቢሮ" : "Education Bureau",
-      image: "https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
+      image: "/cabinet_seid.png",
       email: "education@dessiecity.gov.et",
       phone: "+251-33-111-XXXX"
     },

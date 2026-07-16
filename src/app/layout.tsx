@@ -219,7 +219,7 @@ export default async function RootLayout({
         label: 'MAYOR',
         children: [
           { id: 'mayor', label: "Mayor's Profile" },
-          { id: 'about', label: 'Structure' },
+          { id: 'structure', label: 'Structure' },
           { id: 'cabinet', label: 'Cabinet Members' },
           { id: 'smart-city', label: 'Smart City' }
         ]
