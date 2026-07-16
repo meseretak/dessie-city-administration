@@ -5,6 +5,7 @@ import { Toaster } from "@/components/ui/toaster";
 import { ThemeProvider } from "next-themes";
 import { LangProvider } from "@/lib/LangContext";
 import CookieConsent from "@/components/CookieConsent";
+import Script from "next/script";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -330,7 +331,9 @@ export default function RootLayout({
           <Toaster />
           <CookieConsent />
         </ThemeProvider>
-        <script
+        <Script
+          id="google-translate-init"
+          strategy="beforeInteractive"
           dangerouslySetInnerHTML={{
             __html: `
               function googleTranslateElementInit() {
@@ -342,7 +345,11 @@ export default function RootLayout({
             `,
           }}
         />
-        <script src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit" async defer></script>
+        <Script
+          id="google-translate-script"
+          strategy="beforeInteractive"
+          src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"
+        />
       </body>
     </html>
   );
