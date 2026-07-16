@@ -66,6 +66,13 @@ function StatusBadge({ status }: { status: 'Open' | 'Closed' | 'Awarded' }) {
   return <Badge className="bg-[#c8a415] text-white text-xs font-medium">● AWARDED</Badge>
 }
 
+// --- Announcements Data ---
+const staticAnnouncements = [
+  { id: 'a1', title: 'City Council Meeting Next Week', date: 'Jul 20, 2025', category: 'Important', excerpt: 'The monthly city council meeting will be held next Tuesday to discuss the budget.' },
+  { id: 'a2', title: 'Public Holiday Notice', date: 'Jul 15, 2025', category: 'General', excerpt: 'All city offices will be closed on Friday in observance of the national holiday.' },
+  { id: 'a3', title: 'Water Supply Interruption', date: 'Jul 12, 2025', category: 'Important', excerpt: 'Temporary water supply interruption in Kebele 04 and 05 due to maintenance work.' },
+]
+
 export default function AnnouncementsPage({ navigateTo }: AnnouncementsPageProps) {
   const { lang } = useLang()
   const isAm = lang === 'am'
@@ -91,7 +98,7 @@ export default function AnnouncementsPage({ navigateTo }: AnnouncementsPageProps
   const allAnnouncements = dbAnnouncements.length > 0 ? dbAnnouncements.map(a => ({
     id: a.id, title: a.title, date: a.startDate || a.createdAt || '', category: a.priority === 'high' ? 'Important' : 'General',
     excerpt: a.content?.substring(0, 150) || ''
-  })) : announcements
+  })) : staticAnnouncements
 
   return (
     <div className="min-h-screen">

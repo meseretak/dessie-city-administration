@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import { Toaster } from "@/components/ui/toaster";
@@ -81,11 +81,6 @@ export const metadata: Metadata = {
   generator: "Next.js",
   applicationName: siteName,
   referrer: "origin-when-cross-origin",
-  viewport: {
-    width: "device-width",
-    initialScale: 1,
-    maximumScale: 5,
-  },
   icons: {
     icon: [
       { url: "/favicon.ico" },
@@ -186,6 +181,12 @@ export const viewport = {
     { media: "(prefers-color-scheme: light)", color: "#1a6b3c" },
     { media: "(prefers-color-scheme: dark)", color: "#0d4a28" },
   ],
+}
+
+export const viewport: Viewport = {
+  width: "device-width",
+  initialScale: 1,
+  maximumScale: 5,
 }
 
 export default async function RootLayout({
