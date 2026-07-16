@@ -484,6 +484,11 @@ code, pre, kbd, samp {
 /* Hide Google Translate widget elements */
 .VIpgJd-ZVi9od-aZ2wEe-wOHMyf,
 .goog-te-gadget-icon,
-.goog-logo-link {
+.goog-logo-link,
+.goog-te-gadget span {
   display: none !important;
+}
+.goog-te-gadget {
+  color: transparent !important;
+  font-size: 0 !important;
 }
