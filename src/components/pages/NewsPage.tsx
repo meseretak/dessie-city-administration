@@ -157,15 +157,15 @@ export default function NewsPage({ navigateTo, lang = 'en' }: NewsPageProps) {
               <AnimatePresence mode="wait">
                 <motion.div key={`${activeTab}-${page}`}
                   initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0 }}
-                  className="space-y-5">
+                  className="space-y-8">
                   {pagedArticles.map((article, i) => (
                     <motion.div key={article.id}
                       initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: i * 0.06 }}
                       className="bg-white rounded-2xl border border-[#e2e8e0] hover:shadow-xl hover:-translate-y-0.5 transition-all duration-300 overflow-hidden cursor-pointer group"
                       onClick={() => navigateTo('news-detail', { newsId: article.id })}>
-                      <div className="flex flex-col sm:flex-row">
+                      <div className="flex flex-col sm:flex-row p-4 gap-6">
                         {/* Image — bigger */}
-                        <div className="w-full sm:w-56 h-48 sm:h-44 shrink-0 overflow-hidden relative">
+                        <div className="w-full sm:w-80 h-64 shrink-0 overflow-hidden relative rounded-xl">
                           <img src={getFirstImage(article.image)} alt={article.title}
                             className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
                           <div className="absolute inset-0 bg-gradient-to-t from-black/30 to-transparent" />
@@ -174,9 +174,9 @@ export default function NewsPage({ navigateTo, lang = 'en' }: NewsPageProps) {
                           </span>
                         </div>
                         {/* Content */}
-                        <div className="flex-1 p-5 flex flex-col justify-between">
+                        <div className="flex-1 py-4 pr-5 flex flex-col justify-between">
                           <div>
-                            <div className="flex items-center gap-3 mb-3">
+                            <div className="flex items-center gap-3 mb-4">
                               <span className="text-xs text-[#9ca3af] font-medium flex items-center gap-1">
                                 <Clock className="w-3 h-3" />
                                 {new Date(article.createdAt).toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' })}
@@ -185,10 +185,10 @@ export default function NewsPage({ navigateTo, lang = 'en' }: NewsPageProps) {
                                 <span className="text-xs text-[#9ca3af]">• {article.author}</span>
                               )}
                             </div>
-                            <h3 className="font-extrabold text-base text-[#1a1a1a] group-hover:text-[#c62828] transition-colors leading-snug mb-2 line-clamp-2">
+                            <h3 className="font-extrabold text-xl md:text-2xl text-[#1a1a1a] group-hover:text-[#c62828] transition-colors leading-snug mb-3 line-clamp-2">
                               {article.title}
                             </h3>
-                            <div className="w-10 h-0.5 bg-[#c62828] rounded mb-2" />
+                            <div className="w-12 h-1 bg-[#c62828] rounded mb-3" />
                             <p className="text-sm text-[#6b7280] leading-relaxed line-clamp-3">{article.excerpt}</p>
                           </div>
                           <div className="mt-4 flex items-center gap-1.5 text-sm font-bold text-[#c62828]">
