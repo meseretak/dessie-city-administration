@@ -19,9 +19,13 @@ export type PageId =
   | 'admin'
 
 export interface NavItem {
-  id: PageId
+  id: PageId | string
   label: string
-  children?: { id: PageId; label: string }[]
+  children?: { 
+    id: PageId | string
+    label: string
+    items?: { id: PageId; label: string }[] 
+  }[]
 }
 
 export const NAV_ITEMS: NavItem[] = [
@@ -33,20 +37,45 @@ export const NAV_ITEMS: NavItem[] = [
     label: 'SERVICES',
     children: [
       { id: 'services', label: 'All Services' },
-      { id: 'service-detail', label: 'Birth Registration' },
-      { id: 'service-detail', label: 'Business License' },
-      { id: 'service-detail', label: 'Building Permit' },
-      { id: 'service-detail', label: 'Land Services' },
-      { id: 'service-detail', label: 'Tax Payment' },
-      { id: 'service-detail', label: 'Marriage Registration' },
-      { id: 'service-detail', label: 'Health Services' },
-      { id: 'service-detail', label: 'Education' },
-      { id: 'service-detail', label: 'Transportation' },
-      { id: 'service-detail', label: 'Water & Electricity' },
-      { id: 'service-detail', label: 'Complaints' },
-      { id: 'service-detail', label: 'Appointments' },
-      { id: 'tourism', label: '── Tourism & Culture' },
-      { id: 'projects', label: '── City Projects' },
+      { 
+        id: 'cat-civil', 
+        label: 'Civil Registration',
+        items: [
+          { id: 'service-detail', label: 'Birth Registration' },
+          { id: 'service-detail', label: 'Marriage Registration' },
+          { id: 'service-detail', label: 'ID & Documents' },
+        ]
+      },
+      {
+        id: 'cat-biz',
+        label: 'Business & Property',
+        items: [
+          { id: 'service-detail', label: 'Business License' },
+          { id: 'service-detail', label: 'Building Permit' },
+          { id: 'service-detail', label: 'Land Services' },
+          { id: 'service-detail', label: 'Tax Payment' },
+        ]
+      },
+      {
+        id: 'cat-public',
+        label: 'Public Services',
+        items: [
+          { id: 'service-detail', label: 'Health Services' },
+          { id: 'service-detail', label: 'Education' },
+          { id: 'service-detail', label: 'Transportation' },
+          { id: 'service-detail', label: 'Water & Electricity' },
+        ]
+      },
+      {
+        id: 'cat-other',
+        label: 'Other Services',
+        items: [
+          { id: 'service-detail', label: 'Complaints' },
+          { id: 'service-detail', label: 'Appointments' },
+          { id: 'tourism', label: 'Tourism & Culture' },
+          { id: 'projects', label: 'City Projects' },
+        ]
+      }
     ],
   },
   {

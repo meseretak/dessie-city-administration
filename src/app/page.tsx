@@ -398,44 +398,38 @@ export default function Home() {
                       </div>
 
                       {item.label === 'SERVICES' ? (
-                        <div className="p-4">
-                          <div className="grid grid-cols-3 gap-2 mb-3">
-                            {subItems.filter(c => !c.label.startsWith('â”€â”€')).slice(0, 12).map((child) => {
-                              const ChildIcon = navIcons[child.label] || FileText
-                              return (
-                                <button
-                                  key={child.label}
-                                  onClick={() => {
-                                    if (child.id === 'services') navigateTo('services')
-                                    else navigateTo('service-detail', { serviceId: child.label })
-                                    setOpenDropdown(null)
-                                  }}
-                                  className="flex items-center gap-2 px-3 py-2.5 rounded-xl text-sm text-left transition-all hover:bg-[#1a6b3c]/8 hover:text-[#1a6b3c] group border border-transparent hover:border-[#1a6b3c]/20"
-                                >
-                                  <div className="w-7 h-7 rounded-lg bg-[#0d4a28]/8 group-hover:bg-[#1a6b3c] flex items-center justify-center shrink-0 transition-all">
-                                    <ChildIcon className="w-3.5 h-3.5 text-[#0d4a28] group-hover:text-white" />
-                                  </div>
-                                  <span className="text-[12px] font-medium text-gray-700 group-hover:text-[#1a6b3c] leading-tight">{navLabel(child.label.replace('â”€â”€ ', ''))}</span>
-                                </button>
-                              )
-                            })}
-                          </div>
-                          <div className="border-t border-[#e2e8e0] pt-2 flex gap-2">
-                            {subItems.filter(c => c.label.startsWith('â”€â”€')).map((child) => {
-                              const ChildIcon = navIcons[child.label.replace('â”€â”€ ', '')] || Map
-                              return (
-                                <button
-                                  key={child.label}
-                                  onClick={() => { navigateTo(child.id as PageId); setOpenDropdown(null) }}
-                                  className="flex items-center gap-2 flex-1 px-3 py-2 rounded-xl text-sm font-semibold text-[#1a6b3c] hover:bg-[#1a6b3c] hover:text-white border border-[#1a6b3c]/20 transition-all group"
-                                >
-                                  <ChildIcon className="w-3.5 h-3.5" />
-                                  {navLabel(child.label.replace('â”€â”€ ', ''))}
-                                  <ArrowRight className="w-3 h-3 ml-auto" />
-                                </button>
-                              )
-                            })}
-                          </div>
+                        <div className="p-4 flex gap-4">
+                          {subItems.map((cat) => {
+                            if (cat.id === 'services') return null; // handled separately if needed, but let's just show categories
+                            return (
+                              <div key={cat.id} className="flex-1">
+                                <h4 className="text-xs font-bold text-[#1a6b3c] mb-2 uppercase tracking-wider">{navLabel(cat.label)}</h4>
+                                <div className="flex flex-col gap-1">
+                                  {cat.items?.map((child) => {
+                                    const ChildIcon = navIcons[child.label] || FileText
+                                    return (
+                                      <button
+                                        key={child.label}
+                                        onClick={() => {
+                                          if (child.id === 'services') navigateTo('services')
+                                          else if (child.id === 'tourism') navigateTo('tourism')
+                                          else if (child.id === 'projects') navigateTo('projects')
+                                          else navigateTo('service-detail', { serviceId: child.label })
+                                          setOpenDropdown(null)
+                                        }}
+                                        className="flex items-center gap-2 px-2 py-1.5 rounded-lg text-[13px] text-left transition-all hover:bg-[#1a6b3c]/8 hover:text-[#1a6b3c] group border border-transparent hover:border-[#1a6b3c]/20"
+                                      >
+                                        <div className="w-6 h-6 rounded-md bg-[#0d4a28]/8 group-hover:bg-[#1a6b3c] flex items-center justify-center shrink-0 transition-all">
+                                          <ChildIcon className="w-3 h-3 text-[#0d4a28] group-hover:text-white" />
+                                        </div>
+                                        <span className="font-medium text-gray-700 group-hover:text-[#1a6b3c] leading-tight">{navLabel(child.label)}</span>
+                                      </button>
+                                    )
+                                  })}
+                                </div>
+                              </div>
+                            )
+                          })}
                         </div>
                       ) : (
                         <div className="p-2">
@@ -626,12 +620,42 @@ export default function Home() {
                         {hasDropdown && (
                           <div className={`ml-4 mt-0.5 mb-1 bg-[#f8faf8] rounded-xl border border-[#e2e8e0] overflow-hidden ${openDropdown === item.label ? 'block' : 'hidden'}`}>
                             {subItems.map((child) => {
-                              const ChildIcon = navIcons[child.label.replace('â”€â”€ ', '')] || FileText
+                              if (child.id === 'services') return null;
+                              
+                              // If it has sub-items (a category)
+                              if (child.items) {
+                                return (
+                                  <div key={child.id} className="border-b border-[#e2e8e0] last:border-0">
+                                    <div className="px-3 py-2 text-[11px] font-bold text-[#1a6b3c] bg-[#e2e8e0]/50 uppercase tracking-widest">{navLabel(child.label)}</div>
+                                    {child.items.map((subChild) => {
+                                      const ChildIcon = navIcons[subChild.label] || FileText
+                                      return (
+                                        <button
+                                          key={subChild.label}
+                                          onClick={() => {
+                                            if (subChild.id === 'services') navigateTo('services')
+                                            else if (subChild.id === 'tourism') navigateTo('tourism')
+                                            else if (subChild.id === 'projects') navigateTo('projects')
+                                            else navigateTo('service-detail', { serviceId: subChild.label })
+                                          }}
+                                          className="w-full flex items-center gap-2.5 px-4 py-2.5 text-sm text-gray-600 hover:text-[#1a6b3c] hover:bg-[#1a6b3c]/8 transition-colors border-b border-[#e2e8e0] last:border-0"
+                                        >
+                                          <ChildIcon className="w-3.5 h-3.5 text-[#1a6b3c] shrink-0" />
+                                          {navLabel(subChild.label)}
+                                        </button>
+                                      )
+                                    })}
+                                  </div>
+                                )
+                              }
+
+                              // Normal item
+                              const ChildIcon = navIcons[child.label.replace('── ', '')] || FileText
                               return (
                                 <button
                                   key={child.label}
                                   onClick={() => {
-                                    if (child.label.startsWith('â”€â”€')) navigateTo(child.id as PageId)
+                                    if (child.label.startsWith('──')) navigateTo(child.id as PageId)
                                     else if (child.id === 'services') navigateTo('services')
                                     else if (child.id === 'service-detail') navigateTo('service-detail', { serviceId: child.label })
                                     else navigateTo(child.id as PageId)
@@ -639,7 +663,7 @@ export default function Home() {
                                   className="w-full flex items-center gap-2.5 px-3 py-2.5 text-sm text-gray-600 hover:text-[#1a6b3c] hover:bg-[#1a6b3c]/8 transition-colors border-b border-[#e2e8e0] last:border-0"
                                 >
                                   <ChildIcon className="w-3.5 h-3.5 text-[#1a6b3c] shrink-0" />
-                                  {navLabel(child.label.replace('â”€â”€ ', ''))}
+                                  {navLabel(child.label.replace('── ', ''))}
                                   <ChevronRight className="w-3 h-3 ml-auto text-gray-400" />
                                 </button>
                               )

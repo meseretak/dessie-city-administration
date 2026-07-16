@@ -17,11 +17,14 @@ export async function GET() {
     // Fetch all items (Turso proxy doesn't support include/joins)
     const all = await db.menuItem.findMany({ orderBy: { order: 'asc' } })
 
-    // Build tree: top-level items + their children
+    // Build tree: top-level items + their children + sub-children
     const parents = all.filter((i: any) => !i.parentId)
     const result = parents.map((parent: any) => ({
       ...parent,
-      children: all.filter((c: any) => c.parentId === parent.id),
+      children: all.filter((c: any) => c.parentId === parent.id).map((child: any) => ({
+        ...child,
+        items: all.filter((sub: any) => sub.parentId === child.id)
+      })),
     }))
 
     return NextResponse.json(result)
