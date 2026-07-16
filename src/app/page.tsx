@@ -384,9 +384,9 @@ export default function Home() {
                   </button>
 
                   {/* Beautiful Dropdown */}
-                  {hasDropdown && openDropdown === item.label && (
+                  {hasDropdown && (
                     <div
-                      className="absolute top-full left-1/2 -translate-x-1/2 mt-2 bg-white border border-[#e2e8e0] rounded-2xl shadow-2xl z-[70] overflow-hidden"
+                      className={`absolute top-full left-1/2 -translate-x-1/2 mt-2 bg-white border border-[#e2e8e0] rounded-2xl shadow-2xl z-[70] overflow-hidden transition-all duration-200 origin-top ${openDropdown === item.label ? 'opacity-100 scale-100 pointer-events-auto' : 'opacity-0 scale-95 pointer-events-none'}`}
                       style={{ minWidth: item.label === 'SERVICES' ? '580px' : '240px' }}
                       onMouseEnter={() => handleDropdownEnter(item.label)}
                       onMouseLeave={() => handleDropdownLeave()}
@@ -538,6 +538,9 @@ export default function Home() {
                 <TooltipContent>Search</TooltipContent>
               </Tooltip>
             </TooltipProvider>
+
+            {/* Google Translate DOM Element */}
+            <div id="google_translate_element" className="flex items-center" />
 
             {/* Dark Mode Toggle */}
             <TooltipProvider>
