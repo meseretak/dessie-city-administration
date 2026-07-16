@@ -126,28 +126,48 @@ export default function ServicesPage({ navigateTo }: ServicesPageProps) {
               <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
                 {filteredServices.map((service) => (
                   <motion.div key={service.title} variants={fadeInUp}>
-                    <Card className="gov-service-card h-full border-0 shadow-md flex flex-col cursor-pointer group" onClick={() => navigateTo('service-detail', { serviceId: service.title })}>
-                      <CardContent className="p-6 flex flex-col h-full">
-                        <div className="w-14 h-14 rounded-full bg-[#1a6b3c] flex items-center justify-center mb-5 group-hover:scale-110 transition-transform">
-                          <service.icon className="w-7 h-7 text-white" />
+                    <Card className="h-full border border-gray-100 hover:border-[#c8a415]/40 shadow-sm hover:shadow-2xl transition-all duration-500 group cursor-pointer bg-white overflow-hidden relative flex flex-col" onClick={() => navigateTo('service-detail', { serviceId: service.title })}>
+                      {/* Hover background gradient */}
+                      <div className="absolute inset-0 bg-gradient-to-br from-[#0d4a28]/[0.02] to-[#c8a415]/[0.05] opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+                      
+                      {/* Top colored accent line */}
+                      <div className="absolute top-0 left-0 right-0 h-1.5 bg-gradient-to-r from-[#0d4a28] via-[#1a6b3c] to-[#c8a415] transform scale-x-0 group-hover:scale-x-100 transition-transform duration-500 origin-left z-20" />
+
+                      <CardContent className="p-7 flex flex-col h-full relative z-10">
+                        {/* Icon & Title Header */}
+                        <div className="flex items-start gap-4 mb-5">
+                          <div className="w-14 h-14 rounded-2xl bg-[#f8faf8] border border-[#e5e7eb] flex items-center justify-center shrink-0 group-hover:bg-gradient-to-br group-hover:from-[#0d4a28] group-hover:to-[#1a6b3c] group-hover:border-transparent transition-all duration-500 shadow-sm group-hover:shadow-lg group-hover:shadow-[#1a6b3c]/30 group-hover:-translate-y-1">
+                            <service.icon className="w-7 h-7 text-[#0d4a28] group-hover:text-white transition-colors duration-500" />
+                          </div>
+                          <h3 className="text-lg font-extrabold text-gray-900 group-hover:text-[#0d4a28] transition-colors duration-300 pt-1 leading-snug">{service.title}</h3>
                         </div>
-                        <h3 className="text-lg font-bold text-[#0d4a28] mb-3">{service.title}</h3>
-                        <p className="text-sm text-muted-foreground leading-relaxed mb-4 flex-grow">{service.description}</p>
-                        <ul className="space-y-2 mb-5">
+                        
+                        {/* Description */}
+                        <p className="text-sm text-gray-500 leading-relaxed mb-6 flex-grow group-hover:text-gray-700 transition-colors duration-300">{service.description}</p>
+                        
+                        {/* Features List */}
+                        <ul className="space-y-3 mb-8">
                           {service.features.map((f) => (
-                            <li key={f} className="flex items-start gap-2 text-xs text-muted-foreground">
-                              <CircleDot className="w-3.5 h-3.5 text-[#1a6b3c] mt-0.5 flex-shrink-0" />
+                            <li key={f} className="flex items-start gap-3 text-[13px] text-gray-500 group-hover:text-gray-600 transition-colors duration-300 font-medium">
+                              <div className="w-5 h-5 rounded-full bg-[#f0fdf4] flex items-center justify-center shrink-0 mt-0.5 group-hover:bg-[#1a6b3c]/10 transition-colors">
+                                <CircleDot className="w-3 h-3 text-[#1a6b3c]" />
+                              </div>
                               {f}
                             </li>
                           ))}
                         </ul>
-                        <Button
-                          variant="ghost"
-                          className="text-[#1a6b3c] font-semibold text-sm p-0 h-auto hover:text-[#0d4a28] justify-start group-hover:gap-2 transition-all"
-                          onClick={(e) => { e.stopPropagation(); navigateTo('service-detail', { serviceId: service.title }) }}
-                        >
-                          {isAm ? 'አገልግሎቱን ይጠቀሙ' : 'ACCESS SERVICE'} <ArrowRight className="w-4 h-4 ml-1" />
-                        </Button>
+                        
+                        {/* Footer Action */}
+                        <div className="mt-auto pt-5 border-t border-gray-100 flex items-center justify-between">
+                          <span className="text-[10px] font-bold text-gray-400 uppercase tracking-widest flex items-center gap-1.5">
+                            <div className="w-1.5 h-1.5 rounded-full bg-[#c8a415] group-hover:animate-pulse" />
+                            Official Service
+                          </span>
+                          <div className="flex items-center gap-1.5 text-[#0d4a28] text-[11px] font-bold px-3 py-1.5 rounded-full bg-[#f0fdf4] group-hover:bg-[#0d4a28] group-hover:text-white transition-all duration-300 transform translate-x-4 opacity-0 group-hover:translate-x-0 group-hover:opacity-100 border border-[#0d4a28]/10 group-hover:border-[#0d4a28]">
+                            <span>{isAm ? 'አገልግሎቱን ይጠቀሙ' : 'ACCESS SERVICE'}</span>
+                            <ArrowRight className="w-3.5 h-3.5" />
+                          </div>
+                        </div>
                       </CardContent>
                     </Card>
                   </motion.div>
