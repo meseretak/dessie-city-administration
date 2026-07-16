@@ -194,27 +194,41 @@ export default function Header({ navItems }: { navItems: NavItem[] }) {
                       </div>
                       
                       {item.label === 'SERVICES' ? (
-                        <div className="p-4 flex gap-4">
+                        <div className="p-4 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
                           {subItems.map((cat) => {
                             if (cat.id === 'services') return null;
-                            return (
-                              <div key={cat.id} className="flex-1">
-                                <h4 className="text-xs font-bold text-[#1a6b3c] mb-2 uppercase tracking-wider">{navLabel(cat.label)}</h4>
-                                <div className="flex flex-col gap-1">
-                                  {cat.items?.map((child) => {
-                                    const ChildIcon = navIcons[child.label] || FileText;
-                                    return (
-                                      <Link key={child.label} href={resolveHref(child.id, child.label)} onClick={() => setOpenDropdown(null)} className="flex items-center gap-2 px-2 py-1.5 rounded-lg text-[13px] text-left transition-all hover:bg-[#1a6b3c]/8 hover:text-[#1a6b3c] group border border-transparent hover:border-[#1a6b3c]/20">
-                                        <div className="w-6 h-6 rounded-md bg-[#0d4a28]/8 group-hover:bg-[#1a6b3c] flex items-center justify-center shrink-0 transition-all">
-                                          <ChildIcon className="w-3 h-3 text-[#0d4a28] group-hover:text-white" />
-                                        </div>
-                                        <span className="font-medium text-gray-700 group-hover:text-[#1a6b3c] leading-tight">{navLabel(child.label)}</span>
-                                      </Link>
-                                    );
-                                  })}
+                            const hasChildren = cat.items && cat.items.length > 0;
+                            
+                            if (hasChildren) {
+                              return (
+                                <div key={cat.id} className="flex flex-col">
+                                  <h4 className="text-xs font-bold text-[#1a6b3c] mb-2 uppercase tracking-wider">{navLabel(cat.label)}</h4>
+                                  <div className="flex flex-col gap-1">
+                                    {cat.items?.map((child: any) => {
+                                      const ChildIcon = navIcons[child.label] || FileText;
+                                      return (
+                                        <Link key={child.label} href={resolveHref(child.id, child.label)} onClick={() => setOpenDropdown(null)} className="flex items-center gap-2 px-2 py-1.5 rounded-lg text-[13px] text-left transition-all hover:bg-[#1a6b3c]/8 hover:text-[#1a6b3c] group border border-transparent hover:border-[#1a6b3c]/20">
+                                          <div className="w-6 h-6 rounded-md bg-[#0d4a28]/8 group-hover:bg-[#1a6b3c] flex items-center justify-center shrink-0 transition-all">
+                                            <ChildIcon className="w-3 h-3 text-[#0d4a28] group-hover:text-white" />
+                                          </div>
+                                          <span className="font-medium text-gray-700 group-hover:text-[#1a6b3c] leading-tight">{navLabel(child.label)}</span>
+                                        </Link>
+                                      );
+                                    })}
+                                  </div>
                                 </div>
-                              </div>
-                            );
+                              );
+                            } else {
+                              const ChildIcon = navIcons[cat.label] || FileText;
+                              return (
+                                <Link key={cat.label} href={resolveHref(cat.id, cat.label)} onClick={() => setOpenDropdown(null)} className="flex items-center gap-3 px-3 py-2.5 rounded-xl text-[13px] text-left transition-all hover:bg-[#1a6b3c]/8 hover:text-[#1a6b3c] group border border-transparent hover:border-[#1a6b3c]/20 h-fit">
+                                  <div className="w-8 h-8 rounded-lg bg-[#0d4a28]/8 group-hover:bg-[#1a6b3c] flex items-center justify-center shrink-0 transition-all">
+                                    <ChildIcon className="w-4 h-4 text-[#0d4a28] group-hover:text-white" />
+                                  </div>
+                                  <span className="font-medium text-gray-700 group-hover:text-[#1a6b3c] leading-tight">{navLabel(cat.label)}</span>
+                                </Link>
+                              );
+                            }
                           })}
                         </div>
                       ) : (

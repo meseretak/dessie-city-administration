@@ -172,7 +172,8 @@ export const metadata: Metadata = {
   },
 };
 
-export const viewport = {
+
+export const viewport: Viewport = {
   width: "device-width",
   initialScale: 1,
   maximumScale: 5,
@@ -181,12 +182,6 @@ export const viewport = {
     { media: "(prefers-color-scheme: light)", color: "#1a6b3c" },
     { media: "(prefers-color-scheme: dark)", color: "#0d4a28" },
   ],
-}
-
-export const viewport: Viewport = {
-  width: "device-width",
-  initialScale: 1,
-  maximumScale: 5,
 }
 
 export default async function RootLayout({
