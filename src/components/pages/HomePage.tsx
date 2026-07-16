@@ -815,25 +815,36 @@ export default function HomePage() {
                       initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }}
                       viewport={{ once: true }} transition={{ duration: 0.4, delay: i * 0.08 }}>
                       <Dialog open={selectedService === card.title} onOpenChange={(open) => { if (!open) setSelectedService(null) }}>
-                        <Card className="h-full border-0 shadow-sm hover:shadow-xl transition-all duration-300 group cursor-pointer bg-white overflow-hidden relative"
+                        <Card className="h-full border border-gray-100 hover:border-[#c8a415]/40 shadow-sm hover:shadow-2xl transition-all duration-500 group cursor-pointer bg-white overflow-hidden relative"
                           onClick={() => setSelectedService(card.title)}>
-                          {/* Colored left border */}
-                          <div className="absolute left-0 top-0 bottom-0 w-1 bg-gradient-to-b from-[#0d4a28] to-[#c8a415] rounded-l-xl" />
-                          <CardContent className="p-5 pl-6 flex flex-col h-full">
-                            <div className="flex items-start gap-4 mb-3">
-                              <div className="w-12 h-12 rounded-2xl bg-gradient-to-br from-[#0d4a28] to-[#1a6b3c] flex items-center justify-center shrink-0 group-hover:scale-110 transition-transform duration-300 shadow-md shadow-[#1a6b3c]/25">
-                                <Icon className="w-5 h-5 text-white" />
+                          {/* Hover background gradient */}
+                          <div className="absolute inset-0 bg-gradient-to-br from-[#0d4a28]/[0.02] to-[#c8a415]/[0.05] opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+                          
+                          {/* Top colored accent line */}
+                          <div className="absolute top-0 left-0 right-0 h-1.5 bg-gradient-to-r from-[#0d4a28] via-[#1a6b3c] to-[#c8a415] transform scale-x-0 group-hover:scale-x-100 transition-transform duration-500 origin-left z-20" />
+
+                          <CardContent className="p-6 flex flex-col h-full relative z-10">
+                            <div className="flex items-start gap-5 mb-5">
+                              <div className="w-14 h-14 rounded-2xl bg-[#f8faf8] border border-[#e5e7eb] flex items-center justify-center shrink-0 group-hover:bg-gradient-to-br group-hover:from-[#0d4a28] group-hover:to-[#1a6b3c] group-hover:border-transparent transition-all duration-500 shadow-sm group-hover:shadow-lg group-hover:shadow-[#1a6b3c]/30 group-hover:-translate-y-1">
+                                <Icon className="w-6 h-6 text-[#0d4a28] group-hover:text-white transition-colors duration-500" />
                               </div>
-                              <div className="flex-1 min-w-0">
-                                <h3 className="font-extrabold text-[#1a1a1a] text-sm group-hover:text-[#0d4a28] transition-colors">{card.title}</h3>
-                                <p className="text-[#6b7280] text-xs leading-relaxed mt-1 line-clamp-2">{card.desc}</p>
+                              <div className="flex-1 min-w-0 pt-1">
+                                <h3 className="font-extrabold text-gray-900 text-base group-hover:text-[#0d4a28] transition-colors duration-300">{card.title}</h3>
+                                <p className="text-gray-500 text-sm leading-relaxed mt-2 line-clamp-2 group-hover:text-gray-700 transition-colors duration-300">{card.desc}</p>
                               </div>
                             </div>
-                            <div className="mt-auto pt-3 border-t border-[#f0f0f0] flex items-center justify-between">
-                              <span className="text-[10px] font-bold text-[#9ca3af] uppercase tracking-widest">Dessie City</span>
-                              <span className="flex items-center gap-1 text-[#0d4a28] text-xs font-bold opacity-0 group-hover:opacity-100 transition-all">
-                                Details <ArrowRight className="w-3 h-3" />
+                            
+                            <div className="mt-auto pt-4 border-t border-gray-100 flex items-center justify-between overflow-hidden">
+                              <span className="text-[10px] font-bold text-gray-400 uppercase tracking-widest flex items-center gap-1.5">
+                                <div className="w-1.5 h-1.5 rounded-full bg-[#c8a415] group-hover:animate-pulse" />
+                                Dessie City
                               </span>
+                              
+                              {/* Click to see button */}
+                              <div className="flex items-center gap-1.5 text-[#0d4a28] text-[11px] font-bold px-3 py-1.5 rounded-full bg-[#f0fdf4] group-hover:bg-[#0d4a28] group-hover:text-white transition-all duration-300 transform translate-x-4 opacity-0 group-hover:translate-x-0 group-hover:opacity-100 border border-[#0d4a28]/10 group-hover:border-[#0d4a28]">
+                                <span>CLICK TO VIEW</span>
+                                <ArrowRight className="w-3.5 h-3.5" />
+                              </div>
                             </div>
                           </CardContent>
                         </Card>
