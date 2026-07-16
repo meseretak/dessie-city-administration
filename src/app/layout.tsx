@@ -333,7 +333,7 @@ export default function RootLayout({
         </ThemeProvider>
         <Script
           id="google-translate-init"
-          strategy="beforeInteractive"
+          strategy="afterInteractive"
           dangerouslySetInnerHTML={{
             __html: `
               function googleTranslateElementInit() {
@@ -347,7 +347,7 @@ export default function RootLayout({
         />
         <Script
           id="google-translate-script"
-          strategy="beforeInteractive"
+          strategy="afterInteractive"
           src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"
         />
       </body>
