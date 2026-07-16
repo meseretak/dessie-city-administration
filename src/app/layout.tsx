@@ -6,6 +6,11 @@ import { ThemeProvider } from "next-themes";
 import { LangProvider } from "@/lib/LangContext";
 import CookieConsent from "@/components/CookieConsent";
 import Script from "next/script";
+import Header from "@/components/layout/Header";
+import Footer from "@/components/layout/Footer";
+import Chatbot from "@/components/layout/Chatbot";
+import VisitorCounter from "@/components/VisitorCounter";
+import { db } from "@/lib/db";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -183,9 +188,41 @@ export const viewport = {
   ],
 }
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: Readonly<{ children: React.ReactNode }>) {
+  
+  let navItems = [];
+  try {
+    const all = await db.menuItem.findMany({ orderBy: { order: 'asc' } });
+    const parents = all.filter((i: any) => !i.parentId && i.isVisible);
+    navItems = parents.map((parent: any) => ({
+      id: parent.pageId || 'home',
+      label: parent.label,
+      children: all
+        .filter((c: any) => c.parentId === parent.id && c.isVisible)
+        .map((child: any) => ({
+          id: child.pageId || 'home',
+          label: child.label,
+          items: all
+            .filter((sub: any) => sub.parentId === child.id && sub.isVisible)
+            .map((sub: any) => ({ id: sub.pageId || 'home', label: sub.label }))
+        }))
+    }));
+  } catch (error) {
+    console.error("Failed to fetch nav items for layout:", error);
+  }
+  
+  // Fallback to defaults if DB fails or is empty
+  if (navItems.length === 0) {
+    navItems = [
+      { id: 'home', label: 'HOME' },
+      { id: 'about', label: 'ABOUT' },
+      { id: 'services', label: 'SERVICES' },
+      { id: 'news', label: 'News & Media' },
+      { id: 'contact', label: 'CONTACT' }
+    ];
+  }
   return (
     <html lang="en" suppressHydrationWarning>
       <head>
@@ -326,7 +363,15 @@ export default function RootLayout({
       <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
         <ThemeProvider attribute="class" defaultTheme="light" enableSystem disableTransitionOnChange>
           <LangProvider>
-            {children}
+            <div className="min-h-screen flex flex-col">
+              <Header navItems={navItems} />
+              <main className="flex-1">
+                {children}
+              </main>
+              <VisitorCounter />
+              <Footer />
+            </div>
+            <Chatbot />
           </LangProvider>
           <Toaster />
           <CookieConsent />
