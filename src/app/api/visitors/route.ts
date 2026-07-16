@@ -38,6 +38,7 @@ export async function POST(req: Request) {
 
     await db.siteVisit.create({
       data: {
+        id: crypto.randomUUID(),
         sessionId,
         page: page.substring(0, 100),
         ip: ip.substring(0, 45),
