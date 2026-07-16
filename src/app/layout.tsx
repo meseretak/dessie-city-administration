@@ -185,10 +185,17 @@ export const viewport: Viewport = {
   ],
 }
 
+import { cookies } from "next/headers";
+import type { Lang } from "@/lib/i18n";
+
 export default async function RootLayout({
   children,
 }: Readonly<{ children: React.ReactNode }>) {
   
+  const cookieStore = await cookies();
+  const langCookie = cookieStore.get("dessie_lang")?.value;
+  const initialLang: Lang = (langCookie === "am" || langCookie === "en") ? langCookie : "en";
+
   let navItems = [];
   try {
     const all = await db.menuItem.findMany({ orderBy: { order: 'asc' } });
@@ -370,7 +377,7 @@ export default async function RootLayout({
       <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
         <GoogleTranslateFix />
         <ThemeProvider attribute="class" defaultTheme="light" enableSystem disableTransitionOnChange>
-          <LangProvider>
+          <LangProvider initialLang={initialLang}>
             <div className="min-h-screen flex flex-col">
               <Header navItems={navItems} />
               <main className="flex-1">
