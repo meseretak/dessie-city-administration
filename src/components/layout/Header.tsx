@@ -63,7 +63,8 @@ export default function Header({ navItems }: { navItems: NavItem[] }) {
     'SERVICES': Settings, 'ANNOUNCEMENTS': Bell, 'CONTACT': PhoneCall,
     'News & Media': Newspaper, 'Vacancies': Briefcase, 'Bids & Tenders': Gavel,
     'City Projects': FolderOpen, 'Tourism & Culture': Mountain, 'Hotels': Hotel,
-    'All Services': Settings, 'Smart City': Monitor,
+    'All Services': Settings, 'Smart City': Monitor, 
+    'Structure': Building, 'Cabinet Members': Users, "Mayor's Profile": Crown,
     'Birth Registration': Baby, 'Business License': FileCheck,
     'Building Permit': Building, 'Land Services': MapPin, 'Tax Payment': Receipt,
     'Health Services': Stethoscope, 'Education': GraduationCap,
@@ -92,6 +93,7 @@ export default function Header({ navItems }: { navItems: NavItem[] }) {
       'Request Service': 'አገልግሎት ጥያቄ', 'Agriculture': 'ግብርና',
       'Digital Services': 'ዲጂታል አገልግሎቶች', 'ID & Documents': 'መታወቂያና ሰነዶች',
       'Marriage Registration': 'የጋብቻ ምዝገባ', 'Smart City': 'ስማርት ሲቲ',
+      'Structure': 'መዋቅር',
     };
     return map[label] || label;
   };

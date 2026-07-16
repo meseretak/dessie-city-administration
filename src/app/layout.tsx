@@ -214,7 +214,16 @@ export default async function RootLayout({
     navItems = [
       { id: 'home', label: 'HOME' },
       { id: 'about', label: 'ABOUT' },
-      { id: 'smart-city', label: 'Smart City' },
+      { 
+        id: 'mayor', 
+        label: 'MAYOR',
+        children: [
+          { id: 'mayor', label: "Mayor's Profile" },
+          { id: 'cabinet', label: 'Cabinet Members' },
+          { id: 'smart-city', label: 'Smart City' },
+          { id: 'about', label: 'Structure' }
+        ]
+      },
       { id: 'services', label: 'SERVICES' },
       { id: 'news', label: 'News & Media' },
       { id: 'contact', label: 'CONTACT' }
