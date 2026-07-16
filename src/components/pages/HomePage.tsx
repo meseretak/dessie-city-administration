@@ -1117,7 +1117,12 @@ export default function HomePage() {
                     <div className="relative h-56 w-full overflow-hidden">
                       <img loading="lazy" src={item.image || '/news-council-1.png'} alt={item.title}
                         className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 ease-out"
-                        onError={(e) => { const t = e.currentTarget as HTMLImageElement; t.onerror = null; t.src = '/news-council-1.png'; }} />
+                        onError={(e) => { 
+                          const t = e.currentTarget as HTMLImageElement; 
+                          if (t.src.indexOf('fallback') === -1) {
+                            t.src = '/news-council-1.png?fallback=1'; 
+                          }
+                        }} />
                       <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-60" />
                       
                       {/* Category Badge */}
@@ -2174,32 +2179,18 @@ export default function HomePage() {
             EXPLORE DESSIE
           </h2>
           <div className="rounded-xl overflow-hidden shadow-lg mb-6 relative bg-[#e8f0e8]">
-            {/* Static map using Google Maps embed */}
+            {/* OpenStreetMap iframe - 100% reliable and no API key required */}
             <div className="w-full h-[350px] md:h-[450px] relative overflow-hidden rounded-xl">
-              <img
-                src="https://maps.googleapis.com/maps/api/staticmap?center=11.1333,39.6333&zoom=13&size=1200x450&maptype=roadmap&markers=color:red%7C11.1333,39.6333&style=feature:all%7Celement:labels.text.fill%7Ccolor:0x0d4a28"
-                alt="Dessie City Map"
-                className="w-full h-full object-cover"
-                onError={(e) => {
-                  // Fallback to OpenStreetMap tile
-                  const img = e.currentTarget
-                  img.onerror = null
-                  img.src = ''
-                  const parent = img.parentElement
-                  if (parent) {
-                    parent.innerHTML = `
-                      <div class="w-full h-full flex flex-col items-center justify-center bg-gradient-to-br from-[#e8f5e9] to-[#f0fdf4] text-[#0d4a28]">
-                        <svg class="w-16 h-16 mb-4 opacity-40" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
-                        <p class="text-lg font-bold">Dessie City, Ethiopia</p>
-                        <p class="text-sm opacity-60 mt-1">Coordinates: 11.1333°N, 39.6333°E</p>
-                        <a href="https://www.openstreetmap.org/?mlat=11.1333&mlon=39.6333#map=13/11.1333/39.6333" target="_blank" rel="noopener noreferrer" class="mt-4 px-4 py-2 bg-[#0d4a28] text-white rounded-lg text-sm font-bold hover:bg-[#155d33] transition-colors">
-                          Open in Map →
-                        </a>
-                      </div>
-                    `
-                  }
-                }}
-              />
+              <iframe 
+                width="100%" 
+                height="100%" 
+                frameBorder="0" 
+                scrolling="no" 
+                marginHeight={0} 
+                marginWidth={0} 
+                src="https://www.openstreetmap.org/export/embed.html?bbox=39.55%2C11.08%2C39.71%2C11.18&amp;layer=mapnik&amp;marker=11.1333%2C39.6333" 
+                className="w-full h-full border-none"
+              ></iframe>
               <a
                 href="https://www.openstreetmap.org/?mlat=11.1333&mlon=39.6333#map=13/11.1333/39.6333"
                 target="_blank"
