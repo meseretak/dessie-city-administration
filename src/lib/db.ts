@@ -171,6 +171,12 @@ function makeModel(name: string) {
 
     async create(a: any) {
       const { data } = a
+      // Auto-generate CUID-like ID if missing
+      if (!data.id) data.id = 'c' + Math.random().toString(36).substring(2) + Date.now().toString(36)
+      // Add missing default dates
+      if (!data.createdAt) data.createdAt = new Date()
+      if (tbl !== 'NewsletterSubscription' && tbl !== 'ContactMessage' && !data.updatedAt) data.updatedAt = new Date()
+      
       const keys = Object.keys(data).filter(k => data[k] !== undefined)
       const cols = keys.map(k => `"${k}"`).join(', ')
       const ph = keys.map(() => '?').join(', ')
@@ -194,6 +200,7 @@ function makeModel(name: string) {
 
     async update(a: any) {
       const { where, data } = a
+      if (tbl !== 'NewsletterSubscription' && tbl !== 'ContactMessage' && !data.updatedAt) data.updatedAt = new Date()
       const keys = Object.keys(data).filter(k => data[k] !== undefined)
       const set = keys.map(k => `"${k}" = ?`).join(', ')
       const vals = keys.map(k => data[k] instanceof Date ? data[k].toISOString() : data[k])
@@ -204,6 +211,7 @@ function makeModel(name: string) {
 
     async updateMany(a: any) {
       const { where, data } = a
+      if (tbl !== 'NewsletterSubscription' && tbl !== 'ContactMessage' && !data.updatedAt) data.updatedAt = new Date()
       const keys = Object.keys(data).filter(k => data[k] !== undefined)
       const set = keys.map(k => `"${k}" = ?`).join(', ')
       const vals = keys.map(k => data[k] instanceof Date ? data[k].toISOString() : data[k])
