@@ -188,7 +188,80 @@ const statCards = [
 ]
 
 const heroSlides = [
-  // New AI Generated High Quality Images
+  // Default Main Image
+  {
+    image: '/dessie-city-hall.png',
+    title: 'ደሴ ከተማ አስተዳደር',
+    subtitle: 'Welcome to Dessie City Administration — Serving 500,000+ Citizens with Excellence',
+    tag: 'GOVERNANCE',
+  },
+  {
+    image: '/dessie-smart-center.png',
+    title: 'Dessie Smart City 2025',
+    subtitle: 'Advanced Digital Control Center — Real-Time City Monitoring & Governance',
+    tag: 'TECHNOLOGY',
+  },
+  {
+    image: '/heritage-landscape.png',
+    title: 'ደሴ — የባህልና ቅርስ ከተማ',
+    subtitle: 'Rich Amhara Culture, Ancient Heritage & Highland Traditions of Dessie',
+    tag: 'CULTURE & HERITAGE',
+  },
+  {
+    image: '/heritage-church.png',
+    title: 'ቅዱስ ቦታዎችና ታሪክ',
+    subtitle: 'Historic Ethiopian Orthodox Churches & Sacred Sites of Wollo — Centuries of Faith',
+    tag: 'HISTORY',
+  },
+  {
+    image: '/heritage-market.png',
+    title: 'ደሴ ገበያ — ባህላዊ ሕይወት',
+    subtitle: 'The Vibrant Dessie Merkato — Traditional Trade, Crafts & Community Life',
+    tag: 'CULTURE',
+  },
+  {
+    image: '/project-smart-city.png',
+    title: 'Digital Dessie — ዲጂታል ደሴ',
+    subtitle: 'Smart Governance, E-Services & IoT Infrastructure for 450,000+ Residents',
+    tag: 'TECHNOLOGY',
+  },
+  {
+    image: '/news-smart-city.png',
+    title: 'ቴክኖሎጂ ለሁሉም — Tech For All',
+    subtitle: 'Smart City Sensors, Digital Kiosks & Modern Governance Across Dessie City',
+    tag: 'TECHNOLOGY',
+  },
+  {
+    image: '/dessie-service-center.png',
+    title: 'ዘመናዊ አገልግሎት ማዕከል',
+    subtitle: 'Integrated One-Stop Service Hall — All Government Services Under One Roof',
+    tag: 'SERVICES',
+  },
+  {
+    image: '/news-infrastructure.png',
+    title: 'Building the Future of ደሴ',
+    subtitle: 'Modern Roads, Water Systems & Urban Infrastructure for All 12 Kebeles',
+    tag: 'INFRASTRUCTURE',
+  },
+  {
+    image: '/heritage-fortress.png',
+    title: 'ደሴ ምሽግ — ታሪካዊ ቅርስ',
+    subtitle: 'Yekatit 12 Monument — Honoring the Brave History of Dessie City',
+    tag: 'HERITAGE',
+  },
+  {
+    image: '/city-aerial.png',
+    title: 'ደሴ — ከአየር ላይ',
+    subtitle: 'Aerial View of Dessie — A Growing City Nestled in the Ethiopian Highlands',
+    tag: 'CITY VIEW',
+  },
+  {
+    image: '/news-health.png',
+    title: 'ጤናና ትምህርት — Health & Education',
+    subtitle: 'Quality Health Services & Modern Education for Every Dessie Resident',
+    tag: 'HEALTH',
+  },
+  // New AI Generated High Quality Images added to the end
   {
     image: '/images/slider/slider_smart_city_1784237536479.png',
     title: 'Dessie Smart City 2025',
@@ -220,12 +293,6 @@ const heroSlides = [
     tag: 'PEOPLE',
   },
   // Original Images Restored in Order
-  {
-    image: '/dessie-city-hall.png',
-    title: 'ደሴ ከተማ አስተዳደር',
-    subtitle: 'Welcome to Dessie City Administration — Serving 500,000+ Citizens with Excellence',
-    tag: 'GOVERNANCE',
-  },
   {
     image: '/dessie-smart-center.png',
     title: 'Dessie Smart City 2025',
@@ -482,7 +549,7 @@ export default function HomePage() {
 
   /* ── Slider State ── */
   const [currentSlide, setCurrentSlide] = useState(0)
-  const slideInterval = useRef<ReturnType<typeof setInterval> | null>(null)
+  const slideTimeout = useRef<ReturnType<typeof setTimeout> | null>(null)
 
   /* ── Service Pagination ── */
   const [servicePage, setServicePage] = useState(0)
@@ -571,12 +638,6 @@ export default function HomePage() {
 
   const goToSlide = useCallback((index: number) => {
     setCurrentSlide(index)
-    if (slideInterval.current) {
-      clearInterval(slideInterval.current)
-      slideInterval.current = setInterval(() => {
-        setCurrentSlide(prev => (prev + 1) % heroSlides.length)
-      }, 5000)
-    }
   }, [])
 
   const prevSlide = useCallback(() => goToSlide((currentSlide - 1 + heroSlides.length) % heroSlides.length), [currentSlide, goToSlide])
@@ -678,8 +739,8 @@ export default function HomePage() {
           >
             <motion.img
               initial={{ scale: 1 }}
-              animate={{ scale: 1.05 }}
-              transition={{ duration: 6, ease: 'linear' }}
+              animate={{ scale: currentSlide === 0 ? 1.08 : 1.05 }}
+              transition={{ duration: currentSlide === 0 ? 12 : 6, ease: 'linear' }}
               src={heroSlides[currentSlide].image}
               alt={`Dessie City Slide ${currentSlide + 1}`}
               className="w-full h-full object-cover"
