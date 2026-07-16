@@ -379,7 +379,7 @@ export default async function RootLayout({
           {`
             function googleTranslateElementInit() {
               new window.google.translate.TranslateElement(
-                { pageLanguage: 'en', includedLanguages: 'am,en' },
+                { pageLanguage: 'en', includedLanguages: 'am,en', autoDisplay: false },
                 'google_translate_element'
               );
             }
