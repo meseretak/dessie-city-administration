@@ -159,7 +159,7 @@ export default function Home() {
     const timer = setTimeout(() => {
       const combo = document.querySelector('.goog-te-combo') as HTMLSelectElement | null
       if (combo && combo.value) {
-        combo.dispatchEvent(new Event('change'))
+        combo.dispatchEvent(new Event('change', { bubbles: true }))
       }
     }, 150) // wait for new DOM to render
     return () => clearTimeout(timer)
@@ -623,8 +623,8 @@ export default function Home() {
                           <span className="flex-1 text-sm font-medium">{navLabel(item.label)}</span>
                           {hasDropdown && <ChevronDown className={`w-4 h-4 transition-transform ${openDropdown === item.label ? 'rotate-180' : ''}`} />}
                         </button>
-                        {hasDropdown && openDropdown === item.label && (
-                          <div className="ml-4 mt-0.5 mb-1 bg-[#f8faf8] rounded-xl border border-[#e2e8e0] overflow-hidden">
+                        {hasDropdown && (
+                          <div className={`ml-4 mt-0.5 mb-1 bg-[#f8faf8] rounded-xl border border-[#e2e8e0] overflow-hidden ${openDropdown === item.label ? 'block' : 'hidden'}`}>
                             {subItems.map((child) => {
                               const ChildIcon = navIcons[child.label.replace('â”€â”€ ', '')] || FileText
                               return (
