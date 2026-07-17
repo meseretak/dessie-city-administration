@@ -8,7 +8,7 @@ import {
   Building, MapPin, Receipt, Heart, Stethoscope, GraduationCap,
   Bus, Droplets, MessageSquareWarning, CalendarDays, ArrowRight, 
   ShieldCheck, Scale, Leaf, Landmark, Factory, Wheat, Lightbulb, 
-  Users, Monitor
+  Users, Monitor, FileText
 } from 'lucide-react';
 import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
@@ -299,7 +299,7 @@ export default function Header({ navItems }: { navItems: NavItem[] }) {
                   <Menu className="w-6 h-6" style={{ color: accentColor }} />
                 </Button>
               </SheetTrigger>
-              <SheetContent side="right" className="w-80 pt-10">
+              <SheetContent side="right" className="w-80 pt-10 overflow-y-auto">
                 <button onClick={toggle} className="w-full flex items-center gap-2 px-4 py-2 mb-2 rounded-md bg-[#f0fdf4] text-[#0d4a28] text-sm font-semibold border border-[#1a6b3c]/20">
                   <Languages className="w-4 h-4" />
                   {lang === 'en' ? 'አማርኛ (Switch to Amharic)' : 'English (ወደ እንግሊዝኛ)'}
@@ -309,7 +309,7 @@ export default function Header({ navItems }: { navItems: NavItem[] }) {
                     const NavIcon = navIcons[item.label] || HomeIcon;
                     const hasDropdown = (item.children && item.children.length > 0) || (item.items && item.items.length > 0);
                     return (
-                      <div key={item.label}>
+                      <div key={item.label} className="flex flex-col">
                         <button onClick={() => hasDropdown ? setOpenDropdown(openDropdown === item.label ? null : item.label) : navigateTo(resolveHref(item.id, item.label))} className={`w-full px-3 py-3 text-left flex items-center gap-3 rounded-xl transition-colors ${isActive(item.id) ? 'text-white bg-[#1a6b3c] font-semibold' : 'text-gray-700 hover:text-[#1a6b3c] hover:bg-[#1a6b3c]/8'}`}>
                           <div className={`w-8 h-8 rounded-lg flex items-center justify-center ${isActive(item.id) ? 'bg-white/20' : 'bg-[#0d4a28]/10'}`}>
                             <NavIcon className={`w-4 h-4 ${isActive(item.id) ? 'text-white' : 'text-[#0d4a28]'}`} />
@@ -317,6 +317,41 @@ export default function Header({ navItems }: { navItems: NavItem[] }) {
                           <span className="flex-1 text-sm font-medium">{navLabel(item.label)}</span>
                           {hasDropdown && <ChevronDown className={`w-4 h-4 transition-transform ${openDropdown === item.label ? 'rotate-180' : ''}`} />}
                         </button>
+                        
+                        {/* Mobile Submenu Rendering */}
+                        {hasDropdown && openDropdown === item.label && (
+                          <div className="flex flex-col gap-1 pl-11 pr-2 py-2 mt-1">
+                            {item.label === 'SERVICES' ? (
+                              [
+                                { label: 'Education', icon: GraduationCap, href: '/services/education' },
+                                { label: 'Agriculture', icon: Wheat, href: '/services/agriculture' },
+                                { label: 'Health', icon: Stethoscope, href: '/services/health' },
+                                { label: 'Trade & Industry', icon: Factory, href: '/services/trade' },
+                                { label: 'Infrastructure', icon: Building, href: '/services/infrastructure' },
+                                { label: 'Land & Housing', icon: MapPin, href: '/services/land' },
+                                { label: 'Civil Services', icon: Heart, href: '/services/civil' },
+                                { label: 'Finance & Taxes', icon: Receipt, href: '/services/finance' },
+                                { label: 'Utilities', icon: Droplets, href: '/services/utilities' },
+                                { label: 'Social & Tourism', icon: Users, href: '/services/social' },
+                              ].map((svc) => (
+                                <button key={svc.label} onClick={() => navigateTo(svc.href)} className="w-full text-left px-3 py-2 text-sm text-gray-600 hover:text-[#1a6b3c] hover:bg-[#1a6b3c]/5 rounded-lg flex items-center gap-2.5 transition-colors">
+                                  <svc.icon className="w-3.5 h-3.5 text-[#0d4a28]/70" />
+                                  <span className="font-medium">{navLabel(svc.label)}</span>
+                                </button>
+                              ))
+                            ) : (
+                              (item.children || item.items || []).map((child) => {
+                                const ChildIcon = navIcons[child.label] || FileText;
+                                return (
+                                  <button key={child.label} onClick={() => navigateTo(resolveHref(child.id, child.label))} className="w-full text-left px-3 py-2 text-sm text-gray-600 hover:text-[#1a6b3c] hover:bg-[#1a6b3c]/5 rounded-lg flex items-center gap-2.5 transition-colors">
+                                    <ChildIcon className="w-3.5 h-3.5 text-[#0d4a28]/70" />
+                                    <span className="font-medium">{navLabel(child.label)}</span>
+                                  </button>
+                                );
+                              })
+                            )}
+                          </div>
+                        )}
                       </div>
                     );
                   })}
