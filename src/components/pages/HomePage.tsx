@@ -266,14 +266,14 @@ const hotels = [
 ]
 
 const featuredProjects = [
-  { title: 'Smart City', desc: 'Digital transformation of all city services and citizen engagement platforms.', image: '/project-smart-city.png', color: 'emerald' },
-  { title: 'Industrial Zone', desc: '500 Haktar zone to attract manufacturing investment and create jobs.', image: '/project-industrial.png', color: 'amber' },
-  { title: 'Road Network', desc: 'Expanding arterial roads, walkways, and modern traffic management.', image: '/project-road.png', color: 'blue' },
-  { title: 'Water & Sanitation', desc: 'Modern water supply and sanitation infrastructure for all residents.', image: '/project-water.png', color: 'cyan' },
-  { title: 'Education Hub', desc: 'New schools, vocational centers, and digital learning programs.', image: '/project-education.png', color: 'purple' },
-  { title: 'Healthcare', desc: 'Upgrading hospitals, clinics, and community health programs citywide.', image: '/project-healthcare.png', color: 'red' },
-  { title: 'Housing', desc: 'Affordable housing projects and urban development for growing families.', image: '/project-housing.png', color: 'orange' },
-  { title: 'Green Energy', desc: 'Solar and renewable energy installations to power the city sustainably.', image: '/promo-invest.png', color: 'lime' },
+  { title: 'Smart City', desc: 'Digital transformation of all city services and citizen engagement platforms.', image: 'https://images.unsplash.com/photo-1451187580459-43490279c0fa?auto=format&fit=crop&w=1200&q=80', color: 'emerald' },
+  { title: 'Industrial Zone', desc: '500 Haktar zone to attract manufacturing investment and create jobs.', image: 'https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?auto=format&fit=crop&w=1200&q=80', color: 'amber' },
+  { title: 'Road Network', desc: 'Expanding arterial roads, walkways, and modern traffic management.', image: 'https://images.unsplash.com/photo-1449824913935-59a10b8d2000?auto=format&fit=crop&w=1200&q=80', color: 'blue' },
+  { title: 'Water & Sanitation', desc: 'Modern water supply and sanitation infrastructure for all residents.', image: 'https://images.unsplash.com/photo-1519822550275-9e6b46142e03?auto=format&fit=crop&w=1200&q=80', color: 'cyan' },
+  { title: 'Education Hub', desc: 'New schools, vocational centers, and digital learning programs.', image: 'https://images.unsplash.com/photo-1523050854058-8df90110c9f1?auto=format&fit=crop&w=1200&q=80', color: 'purple' },
+  { title: 'Healthcare', desc: 'Upgrading hospitals, clinics, and community health programs citywide.', image: 'https://images.unsplash.com/photo-1519494026892-80bbd2d6fd0d?auto=format&fit=crop&w=1200&q=80', color: 'red' },
+  { title: 'Housing', desc: 'Affordable housing projects and urban development for growing families.', image: 'https://images.unsplash.com/photo-1545324418-cc1a3fa10c00?auto=format&fit=crop&w=1200&q=80', color: 'orange' },
+  { title: 'Green Energy', desc: 'Solar and renewable energy installations to power the city sustainably.', image: 'https://images.unsplash.com/photo-1466611653911-95081537e5b7?auto=format&fit=crop&w=1200&q=80', color: 'lime' },
 ]
 
 const heritagePlaces = [
