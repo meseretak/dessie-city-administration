@@ -1593,7 +1593,6 @@ export default function HomePage() {
             ))}
           </div>
         </div>
-        </div>
       </section>
 
       {/* ═══════════════════ 5. MAYOR'S MESSAGE ═══════════════════ */}
