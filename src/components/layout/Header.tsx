@@ -260,18 +260,42 @@ export default function Header({ navItems }: { navItems: NavItem[] }) {
                                  <span className="text-white/80 text-[0.65rem] mt-1 font-medium">Leadership & Vision</span>
                               </div>
                            </div>
-                           <div className="w-3/5 p-2 bg-slate-50/50">
-                             {subItems.map((child) => {
-                               const ChildIcon = navIcons[child.label] || FileText;
-                               return (
-                                 <Link key={child.label} href={resolveHref(child.id, child.label)} onClick={() => setOpenDropdown(null)} className="w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm transition-all hover:bg-white hover:shadow-sm hover:text-[#1a6b3c] group border border-transparent hover:border-gray-100">
-                                   <div className="w-8 h-8 rounded-full bg-white shadow-sm border border-gray-100 group-hover:bg-[#1a6b3c] flex items-center justify-center shrink-0 transition-all">
-                                     <ChildIcon className="w-4 h-4 text-[#0d4a28] group-hover:text-white" />
-                                   </div>
-                                   <span className="font-medium text-gray-700 group-hover:text-[#1a6b3c]">{navLabel(child.label)}</span>
-                                 </Link>
-                               );
-                             })}
+                           <div className="w-3/5 p-3 bg-slate-50/50 flex flex-col gap-4">
+                             {/* Leadership Section */}
+                             <div>
+                               <div className="text-[0.65rem] font-bold text-[#1a6b3c]/70 uppercase tracking-wider px-2 mb-1.5">Leadership & Vision</div>
+                               <div className="space-y-1">
+                                 {subItems.filter((child: any) => child.label === "Mayor's Profile" || child.label === "Smart City").map((child: any) => {
+                                   const ChildIcon = navIcons[child.label] || FileText;
+                                   return (
+                                     <Link key={child.label} href={resolveHref(child.id, child.label)} onClick={() => setOpenDropdown(null)} className="w-full flex items-center gap-3 px-3 py-2 rounded-xl text-sm transition-all hover:bg-white hover:shadow-sm hover:text-[#1a6b3c] group border border-transparent hover:border-gray-100">
+                                       <div className="w-7 h-7 rounded-full bg-white shadow-sm border border-gray-100 group-hover:bg-[#1a6b3c] flex items-center justify-center shrink-0 transition-all">
+                                         <ChildIcon className="w-3.5 h-3.5 text-[#0d4a28] group-hover:text-white" />
+                                       </div>
+                                       <span className="font-medium text-gray-700 group-hover:text-[#1a6b3c]">{navLabel(child.label)}</span>
+                                     </Link>
+                                   );
+                                 })}
+                               </div>
+                             </div>
+                             
+                             {/* Administration Section (Cabinet & Structure) */}
+                             <div>
+                               <div className="text-[0.65rem] font-bold text-[#1a6b3c]/70 uppercase tracking-wider px-2 mb-1.5">City Administration</div>
+                               <div className="space-y-1">
+                                 {subItems.filter((child: any) => child.label === "Structure" || child.label === "Cabinet Members").map((child: any) => {
+                                   const ChildIcon = navIcons[child.label] || FileText;
+                                   return (
+                                     <Link key={child.label} href={resolveHref(child.id, child.label)} onClick={() => setOpenDropdown(null)} className="w-full flex items-center gap-3 px-3 py-2 rounded-xl text-sm transition-all hover:bg-white hover:shadow-sm hover:text-[#1a6b3c] group border border-transparent hover:border-gray-100">
+                                       <div className="w-7 h-7 rounded-full bg-white shadow-sm border border-gray-100 group-hover:bg-[#1a6b3c] flex items-center justify-center shrink-0 transition-all">
+                                         <ChildIcon className="w-3.5 h-3.5 text-[#0d4a28] group-hover:text-white" />
+                                       </div>
+                                       <span className="font-medium text-gray-700 group-hover:text-[#1a6b3c]">{navLabel(child.label)}</span>
+                                     </Link>
+                                   );
+                                 })}
+                               </div>
+                             </div>
                            </div>
                         </div>
                       ) : (
