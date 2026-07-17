@@ -612,11 +612,13 @@ export default function HomePage() {
 
   /* ── Auto-advance slider ── */
   useEffect(() => {
-    slideInterval.current = setInterval(() => {
+    if (slideTimeout.current) clearTimeout(slideTimeout.current)
+    const delay = currentSlide === 0 ? 12000 : 5000 // Give the first slide 12 seconds, others 5 seconds
+    slideTimeout.current = setTimeout(() => {
       setCurrentSlide(prev => (prev + 1) % heroSlides.length)
-    }, 5000)
-    return () => { if (slideInterval.current) clearInterval(slideInterval.current) }
-  }, [])
+    }, delay)
+    return () => { if (slideTimeout.current) clearTimeout(slideTimeout.current) }
+  }, [currentSlide])
 
   /* ── Auto-advance promo slider ── */
   const [promoProgress, setPromoProgress] = useState(0)
