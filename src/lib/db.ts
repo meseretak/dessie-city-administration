@@ -61,7 +61,7 @@ const TABLE: Record<string, string> = {
   adminUser: 'AdminUser', auditLog: 'AuditLog', user: 'User',
   serviceRequest: 'ServiceRequest', newsletterSubscription: 'NewsletterSubscription',
   contactMessage: 'ContactMessage', quoteRequest: 'QuoteRequest',
-  hotel: 'Hotel', newsArticle: 'NewsArticle', vacancy: 'Vacancy',
+  hotel: 'Hotel', newsArticle: 'NewsArticle', newsComment: 'NewsComment', vacancy: 'Vacancy',
   bid: 'Bid', project: 'Project', announcement: 'Announcement',
   pageContent: 'PageContent', menuItem: 'MenuItem', sliderImage: 'SliderImage',
   cabinetMember: 'CabinetMember', siteSetting: 'SiteSetting', siteVisit: 'SiteVisit',

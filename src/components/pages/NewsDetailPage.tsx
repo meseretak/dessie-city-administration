@@ -43,6 +43,13 @@ interface Comment {
   createdAt: string
 }
 
+interface ArticleWithRelations extends Article {
+  likes: number
+  shares: number
+  comments: Comment[]
+}
+
+
 const LIKE_KEY = (id: string) => `news_like_${id}`
 const COMMENTS_KEY = (id: string) => `news_comments_${id}`
 
@@ -57,11 +64,12 @@ function parseImages(raw?: string): string[] {
 }
 
 export default function NewsDetailPage({ newsId, navigateTo, lang = 'en' }: NewsDetailPageProps) {
-  const [article, setArticle] = useState<Article | null>(null)
+  const [article, setArticle] = useState<ArticleWithRelations | null>(null)
   const [related, setRelated] = useState<Article[]>([])
   const [loading, setLoading] = useState(true)
   const [liked, setLiked] = useState(false)
   const [likeCount, setLikeCount] = useState(0)
+  const [shareCount, setShareCount] = useState(0)
   const [comments, setComments] = useState<Comment[]>([])
   const [commentName, setCommentName] = useState('')
   const [commentText, setCommentText] = useState('')
@@ -74,54 +82,82 @@ export default function NewsDetailPage({ newsId, navigateTo, lang = 'en' }: News
   useEffect(() => {
     if (!newsId) { setLoading(false); return }
     setLoading(true)
+
+    // Fetch related news from admin list
     fetch('/api/admin/news')
       .then(r => r.ok ? r.json() : [])
       .then((data: Article[]) => {
-        const found = data.find(a => a.id === newsId)
-        setArticle(found || null)
         const others = data.filter(a => a.id !== newsId && (a.approvalStatus === 'approved' || a.status === 'published'))
-        const sameCat = others.filter(a => a.category === found?.category).slice(0, 3)
+        const currentCategory = data.find(a => a.id === newsId)?.category
+        const sameCat = others.filter(a => a.category === currentCategory).slice(0, 3)
         setRelated(sameCat.length >= 2 ? sameCat : others.slice(0, 3))
       })
       .catch(() => {})
+
+    // Fetch the specific article with comments, likes, and shares
+    fetch(`/api/news/${newsId}`)
+      .then(r => r.ok ? r.json() : null)
+      .then((data: ArticleWithRelations | null) => {
+        if (data && !data.error) {
+          setArticle(data)
+          setLikeCount(data.likes || 0)
+          setShareCount(data.shares || 0)
+          setComments(data.comments || [])
+        } else {
+          setArticle(null)
+        }
+      })
+      .catch(() => setArticle(null))
       .finally(() => setLoading(false))
   }, [newsId])
 
   useEffect(() => {
     if (!newsId) return
     const storedLike = localStorage.getItem(LIKE_KEY(newsId))
-    const storedCount = parseInt(localStorage.getItem(`${LIKE_KEY(newsId)}_count`) || '0')
     setLiked(storedLike === '1')
-    setLikeCount(storedCount)
-    const stored = localStorage.getItem(COMMENTS_KEY(newsId))
-    if (stored) { try { setComments(JSON.parse(stored)) } catch { setComments([]) } }
   }, [newsId])
 
-  const handleLike = () => {
-    if (!newsId) return
-    const newLiked = !liked
-    const newCount = newLiked ? likeCount + 1 : Math.max(0, likeCount - 1)
-    setLiked(newLiked); setLikeCount(newCount)
-    localStorage.setItem(LIKE_KEY(newsId), newLiked ? '1' : '0')
-    localStorage.setItem(`${LIKE_KEY(newsId)}_count`, String(newCount))
+  const handleLike = async () => {
+    if (!newsId || liked) return // Can only like once
+    setLiked(true)
+    setLikeCount(prev => prev + 1)
+    localStorage.setItem(LIKE_KEY(newsId), '1')
+
+    await fetch(`/api/news/${newsId}/interact`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ action: 'like' })
+    }).catch(console.error)
   }
 
   const handleComment = async (e: React.FormEvent) => {
     e.preventDefault()
     if (!commentText.trim() || !commentName.trim() || !newsId) return
     setSubmittingComment(true)
-    await new Promise(r => setTimeout(r, 500))
-    const nc: Comment = { id: Date.now().toString(), name: commentName.trim(), text: commentText.trim(), createdAt: new Date().toISOString() }
-    const updated = [nc, ...comments]
-    setComments(updated)
-    localStorage.setItem(COMMENTS_KEY(newsId), JSON.stringify(updated))
-    setCommentText(''); setCommentName(''); setSubmittingComment(false)
+    
+    try {
+      const res = await fetch(`/api/news/${newsId}/interact`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ action: 'comment', name: commentName.trim(), text: commentText.trim() })
+      })
+      const data = await res.json()
+      if (data.success && data.comment) {
+        setComments([data.comment, ...comments])
+        setCommentText('')
+        setCommentName('')
+      }
+    } catch (error) {
+      console.error('Failed to post comment', error)
+    } finally {
+      setSubmittingComment(false)
+    }
   }
 
   const shareUrl = typeof window !== 'undefined' ? window.location.href : ''
   const shareTitle = article?.title || 'Dessie City News'
 
-  const handleShare = (platform: string) => {
+  const handleShare = async (platform: string) => {
     const eu = encodeURIComponent(shareUrl)
     const et = encodeURIComponent(shareTitle)
     const urls: Record<string, string> = {
@@ -131,6 +167,17 @@ export default function NewsDetailPage({ newsId, navigateTo, lang = 'en' }: News
       telegram: `https://t.me/share/url?url=${eu}&text=${et}`,
       email: `mailto:?subject=${et}&body=${eu}`,
     }
+    
+    // Increment share count
+    if (newsId) {
+      setShareCount(prev => prev + 1)
+      fetch(`/api/news/${newsId}/interact`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ action: 'share' })
+      }).catch(console.error)
+    }
+
     if (platform === 'copy') {
       navigator.clipboard.writeText(shareUrl).then(() => { setCopied(true); setTimeout(() => setCopied(false), 2000) })
       return
@@ -289,13 +336,14 @@ export default function NewsDetailPage({ newsId, navigateTo, lang = 'en' }: News
             <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }}
               className="bg-white rounded-2xl border border-[#e2e8e0] p-4 shadow-sm">
               <div className="flex flex-wrap items-center justify-between gap-4">
-                <button onClick={handleLike}
-                  className={`flex items-center gap-2 px-4 py-2.5 rounded-xl text-sm font-bold transition-all ${liked ? 'bg-red-50 text-red-500 border border-red-200 scale-105' : 'bg-gray-50 text-gray-500 border border-gray-200 hover:border-red-200 hover:text-red-400'}`}>
+                <button onClick={handleLike} disabled={liked}
+                  className={`flex items-center gap-2 px-4 py-2.5 rounded-xl text-sm font-bold transition-all ${liked ? 'bg-red-50 text-red-500 border border-red-200' : 'bg-gray-50 text-gray-500 border border-gray-200 hover:border-red-200 hover:text-red-400'}`}>
                   <Heart className={`w-4 h-4 ${liked ? 'fill-current' : ''}`} />
                   <span>{liked ? (isAm ? 'ወደዱ ✓' : 'Liked ✓') : (isAm ? 'ወደዱ' : 'Like')}</span>
                   {likeCount > 0 && <span className="bg-red-100 text-red-600 rounded-full px-2 py-0.5 text-xs font-black">{likeCount}</span>}
                 </button>
                 <div className="flex items-center gap-2 flex-wrap">
+                  {shareCount > 0 && <span className="text-xs text-blue-600 font-bold bg-blue-50 px-2 py-1 rounded-md">{shareCount} {isAm ? 'አጋራዎች' : 'Shares'}</span>}
                   <span className="text-xs text-gray-500 font-semibold flex items-center gap-1"><Share2 className="w-3.5 h-3.5" />{isAm ? 'አጋሩ:' : 'Share:'}</span>
                   {shareButtons.map(s => (
                     <button key={s.key} onClick={() => handleShare(s.key)} title={s.label}
