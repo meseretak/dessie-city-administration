@@ -87,10 +87,10 @@ const kpis = [
 ]
 
 const dataCategories = [
-  { title: 'Population Data', desc: 'Demographics, growth trends, and census data for Dessie and surrounding areas.' },
-  { title: 'Budget Data', desc: 'Detailed budget allocations, expenditures, and financial statements.' },
-  { title: 'Infrastructure Data', desc: 'Road networks, utilities, public facilities, and asset inventories.' },
-  { title: 'Service Data', desc: 'Service delivery metrics, response times, and citizen feedback data.' },
+  { icon: UsersRound, title: 'Population Data', desc: 'Demographics, growth trends, and census data for Dessie and surrounding areas.', color: 'text-[#1a6b3c]', bg: 'bg-[#1a6b3c]/10' },
+  { icon: DollarSign, title: 'Budget Data', desc: 'Detailed budget allocations, expenditures, and financial statements.', color: 'text-[#c8a415]', bg: 'bg-[#c8a415]/10' },
+  { icon: Building2, title: 'Infrastructure Data', desc: 'Road networks, utilities, public facilities, and asset inventories.', color: 'text-[#0d4a28]', bg: 'bg-[#0d4a28]/10' },
+  { icon: Heart, title: 'Service Data', desc: 'Service delivery metrics, response times, and citizen feedback data.', color: 'text-[#1a6b3c]', bg: 'bg-[#1a6b3c]/10' },
 ]
 
 const auditReports = [
@@ -270,13 +270,18 @@ export default function TransparencyPage() {
           <motion.p initial="hidden" whileInView="visible" viewport={{ once: true }} custom={2} variants={fadeUp} className="text-center text-muted-foreground max-w-2xl mx-auto mb-10">Our open data initiative makes city data freely available to researchers, journalists, developers, and citizens to promote transparency and innovation.</motion.p>
           <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
             {dataCategories.map((d, i) => (
-              <motion.div key={d.title} initial="hidden" whileInView="visible" viewport={{ once: true }} custom={i} variants={fadeUp}>
-                <Card className="h-full hover:shadow-lg transition-shadow border-0">
-                  <CardContent className="p-6 text-center">
-                    <Database className="w-10 h-10 text-[#1a6b3c] mx-auto mb-4" />
-                    <h3 className="font-bold text-foreground mb-2">{d.title}</h3>
-                    <p className="text-muted-foreground text-sm leading-relaxed mb-4">{d.desc}</p>
-                    <span className="inline-flex items-center text-[#1a6b3c] font-semibold text-sm hover:underline cursor-pointer">ACCESS DATA →</span>
+              <motion.div key={d.title} initial="hidden" whileInView="visible" viewport={{ once: true }} custom={i} variants={fadeUp} whileHover={{ y: -5 }}>
+                <Card className="h-full border border-gray-100 shadow-sm hover:shadow-xl transition-all duration-300 group overflow-hidden bg-white">
+                  <div className={`h-2 transition-colors ${d.bg} group-hover:bg-opacity-100`} style={{ backgroundColor: d.color.replace('text-', '') }} />
+                  <CardContent className="p-8 text-center flex flex-col h-full items-center justify-center relative">
+                    <div className={`w-20 h-20 rounded-full flex items-center justify-center mb-6 transition-transform duration-500 group-hover:scale-110 ${d.bg}`}>
+                      <d.icon className={`w-10 h-10 ${d.color}`} />
+                    </div>
+                    <h3 className="font-extrabold text-gray-900 text-lg mb-3 tracking-tight">{d.title}</h3>
+                    <p className="text-gray-500 text-sm leading-relaxed mb-6 flex-grow">{d.desc}</p>
+                    <Button variant="outline" className={`w-full font-bold text-xs uppercase tracking-widest border-gray-200 hover:border-transparent ${d.color} hover:bg-gray-50 hover:shadow-md transition-all`}>
+                      ACCESS DATA <ArrowUpRight className="w-3.5 h-3.5 ml-1.5" />
+                    </Button>
                   </CardContent>
                 </Card>
               </motion.div>

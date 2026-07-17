@@ -24,33 +24,33 @@ const staggerContainer = {
 }
 
 const attractions = [
-  { icon: Mountain, title: 'Mount Tossa', category: 'Nature', desc: 'The iconic mountain overlooking Dessie, offering panoramic views and hiking trails for adventurers of all levels.', color: '#1a6b3c' },
-  { icon: Landmark, title: 'Dessie Museum', category: 'Cultural', desc: 'Home to artifacts from the region\'s rich history spanning centuries, showcasing Amhara heritage and traditions.', color: '#c8a415' },
-  { icon: ShoppingBag, title: 'Historic Market', category: 'Cultural', desc: 'One of the largest traditional markets in Amhara Region, vibrant with local crafts, spices, and textiles.', color: '#0d4a28' },
-  { icon: TreePine, title: 'Borkena River Valley', category: 'Nature', desc: 'Scenic valley perfect for nature walks and bird watching, with lush vegetation along the riverbanks.', color: '#1a6b3c' },
-  { icon: Church, title: 'Saint Mary Church', category: 'Historical', desc: 'A beautiful historic church with unique architectural features and deep spiritual significance in the community.', color: '#c8a415' },
-  { icon: Eye, title: 'Tossa Viewpoint', category: 'Nature', desc: 'The best vantage point to see the city and surrounding landscape, especially stunning at sunrise and sunset.', color: '#0d4a28' },
+  { icon: Mountain, title: 'Mount Tossa', category: 'Nature', desc: 'The iconic mountain overlooking Dessie, offering panoramic views and hiking trails for adventurers of all levels.', color: '#1a6b3c', image: 'https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?q=80&w=800&auto=format&fit=crop' },
+  { icon: Landmark, title: 'Dessie Museum', category: 'Cultural', desc: 'Home to artifacts from the region\'s rich history spanning centuries, showcasing Amhara heritage and traditions.', color: '#c8a415', image: 'https://images.unsplash.com/photo-1566127444979-b3d2b654e3d7?q=80&w=800&auto=format&fit=crop' },
+  { icon: ShoppingBag, title: 'Historic Market', category: 'Cultural', desc: 'One of the largest traditional markets in Amhara Region, vibrant with local crafts, spices, and textiles.', color: '#0d4a28', image: 'https://images.unsplash.com/photo-1533900298318-6b8da08a523e?q=80&w=800&auto=format&fit=crop' },
+  { icon: TreePine, title: 'Borkena River Valley', category: 'Nature', desc: 'Scenic valley perfect for nature walks and bird watching, with lush vegetation along the riverbanks.', color: '#1a6b3c', image: 'https://images.unsplash.com/photo-1433086966358-54859d0ed716?q=80&w=800&auto=format&fit=crop' },
+  { icon: Church, title: 'Saint Mary Church', category: 'Historical', desc: 'A beautiful historic church with unique architectural features and deep spiritual significance in the community.', color: '#c8a415', image: 'https://images.unsplash.com/photo-1548625361-ec853c2b184e?q=80&w=800&auto=format&fit=crop' },
+  { icon: Eye, title: 'Tossa Viewpoint', category: 'Nature', desc: 'The best vantage point to see the city and surrounding landscape, especially stunning at sunrise and sunset.', color: '#0d4a28', image: 'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?q=80&w=800&auto=format&fit=crop' },
 ]
 
 const defaultHotels = [
-  { name: 'Dessie Palace Hotel', stars: 4, desc: 'Premium accommodation with conference facilities and modern amenities in a central location.', amenities: ['WiFi', 'Restaurant', 'Parking', 'Pool'] },
-  { name: 'Tossa Lodge', stars: 3, desc: 'Mountain lodge with stunning views of the highlands, perfect for nature lovers and explorers.', amenities: ['WiFi', 'Restaurant', 'Garden', 'Tour Desk'] },
-  { name: 'City Center Hotel', stars: 3, desc: 'Conveniently located in the heart of the city, close to markets and government offices.', amenities: ['WiFi', 'Restaurant', 'Room Service', 'Laundry'] },
-  { name: 'Budget Inn', stars: 2, desc: 'Affordable clean accommodation for travelers, offering great value without compromising comfort.', amenities: ['WiFi', 'Parking', 'Security'] },
+  { name: 'Dessie Palace Hotel', stars: 4, desc: 'Premium accommodation with conference facilities and modern amenities in a central location.', amenities: ['WiFi', 'Restaurant', 'Parking', 'Pool'], image: 'https://images.unsplash.com/photo-1566073771259-6a8506099945?q=80&w=800&auto=format&fit=crop' },
+  { name: 'Tossa Lodge', stars: 3, desc: 'Mountain lodge with stunning views of the highlands, perfect for nature lovers and explorers.', amenities: ['WiFi', 'Restaurant', 'Garden', 'Tour Desk'], image: 'https://images.unsplash.com/photo-1582719478250-c89cae4dc85b?q=80&w=800&auto=format&fit=crop' },
+  { name: 'City Center Hotel', stars: 3, desc: 'Conveniently located in the heart of the city, close to markets and government offices.', amenities: ['WiFi', 'Restaurant', 'Room Service', 'Laundry'], image: 'https://images.unsplash.com/photo-1618773928120-2c1473659eb0?q=80&w=800&auto=format&fit=crop' },
+  { name: 'Budget Inn', stars: 2, desc: 'Affordable clean accommodation for travelers, offering great value without compromising comfort.', amenities: ['WiFi', 'Parking', 'Security'], image: 'https://images.unsplash.com/photo-1505691938895-1758d7feb511?q=80&w=800&auto=format&fit=crop' },
 ]
 
 const restaurants = [
-  { icon: UtensilsCrossed, name: 'Traditional Ethiopian', desc: 'Authentic injera, doro wot, and regional Amhara specialties.', badge: 'Local Cuisine' },
-  { icon: Globe, name: 'International Cuisine', desc: 'A selection of restaurants offering Italian and Middle Eastern dishes.', badge: 'International' },
-  { icon: Coffee, name: 'Cafes & Bakeries', desc: 'Enjoy traditional Ethiopian coffee ceremonies and fresh pastries.', badge: 'Coffee & Pastry' },
-  { icon: Sun, name: 'Street Food', desc: 'Sambusa, kitfo, and other beloved street foods found in bustling market areas.', badge: 'Street Food' },
+  { icon: UtensilsCrossed, name: 'Traditional Ethiopian', desc: 'Authentic injera, doro wot, and regional Amhara specialties.', badge: 'Local Cuisine', image: 'https://images.unsplash.com/photo-1604328698692-f76ea9498e76?q=80&w=800&auto=format&fit=crop' },
+  { icon: Globe, name: 'International Cuisine', desc: 'A selection of restaurants offering Italian and Middle Eastern dishes.', badge: 'International', image: 'https://images.unsplash.com/photo-1514326640560-7d063ef2aed5?q=80&w=800&auto=format&fit=crop' },
+  { icon: Coffee, name: 'Cafes & Bakeries', desc: 'Enjoy traditional Ethiopian coffee ceremonies and fresh pastries.', badge: 'Coffee & Pastry', image: 'https://images.unsplash.com/photo-1554118811-1e0d58224f24?q=80&w=800&auto=format&fit=crop' },
+  { icon: Sun, name: 'Street Food', desc: 'Sambusa, kitfo, and other beloved street foods found in bustling market areas.', badge: 'Street Food', image: 'https://images.unsplash.com/photo-1555939594-58d7cb561ad1?q=80&w=800&auto=format&fit=crop' },
 ]
 
 const transport = [
-  { icon: Bus, title: 'Bus Services', desc: 'Regular intercity buses connect Dessie to Addis Ababa, Bahir Dar, and other major cities.' },
-  { icon: Car, title: 'Taxi Services', desc: 'Local taxi and ride-hailing services available throughout the city for convenient travel.' },
-  { icon: Car, title: 'Car Rental', desc: 'Several agencies offer vehicle rentals for exploring the surrounding highlands at your own pace.' },
-  { icon: Footprints, title: 'Walking Tours', desc: 'Guided walking tours available for exploring the city\'s historic sites and cultural landmarks.' },
+  { icon: Bus, title: 'Bus Services', desc: 'Regular intercity buses connect Dessie to Addis Ababa, Bahir Dar, and other major cities.', image: 'https://images.unsplash.com/photo-1544620347-c4fd4a3d597a?q=80&w=800&auto=format&fit=crop' },
+  { icon: Car, title: 'Taxi Services', desc: 'Local taxi and ride-hailing services available throughout the city for convenient travel.', image: 'https://images.unsplash.com/photo-1502877338593-d29b00eb81ec?q=80&w=800&auto=format&fit=crop' },
+  { icon: Car, title: 'Car Rental', desc: 'Several agencies offer vehicle rentals for exploring the surrounding highlands at your own pace.', image: 'https://images.unsplash.com/photo-1560958089-b8a1929cea89?q=80&w=800&auto=format&fit=crop' },
+  { icon: Footprints, title: 'Walking Tours', desc: 'Guided walking tours available for exploring the city\'s historic sites and cultural landmarks.', image: 'https://images.unsplash.com/photo-1551632811-561732d1e306?q=80&w=800&auto=format&fit=crop' },
 ]
 
 const tips = [
@@ -76,7 +76,8 @@ export default function TourismPage() {
         name: h.name,
         stars: h.starRating || 3,
         desc: h.description,
-        amenities: h.amenities ? (typeof h.amenities === 'string' ? JSON.parse(h.amenities) : h.amenities) : ['WiFi', 'Restaurant']
+        amenities: h.amenities ? (typeof h.amenities === 'string' ? JSON.parse(h.amenities) : h.amenities) : ['WiFi', 'Restaurant'],
+        image: h.images?.[0] || 'https://images.unsplash.com/photo-1566073771259-6a8506099945?q=80&w=800&auto=format&fit=crop'
       }))
       if (mapped.length > 0) return mapped;
     }
@@ -150,16 +151,19 @@ export default function TourismPage() {
               {attractions.map((a, i) => (
                 <motion.div key={a.title} variants={fadeInUp}>
                   <Card className="group h-full hover:shadow-xl transition-all duration-300 border border-gray-100 overflow-hidden rounded-2xl bg-white hover:-translate-y-1">
-                    <div className="h-40 relative flex items-center justify-center overflow-hidden">
-                      <div className="absolute inset-0 opacity-20 transition-transform duration-700 group-hover:scale-110" style={{ background: `linear-gradient(135deg, ${a.color} 0%, transparent 100%)` }} />
-                      <div className="absolute inset-0 bg-gray-100/50 backdrop-blur-sm z-0" />
-                      <a.icon className="w-16 h-16 relative z-10 drop-shadow-sm transition-transform duration-500 group-hover:scale-110" style={{ color: a.color }} />
+                    <div className="h-56 relative flex items-center justify-center overflow-hidden">
+                      <div className="absolute inset-0 bg-gray-200" />
+                      {a.image && <img src={a.image} alt={a.title} className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" />}
+                      <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-transparent z-10" />
+                      <div className="absolute top-4 right-4 z-20 bg-white/20 backdrop-blur-md p-2 rounded-xl">
+                        <a.icon className="w-6 h-6 text-white drop-shadow-sm" />
+                      </div>
+                      <div className="absolute bottom-4 left-4 right-4 z-20">
+                         <h3 className="font-extrabold text-2xl text-white drop-shadow-md mb-1">{a.title}</h3>
+                         <Badge variant="outline" className="text-xs font-bold bg-white/20 text-white border-white/40 backdrop-blur-md">{a.category}</Badge>
+                      </div>
                     </div>
                     <CardContent className="p-6 relative z-10 bg-white">
-                      <div className="flex items-center justify-between mb-3">
-                        <h3 className="font-extrabold text-xl text-gray-900">{a.title}</h3>
-                        <Badge variant="outline" className="text-xs font-bold" style={{ borderColor: a.color, color: a.color }}>{a.category}</Badge>
-                      </div>
                       <p className="text-gray-600 text-sm leading-relaxed mb-4">{a.desc}</p>
                       <span className="inline-flex items-center font-bold text-sm hover:underline cursor-pointer transition-colors" style={{ color: a.color }}>LEARN MORE <ChevronRight className="w-4 h-4 ml-1" /></span>
                     </CardContent>
@@ -172,33 +176,36 @@ export default function TourismPage() {
       </section>
 
       {/* Hotels & Accommodation */}
-      <section className="bg-[#1a6b3c] py-16 px-4 relative overflow-hidden">
-        <div className="absolute inset-0 opacity-10" style={{ backgroundImage: 'radial-gradient(circle at 2px 2px, rgba(255,255,255,1) 1px, transparent 0)', backgroundSize: '30px 30px' }} />
-        
+      <section className="bg-gray-50 py-16 px-4 relative overflow-hidden">
         <div className="max-w-6xl mx-auto relative z-10">
           <motion.div initial="hidden" whileInView="visible" viewport={{ once: true, margin: '-50px' }} variants={staggerContainer}>
             <div className="text-center mb-12">
               <span className="text-[#c8a415] font-bold tracking-widest uppercase text-xs mb-2 block drop-shadow-md">Accommodation</span>
-              <h2 className="text-3xl md:text-4xl font-extrabold text-white">WHERE TO STAY</h2>
+              <h2 className="text-3xl md:text-4xl font-extrabold text-gray-900">WHERE TO STAY</h2>
               <div className="w-24 h-1 bg-[#c8a415] mx-auto mt-4 rounded-full" />
+              <p className="mt-4 text-gray-600 max-w-2xl mx-auto">From luxury hotels to cozy mountain lodges, find the perfect place to rest during your visit to the highlands.</p>
             </div>
 
-            <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-4">
+            <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
               {hotels.map((h, i) => (
                 <motion.div key={h.name} variants={fadeInUp}>
-                  <Card className="h-full bg-white/10 backdrop-blur-md border border-white/20 hover:bg-white/20 transition-all duration-300 rounded-2xl group overflow-hidden">
-                    <CardContent className="p-6 flex flex-col h-full">
-                      <div className="mb-4">
-                        <h3 className="font-bold text-lg text-white mb-1">{h.name}</h3>
-                        <div className="flex gap-0.5">
-                          {Array.from({ length: 5 }).map((_, s) => <Star key={s} className={`w-3.5 h-3.5 ${s < h.stars ? 'text-[#c8a415] fill-[#c8a415]' : 'text-white/30'}`} />)}
-                        </div>
+                  <Card className="h-full bg-white border border-gray-200 hover:shadow-xl transition-all duration-300 rounded-2xl group overflow-hidden flex flex-col">
+                    <div className="h-48 relative overflow-hidden">
+                      {h.image && <img src={h.image} alt={h.name} className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" />}
+                      <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
+                      <div className="absolute bottom-3 left-3 right-3 flex gap-0.5">
+                         {Array.from({ length: 5 }).map((_, s) => <Star key={s} className={`w-3.5 h-3.5 ${s < h.stars ? 'text-[#c8a415] fill-[#c8a415]' : 'text-white/40'}`} />)}
                       </div>
-                      <p className="text-white/80 text-sm mb-6 flex-grow">{h.desc}</p>
-                      <div className="flex flex-wrap gap-1.5 mb-6">
-                        {h.amenities.map(a => <Badge key={a} variant="secondary" className="text-[10px] bg-white/10 text-white border-0 hover:bg-white/20">{a}</Badge>)}
+                    </div>
+                    <CardContent className="p-5 flex flex-col flex-grow">
+                      <div className="mb-2 flex-grow">
+                        <h3 className="font-bold text-lg text-gray-900 mb-2">{h.name}</h3>
+                        <p className="text-gray-600 text-sm">{h.desc}</p>
                       </div>
-                      <Button className="w-full bg-[#c8a415] hover:bg-[#a88810] text-[#0d4a28] font-bold text-xs py-2 h-auto">BOOK NOW</Button>
+                      <div className="flex flex-wrap gap-1.5 mb-5 mt-3">
+                        {h.amenities.map((a: string) => <Badge key={a} variant="secondary" className="text-[10px] bg-gray-100 text-gray-700 border border-gray-200 hover:bg-gray-200">{a}</Badge>)}
+                      </div>
+                      <Button className="w-full bg-[#0d4a28] hover:bg-[#1a6b3c] text-white font-bold text-xs py-2 h-auto">BOOK NOW</Button>
                     </CardContent>
                   </Card>
                 </motion.div>
@@ -221,12 +228,15 @@ export default function TourismPage() {
             <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4">
               {restaurants.map((r, i) => (
                 <motion.div key={r.name} variants={fadeInUp} whileHover={{ y: -5 }}>
-                  <Card className="h-full text-center border-gray-100 shadow-sm hover:shadow-lg transition-all duration-300 rounded-2xl group bg-gray-50/50">
-                    <CardContent className="p-6">
-                      <div className="w-14 h-14 rounded-2xl bg-white shadow-sm flex items-center justify-center mx-auto mb-4 border border-gray-100 group-hover:scale-110 transition-transform duration-300 group-hover:border-[#c8a415]/30">
-                        <r.icon className="w-6 h-6 text-[#1a6b3c]" />
+                  <Card className="h-full text-center border border-gray-100 shadow-sm hover:shadow-xl transition-all duration-300 rounded-2xl group bg-white overflow-hidden flex flex-col">
+                    <div className="h-40 relative overflow-hidden">
+                      {r.image && <img src={r.image} alt={r.name} className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" />}
+                      <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
+                      <div className="absolute bottom-3 left-0 right-0 flex justify-center">
+                        <Badge className="bg-[#c8a415] text-white hover:bg-[#a88810] text-[10px] font-bold border-0">{r.badge}</Badge>
                       </div>
-                      <Badge className="bg-[#1a6b3c]/10 text-[#1a6b3c] hover:bg-[#1a6b3c]/20 mb-3 text-[10px] font-bold border-0">{r.badge}</Badge>
+                    </div>
+                    <CardContent className="p-6 flex-grow flex flex-col items-center justify-center">
                       <h3 className="font-extrabold text-gray-900 mb-2">{r.name}</h3>
                       <p className="text-gray-500 text-xs leading-relaxed">{r.desc}</p>
                     </CardContent>
@@ -252,13 +262,19 @@ export default function TourismPage() {
             <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4">
               {transport.map((t, i) => (
                 <motion.div key={t.title} variants={fadeInUp} whileHover={{ y: -5 }}>
-                  <Card className="h-full bg-white hover:shadow-md transition-shadow border-gray-100 rounded-xl">
-                    <CardContent className="p-6 text-center">
-                      <div className="w-12 h-12 rounded-full bg-gray-50 flex items-center justify-center mx-auto mb-4 border border-gray-100">
-                        <t.icon className="w-5 h-5 text-[#c8a415]" />
+                  <Card className="h-full bg-white hover:shadow-xl transition-shadow border-gray-100 rounded-2xl overflow-hidden group">
+                    <div className="h-36 relative overflow-hidden">
+                      {t.image && <img src={t.image} alt={t.title} className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" />}
+                      <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent" />
+                      <div className="absolute bottom-3 left-4 flex items-center gap-2">
+                        <div className="w-8 h-8 rounded-full bg-white/20 backdrop-blur-md flex items-center justify-center border border-white/30">
+                          <t.icon className="w-4 h-4 text-white" />
+                        </div>
+                        <h3 className="font-bold text-white text-sm">{t.title}</h3>
                       </div>
-                      <h3 className="font-bold text-gray-900 mb-2 text-sm">{t.title}</h3>
-                      <p className="text-gray-500 text-xs leading-relaxed">{t.desc}</p>
+                    </div>
+                    <CardContent className="p-5 text-left">
+                      <p className="text-gray-600 text-xs leading-relaxed">{t.desc}</p>
                     </CardContent>
                   </Card>
                 </motion.div>
