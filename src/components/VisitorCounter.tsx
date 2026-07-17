@@ -144,18 +144,18 @@ export default function VisitorCounter() {
       {/* Subtle glow */}
       <div className="absolute top-0 left-1/2 -translate-x-1/2 w-96 h-1 bg-gradient-to-r from-transparent via-[#c8a415]/40 to-transparent" />
 
-      <div className="max-w-7xl mx-auto px-4 py-4 relative z-10">
+      <div className="max-w-7xl mx-auto px-4 py-2 relative z-10">
         {/* Compact header bar */}
         <div
           className="flex items-center justify-center gap-3 cursor-pointer group"
           onClick={() => setExpanded(!expanded)}
         >
-          <div className="flex items-center gap-2 bg-white/5 rounded-full px-4 py-2 border border-white/10 group-hover:border-[#c8a415]/30 transition-all">
-            <Activity className="w-4 h-4 text-[#c8a415]" />
+          <div className="flex items-center gap-2 bg-white/5 rounded-full px-3 py-1.5 border border-white/10 group-hover:border-[#c8a415]/30 transition-all">
+            <Activity className="w-3.5 h-3.5 text-[#c8a415]" />
             <span className="text-white/70 text-sm font-medium">Live Visitors</span>
             <div className="flex items-center gap-1.5">
               <PulseDot />
-              <span className="text-[#c8a415] font-bold text-lg tabular-nums">
+              <span className="text-[#c8a415] font-bold text-base tabular-nums">
                 <AnimatedNumber value={stats.live} />
               </span>
             </div>
@@ -200,22 +200,22 @@ export default function VisitorCounter() {
               transition={{ duration: 0.3, ease: 'easeInOut' }}
               className="overflow-hidden"
             >
-              <div className="grid grid-cols-2 md:grid-cols-4 gap-3 mt-4 pt-4 border-t border-white/10">
+              <div className="grid grid-cols-2 md:grid-cols-4 gap-2 mt-2 pt-2 border-t border-white/10">
                 {statCards.map((card, i) => (
                   <motion.div
                     key={card.label}
                     initial={{ y: 20, opacity: 0 }}
                     animate={{ y: 0, opacity: 1 }}
                     transition={{ delay: i * 0.1 }}
-                    className={`${card.bg} ${card.border} border rounded-xl p-4 hover:scale-[1.02] transition-transform duration-200`}
+                    className={`${card.bg} ${card.border} border rounded-xl p-3 hover:scale-[1.02] transition-transform duration-200`}
                   >
-                    <div className="flex items-center gap-2 mb-2">
+                    <div className="flex items-center gap-1.5 mb-1.5">
                       <div className={`${card.textColor}`}>{card.icon}</div>
                       <span className="text-white/50 text-xs font-medium uppercase tracking-wider">
                         {card.label}
                       </span>
                     </div>
-                    <div className={`${card.textColor} text-2xl sm:text-3xl font-bold`}>
+                    <div className={`${card.textColor} text-xl sm:text-2xl font-bold`}>
                       <AnimatedNumber value={card.value} delay={i * 150} />
                     </div>
                     <div className="mt-1 h-1 w-full bg-black/20 rounded-full overflow-hidden">
@@ -231,8 +231,8 @@ export default function VisitorCounter() {
               </div>
 
               {/* Live indicator bar */}
-              <div className="mt-4 flex items-center justify-center gap-4">
-                <div className="flex items-center gap-2 bg-emerald-500/10 border border-emerald-500/20 rounded-full px-4 py-1.5">
+              <div className="mt-2 flex items-center justify-center gap-4">
+                <div className="flex items-center gap-1.5 bg-emerald-500/10 border border-emerald-500/20 rounded-full px-3 py-1">
                   <PulseDot />
                   <span className="text-emerald-400 text-xs font-medium">
                     {stats.live} {stats.live === 1 ? 'user' : 'users'} browsing right now
