@@ -10,19 +10,19 @@ import {
   Eye, Target, Heart, Shield, Lightbulb, Scale, Handshake,
   Flag, Landmark, Clock, Cpu, Monitor, TrendingUp, Banknote, Briefcase, BarChart3,
   Thermometer, Droplets, Sun, Compass, ChevronRight, History, Award, BookOpen,
-  Sprout, Users2, Building, TreePine, Leaf
+  Sprout, Users2, Building, TreePine, Leaf, Sparkles, Navigation, CheckCircle2
 } from 'lucide-react'
 import Image from 'next/image'
 import { useRef, useEffect, useState } from 'react'
 
 const fadeInUp = {
-  hidden: { opacity: 0, y: 30 },
-  visible: { opacity: 1, y: 0, transition: { duration: 0.6, ease: 'easeOut' } }
+  hidden: { opacity: 0, y: 40 },
+  visible: { opacity: 1, y: 0, transition: { duration: 0.7, ease: [0.22, 1, 0.36, 1] } }
 }
 
 const staggerContainer = {
   hidden: { opacity: 0 },
-  visible: { opacity: 1, transition: { staggerChildren: 0.1 } }
+  visible: { opacity: 1, transition: { staggerChildren: 0.15 } }
 }
 
 function AnimatedStat({ value, prefix = '', suffix = '' }: { value: number, prefix?: string, suffix?: string }) {
@@ -67,19 +67,10 @@ export default function AboutPage() {
   ]
 
   const otherFacts = [
-    { icon: Clock, label: isAm ? 'የተመሰረተበት' : 'Founded', value: isAm ? 'የ19ኛው ክ/ዘ መገባደጃ' : 'Late 19th Century', color: '#1a6b3c' },
-    { icon: Globe, label: isAm ? 'ክልል' : 'Region', value: isAm ? 'አማራ' : 'Amhara', color: '#c8a415' },
-    { icon: Languages, label: isAm ? 'ቋንቋ' : 'Language', value: isAm ? 'አማርኛ' : 'Amharic', color: '#1a6b3c' },
-    { icon: CloudSun, label: isAm ? 'የአየር ፀባይ' : 'Climate', value: isAm ? 'ሞቃታማ ደጋ' : 'Subtropical Highland', color: '#c8a415' },
-  ]
-
-  const coreValues = [
-    { label: isAm ? 'ግልጽነት' : 'Transparency', icon: Eye },
-    { label: isAm ? 'ተጠያቂነት' : 'Accountability', icon: Shield },
-    { label: isAm ? 'ዜጋ ቅድሚያ' : 'Citizen First', icon: Heart },
-    { label: isAm ? 'ፈጠራ' : 'Innovation', icon: Lightbulb },
-    { label: isAm ? 'ታማኝነት' : 'Integrity', icon: Scale },
-    { label: isAm ? 'አካታችነት' : 'Inclusiveness', icon: Handshake },
+    { icon: Clock, label: isAm ? 'የተመሰረተበት' : 'Founded', value: isAm ? 'የ19ኛው ክ/ዘ' : 'Late 19th C.', color: '#0d4a28' },
+    { icon: Globe, label: isAm ? 'ክልል' : 'Region', value: isAm ? 'አማራ' : 'Amhara', color: '#1a6b3c' },
+    { icon: Languages, label: isAm ? 'ቋንቋ' : 'Language', value: isAm ? 'አማርኛ' : 'Amharic', color: '#c8a415' },
+    { icon: CloudSun, label: isAm ? 'የአየር ፀባይ' : 'Climate', value: isAm ? 'ሞቃታማ ደጋ' : 'Subtropical', color: '#0d4a28' },
   ]
 
   const timeline = [
@@ -97,62 +88,96 @@ export default function AboutPage() {
     { icon: BarChart3, val: 85, prefix: '', suffix: '%', label: 'Employment Rate', color: '#1a6b3c' },
   ]
 
-  const climateData = [
-    { icon: Thermometer, label: 'Avg Temperature', value: '16°C' },
-    { icon: Droplets, label: 'Rainy Season', value: 'Jun — Sep' },
-    { icon: Sun, label: 'Dry Season', value: 'Oct — May' },
-    { icon: TreePine, label: 'Altitude', value: '2,470m' },
-  ]
-
   return (
     <main className="bg-gray-50/50">
       {/* Page Banner */}
-      <section className="bg-gradient-to-br from-[#0d4a28] to-[#1a6b3c] py-24 text-center relative overflow-hidden">
-        <div className="absolute inset-0 opacity-10">
-          <div className="absolute top-4 left-1/4 w-32 h-32 rounded-full border border-white/20 animate-[ping_3s_ease-in-out_infinite]" />
-          <div className="absolute bottom-8 right-1/3 w-48 h-48 rounded-full border border-white/20 animate-pulse" />
-          <div className="absolute top-8 right-16 w-20 h-20 rounded-full border border-white/20" />
+      <section className="bg-gradient-to-br from-[#0d4a28] to-[#1a6b3c] py-32 text-center relative overflow-hidden">
+        {/* Dynamic Animated Background */}
+        <div className="absolute inset-0 opacity-20">
+          <motion.div animate={{ rotate: 360 }} transition={{ duration: 150, repeat: Infinity, ease: "linear" }} className="absolute -top-40 -left-40 w-[600px] h-[600px] rounded-full border-[40px] border-white/5 border-dashed" />
+          <motion.div animate={{ rotate: -360 }} transition={{ duration: 120, repeat: Infinity, ease: "linear" }} className="absolute -bottom-40 -right-40 w-[500px] h-[500px] rounded-full border-[30px] border-[#c8a415]/10 border-dashed" />
+          <div className="absolute top-1/4 left-1/4 w-32 h-32 rounded-full border-2 border-white/20 animate-[ping_4s_ease-in-out_infinite]" />
+          <div className="absolute bottom-1/4 right-1/3 w-48 h-48 rounded-full border-2 border-[#c8a415]/20 animate-pulse" />
         </div>
-        <motion.div initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }} transition={{ duration: 0.8 }} className="relative z-10">
-          <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/10 backdrop-blur-md mb-6 border border-white/20">
-            <Globe className="w-4 h-4 text-[#c8a415]" />
-            <p className="text-[#c8a415] text-sm tracking-widest font-semibold uppercase">{isAm ? 'ከተማችንን ያውቁ' : 'Discover Our City'}</p>
+        
+        <motion.div initial={{ opacity: 0, scale: 0.9, y: 20 }} animate={{ opacity: 1, scale: 1, y: 0 }} transition={{ duration: 0.8, ease: "easeOut" }} className="relative z-10">
+          <div className="inline-flex items-center gap-2 px-6 py-2.5 rounded-full bg-white/10 backdrop-blur-xl mb-8 border border-white/30 shadow-2xl">
+            <Sparkles className="w-5 h-5 text-[#c8a415] animate-pulse" />
+            <p className="text-[#c8a415] text-sm tracking-widest font-bold uppercase">{isAm ? 'ከተማችንን ያውቁ' : 'Discover Our Heritage'}</p>
           </div>
-          <h1 className="text-4xl md:text-6xl font-extrabold text-white tracking-wide mb-6 drop-shadow-lg">{isAm ? 'ስለ ደሴ ከተማ' : 'ABOUT DESSIE CITY'}</h1>
-          <Separator className="w-24 mx-auto bg-gradient-to-r from-transparent via-[#c8a415] to-transparent h-1 mb-6 border-0" />
-          <p className="text-white/80 text-sm tracking-widest uppercase font-medium">Home / About</p>
+          <h1 className="text-5xl md:text-7xl font-extrabold text-white tracking-tight mb-6 drop-shadow-[0_10px_20px_rgba(0,0,0,0.3)]">{isAm ? 'ስለ ደሴ ከተማ' : 'ABOUT DESSIE CITY'}</h1>
+          <Separator className="w-32 mx-auto bg-gradient-to-r from-transparent via-[#c8a415] to-transparent h-1.5 mb-8 border-0 rounded-full" />
+          <p className="text-white/80 text-sm tracking-widest uppercase font-bold bg-black/20 inline-block px-4 py-1.5 rounded-full backdrop-blur-sm">Home / About</p>
         </motion.div>
       </section>
 
-      {/* City Profile */}
-      <section className="py-20 px-4">
-        <div className="max-w-6xl mx-auto">
-          <motion.div variants={staggerContainer} initial="hidden" whileInView="visible" viewport={{ once: true, margin: '-50px' }} className="grid md:grid-cols-2 gap-16 items-center">
-            <div className="order-2 md:order-1 relative">
-              <div className="absolute -inset-4 bg-gradient-to-br from-[#1a6b3c]/5 to-[#c8a415]/5 rounded-3xl -z-10 blur-xl"></div>
-              <h2 className="text-3xl md:text-4xl font-extrabold bg-clip-text text-transparent bg-gradient-to-r from-[#0d4a28] to-[#1a6b3c] mb-6 flex items-center gap-3">
-                <Landmark className="w-8 h-8 text-[#c8a415]" />
-                CITY PROFILE
+      {/* City Profile - Elevated Design */}
+      <section className="py-24 px-4 relative z-20 -mt-16">
+        <div className="max-w-7xl mx-auto">
+          <motion.div variants={staggerContainer} initial="hidden" whileInView="visible" viewport={{ once: true, margin: '-50px' }} className="grid lg:grid-cols-2 gap-16 items-center">
+            
+            <div className="order-2 lg:order-1 relative">
+              <div className="absolute -inset-10 bg-gradient-to-br from-[#1a6b3c]/10 to-[#c8a415]/10 rounded-full -z-10 blur-3xl opacity-70"></div>
+              
+              <div className="inline-flex items-center gap-3 px-4 py-2 rounded-lg bg-[#c8a415]/10 mb-6">
+                <Landmark className="w-6 h-6 text-[#c8a415]" />
+                <span className="text-[#c8a415] font-black tracking-widest uppercase text-sm">City Profile</span>
+              </div>
+              
+              <h2 className="text-4xl md:text-5xl font-extrabold text-gray-900 mb-8 leading-tight">
+                The Heart of the <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#0d4a28] to-[#1a6b3c]">Amhara Highlands</span>
               </h2>
-              <p className="text-gray-600 text-lg leading-relaxed mb-6 font-medium">
-                Dessie is a vibrant and strategically located city in the Amhara Region of Ethiopia, situated along the vital Addis Ababa–Debre Markos corridor. At an elevation of 2,470 meters above sea level, the city enjoys a pleasant subtropical highland climate that has made it a favored destination for trade, education, and administration.
-              </p>
-              <p className="text-gray-600 text-lg leading-relaxed mb-6">
-                Founded in the late 19th century as a garrison town, Dessie has grown into one of Ethiopia&apos;s most important commercial and educational centers. The city serves as a gateway between the northern and central regions of the country, making it a hub for transportation, commerce, and cultural exchange.
-              </p>
-              <p className="text-gray-600 text-lg leading-relaxed border-l-4 border-[#c8a415] pl-4 italic bg-white/50 py-2 rounded-r-lg">
-                Today, Dessie is home to over 450,000 residents and continues to experience rapid urbanization. The city administration is committed to transforming Dessie into a model smart city, leveraging technology to improve governance, service delivery, and quality of life for all citizens.
-              </p>
-            </div>
-            <motion.div variants={fadeInUp} className="order-1 md:order-2 relative group rounded-2xl overflow-hidden shadow-2xl ring-4 ring-white">
-              <div className="absolute inset-0 bg-[#0d4a28]/20 group-hover:bg-transparent transition-colors duration-500 z-10" />
-              <Image src="/dessie-city-hall.png" alt="Dessie City Hall" width={600} height={450} className="w-full h-auto object-cover transform group-hover:scale-105 transition-transform duration-700" />
-              <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-[#0d4a28]/90 via-[#0d4a28]/50 to-transparent p-8 z-20 translate-y-2 group-hover:translate-y-0 transition-transform duration-500">
-                <div className="flex items-center gap-3 text-white">
-                  <div className="p-2 bg-[#c8a415] rounded-full">
-                    <Flag className="w-5 h-5 text-white" />
+              
+              <div className="space-y-6">
+                <div className="flex gap-4">
+                  <div className="mt-1 w-12 h-12 rounded-2xl bg-gradient-to-br from-[#0d4a28] to-[#1a6b3c] flex items-center justify-center shrink-0 shadow-lg text-white">
+                    <Navigation className="w-6 h-6" />
                   </div>
-                  <span className="font-bold text-xl tracking-wide shadow-black">Dessie City Administration</span>
+                  <p className="text-gray-600 text-lg leading-relaxed font-medium">
+                    Dessie is a vibrant and strategically located city in the Amhara Region of Ethiopia, situated along the vital Addis Ababa–Debre Markos corridor.
+                  </p>
+                </div>
+                
+                <div className="flex gap-4">
+                  <div className="mt-1 w-12 h-12 rounded-2xl bg-gradient-to-br from-[#c8a415] to-[#a88810] flex items-center justify-center shrink-0 shadow-lg text-white">
+                    <TreePine className="w-6 h-6" />
+                  </div>
+                  <p className="text-gray-600 text-lg leading-relaxed font-medium">
+                    At an elevation of 2,470 meters, the city enjoys a pleasant subtropical highland climate that has made it a favored destination for trade, education, and administration.
+                  </p>
+                </div>
+                
+                <div className="flex gap-4">
+                  <div className="mt-1 w-12 h-12 rounded-2xl bg-gradient-to-br from-blue-600 to-blue-800 flex items-center justify-center shrink-0 shadow-lg text-white">
+                    <Users2 className="w-6 h-6" />
+                  </div>
+                  <p className="text-gray-600 text-lg leading-relaxed font-medium">
+                    Today, Dessie is home to over 450,000 residents and continues to experience rapid urbanization. The city administration is committed to transforming Dessie into a model smart city.
+                  </p>
+                </div>
+              </div>
+            </div>
+            
+            <motion.div variants={fadeInUp} className="order-1 lg:order-2 relative group rounded-[2.5rem] overflow-hidden shadow-2xl ring-8 ring-white/50 backdrop-blur-xl bg-white/50">
+              <div className="absolute inset-0 bg-gradient-to-tr from-[#0d4a28]/40 to-transparent group-hover:from-transparent transition-all duration-700 z-10" />
+              <Image src="/dessie-city-hall.png" alt="Dessie City Hall" width={800} height={600} className="w-full h-[500px] object-cover transform group-hover:scale-110 transition-transform duration-[2s] ease-out" />
+              <div className="absolute inset-0 border-4 border-white/20 rounded-[2.5rem] z-30 pointer-events-none" />
+              
+              {/* Floating Badge */}
+              <div className="absolute top-8 right-8 z-30 bg-white/90 backdrop-blur-md px-6 py-3 rounded-2xl shadow-xl flex items-center gap-3 transform group-hover:-translate-y-2 group-hover:shadow-2xl transition-all duration-500">
+                <Award className="w-6 h-6 text-[#c8a415]" />
+                <span className="font-extrabold text-[#0d4a28]">Established 1882</span>
+              </div>
+
+              <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-[#0d4a28] via-[#0d4a28]/80 to-transparent p-10 z-20 translate-y-4 group-hover:translate-y-0 transition-transform duration-500">
+                <div className="flex items-center gap-4 text-white">
+                  <div className="p-3 bg-gradient-to-br from-[#c8a415] to-[#a88810] rounded-xl shadow-lg shadow-[#c8a415]/30">
+                    <Flag className="w-7 h-7 text-white" />
+                  </div>
+                  <div>
+                    <span className="block font-black text-2xl tracking-wide">Dessie City Administration</span>
+                    <span className="text-[#c8a415] font-semibold text-sm">Official Headquarters</span>
+                  </div>
                 </div>
               </div>
             </motion.div>
@@ -161,29 +186,32 @@ export default function AboutPage() {
       </section>
 
       {/* Animated Key Facts */}
-      <section className="bg-gradient-to-b from-white to-gray-50 py-20 px-4">
-        <div className="max-w-6xl mx-auto">
+      <section className="bg-gradient-to-b from-white to-gray-50 py-24 px-4 relative">
+        {/* Background Graphic */}
+        <div className="absolute right-0 top-0 w-[500px] h-[500px] bg-[#c8a415]/5 rounded-full blur-[100px] pointer-events-none" />
+        
+        <div className="max-w-7xl mx-auto relative z-10">
           <motion.div initial="hidden" whileInView="visible" viewport={{ once: true, margin: '-50px' }} variants={staggerContainer}>
-            <div className="text-center mb-16">
-              <span className="text-[#c8a415] font-bold tracking-widest uppercase text-sm mb-2 block">By The Numbers</span>
-              <h2 className="text-3xl md:text-4xl font-extrabold text-[#0d4a28]">STATISTICAL OVERVIEW</h2>
-              <div className="w-24 h-1 bg-[#1a6b3c] mx-auto mt-4 rounded-full" />
+            <div className="text-center mb-20">
+              <span className="text-[#c8a415] font-black tracking-widest uppercase text-sm mb-3 block">By The Numbers</span>
+              <h2 className="text-4xl md:text-5xl font-extrabold text-[#0d4a28]">STATISTICAL OVERVIEW</h2>
+              <div className="w-32 h-1.5 bg-gradient-to-r from-[#0d4a28] via-[#1a6b3c] to-[#c8a415] mx-auto mt-6 rounded-full" />
             </div>
 
             {/* Numerical Animated Stats */}
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-6 mb-8">
+            <div className="grid grid-cols-2 lg:grid-cols-4 gap-8 mb-12">
               {keyFacts.map((fact, i) => (
-                <motion.div key={fact.label} variants={fadeInUp}>
-                  <Card className="bg-white/80 backdrop-blur-sm border-white shadow-xl hover:-translate-y-2 transition-transform duration-300 relative overflow-hidden group">
-                    <div className="absolute top-0 right-0 w-32 h-32 bg-gradient-to-br from-[#c8a415]/10 to-[#1a6b3c]/5 rounded-full -mr-10 -mt-10 blur-2xl group-hover:bg-[#c8a415]/20 transition-colors" />
-                    <CardContent className="p-8 flex flex-col items-center text-center gap-3 relative z-10">
-                      <div className="w-16 h-16 rounded-2xl flex items-center justify-center bg-gradient-to-br from-white to-gray-100 shadow-inner border border-gray-100">
-                        <fact.icon className="w-8 h-8 drop-shadow-sm" style={{ color: fact.color }} />
+                <motion.div key={fact.label} variants={fadeInUp} whileHover={{ y: -10 }} className="h-full">
+                  <Card className="h-full bg-white border border-gray-100 shadow-xl hover:shadow-2xl hover:border-[#1a6b3c]/20 transition-all duration-300 relative overflow-hidden group rounded-3xl">
+                    <div className="absolute -top-16 -right-16 w-32 h-32 rounded-full blur-2xl transition-colors duration-500 opacity-20 group-hover:opacity-40" style={{ backgroundColor: fact.color }} />
+                    <CardContent className="p-8 flex flex-col items-center text-center gap-4 relative z-10">
+                      <div className="w-20 h-20 rounded-[1.5rem] flex items-center justify-center bg-gray-50 border-2 border-gray-100 shadow-sm group-hover:scale-110 transition-transform duration-500 group-hover:border-transparent" style={{ color: fact.color }}>
+                        <fact.icon className="w-10 h-10 group-hover:animate-bounce" style={{ color: fact.color }} />
                       </div>
-                      <div className="text-3xl md:text-4xl font-black text-transparent bg-clip-text bg-gradient-to-r from-[#0d4a28] to-[#1a6b3c] drop-shadow-sm my-2">
+                      <div className="text-4xl lg:text-5xl font-black text-transparent bg-clip-text bg-gradient-to-br from-[#0d4a28] to-[#1a6b3c] drop-shadow-sm mt-2">
                         <AnimatedStat value={fact.val} suffix={fact.suffix} />
                       </div>
-                      <span className="text-sm text-gray-500 font-bold uppercase tracking-widest">{fact.label}</span>
+                      <span className="text-sm text-gray-500 font-extrabold uppercase tracking-widest">{fact.label}</span>
                     </CardContent>
                   </Card>
                 </motion.div>
@@ -191,16 +219,18 @@ export default function AboutPage() {
             </div>
 
             {/* Other Text Facts */}
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
+            <div className="grid grid-cols-2 lg:grid-cols-4 gap-6">
               {otherFacts.map((fact, i) => (
-                <motion.div key={fact.label} variants={fadeInUp}>
-                  <Card className="bg-white/50 backdrop-blur-sm border-white shadow-md hover:shadow-lg transition-shadow">
-                    <CardContent className="p-6 flex flex-col items-center text-center gap-2">
-                      <div className="w-10 h-10 rounded-full flex items-center justify-center" style={{ backgroundColor: `${fact.color}10` }}>
-                        <fact.icon className="w-5 h-5" style={{ color: fact.color }} />
+                <motion.div key={fact.label} variants={fadeInUp} whileHover={{ scale: 1.05 }}>
+                  <Card className="bg-gradient-to-br from-white to-gray-50 border-gray-100 shadow-md hover:shadow-xl transition-all rounded-2xl group">
+                    <CardContent className="p-6 flex items-center gap-4">
+                      <div className="w-14 h-14 rounded-full flex items-center justify-center shrink-0 bg-white shadow-md border border-gray-100 group-hover:rotate-12 transition-transform duration-300">
+                        <fact.icon className="w-7 h-7" style={{ color: fact.color }} />
                       </div>
-                      <span className="text-xs text-gray-400 font-bold uppercase tracking-wider">{fact.label}</span>
-                      <span className="text-md font-semibold text-gray-800">{fact.value}</span>
+                      <div className="flex flex-col">
+                        <span className="text-xs text-gray-400 font-bold uppercase tracking-wider mb-1">{fact.label}</span>
+                        <span className="text-lg font-black text-gray-800 leading-none">{fact.value}</span>
+                      </div>
                     </CardContent>
                   </Card>
                 </motion.div>
@@ -210,30 +240,31 @@ export default function AboutPage() {
         </div>
       </section>
 
-      {/* Vision, Mission */}
+      {/* Vision, Mission - Clean UI */}
       <section className="bg-white py-24 px-4 relative overflow-hidden">
-        {/* Abstract Background Patterns */}
-        <div className="absolute top-0 left-0 w-full h-full overflow-hidden opacity-50 pointer-events-none">
-           <svg viewBox="0 0 100 100" preserveAspectRatio="none" className="absolute w-full h-full"><path d="M0 100 C 20 0 50 0 100 100 Z" fill="#f8faf8" /></svg>
-        </div>
+        <div className="absolute top-0 left-0 w-full h-full opacity-[0.03] pointer-events-none" style={{ backgroundImage: 'radial-gradient(#000 1px, transparent 1px)', backgroundSize: '40px 40px' }} />
 
-        <div className="max-w-5xl mx-auto relative z-10">
+        <div className="max-w-6xl mx-auto relative z-10">
           <motion.div initial="hidden" whileInView="visible" viewport={{ once: true, margin: '-50px' }} variants={staggerContainer}>
-            <div className="text-center mb-16">
-              <span className="text-[#c8a415] font-bold tracking-widest uppercase text-sm mb-2 block">Our Ideology</span>
-              <h2 className="text-3xl md:text-4xl font-extrabold text-[#0d4a28]">THE CITY'S FOUNDATION</h2>
-              <div className="w-24 h-1 bg-[#1a6b3c] mx-auto mt-4 rounded-full" />
+            <div className="text-center mb-20">
+              <span className="text-[#c8a415] font-black tracking-widest uppercase text-sm mb-3 block">Our Ideology</span>
+              <h2 className="text-4xl md:text-5xl font-extrabold text-[#0d4a28]">THE CITY'S FOUNDATION</h2>
+              <div className="w-32 h-1.5 bg-gradient-to-r from-[#0d4a28] via-[#1a6b3c] to-[#c8a415] mx-auto mt-6 rounded-full" />
             </div>
             
             <div className="grid md:grid-cols-2 gap-12">
               <motion.div variants={fadeInUp}>
-                <Card className="h-full bg-white/80 backdrop-blur-md border border-gray-100 shadow-xl hover:-translate-y-2 transition-transform duration-300 group">
-                  <CardContent className="p-10 text-center">
-                    <div className="w-20 h-20 mx-auto rounded-full bg-gradient-to-br from-[#c8a415]/20 to-[#c8a415]/5 flex items-center justify-center mb-6 shadow-inner group-hover:scale-110 transition-transform duration-300">
-                      <Eye className="w-10 h-10 text-[#c8a415]" />
+                <Card className="h-full bg-white border border-gray-100 shadow-2xl hover:shadow-[0_20px_50px_rgba(200,164,21,0.15)] hover:-translate-y-2 transition-all duration-500 rounded-3xl overflow-hidden group">
+                  <div className="absolute top-0 left-0 w-full h-2 bg-gradient-to-r from-[#c8a415] to-[#e8c435]" />
+                  <CardContent className="p-12 text-center relative">
+                    <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 opacity-5">
+                      <Eye className="w-64 h-64" />
                     </div>
-                    <h3 className="text-2xl font-bold text-[#0d4a28] mb-4 tracking-wide">Vision</h3>
-                    <p className="text-gray-600 leading-relaxed text-lg">
+                    <div className="w-24 h-24 mx-auto rounded-[2rem] bg-gradient-to-br from-[#c8a415] to-[#a88810] flex items-center justify-center mb-8 shadow-xl shadow-[#c8a415]/30 group-hover:scale-110 transition-transform duration-500">
+                      <Eye className="w-12 h-12 text-white" />
+                    </div>
+                    <h3 className="text-3xl font-extrabold text-[#0d4a28] mb-6 tracking-wide">Our Vision</h3>
+                    <p className="text-gray-600 leading-relaxed text-xl font-medium relative z-10">
                       To make Dessie a model smart city in Ethiopia, known for good governance, sustainable development, and an unparalleled quality of life for all its residents.
                     </p>
                   </CardContent>
@@ -241,13 +272,17 @@ export default function AboutPage() {
               </motion.div>
 
               <motion.div variants={fadeInUp}>
-                <Card className="h-full bg-white/80 backdrop-blur-md border border-gray-100 shadow-xl hover:-translate-y-2 transition-transform duration-300 group">
-                  <CardContent className="p-10 text-center">
-                    <div className="w-20 h-20 mx-auto rounded-full bg-gradient-to-br from-[#1a6b3c]/20 to-[#1a6b3c]/5 flex items-center justify-center mb-6 shadow-inner group-hover:scale-110 transition-transform duration-300">
-                      <Target className="w-10 h-10 text-[#1a6b3c]" />
+                <Card className="h-full bg-white border border-gray-100 shadow-2xl hover:shadow-[0_20px_50px_rgba(26,107,60,0.15)] hover:-translate-y-2 transition-all duration-500 rounded-3xl overflow-hidden group">
+                  <div className="absolute top-0 left-0 w-full h-2 bg-gradient-to-r from-[#0d4a28] to-[#1a6b3c]" />
+                  <CardContent className="p-12 text-center relative">
+                    <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 opacity-5">
+                      <Target className="w-64 h-64" />
                     </div>
-                    <h3 className="text-2xl font-bold text-[#0d4a28] mb-4 tracking-wide">Mission</h3>
-                    <p className="text-gray-600 leading-relaxed text-lg">
+                    <div className="w-24 h-24 mx-auto rounded-[2rem] bg-gradient-to-br from-[#0d4a28] to-[#1a6b3c] flex items-center justify-center mb-8 shadow-xl shadow-[#1a6b3c]/30 group-hover:scale-110 transition-transform duration-500">
+                      <Target className="w-12 h-12 text-white" />
+                    </div>
+                    <h3 className="text-3xl font-extrabold text-[#0d4a28] mb-6 tracking-wide">Our Mission</h3>
+                    <p className="text-gray-600 leading-relaxed text-xl font-medium relative z-10">
                       Provide efficient, transparent, and citizen-centered municipal services while actively promoting local economic growth, social equity, and cultural preservation.
                     </p>
                   </CardContent>
@@ -259,41 +294,47 @@ export default function AboutPage() {
       </section>
 
       {/* History Timeline */}
-      <section className="bg-gray-50 py-24 px-4 overflow-hidden relative">
-        <div className="absolute right-0 top-1/4 w-96 h-96 bg-[#c8a415]/10 rounded-full blur-3xl" />
-        <div className="absolute left-0 bottom-1/4 w-96 h-96 bg-[#1a6b3c]/10 rounded-full blur-3xl" />
+      <section className="bg-gradient-to-b from-gray-50 to-white py-32 px-4 overflow-hidden relative">
+        <div className="absolute left-0 top-1/4 w-[800px] h-[800px] bg-[#1a6b3c]/5 rounded-full blur-[120px] pointer-events-none" />
         
         <div className="max-w-5xl mx-auto relative z-10">
           <motion.div initial="hidden" whileInView="visible" viewport={{ once: true, margin: '-50px' }} variants={staggerContainer}>
-            <div className="text-center mb-16">
-              <span className="text-[#1a6b3c] font-bold tracking-widest uppercase text-sm mb-2 block">Our Journey</span>
-              <h2 className="text-3xl md:text-4xl font-extrabold text-[#0d4a28]">HISTORICAL MILESTONES</h2>
-              <div className="w-24 h-1 bg-[#c8a415] mx-auto mt-4 rounded-full" />
+            <div className="text-center mb-24">
+              <span className="text-[#1a6b3c] font-black tracking-widest uppercase text-sm mb-3 block">Our Journey</span>
+              <h2 className="text-4xl md:text-5xl font-extrabold text-[#0d4a28]">HISTORICAL MILESTONES</h2>
+              <div className="w-32 h-1.5 bg-gradient-to-r from-[#0d4a28] via-[#1a6b3c] to-[#c8a415] mx-auto mt-6 rounded-full" />
             </div>
             
             <div className="relative">
-              {/* Center Line */}
-              <div className="absolute left-6 md:left-1/2 top-0 bottom-0 w-1 bg-gradient-to-b from-[#1a6b3c]/50 via-[#c8a415]/50 to-[#1a6b3c]/5 transform md:-translate-x-1/2 rounded-full" />
+              {/* Glowing Center Line */}
+              <div className="absolute left-6 md:left-1/2 top-0 bottom-0 w-1.5 md:-translate-x-1/2 rounded-full overflow-hidden bg-gray-200">
+                <motion.div 
+                  initial={{ height: 0 }}
+                  whileInView={{ height: '100%' }}
+                  transition={{ duration: 3, ease: "linear" }}
+                  viewport={{ once: true }}
+                  className="w-full bg-gradient-to-b from-[#1a6b3c] via-[#c8a415] to-[#1a6b3c]"
+                />
+              </div>
               
-              <div className="space-y-12">
+              <div className="space-y-16">
                 {timeline.map((item, i) => (
                   <motion.div key={item.year} variants={fadeInUp} className={`relative flex items-center gap-8 md:gap-0 ${i % 2 === 0 ? 'md:flex-row' : 'md:flex-row-reverse'}`}>
                     
                     {/* Content Box */}
-                    <div className={`w-full ml-16 md:ml-0 md:w-1/2 ${i % 2 === 0 ? 'md:pr-16 md:text-right' : 'md:pl-16 md:text-left'}`}>
-                      <Card className="border-0 shadow-xl hover:shadow-2xl hover:-translate-y-1 transition-all duration-300 relative overflow-hidden group">
-                        <div className={`absolute top-0 ${i % 2 === 0 ? 'right-0' : 'left-0'} w-2 h-full bg-[#c8a415]`} />
-                        <CardContent className="p-6 md:p-8">
-                          <span className="inline-block md:hidden text-2xl font-black text-[#1a6b3c] mb-2">{item.year}</span>
-                          <p className="text-gray-600 text-lg leading-relaxed">{item.desc}</p>
+                    <div className={`w-full ml-16 md:ml-0 md:w-1/2 ${i % 2 === 0 ? 'md:pr-20 md:text-right' : 'md:pl-20 md:text-left'}`}>
+                      <Card className="border-0 shadow-[0_10px_30px_rgba(0,0,0,0.05)] hover:shadow-[0_20px_40px_rgba(0,0,0,0.1)] hover:-translate-y-2 transition-all duration-500 relative overflow-hidden group rounded-2xl">
+                        <div className={`absolute top-0 ${i % 2 === 0 ? 'right-0' : 'left-0'} w-3 h-full bg-gradient-to-b from-[#1a6b3c] to-[#c8a415]`} />
+                        <CardContent className="p-8 md:p-10">
+                          <span className="inline-block text-3xl font-black text-[#1a6b3c] mb-4 bg-[#1a6b3c]/10 px-4 py-1.5 rounded-xl">{item.year}</span>
+                          <p className="text-gray-600 text-lg leading-relaxed font-medium">{item.desc}</p>
                         </CardContent>
                       </Card>
                     </div>
 
                     {/* Timeline Node */}
-                    <div className="absolute left-6 md:left-1/2 w-12 h-12 rounded-full bg-white border-4 border-[#1a6b3c] shadow-lg transform -translate-x-1/2 z-10 flex items-center justify-center group">
-                      <span className="hidden md:block text-[#1a6b3c] font-black text-sm absolute -top-8 w-20 text-center -ml-4">{item.year}</span>
-                      <History className="w-5 h-5 text-[#c8a415]" />
+                    <div className="absolute left-6 md:left-1/2 w-14 h-14 rounded-full bg-white border-[5px] border-[#1a6b3c] shadow-[0_0_20px_rgba(26,107,60,0.3)] transform -translate-x-1/2 z-10 flex items-center justify-center group hover:scale-125 transition-transform duration-300 hover:border-[#c8a415]">
+                      <History className="w-6 h-6 text-[#1a6b3c] group-hover:text-[#c8a415] transition-colors" />
                     </div>
 
                   </motion.div>
@@ -305,34 +346,34 @@ export default function AboutPage() {
       </section>
 
       {/* Economy */}
-      <section className="bg-white py-24 px-4 border-t border-gray-100 relative">
-        <div className="max-w-6xl mx-auto">
+      <section className="bg-gradient-to-tr from-[#0d4a28] to-[#1a6b3c] py-32 px-4 relative overflow-hidden text-white">
+        {/* Background Texture */}
+        <div className="absolute inset-0 opacity-10" style={{ backgroundImage: 'radial-gradient(circle at 2px 2px, rgba(255,255,255,1) 1px, transparent 0)', backgroundSize: '40px 40px' }} />
+        
+        <div className="max-w-7xl mx-auto relative z-10">
           <motion.div initial="hidden" whileInView="visible" viewport={{ once: true, margin: '-50px' }} variants={staggerContainer}>
-            <div className="text-center mb-16">
-              <span className="text-[#c8a415] font-bold tracking-widest uppercase text-sm mb-2 block">Growth & Prosperity</span>
-              <h2 className="text-3xl md:text-4xl font-extrabold text-[#0d4a28]">ECONOMY & COMMERCE</h2>
-              <div className="w-24 h-1 bg-[#1a6b3c] mx-auto mt-4 rounded-full" />
+            <div className="text-center mb-20">
+              <span className="text-[#c8a415] font-black tracking-widest uppercase text-sm mb-3 block drop-shadow-md">Growth & Prosperity</span>
+              <h2 className="text-4xl md:text-5xl font-extrabold text-white">ECONOMY & COMMERCE</h2>
+              <div className="w-32 h-1.5 bg-[#c8a415] mx-auto mt-6 rounded-full" />
             </div>
             
-            <motion.p variants={fadeInUp} className="text-gray-600 text-lg text-center max-w-4xl mx-auto mb-16 leading-relaxed font-medium">
+            <motion.p variants={fadeInUp} className="text-white/90 text-xl text-center max-w-4xl mx-auto mb-20 leading-relaxed font-medium drop-shadow-sm">
               Dessie&apos;s economy is diverse and rapidly growing, driven by trade, agriculture, manufacturing, and services. As a major commercial crossroads, the city connects producers from the surrounding highlands with markets across Ethiopia. The city&apos;s strategic location on the Addis–Debre Markos corridor has attracted significant investment in retail, hospitality, and light industry.
             </motion.p>
             
-            <div className="grid md:grid-cols-3 gap-8">
+            <div className="grid md:grid-cols-3 gap-10">
               {economyStats.map((stat, i) => (
-                <motion.div key={stat.label} variants={fadeInUp}>
-                  <Card className="bg-gradient-to-br from-white to-gray-50 border border-gray-100 shadow-xl hover:shadow-2xl hover:-translate-y-2 transition-all duration-300 relative overflow-hidden group">
-                    <div className="absolute bottom-0 right-0 opacity-5 transform translate-x-1/4 translate-y-1/4 group-hover:scale-110 transition-transform duration-500">
-                      <stat.icon className="w-48 h-48" />
-                    </div>
-                    <CardContent className="p-10 text-center relative z-10">
-                      <div className="w-20 h-20 rounded-full mx-auto mb-6 flex items-center justify-center bg-white shadow-md border border-gray-100 group-hover:border-[#c8a415] transition-colors">
-                        <stat.icon className="w-10 h-10" style={{ color: stat.color }} />
+                <motion.div key={stat.label} variants={fadeInUp} whileHover={{ y: -15 }}>
+                  <Card className="bg-white/10 backdrop-blur-xl border border-white/20 shadow-2xl overflow-hidden group rounded-3xl h-full">
+                    <CardContent className="p-12 text-center relative z-10">
+                      <div className="w-24 h-24 rounded-3xl mx-auto mb-8 flex items-center justify-center bg-white shadow-[0_10px_20px_rgba(0,0,0,0.2)] group-hover:rotate-12 transition-transform duration-500">
+                        <stat.icon className="w-12 h-12" style={{ color: stat.color }} />
                       </div>
-                      <div className="text-4xl md:text-5xl font-black text-transparent bg-clip-text bg-gradient-to-r from-[#0d4a28] to-[#1a6b3c] drop-shadow-sm mb-3">
+                      <div className="text-5xl font-black text-white drop-shadow-lg mb-4 tracking-tight">
                          <AnimatedStat value={stat.val} prefix={stat.prefix} suffix={stat.suffix} />
                       </div>
-                      <div className="text-md text-gray-500 font-bold uppercase tracking-widest">{stat.label}</div>
+                      <div className="text-lg text-[#c8a415] font-black uppercase tracking-widest">{stat.label}</div>
                     </CardContent>
                   </Card>
                 </motion.div>
