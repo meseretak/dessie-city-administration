@@ -118,7 +118,7 @@ export default function ContactPage() {
   return (
     <main className="bg-gray-50/50">
       {/* Page Banner */}
-      <section className="bg-gradient-to-br from-[#0d4a28] to-[#1a6b3c] py-24 text-center relative overflow-hidden">
+      <section className="bg-gradient-to-br from-[#0d4a28] to-[#1a6b3c] py-10 text-center relative overflow-hidden">
         <div className="absolute inset-0 opacity-10">
           <div className="absolute top-4 left-1/4 w-32 h-32 rounded-full border border-white/20 animate-[ping_3s_ease-in-out_infinite]" />
           <div className="absolute bottom-8 right-1/3 w-48 h-48 rounded-full border border-white/20 animate-pulse" />
@@ -137,7 +137,7 @@ export default function ContactPage() {
       </section>
 
       {/* Contact Info Cards */}
-      <section className="py-20 px-4 -mt-10 relative z-10">
+      <section className="py-12 px-4 -mt-10 relative z-10">
         <div className="max-w-6xl mx-auto">
           <motion.div initial="hidden" whileInView="visible" viewport={{ once: true, margin: '-50px' }} variants={staggerContainer} className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
             {contactInfo.map((c) => (
@@ -159,7 +159,7 @@ export default function ContactPage() {
       </section>
 
       {/* Department Directory */}
-      <section className="bg-white py-24 px-4 border-y border-gray-100">
+      <section className="bg-white py-10 px-4 border-y border-gray-100">
         <div className="max-w-6xl mx-auto">
           <motion.div initial="hidden" whileInView="visible" viewport={{ once: true, margin: '-50px' }} variants={staggerContainer}>
             <div className="text-center mb-16">
@@ -195,7 +195,7 @@ export default function ContactPage() {
       </section>
 
       {/* Contact Form & Office Locations */}
-      <section className="bg-gradient-to-b from-gray-50 to-white py-24 px-4 relative overflow-hidden">
+      <section className="bg-gradient-to-b from-gray-50 to-white py-10 px-4 relative overflow-hidden">
         <div className="absolute right-0 top-0 w-[500px] h-[500px] bg-[#c8a415]/5 rounded-full blur-3xl pointer-events-none" />
         <div className="absolute left-0 bottom-0 w-[500px] h-[500px] bg-[#1a6b3c]/5 rounded-full blur-3xl pointer-events-none" />
         

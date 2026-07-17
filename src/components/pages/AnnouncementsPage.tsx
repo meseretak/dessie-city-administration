@@ -103,7 +103,7 @@ export default function AnnouncementsPage({ navigateTo }: AnnouncementsPageProps
   return (
     <div className="min-h-screen">
       {/* Page Banner */}
-      <section className="bg-[#0d4a28] py-16 px-4">
+      <section className="bg-[#0d4a28] py-10 px-4">
         <div className="max-w-7xl mx-auto text-center">
           <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5 }}>
             <h1 className="text-4xl md:text-5xl font-extrabold text-white uppercase tracking-wider gov-heading-display">{isAm ? 'ማስታወቂያዎች' : 'Announcements'}</h1>

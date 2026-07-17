@@ -905,7 +905,7 @@ function EmptyState({ hasActiveFilters }: { hasActiveFilters: boolean }) {
     <motion.div
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
-      className="text-center py-20 px-4"
+      className="text-center py-12 px-4"
     >
       <div className="w-20 h-20 mx-auto mb-5 rounded-full bg-[#1a6b3c]/10 flex items-center justify-center">
         <Search className="w-10 h-10 text-[#1a6b3c]/40" />
@@ -1046,7 +1046,7 @@ export default function VacancyPage({ navigateTo }: VacancyPageProps) {
   return (
     <div className="min-h-screen">
       {/* Page Header */}
-      <section className="bg-[#0d4a28] py-16 px-4">
+      <section className="bg-[#0d4a28] py-10 px-4">
         <div className="max-w-7xl mx-auto text-center">
           <motion.div
             initial={{ opacity: 0, y: 20 }}

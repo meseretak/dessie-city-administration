@@ -114,7 +114,7 @@ export default function AboutPage() {
       </section>
 
       {/* The Story Section */}
-      <section className="py-20 px-4 relative">
+      <section className="py-12 px-4 relative">
         <div className="max-w-7xl mx-auto">
           <div className="grid lg:grid-cols-2 gap-16 items-center">
             
@@ -162,7 +162,7 @@ export default function AboutPage() {
       </section>
 
       {/* Vision & Mission (Elevated Design) */}
-      <section className="py-24 px-4 bg-white border-t border-gray-100">
+      <section className="py-10 px-4 bg-white border-t border-gray-100">
         <div className="max-w-7xl mx-auto">
           <div className="text-center mb-20">
             <span className="text-[#c8a415] font-bold tracking-widest uppercase text-xs mb-3 block">Our Guiding Principles</span>

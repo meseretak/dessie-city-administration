@@ -333,7 +333,7 @@ export default function MayorPage() {
   return (
     <main>
       {/* Page Banner */}
-      <section className="bg-[#0d4a28] py-16 text-center relative overflow-hidden">
+      <section className="bg-[#0d4a28] py-10 text-center relative overflow-hidden">
         <div className="absolute inset-0 opacity-10">
           <div className="absolute top-4 right-1/4 w-40 h-40 rounded-full border border-white/20" />
           <div className="absolute bottom-6 left-1/3 w-24 h-24 rounded-full border border-white/20" />
@@ -347,7 +347,7 @@ export default function MayorPage() {
       </section>
 
       {/* ═══ MAYOR — FULL PROFILE CARD ═══ */}
-      <section className="bg-white py-16 md:py-20 px-4">
+      <section className="bg-white py-10 md:py-12 px-4">
         <div className="max-w-5xl mx-auto">
           <motion.div initial="hidden" whileInView="visible" viewport={{ once: true, margin: '-50px' }} variants={staggerContainer}>
             <motion.div variants={fadeInUp} className="bg-gradient-to-br from-[#f8faf8] to-white rounded-3xl border border-[#e2e8e0] overflow-hidden shadow-lg">
@@ -397,7 +397,7 @@ export default function MayorPage() {
       </section>
 
       {/* ═══ DEPUTY MAYOR — FULL PROFILE CARD ═══ */}
-      <section className="bg-[#f8faf8] py-12 md:py-16 px-4">
+      <section className="bg-[#f8faf8] py-12 md:py-10 px-4">
         <div className="max-w-5xl mx-auto">
           <motion.div initial="hidden" whileInView="visible" viewport={{ once: true, margin: '-50px' }} variants={staggerContainer}>
             <motion.div variants={fadeInUp} className="bg-white rounded-3xl border border-[#e2e8e0] overflow-hidden shadow-lg">
@@ -439,7 +439,7 @@ export default function MayorPage() {
       </section>
 
       {/* Mayor's Message */}
-      <section className="bg-white py-16 md:py-20 px-4">
+      <section className="bg-white py-10 md:py-12 px-4">
         <div className="max-w-4xl mx-auto">
           <motion.div initial="hidden" whileInView="visible" viewport={{ once: true, margin: '-50px' }} variants={staggerContainer}>
             <motion.div variants={fadeInUp} className="text-center mb-8">
@@ -467,7 +467,7 @@ export default function MayorPage() {
 
 
       {/* ═══ EXECUTIVE CABINET MEMBERS — WITH PAGINATION ═══ */}
-      <section className="bg-[#f8faf8] py-16 md:py-20 px-4">
+      <section className="bg-[#f8faf8] py-10 md:py-12 px-4">
         <div className="max-w-6xl mx-auto">
           <motion.div initial="hidden" whileInView="visible" viewport={{ once: true, margin: '-50px' }} variants={staggerContainer}>
             <motion.div variants={fadeInUp} className="text-center mb-10">
@@ -566,7 +566,7 @@ export default function MayorPage() {
       </section>
 
       {/* Key Priorities */}
-      <section className="bg-white py-16 md:py-20 px-4">
+      <section className="bg-white py-10 md:py-12 px-4">
         <div className="max-w-6xl mx-auto">
           <motion.div initial="hidden" whileInView="visible" viewport={{ once: true, margin: '-50px' }} variants={staggerContainer}>
             <motion.div variants={fadeInUp} className="text-center mb-10">
@@ -593,7 +593,7 @@ export default function MayorPage() {
       </section>
 
       {/* Recent Speeches / Announcements */}
-      <section className="bg-[#f8faf8] py-16 md:py-20 px-4">
+      <section className="bg-[#f8faf8] py-10 md:py-12 px-4">
         <div className="max-w-4xl mx-auto">
           <motion.div initial="hidden" whileInView="visible" viewport={{ once: true, margin: '-50px' }} variants={staggerContainer}>
             <motion.div variants={fadeInUp} className="text-center mb-10">

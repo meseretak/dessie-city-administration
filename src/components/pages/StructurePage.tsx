@@ -85,7 +85,7 @@ export default function StructurePage() {
   return (
     <main className="bg-white min-h-screen pb-20">
       {/* Page Banner */}
-      <section className="bg-[#0d4a28] py-16 text-center relative overflow-hidden">
+      <section className="bg-[#0d4a28] py-10 text-center relative overflow-hidden">
         <div className="absolute inset-0 opacity-10">
           <div className="absolute top-4 right-1/4 w-40 h-40 rounded-full border border-white/20" />
           <div className="absolute bottom-6 left-1/3 w-24 h-24 rounded-full border border-white/20" />
@@ -98,7 +98,7 @@ export default function StructurePage() {
         </motion.div>
       </section>
 
-      <section className="py-16 md:py-20 px-4">
+      <section className="py-10 md:py-12 px-4">
         <div className="max-w-7xl mx-auto">
           <motion.div initial="hidden" whileInView="visible" viewport={{ once: true, margin: '-50px' }} variants={staggerContainer}>
             <motion.div variants={fadeInUp} className="text-center mb-16">

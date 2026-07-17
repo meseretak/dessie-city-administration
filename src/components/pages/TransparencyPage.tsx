@@ -110,14 +110,14 @@ export default function TransparencyPage() {
   return (
     <div className="min-h-screen">
       {/* Page Banner */}
-      <section className="bg-[#0d4a28] py-20 px-4 text-center relative overflow-hidden">
+      <section className="bg-[#0d4a28] py-12 px-4 text-center relative overflow-hidden">
         <div className="absolute inset-0 opacity-10" style={{ backgroundImage: 'radial-gradient(circle at 2px 2px, rgba(255,255,255,0.3) 1px, transparent 0)', backgroundSize: '32px 32px' }} />
         <motion.h1 initial={{ opacity: 0, y: -20 }} animate={{ opacity: 1, y: 0 }} className="text-4xl md:text-5xl font-bold text-white tracking-wide">TRANSPARENCY & ACCOUNTABILITY</motion.h1>
         <motion.p initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.2 }} className="text-green-200 mt-4 text-lg md:text-xl max-w-2xl mx-auto">Open government, accountable leadership</motion.p>
       </section>
 
       {/* Transparency Commitment */}
-      <section className="bg-white py-16 px-4">
+      <section className="bg-white py-10 px-4">
         <div className="max-w-4xl mx-auto text-center">
           <motion.div initial="hidden" whileInView="visible" viewport={{ once: true }} custom={0} variants={fadeUp} className="mb-8">
             <Quote className="w-10 h-10 text-[#c8a415] mx-auto mb-4" />
@@ -145,7 +145,7 @@ export default function TransparencyPage() {
       <Separator className="bg-[#c8a415]" />
 
       {/* Annual Budget */}
-      <section className="bg-[#f8faf8] py-16 px-4">
+      <section className="bg-[#f8faf8] py-10 px-4">
         <div className="max-w-6xl mx-auto">
           <motion.h2 initial="hidden" whileInView="visible" viewport={{ once: true }} custom={0} variants={fadeUp} className="gov-section-title text-3xl font-bold text-[#0d4a28] mb-2 text-center">FY 2025/26 BUDGET</motion.h2>
           <motion.div initial="hidden" whileInView="visible" viewport={{ once: true }} custom={1} variants={fadeUp} className="w-16 h-1 bg-[#c8a415] mx-auto mb-4" />
@@ -173,7 +173,7 @@ export default function TransparencyPage() {
       </section>
 
       {/* Annual Reports */}
-      <section className="bg-white py-16 px-4">
+      <section className="bg-white py-10 px-4">
         <div className="max-w-6xl mx-auto">
           <motion.h2 initial="hidden" whileInView="visible" viewport={{ once: true }} custom={0} variants={fadeUp} className="gov-section-title text-3xl font-bold text-[#0d4a28] mb-2 text-center">ANNUAL REPORTS</motion.h2>
           <motion.div initial="hidden" whileInView="visible" viewport={{ once: true }} custom={1} variants={fadeUp} className="w-16 h-1 bg-[#c8a415] mx-auto mb-10" />
@@ -201,7 +201,7 @@ export default function TransparencyPage() {
       </section>
 
       {/* Procurement & Tenders */}
-      <section className="bg-[#f8faf8] py-16 px-4">
+      <section className="bg-[#f8faf8] py-10 px-4">
         <div className="max-w-6xl mx-auto">
           <motion.h2 initial="hidden" whileInView="visible" viewport={{ once: true }} custom={0} variants={fadeUp} className="gov-section-title text-3xl font-bold text-[#0d4a28] mb-2 text-center">RECENT PROCUREMENTS</motion.h2>
           <motion.div initial="hidden" whileInView="visible" viewport={{ once: true }} custom={1} variants={fadeUp} className="w-16 h-1 bg-[#c8a415] mx-auto mb-10" />
@@ -236,7 +236,7 @@ export default function TransparencyPage() {
       </section>
 
       {/* Performance Dashboard */}
-      <section className="bg-white py-16 px-4">
+      <section className="bg-white py-10 px-4">
         <div className="max-w-6xl mx-auto">
           <motion.h2 initial="hidden" whileInView="visible" viewport={{ once: true }} custom={0} variants={fadeUp} className="gov-section-title text-3xl font-bold text-[#0d4a28] mb-2 text-center">KEY PERFORMANCE INDICATORS</motion.h2>
           <motion.div initial="hidden" whileInView="visible" viewport={{ once: true }} custom={1} variants={fadeUp} className="w-16 h-1 bg-[#c8a415] mx-auto mb-10" />
@@ -263,7 +263,7 @@ export default function TransparencyPage() {
       </section>
 
       {/* Open Data */}
-      <section className="bg-[#f8faf8] py-16 px-4">
+      <section className="bg-[#f8faf8] py-10 px-4">
         <div className="max-w-6xl mx-auto">
           <motion.h2 initial="hidden" whileInView="visible" viewport={{ once: true }} custom={0} variants={fadeUp} className="gov-section-title text-3xl font-bold text-[#0d4a28] mb-2 text-center">OPEN DATA</motion.h2>
           <motion.div initial="hidden" whileInView="visible" viewport={{ once: true }} custom={1} variants={fadeUp} className="w-16 h-1 bg-[#c8a415] mx-auto mb-4" />
@@ -291,7 +291,7 @@ export default function TransparencyPage() {
       </section>
 
       {/* Audit & Compliance */}
-      <section className="bg-[#f8faf8] py-16 px-4">
+      <section className="bg-[#f8faf8] py-10 px-4">
         <div className="max-w-6xl mx-auto">
           <motion.h2 initial="hidden" whileInView="visible" viewport={{ once: true }} custom={0} variants={fadeUp} className="gov-section-title text-3xl font-bold text-[#0d4a28] mb-2 text-center">AUDIT & COMPLIANCE</motion.h2>
           <motion.div initial="hidden" whileInView="visible" viewport={{ once: true }} custom={1} variants={fadeUp} className="w-16 h-1 bg-[#c8a415] mx-auto mb-4" />

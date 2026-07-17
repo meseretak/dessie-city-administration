@@ -805,7 +805,7 @@ export default function HomePage() {
       </section>
 
       {/* ═══════════════════ 2. CITIZEN SERVICES & OPPORTUNITIES ═══════════════════ */}
-      <section id="services" className="py-14 bg-gradient-to-b from-white to-[#f8faf8]">
+      <section id="services" className="py-8 bg-gradient-to-b from-white to-[#f8faf8]">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex flex-col lg:flex-row gap-8">
             {/* Left Column: Services (70%) */}
@@ -1117,7 +1117,7 @@ export default function HomePage() {
       </section>
 
       {/* ═══════════════════ 2.5 LATEST NEWS ═══════════════════ */}
-      <section id="latest-news" className="py-16 bg-white">
+      <section id="latest-news" className="py-8 bg-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <motion.div
             initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }}
@@ -1224,7 +1224,7 @@ export default function HomePage() {
 
 
       {/* ═══════════════════ 3.  HOTELS ═══════════════════ */}
-      <section className="py-10 bg-[#f8faf8]">
+      <section className="py-8 bg-[#f8faf8]">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <h2 className="text-3xl md:text-4xl font-bold text-[#1a1a1a] text-center gov-section-title inline-block mb-8">
             HOTELS
@@ -1460,7 +1460,7 @@ export default function HomePage() {
       </section>
 
       {/* ═══════════════════ 4b. PROMOTIONAL SLIDER ═══════════════════ */}
-      <section className="py-12 bg-gradient-to-b from-[#f0fdf4] to-white overflow-hidden">
+      <section className="py-8 bg-gradient-to-b from-[#f0fdf4] to-white overflow-hidden">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
           {/* Header */}
           <div className="text-center mb-8">
@@ -1617,7 +1617,7 @@ export default function HomePage() {
       </section>
 
       {/* ═══════════════════ 5. MAYOR'S MESSAGE ═══════════════════ */}
-      <section className="py-14 bg-[#0d4a28] relative overflow-hidden">
+      <section className="py-8 bg-[#0d4a28] relative overflow-hidden">
         {/* Decorative elements */}
         <div className="absolute inset-0 opacity-[0.04]">
           <div className="absolute top-0 left-0 w-[600px] h-[600px] bg-[#c8a415] rounded-full -translate-x-1/2 -translate-y-1/2" />
@@ -1715,7 +1715,7 @@ export default function HomePage() {
 
 
       {/* ═══════════════════ 7. FEATURED PROJECTS ═══════════════════ */}
-      <section className="py-10 bg-[#f8faf8]">
+      <section className="py-8 bg-[#f8faf8]">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between mb-8">
             <h2 className="text-3xl md:text-4xl font-bold text-[#1a1a1a] gov-section-title inline-block">
@@ -1763,7 +1763,7 @@ export default function HomePage() {
       </section>
 
       {/* ═══════════════════ 8. INVEST IN DESSIE ═══════════════════ */}
-      <section className="py-10 bg-white">
+      <section className="py-8 bg-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <h2 className="text-3xl md:text-4xl font-bold text-[#1a1a1a] text-center gov-section-title inline-block mb-8">
             INVEST IN DESSIE
@@ -1821,7 +1821,7 @@ export default function HomePage() {
       </section>
 
       {/* ═══════════════════ 9. HERITAGE & HISTORICAL PLACES ═══════════════════ */}
-      <section className="py-10 bg-[#f8faf8]">
+      <section className="py-8 bg-[#f8faf8]">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between mb-6">
             <div>
@@ -1865,7 +1865,7 @@ export default function HomePage() {
       </section>
 
       {/* ═══════════════════ 9b. DESSIE CITY LANDMARKS ═══════════════════ */}
-      <section className="py-10 bg-white">
+      <section className="py-8 bg-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between mb-6">
             <div>
@@ -1982,7 +1982,7 @@ export default function HomePage() {
       </section>
 
       {/* ═══════════════════ RESOURCES & DOCUMENTS + EMERGENCY ═══════════════════ */}
-      <section id="resources-section" className="py-10 bg-[#f8faf8]">
+      <section id="resources-section" className="py-8 bg-[#f8faf8]">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 items-start">
             {/* Resources — 2/3 */}
@@ -2207,7 +2207,7 @@ export default function HomePage() {
       </section>
 
       {/* ═══════════════════ 12. INTERACTIVE MAP ═══════════════════ */}
-      <section className="py-10 bg-[#f8faf8]">
+      <section className="py-8 bg-[#f8faf8]">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <h2 className="text-3xl md:text-4xl font-bold text-[#1a1a1a] text-center gov-section-title inline-block mb-8">
             EXPLORE DESSIE

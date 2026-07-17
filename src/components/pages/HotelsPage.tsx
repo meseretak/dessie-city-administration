@@ -241,7 +241,7 @@ export default function HotelsPage() {
       <Separator className="bg-[#c8a415]" />
 
       {/* 3. Featured Hotels Grid */}
-      <section className="py-16 px-4 bg-[#f8faf8]">
+      <section className="py-10 px-4 bg-[#f8faf8]">
         <div className="max-w-6xl mx-auto">
           <motion.h2
             initial="hidden"
@@ -362,7 +362,7 @@ export default function HotelsPage() {
       </section>
 
       {/* 4. Why Stay in Dessie */}
-      <section className="py-16 px-4 bg-white">
+      <section className="py-10 px-4 bg-white">
         <div className="max-w-6xl mx-auto">
           <motion.h2
             initial="hidden"
@@ -410,7 +410,7 @@ export default function HotelsPage() {
       </section>
 
       {/* 5. Book Your Stay CTA */}
-      <section className="bg-[#0d4a28] py-16 px-4">
+      <section className="bg-[#0d4a28] py-10 px-4">
         <motion.div
           initial="hidden"
           whileInView="visible"

@@ -675,7 +675,7 @@ export default function BidsPage({ navigateTo }: BidsPageProps) {
   return (
     <div className="min-h-screen">
       {/* Page Banner */}
-      <section className="bg-[#0d4a28] py-16 px-4">
+      <section className="bg-[#0d4a28] py-10 px-4">
         <div className="max-w-7xl mx-auto text-center">
           <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5 }}>
             <Gavel className="w-12 h-12 text-[#c8a415] mx-auto mb-4" />
@@ -793,7 +793,7 @@ export default function BidsPage({ navigateTo }: BidsPageProps) {
             <motion.div
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
-              className="text-center py-20 text-muted-foreground"
+              className="text-center py-12 text-muted-foreground"
             >
               <Gavel className="w-16 h-16 mx-auto mb-4 opacity-40" />
               <p className="text-lg font-medium">No tenders match your filters</p>
@@ -808,7 +808,7 @@ export default function BidsPage({ navigateTo }: BidsPageProps) {
       <Separator className="max-w-7xl mx-auto" />
 
       {/* How to Participate */}
-      <section className="bg-white py-16 px-4">
+      <section className="bg-white py-10 px-4">
         <div className="max-w-7xl mx-auto">
           <motion.h2
             initial={{ opacity: 0, y: 20 }}
@@ -858,7 +858,7 @@ export default function BidsPage({ navigateTo }: BidsPageProps) {
       <Separator className="max-w-7xl mx-auto" />
 
       {/* Vendor Registration CTA */}
-      <section className="bg-[#f8faf8] py-16 px-4">
+      <section className="bg-[#f8faf8] py-10 px-4">
         <div className="max-w-7xl mx-auto">
           <motion.div
             initial={{ opacity: 0, y: 20 }}

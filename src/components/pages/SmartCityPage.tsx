@@ -127,7 +127,7 @@ export default function SmartCityPage() {
       </section>
 
       {/* ═══ DYNAMIC ONGOING PROJECTS (Glassmorphism) ═══ */}
-      <section className="py-24 relative overflow-hidden bg-[#0a1f12]">
+      <section className="py-10 relative overflow-hidden bg-[#0a1f12]">
         {/* Deep background for contrast */}
         <div className="absolute inset-0 opacity-20 bg-[radial-gradient(circle_at_bottom_left,#1a6b3c_0%,transparent_50%)]" />
         <div className="max-w-6xl mx-auto px-4 relative z-10">
@@ -179,7 +179,7 @@ export default function SmartCityPage() {
       </section>
 
       {/* ═══ CORE TECHNOLOGIES (Clean & Modern) ═══ */}
-      <section className="py-24 bg-white relative">
+      <section className="py-10 bg-white relative">
         <div className="max-w-6xl mx-auto px-4">
           <motion.div initial="hidden" whileInView="visible" viewport={{ once: true, margin: '-50px' }} variants={staggerContainer} className="text-center mb-16">
             <span className="text-[#1a6b3c] font-bold tracking-widest uppercase text-xs mb-2 block">Infrastructure</span>
@@ -249,7 +249,7 @@ export default function SmartCityPage() {
       </section>
 
       {/* ═══ CTA SECTION (Glassmorphism) ═══ */}
-      <section className="py-24 relative overflow-hidden bg-gradient-to-br from-[#0d4a28] to-[#1a6b3c]">
+      <section className="py-10 relative overflow-hidden bg-gradient-to-br from-[#0d4a28] to-[#1a6b3c]">
         {/* Glassmorphism elements */}
         <div className="absolute top-0 right-0 -translate-y-1/2 translate-x-1/3 w-[600px] h-[600px] bg-white/5 rounded-full blur-[100px] pointer-events-none" />
         <div className="absolute bottom-0 left-0 translate-y-1/2 -translate-x-1/3 w-[400px] h-[400px] bg-[#c8a415]/20 rounded-full blur-[100px] pointer-events-none" />

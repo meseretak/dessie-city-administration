@@ -89,7 +89,7 @@ export default function NewsPage({ navigateTo, lang = 'en' }: NewsPageProps) {
   return (
     <main className="min-h-screen bg-gray-50/50">
       {/* Page Banner */}
-      <section className="bg-gradient-to-br from-[#0d4a28] to-[#1a6b3c] py-20 text-center relative overflow-hidden">
+      <section className="bg-gradient-to-br from-[#0d4a28] to-[#1a6b3c] py-12 text-center relative overflow-hidden">
         {/* Dynamic Animated Background */}
         <div className="absolute inset-0 opacity-10">
           <motion.div animate={{ rotate: 360 }} transition={{ duration: 150, repeat: Infinity, ease: "linear" }} className="absolute -top-20 -left-20 w-[400px] h-[400px] rounded-full border-[20px] border-white/5 border-dashed" />
@@ -133,7 +133,7 @@ export default function NewsPage({ navigateTo, lang = 'en' }: NewsPageProps) {
       </div>
 
       {/* Main Content */}
-      <div className="max-w-7xl mx-auto px-4 py-16">
+      <div className="max-w-7xl mx-auto px-4 py-10">
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-10">
 
           {/* News Grid — 2/3 */}
@@ -151,7 +151,7 @@ export default function NewsPage({ navigateTo, lang = 'en' }: NewsPageProps) {
                 {[1,2,3,4].map(n => <Skeleton key={n} className="h-48 w-full rounded-2xl bg-gray-200/50" />)}
               </div>
             ) : pagedArticles.length === 0 ? (
-              <div className="text-center py-20 bg-white rounded-3xl shadow-sm border border-gray-100">
+              <div className="text-center py-12 bg-white rounded-3xl shadow-sm border border-gray-100">
                 <Newspaper className="w-16 h-16 mx-auto mb-4 text-gray-300" />
                 <p className="font-extrabold text-gray-900 text-xl mb-2">{isAm ? 'ምንም ጽሁፎች አልተገኙም' : 'No articles found'}</p>
                 <p className="text-sm text-gray-500 font-medium">{isAm ? 'ሌላ ምድብ ወይም ቃል ይሞክሩ' : 'Try a different category or search term'}</p>

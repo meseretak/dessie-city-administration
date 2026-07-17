@@ -81,7 +81,7 @@ export default function ServicesPage({ navigateTo }: ServicesPageProps) {
   return (
     <main className="bg-gray-50/50">
       {/* Page Banner */}
-      <section className="bg-gradient-to-br from-[#0d4a28] to-[#1a6b3c] py-24 text-center relative overflow-hidden">
+      <section className="bg-gradient-to-br from-[#0d4a28] to-[#1a6b3c] py-10 text-center relative overflow-hidden">
         <div className="absolute inset-0 opacity-10">
           <div className="absolute top-4 left-1/4 w-32 h-32 rounded-full border border-white/20 animate-[ping_3s_ease-in-out_infinite]" />
           <div className="absolute bottom-8 right-1/3 w-48 h-48 rounded-full border border-white/20 animate-pulse" />
@@ -115,11 +115,11 @@ export default function ServicesPage({ navigateTo }: ServicesPageProps) {
       </section>
 
       {/* Services Grid */}
-      <section className="py-20 px-4">
+      <section className="py-12 px-4">
         <div className="max-w-7xl mx-auto">
           <motion.div initial="hidden" whileInView="visible" viewport={{ once: true, margin: '-50px' }} variants={staggerContainer}>
             {filteredServices.length === 0 ? (
-              <motion.div variants={fadeInUp} className="text-center py-20 bg-white rounded-3xl shadow-sm border border-gray-100">
+              <motion.div variants={fadeInUp} className="text-center py-12 bg-white rounded-3xl shadow-sm border border-gray-100">
                 <Search className="w-20 h-20 text-gray-300 mx-auto mb-6" />
                 <h3 className="text-2xl font-bold text-gray-400">{isAm ? 'አገልግሎቶች አልተገኙም' : 'No services found'}</h3>
                 <p className="text-lg text-gray-400 mt-2">{isAm ? 'ሌላ ቃል ይሞክሩ' : 'Try a different search term'}</p>
@@ -182,7 +182,7 @@ export default function ServicesPage({ navigateTo }: ServicesPageProps) {
       </section>
 
       {/* How It Works */}
-      <section className="bg-[#0d4a28] py-24 px-4 relative overflow-hidden text-white">
+      <section className="bg-[#0d4a28] py-10 px-4 relative overflow-hidden text-white">
         {/* Abstract Background Patterns */}
         <div className="absolute top-0 left-0 w-full h-full overflow-hidden opacity-10 pointer-events-none">
            <svg viewBox="0 0 100 100" preserveAspectRatio="none" className="absolute w-full h-full"><path d="M0 100 C 20 0 50 0 100 100 Z" fill="#ffffff" /></svg>

@@ -196,7 +196,7 @@ export default function NewsDetailPage({ newsId, navigateTo, lang = 'en' }: News
 
   if (!article) {
     return (
-      <div className="max-w-4xl mx-auto px-4 py-16 text-center">
+      <div className="max-w-4xl mx-auto px-4 py-10 text-center">
         <FileText className="w-16 h-16 mx-auto mb-4 text-gray-300" />
         <h2 className="text-xl font-bold text-gray-600 mb-2">{isAm ? 'ጽሁፉ አልተገኘም' : 'Article not found'}</h2>
         <Button onClick={() => navigateTo('news')} className="mt-4 bg-[#0d4a28] text-white">

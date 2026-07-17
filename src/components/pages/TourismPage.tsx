@@ -86,7 +86,7 @@ export default function TourismPage() {
   return (
     <main className="bg-gray-50/50 min-h-screen">
       {/* Page Banner */}
-      <section className="bg-gradient-to-br from-[#0d4a28] to-[#1a6b3c] py-20 text-center relative overflow-hidden">
+      <section className="bg-gradient-to-br from-[#0d4a28] to-[#1a6b3c] py-12 text-center relative overflow-hidden">
         {/* Dynamic Animated Background */}
         <div className="absolute inset-0 opacity-10">
           <motion.div animate={{ rotate: 360 }} transition={{ duration: 150, repeat: Infinity, ease: "linear" }} className="absolute -top-20 -left-20 w-[400px] h-[400px] rounded-full border-[20px] border-white/5 border-dashed" />
@@ -106,7 +106,7 @@ export default function TourismPage() {
       </section>
 
       {/* Welcome */}
-      <section className="py-16 px-4 relative z-20">
+      <section className="py-10 px-4 relative z-20">
         <div className="max-w-5xl mx-auto">
           <motion.div variants={staggerContainer} initial="hidden" whileInView="visible" viewport={{ once: true, margin: '-50px' }} className="grid md:grid-cols-12 gap-8 items-center bg-white p-8 md:p-12 rounded-3xl shadow-xl border border-gray-100">
             <div className="md:col-span-5 relative h-full flex flex-col justify-center">
@@ -136,7 +136,7 @@ export default function TourismPage() {
       </section>
 
       {/* Tourist Attractions */}
-      <section className="bg-gradient-to-b from-gray-50 to-white py-16 px-4 relative">
+      <section className="bg-gradient-to-b from-gray-50 to-white py-10 px-4 relative">
         <div className="absolute right-0 top-0 w-[300px] h-[300px] bg-[#c8a415]/5 rounded-full blur-[80px] pointer-events-none" />
         
         <div className="max-w-6xl mx-auto relative z-10">
@@ -176,7 +176,7 @@ export default function TourismPage() {
       </section>
 
       {/* Hotels & Accommodation */}
-      <section className="bg-gray-50 py-16 px-4 relative overflow-hidden">
+      <section className="bg-gray-50 py-10 px-4 relative overflow-hidden">
         <div className="max-w-6xl mx-auto relative z-10">
           <motion.div initial="hidden" whileInView="visible" viewport={{ once: true, margin: '-50px' }} variants={staggerContainer}>
             <div className="text-center mb-12">
@@ -216,7 +216,7 @@ export default function TourismPage() {
       </section>
 
       {/* Restaurants & Dining */}
-      <section className="bg-white py-16 px-4">
+      <section className="bg-white py-10 px-4">
         <div className="max-w-6xl mx-auto">
           <motion.div initial="hidden" whileInView="visible" viewport={{ once: true, margin: '-50px' }} variants={staggerContainer}>
             <div className="text-center mb-12">
@@ -249,7 +249,7 @@ export default function TourismPage() {
       </section>
 
       {/* Getting Around */}
-      <section className="bg-gray-50 py-16 px-4 border-t border-gray-100 relative">
+      <section className="bg-gray-50 py-10 px-4 border-t border-gray-100 relative">
         <div className="absolute left-0 top-0 w-[400px] h-[400px] bg-[#1a6b3c]/5 rounded-full blur-[80px] pointer-events-none" />
         <div className="max-w-6xl mx-auto relative z-10">
           <motion.div initial="hidden" whileInView="visible" viewport={{ once: true, margin: '-50px' }} variants={staggerContainer}>
@@ -285,7 +285,7 @@ export default function TourismPage() {
       </section>
 
       {/* Travel Tips */}
-      <section className="bg-white py-16 px-4 border-t border-gray-100">
+      <section className="bg-white py-10 px-4 border-t border-gray-100">
         <div className="max-w-5xl mx-auto">
           <motion.div initial="hidden" whileInView="visible" viewport={{ once: true, margin: '-50px' }} variants={staggerContainer}>
             <div className="text-center mb-12">

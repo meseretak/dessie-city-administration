@@ -139,7 +139,7 @@ export default function ProjectsPage() {
   return (
     <div className="min-h-screen">
       {/* Page Banner */}
-      <section className="bg-[#0d4a28] py-20 px-4 text-center relative overflow-hidden">
+      <section className="bg-[#0d4a28] py-12 px-4 text-center relative overflow-hidden">
         <div className="absolute inset-0 opacity-10" style={{ backgroundImage: 'radial-gradient(circle at 2px 2px, rgba(255,255,255,0.3) 1px, transparent 0)', backgroundSize: '32px 32px' }} />
         <motion.h1 initial={{ opacity: 0, y: -20 }} animate={{ opacity: 1, y: 0 }} className="text-4xl md:text-5xl font-bold text-white tracking-wide">{isAm ? 'የከተማ ፕሮጀክቶች' : 'CITY PROJECTS'}</motion.h1>
         <motion.p initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.2 }} className="text-green-200 mt-4 text-lg md:text-xl max-w-2xl mx-auto">Transforming Dessie through strategic infrastructure investments</motion.p>
