@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useRef, useCallback, useMemo } from 'react'
+import { useState, useEffect, useRef, useCallback, useMemo } from 'react'
 import { motion, AnimatePresence, useMotionValue, animate } from 'framer-motion'
 import useSWR from 'swr'
 import { fetcherArray } from '@/lib/fetcher'
@@ -546,7 +546,7 @@ export default function HomePage() {
       if (!promoPaused.current) {
         setPromoProgress(prev => {
           if (prev >= 100) {
-            setPromoSlide(p => (p + 1) % promoSlides.length)
+            setPromoSlide(p => (p + 1) % promoSlidesDynamic.length)
             return 0
           }
           return prev + 2
@@ -746,7 +746,7 @@ export default function HomePage() {
 
         {/* Dot indicators */}
         <div className="absolute bottom-5 left-1/2 -translate-x-1/2 z-20 flex gap-2">
-          {heroSlides.map((_, i) => (
+          {heroSlidesDynamic.map((_, i) => (
             <button
               key={i}
               onClick={() => goToSlide(i)}
@@ -1542,14 +1542,14 @@ export default function HomePage() {
 
             {/* Navigation Arrows */}
             <button
-              onClick={() => { setPromoSlide(prev => (prev - 1 + promoSlides.length) % promoSlides.length); setPromoProgress(0) }}
+              onClick={() => { setPromoSlide(prev => (prev - 1 + promoSlidesDynamic.length) % promoSlidesDynamic.length); setPromoProgress(0) }}
               className="absolute left-0 top-1/2 -translate-y-1/2 -translate-x-2 w-10 h-10 rounded-full bg-white shadow-lg hover:shadow-xl border border-gray-100 text-[#0d4a28] flex items-center justify-center transition-all hover:bg-[#0d4a28] hover:text-white hover:border-[#0d4a28] opacity-0 group-hover:opacity-100 z-10"
               aria-label="Previous"
             >
               <ChevronLeft className="w-5 h-5" />
             </button>
             <button
-              onClick={() => { setPromoSlide(prev => (prev + 1) % promoSlides.length); setPromoProgress(0) }}
+              onClick={() => { setPromoSlide(prev => (prev + 1) % promoSlidesDynamic.length); setPromoProgress(0) }}
               className="absolute right-0 top-1/2 -translate-y-1/2 translate-x-2 w-10 h-10 rounded-full bg-white shadow-lg hover:shadow-xl border border-gray-100 text-[#0d4a28] flex items-center justify-center transition-all hover:bg-[#0d4a28] hover:text-white hover:border-[#0d4a28] opacity-0 group-hover:opacity-100 z-10"
               aria-label="Next"
             >
@@ -1559,7 +1559,7 @@ export default function HomePage() {
 
           {/* Dot indicators */}
           <div className="flex items-center justify-center gap-2 mt-6">
-            {promoSlides.map((slide, idx) => (
+            {promoSlidesDynamic.map((slide, idx) => (
               <button
                 key={idx}
                 onClick={() => { setPromoSlide(idx); setPromoProgress(0) }}
@@ -1581,7 +1581,7 @@ export default function HomePage() {
 
           {/* Thumbnail strip for mobile - show 4 bank promos as small circles */}
           <div className="flex items-center justify-center gap-3 mt-5 lg:hidden">
-            {promoSlides.slice(0, 4).map((slide, idx) => (
+            {promoSlidesDynamic.slice(0, 4).map((slide, idx) => (
               <button
                 key={idx}
                 onClick={() => { setPromoSlide(idx); setPromoProgress(0) }}
