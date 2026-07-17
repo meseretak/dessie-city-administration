@@ -129,10 +129,10 @@ export default function Footer() {
                   href={href}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="w-8 h-8 rounded-full bg-white/10 hover:bg-white/20 flex items-center justify-center transition-colors"
+                  className="p-1.5 transition-transform hover:scale-110 group"
                   aria-label="Social media"
                 >
-                  <Icon className="w-3.5 h-3.5 text-white" />
+                  <Icon className="w-5 h-5 text-white/70 group-hover:text-green-400 transition-colors" />
                 </a>
               ))}
             </div>
