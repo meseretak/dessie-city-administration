@@ -15,7 +15,7 @@ import Image from 'next/image'
 
 const fadeInUp = {
   hidden: { opacity: 0, y: 30 },
-  visible: { opacity: 1, y: 0, transition: { duration: 0.6, ease: [0.22, 1, 0.36, 1] } }
+  visible: { opacity: 1, y: 0, transition: { duration: 0.6, ease: 'easeOut' } }
 }
 
 const staggerContainer = {
@@ -32,7 +32,7 @@ const attractions = [
   { icon: Eye, title: 'Tossa Viewpoint', category: 'Nature', desc: 'The best vantage point to see the city and surrounding landscape, especially stunning at sunrise and sunset.', color: '#0d4a28' },
 ]
 
-const hotels = [
+const defaultHotels = [
   { name: 'Dessie Palace Hotel', stars: 4, desc: 'Premium accommodation with conference facilities and modern amenities in a central location.', amenities: ['WiFi', 'Restaurant', 'Parking', 'Pool'] },
   { name: 'Tossa Lodge', stars: 3, desc: 'Mountain lodge with stunning views of the highlands, perfect for nature lovers and explorers.', amenities: ['WiFi', 'Restaurant', 'Garden', 'Tour Desk'] },
   { name: 'City Center Hotel', stars: 3, desc: 'Conveniently located in the heart of the city, close to markets and government offices.', amenities: ['WiFi', 'Restaurant', 'Room Service', 'Laundry'] },
@@ -62,9 +62,29 @@ const tips = [
   { icon: FileCheck, title: 'Visa', value: 'On Arrival', desc: 'Available at Bole International Airport.' },
 ]
 
+import { useState, useEffect } from 'react'
+
 export default function TourismPage() {
   const { lang } = useLang()
   const isAm = lang === 'am'
+  const [hotels, setHotels] = useState<any[]>(defaultHotels)
+
+  useEffect(() => {
+    fetch('/api/admin/hotels')
+      .then(res => res.json())
+      .then(data => {
+        if (data && data.length > 0) {
+          const mapped = data.filter((h: any) => h.approvalStatus === 'approved').map((h: any) => ({
+            name: h.name,
+            stars: h.starRating || 3,
+            desc: h.description,
+            amenities: h.amenities ? (typeof h.amenities === 'string' ? JSON.parse(h.amenities) : h.amenities) : ['WiFi', 'Restaurant']
+          }))
+          setHotels(mapped)
+        }
+      })
+      .catch(console.error)
+  }, [])
   
   return (
     <main className="bg-gray-50/50 min-h-screen">

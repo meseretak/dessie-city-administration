@@ -88,23 +88,16 @@ export default function AboutPage() {
   return (
     <main className="bg-gray-50/50">
       {/* Page Banner */}
-      <section className="bg-gradient-to-br from-[#0d4a28] to-[#1a6b3c] py-20 text-center relative overflow-hidden">
-        {/* Dynamic Animated Background */}
-        <div className="absolute inset-0 opacity-10">
-          <motion.div animate={{ rotate: 360 }} transition={{ duration: 150, repeat: Infinity, ease: "linear" }} className="absolute -top-20 -left-20 w-[400px] h-[400px] rounded-full border-[20px] border-white/5 border-dashed" />
-          <motion.div animate={{ rotate: -360 }} transition={{ duration: 120, repeat: Infinity, ease: "linear" }} className="absolute -bottom-20 -right-20 w-[300px] h-[300px] rounded-full border-[15px] border-[#c8a415]/10 border-dashed" />
-          <div className="absolute top-1/4 left-1/4 w-20 h-20 rounded-full border-2 border-white/20 animate-[ping_4s_ease-in-out_infinite]" />
-          <div className="absolute bottom-1/4 right-1/3 w-32 h-32 rounded-full border-2 border-[#c8a415]/20 animate-pulse" />
-        </div>
-        
-        <motion.div initial={{ opacity: 0, scale: 0.95, y: 10 }} animate={{ opacity: 1, scale: 1, y: 0 }} transition={{ duration: 0.6, ease: "easeOut" }} className="relative z-10">
-          <div className="inline-flex items-center gap-1.5 px-4 py-1.5 rounded-full bg-white/10 backdrop-blur-md mb-4 border border-white/20 shadow-lg">
-            <Sparkles className="w-4 h-4 text-[#c8a415] animate-pulse" />
-            <p className="text-[#c8a415] text-xs tracking-widest font-bold uppercase">{isAm ? 'ከተማችንን ያውቁ' : 'Discover Our Heritage'}</p>
+      <section className="bg-white py-16 text-center relative overflow-hidden border-b border-gray-100">
+        <div className="absolute inset-0 opacity-[0.02] pointer-events-none" style={{ backgroundImage: 'radial-gradient(circle at 2px 2px, #0d4a28 1px, transparent 0)', backgroundSize: '30px 30px' }} />
+        <motion.div initial={{ opacity: 0, scale: 0.98, y: 10 }} animate={{ opacity: 1, scale: 1, y: 0 }} transition={{ duration: 0.6, ease: "easeOut" }} className="relative z-10">
+          <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#1a6b3c]/5 mb-4 border border-[#1a6b3c]/10">
+            <Sparkles className="w-3.5 h-3.5 text-[#c8a415]" />
+            <p className="text-[#1a6b3c] text-[10px] tracking-widest font-bold uppercase">{isAm ? 'ከተማችንን ያውቁ' : 'Discover Our Heritage'}</p>
           </div>
-          <h1 className="text-4xl md:text-5xl font-extrabold text-white tracking-tight mb-4 drop-shadow-md">{isAm ? 'ስለ ደሴ ከተማ' : 'ABOUT DESSIE CITY'}</h1>
-          <Separator className="w-20 mx-auto bg-gradient-to-r from-transparent via-[#c8a415] to-transparent h-1 mb-4 border-0 rounded-full" />
-          <p className="text-white/80 text-xs tracking-widest uppercase font-bold bg-black/20 inline-block px-3 py-1 rounded-full backdrop-blur-sm">Home / About</p>
+          <h1 className="text-3xl md:text-4xl font-extrabold text-[#0d4a28] tracking-tight mb-4">{isAm ? 'ስለ ደሴ ከተማ' : 'ABOUT DESSIE CITY'}</h1>
+          <Separator className="w-16 mx-auto bg-[#c8a415] h-1 mb-4 rounded-full" />
+          <p className="text-gray-500 text-[10px] tracking-widest uppercase font-semibold">Home / About</p>
         </motion.div>
       </section>
 
@@ -126,29 +119,29 @@ export default function AboutPage() {
               </h2>
               
               <div className="space-y-4">
-                <div className="flex gap-3">
-                  <div className="mt-1 w-8 h-8 rounded-xl bg-gradient-to-br from-[#0d4a28] to-[#1a6b3c] flex items-center justify-center shrink-0 shadow-md text-white">
-                    <Navigation className="w-4 h-4" />
+                <div className="flex gap-3 items-start">
+                  <div className="mt-0.5 w-6 h-6 rounded-md bg-[#1a6b3c]/10 flex items-center justify-center shrink-0 text-[#1a6b3c]">
+                    <Navigation className="w-3.5 h-3.5" />
                   </div>
-                  <p className="text-gray-600 text-base leading-relaxed">
+                  <p className="text-gray-600 text-sm leading-relaxed">
                     Dessie is a vibrant and strategically located city in the Amhara Region of Ethiopia, situated along the vital Addis Ababa–Debre Markos corridor.
                   </p>
                 </div>
                 
-                <div className="flex gap-3">
-                  <div className="mt-1 w-8 h-8 rounded-xl bg-gradient-to-br from-[#c8a415] to-[#a88810] flex items-center justify-center shrink-0 shadow-md text-white">
-                    <TreePine className="w-4 h-4" />
+                <div className="flex gap-3 items-start">
+                  <div className="mt-0.5 w-6 h-6 rounded-md bg-[#c8a415]/10 flex items-center justify-center shrink-0 text-[#c8a415]">
+                    <TreePine className="w-3.5 h-3.5" />
                   </div>
-                  <p className="text-gray-600 text-base leading-relaxed">
+                  <p className="text-gray-600 text-sm leading-relaxed">
                     At an elevation of 2,470 meters, the city enjoys a pleasant subtropical highland climate that has made it a favored destination for trade, education, and administration.
                   </p>
                 </div>
                 
-                <div className="flex gap-3">
-                  <div className="mt-1 w-8 h-8 rounded-xl bg-gradient-to-br from-blue-600 to-blue-800 flex items-center justify-center shrink-0 shadow-md text-white">
-                    <Users2 className="w-4 h-4" />
+                <div className="flex gap-3 items-start">
+                  <div className="mt-0.5 w-6 h-6 rounded-md bg-blue-600/10 flex items-center justify-center shrink-0 text-blue-600">
+                    <Users2 className="w-3.5 h-3.5" />
                   </div>
-                  <p className="text-gray-600 text-base leading-relaxed">
+                  <p className="text-gray-600 text-sm leading-relaxed">
                     Today, Dessie is home to over 450,000 residents and continues to experience rapid urbanization. The city administration is committed to transforming Dessie into a model smart city.
                   </p>
                 </div>
@@ -183,31 +176,25 @@ export default function AboutPage() {
       </section>
 
       {/* Animated Key Facts */}
-      <section className="bg-gradient-to-b from-white to-gray-50 py-16 px-4 relative">
-        <div className="absolute right-0 top-0 w-[300px] h-[300px] bg-[#c8a415]/5 rounded-full blur-[80px] pointer-events-none" />
-        
-        <div className="max-w-6xl mx-auto relative z-10">
+      <section className="bg-gray-50/50 py-12 px-4 border-t border-gray-100">
+        <div className="max-w-5xl mx-auto relative z-10">
           <motion.div initial="hidden" whileInView="visible" viewport={{ once: true, margin: '-50px' }} variants={staggerContainer}>
-            <div className="text-center mb-12">
-              <span className="text-[#c8a415] font-bold tracking-widest uppercase text-xs mb-2 block">By The Numbers</span>
-              <h2 className="text-3xl md:text-4xl font-extrabold text-[#0d4a28]">STATISTICAL OVERVIEW</h2>
-              <div className="w-24 h-1 bg-gradient-to-r from-[#0d4a28] via-[#1a6b3c] to-[#c8a415] mx-auto mt-4 rounded-full" />
+            <div className="text-center mb-8">
+              <span className="text-[#c8a415] font-bold tracking-widest uppercase text-[10px] mb-1 block">By The Numbers</span>
+              <h2 className="text-2xl md:text-3xl font-extrabold text-[#0d4a28]">STATISTICAL OVERVIEW</h2>
             </div>
 
             {/* Numerical Animated Stats */}
-            <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
+            <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 mb-6">
               {keyFacts.map((fact, i) => (
-                <motion.div key={fact.label} variants={fadeInUp} whileHover={{ y: -5 }}>
-                  <Card className="h-full bg-white border border-gray-100 shadow-lg hover:shadow-xl hover:border-gray-200 transition-all duration-300 relative overflow-hidden group rounded-2xl">
-                    <div className="absolute -top-10 -right-10 w-24 h-24 rounded-full blur-xl transition-colors duration-500 opacity-10 group-hover:opacity-20" style={{ backgroundColor: fact.color }} />
-                    <CardContent className="p-6 flex flex-col items-center text-center gap-3 relative z-10">
-                      <div className="w-14 h-14 rounded-xl flex items-center justify-center bg-gray-50 border border-gray-100 shadow-sm group-hover:scale-105 transition-transform duration-300" style={{ color: fact.color }}>
-                        <fact.icon className="w-7 h-7" style={{ color: fact.color }} />
-                      </div>
-                      <div className="text-3xl font-black text-gray-800 drop-shadow-sm mt-1">
+                <motion.div key={fact.label} variants={fadeInUp} whileHover={{ y: -3 }}>
+                  <Card className="h-full bg-white border border-gray-100 shadow-sm hover:shadow-md transition-all duration-300 rounded-xl">
+                    <CardContent className="p-4 text-center">
+                      <fact.icon className="w-5 h-5 mx-auto mb-2 opacity-80" style={{ color: fact.color }} />
+                      <div className="text-2xl font-black text-gray-800 drop-shadow-sm mb-1 leading-none">
                         <AnimatedStat value={fact.val} suffix={fact.suffix} />
                       </div>
-                      <span className="text-xs text-gray-500 font-bold uppercase tracking-wider">{fact.label}</span>
+                      <span className="text-[10px] text-gray-500 font-bold uppercase tracking-widest">{fact.label}</span>
                     </CardContent>
                   </Card>
                 </motion.div>
@@ -215,17 +202,17 @@ export default function AboutPage() {
             </div>
 
             {/* Other Text Facts */}
-            <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
+            <div className="grid grid-cols-2 lg:grid-cols-4 gap-3">
               {otherFacts.map((fact, i) => (
                 <motion.div key={fact.label} variants={fadeInUp} whileHover={{ scale: 1.02 }}>
-                  <Card className="bg-white border-gray-100 shadow-sm hover:shadow-md transition-all rounded-xl group">
-                    <CardContent className="p-4 flex items-center gap-3">
-                      <div className="w-10 h-10 rounded-full flex items-center justify-center shrink-0 bg-gray-50 shadow-sm border border-gray-100 group-hover:rotate-6 transition-transform duration-300">
-                        <fact.icon className="w-5 h-5" style={{ color: fact.color }} />
+                  <Card className="bg-white border border-gray-100 shadow-sm hover:shadow-md transition-all rounded-xl">
+                    <CardContent className="p-3 flex items-center gap-3">
+                      <div className="w-8 h-8 rounded-lg flex items-center justify-center shrink-0 bg-gray-50 border border-gray-100">
+                        <fact.icon className="w-4 h-4 opacity-80" style={{ color: fact.color }} />
                       </div>
                       <div className="flex flex-col">
-                        <span className="text-[10px] text-gray-400 font-bold uppercase tracking-wider mb-0.5">{fact.label}</span>
-                        <span className="text-sm font-bold text-gray-800 leading-none">{fact.value}</span>
+                        <span className="text-[9px] text-gray-400 font-bold uppercase tracking-wider mb-0.5">{fact.label}</span>
+                        <span className="text-xs font-bold text-gray-800 leading-tight">{fact.value}</span>
                       </div>
                     </CardContent>
                   </Card>
@@ -237,27 +224,21 @@ export default function AboutPage() {
       </section>
 
       {/* Vision, Mission - Clean UI */}
-      <section className="bg-white py-16 px-4 relative overflow-hidden border-t border-gray-100">
-        <div className="absolute top-0 left-0 w-full h-full opacity-[0.02] pointer-events-none" style={{ backgroundImage: 'radial-gradient(#000 1px, transparent 1px)', backgroundSize: '30px 30px' }} />
-
-        <div className="max-w-5xl mx-auto relative z-10">
+      <section className="bg-white py-12 px-4 border-t border-gray-100">
+        <div className="max-w-5xl mx-auto">
           <motion.div initial="hidden" whileInView="visible" viewport={{ once: true, margin: '-50px' }} variants={staggerContainer}>
-            <div className="text-center mb-12">
-              <span className="text-[#c8a415] font-bold tracking-widest uppercase text-xs mb-2 block">Our Ideology</span>
-              <h2 className="text-3xl md:text-4xl font-extrabold text-[#0d4a28]">THE CITY'S FOUNDATION</h2>
-              <div className="w-24 h-1 bg-gradient-to-r from-[#0d4a28] via-[#1a6b3c] to-[#c8a415] mx-auto mt-4 rounded-full" />
+            <div className="text-center mb-8">
+              <span className="text-[#c8a415] font-bold tracking-widest uppercase text-[10px] mb-1 block">Our Ideology</span>
+              <h2 className="text-2xl md:text-3xl font-extrabold text-[#0d4a28]">THE CITY'S FOUNDATION</h2>
             </div>
             
-            <div className="grid md:grid-cols-2 gap-8">
+            <div className="grid md:grid-cols-2 gap-4">
               <motion.div variants={fadeInUp}>
-                <Card className="h-full bg-white border border-gray-100 shadow-lg hover:shadow-xl hover:-translate-y-1 transition-all duration-300 rounded-2xl overflow-hidden group">
-                  <div className="absolute top-0 left-0 w-full h-1.5 bg-gradient-to-r from-[#c8a415] to-[#e8c435]" />
-                  <CardContent className="p-8 text-center relative">
-                    <div className="w-16 h-16 mx-auto rounded-2xl bg-gradient-to-br from-[#c8a415] to-[#a88810] flex items-center justify-center mb-6 shadow-md group-hover:scale-105 transition-transform duration-300">
-                      <Eye className="w-8 h-8 text-white" />
-                    </div>
-                    <h3 className="text-2xl font-bold text-[#0d4a28] mb-3 tracking-wide">Our Vision</h3>
-                    <p className="text-gray-600 leading-relaxed text-sm relative z-10">
+                <Card className="h-full bg-white border border-gray-100 shadow-sm hover:shadow-md transition-all duration-300 rounded-xl">
+                  <CardContent className="p-6 flex flex-col items-center text-center">
+                    <Eye className="w-6 h-6 text-[#1a6b3c] mb-3 opacity-80" />
+                    <h3 className="text-lg font-bold text-[#0d4a28] mb-2">Our Vision</h3>
+                    <p className="text-gray-500 text-sm leading-relaxed">
                       To make Dessie a model smart city in Ethiopia, known for good governance, sustainable development, and an unparalleled quality of life for all its residents.
                     </p>
                   </CardContent>
@@ -265,14 +246,11 @@ export default function AboutPage() {
               </motion.div>
 
               <motion.div variants={fadeInUp}>
-                <Card className="h-full bg-white border border-gray-100 shadow-lg hover:shadow-xl hover:-translate-y-1 transition-all duration-300 rounded-2xl overflow-hidden group">
-                  <div className="absolute top-0 left-0 w-full h-1.5 bg-gradient-to-r from-[#0d4a28] to-[#1a6b3c]" />
-                  <CardContent className="p-8 text-center relative">
-                    <div className="w-16 h-16 mx-auto rounded-2xl bg-gradient-to-br from-[#0d4a28] to-[#1a6b3c] flex items-center justify-center mb-6 shadow-md group-hover:scale-105 transition-transform duration-300">
-                      <Target className="w-8 h-8 text-white" />
-                    </div>
-                    <h3 className="text-2xl font-bold text-[#0d4a28] mb-3 tracking-wide">Our Mission</h3>
-                    <p className="text-gray-600 leading-relaxed text-sm relative z-10">
+                <Card className="h-full bg-white border border-gray-100 shadow-sm hover:shadow-md transition-all duration-300 rounded-xl">
+                  <CardContent className="p-6 flex flex-col items-center text-center">
+                    <Target className="w-6 h-6 text-[#c8a415] mb-3 opacity-80" />
+                    <h3 className="text-lg font-bold text-[#0d4a28] mb-2">Our Mission</h3>
+                    <p className="text-gray-500 text-sm leading-relaxed">
                       Provide efficient, transparent, and citizen-centered municipal services while actively promoting local economic growth, social equity, and cultural preservation.
                     </p>
                   </CardContent>

@@ -283,8 +283,10 @@ export default function ProjectsPage() {
             <motion.h2 initial="hidden" whileInView="visible" viewport={{ once: true }} custom={0} variants={fadeUp} className="gov-section-title text-3xl font-bold text-white mb-2 text-center">MEGA PROJECTS</motion.h2>
             <motion.div initial="hidden" whileInView="visible" viewport={{ once: true }} custom={1} variants={fadeUp} className="w-16 h-1 bg-[#c8a415] mx-auto mb-10" />
             <div className="space-y-8">
-              {megaProjects.map((p, i) => (
-                <motion.div key={p.title} initial="hidden" whileInView="visible" viewport={{ once: true }} custom={i} variants={fadeUp}>
+              {(dbProjects.length > 0 && dbProjects.some(p => (p.category || '').toLowerCase().includes('mega')) 
+                ? dbProjects.filter(p => (p.category || '').toLowerCase().includes('mega')) 
+                : megaProjects).map((p: any, i: number) => (
+                <motion.div key={p.id || p.title} initial="hidden" whileInView="visible" viewport={{ once: true }} custom={i} variants={fadeUp}>
                   <Card className="glass border border-white/10 overflow-hidden">
                     <CardContent className="p-6 md:p-8">
                       <div className="flex flex-col md:flex-row md:items-start md:justify-between mb-4">
@@ -292,20 +294,22 @@ export default function ProjectsPage() {
                           <h3 className="text-xl font-bold text-white mb-1">{p.title}</h3>
                           <div className="flex flex-wrap gap-4 text-sm text-green-300">
                             <span className="flex items-center gap-1"><DollarSign className="w-4 h-4" />{p.budget}</span>
-                            <span className="flex items-center gap-1"><Calendar className="w-4 h-4" />{p.timeline}</span>
+                            <span className="flex items-center gap-1"><Calendar className="w-4 h-4" />{p.timeline || `${p.startDate || ''} - ${p.endDate || ''}`}</span>
                           </div>
                         </div>
                         <Badge className="bg-[#c8a415] text-white mt-2 md:mt-0 text-xs shrink-0">MEGA PROJECT</Badge>
                       </div>
-                      <p className="text-green-100/80 text-sm leading-relaxed mb-6">{p.desc}</p>
-                      <div className="grid sm:grid-cols-2 md:grid-cols-4 gap-3">
-                        {p.milestones.map((m, j) => (
-                          <div key={j} className="flex items-center gap-2 text-sm text-green-200">
-                            <Rocket className="w-4 h-4 text-[#c8a415] shrink-0" />
-                            {m}
-                          </div>
-                        ))}
-                      </div>
+                      <p className="text-green-100/80 text-sm leading-relaxed mb-6">{p.description || p.desc}</p>
+                      {p.milestones && (
+                        <div className="grid sm:grid-cols-2 md:grid-cols-4 gap-3">
+                          {p.milestones.map((m: any, j: number) => (
+                            <div key={j} className="flex items-center gap-2 text-sm text-green-200">
+                              <Rocket className="w-4 h-4 text-[#c8a415] shrink-0" />
+                              {m}
+                            </div>
+                          ))}
+                        </div>
+                      )}
                     </CardContent>
                   </Card>
                 </motion.div>

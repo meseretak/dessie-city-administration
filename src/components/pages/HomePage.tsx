@@ -407,7 +407,12 @@ export default function HomePage() {
 
   // Fetch news from DB — shows library news and all published articles
   const [homeNews, setHomeNews] = useState(staticHomeNews as any[])
+  const [heroSlidesDynamic, setHeroSlidesDynamic] = useState(heroSlides as any[])
+  const [promoSlidesDynamic, setPromoSlidesDynamic] = useState(promoSlides as any[])
+  const [dynamicProjects, setDynamicProjects] = useState(featuredProjects as any[])
+
   useEffect(() => {
+    // Fetch News
     fetch('/api/admin/news')
       .then(r => r.ok ? r.json() : [])
       .then((data: any[]) => {
@@ -426,6 +431,44 @@ export default function HomePage() {
             excerpt: a.excerpt || '',
           }))
           setHomeNews(mapped)
+        }
+      })
+      .catch(() => {})
+
+    // Fetch Hero Sliders
+    fetch('/api/admin/sliders?sliderType=hero')
+      .then(r => r.ok ? r.json() : [])
+      .then((data: any[]) => {
+        if (data.length > 0) setHeroSlidesDynamic(data.filter((s: any) => s.isActive))
+      })
+      .catch(() => {})
+
+    // Fetch Promo Sliders
+    fetch('/api/admin/sliders?sliderType=promo')
+      .then(r => r.ok ? r.json() : [])
+      .then((data: any[]) => {
+        if (data.length > 0) setPromoSlidesDynamic(data.filter((s: any) => s.isActive))
+      })
+      .catch(() => {})
+
+    // Fetch Projects
+    fetch('/api/admin/projects')
+      .then(r => r.ok ? r.json() : [])
+      .then((data: any[]) => {
+        if (data.length > 0) {
+          const mapped = data.filter((p: any) => p.approvalStatus === 'approved').map((p: any) => {
+            let img = '/project-smart-city.png'
+            if (p.images) {
+              try { const arr = JSON.parse(p.images); if (arr.length > 0) img = arr[0] } catch {}
+            }
+            return {
+              title: p.title,
+              desc: p.description,
+              image: img,
+              color: 'blue' // Default color
+            }
+          })
+          setDynamicProjects(mapped)
         }
       })
       .catch(() => {})
@@ -499,10 +542,10 @@ export default function HomePage() {
     if (slideTimeout.current) clearTimeout(slideTimeout.current)
     const delay = currentSlide === 0 ? 12000 : 5000 // Give the first slide 12 seconds, others 5 seconds
     slideTimeout.current = setTimeout(() => {
-      setCurrentSlide(prev => (prev + 1) % heroSlides.length)
+      setCurrentSlide(prev => (prev + 1) % heroSlidesDynamic.length)
     }, delay)
     return () => { if (slideTimeout.current) clearTimeout(slideTimeout.current) }
-  }, [currentSlide])
+  }, [currentSlide, heroSlidesDynamic.length])
 
   /* ── Auto-advance promo slider ── */
   const [promoProgress, setPromoProgress] = useState(0)
@@ -526,8 +569,8 @@ export default function HomePage() {
     setCurrentSlide(index)
   }, [])
 
-  const prevSlide = useCallback(() => goToSlide((currentSlide - 1 + heroSlides.length) % heroSlides.length), [currentSlide, goToSlide])
-  const nextSlide = useCallback(() => goToSlide((currentSlide + 1) % heroSlides.length), [currentSlide, goToSlide])
+  const prevSlide = useCallback(() => goToSlide((currentSlide - 1 + heroSlidesDynamic.length) % heroSlidesDynamic.length), [currentSlide, goToSlide, heroSlidesDynamic.length])
+  const nextSlide = useCallback(() => goToSlide((currentSlide + 1) % heroSlidesDynamic.length), [currentSlide, goToSlide, heroSlidesDynamic.length])
 
   /* ── Hotel image navigation ── */
   const cycleHotelImage = useCallback((hotelIdx: number, dir: number) => {
@@ -581,7 +624,7 @@ export default function HomePage() {
   const hotelStart = hotelPage * 3
   const visibleHotels = hotels.slice(hotelStart, hotelStart + 3)
   const projectStart = projectPage * 4
-  const visibleProjects = featuredProjects.slice(projectStart, projectStart + 4)
+  const visibleProjects = dynamicProjects.slice(projectStart, projectStart + 4)
   const newsStart = newsPage * 6
   const visibleNews = homeNews.slice(newsStart, newsStart + 6)
 
@@ -627,7 +670,7 @@ export default function HomePage() {
               initial={{ scale: 1 }}
               animate={{ scale: currentSlide === 0 ? 1.08 : 1.05 }}
               transition={{ duration: currentSlide === 0 ? 12 : 6, ease: 'linear' }}
-              src={heroSlides[currentSlide].image}
+              src={heroSlidesDynamic[currentSlide]?.image}
               alt={`Dessie City Slide ${currentSlide + 1}`}
               className="w-full h-full object-cover"
             />
@@ -637,47 +680,37 @@ export default function HomePage() {
 
         {/* Content overlay */}
         <div className="relative z-10 h-full flex flex-col items-center justify-center px-4">
-          {/* Welcome badge */}
-          <motion.span
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.1 }}
-            className="inline-block px-5 py-2 rounded-full bg-white/10 backdrop-blur-sm border border-white/20 text-white text-xs sm:text-sm font-medium tracking-wider"
-          >
-            WELCOME TO DESSIE — AMHARA REGION, ETHIOPIA
-          </motion.span>
-
           {/* Slide tag badge */}
-          {heroSlides[currentSlide].tag && (
+          {heroSlidesDynamic[currentSlide]?.tag && (
             <motion.div
-              key={`tag-${currentSlide}`}
-              initial={{ opacity: 0, scale: 0.8 }}
+              initial={{ opacity: 0, scale: 0.9 }}
               animate={{ opacity: 1, scale: 1 }}
-              transition={{ duration: 0.4, delay: 0.15 }}
-              className="mt-3 inline-block"
+              transition={{ duration: 0.5, delay: 0.2 }}
+              className="mt-6 mb-4 px-3 py-1 bg-white/20 backdrop-blur-md rounded border border-white/30 text-white text-xs font-bold tracking-widest shadow-xl"
             >
-              <span className="bg-[#c8a415] text-white text-[10px] font-black tracking-[0.2em] px-4 py-1.5 rounded-full uppercase shadow-lg">
-                {heroSlides[currentSlide].tag}
-              </span>
+              {heroSlidesDynamic[currentSlide].tag}
             </motion.div>
           )}
 
+          {/* Main Title */}
           <motion.h1
-            className="mt-4 text-4xl md:text-6xl lg:text-7xl font-black tracking-wide text-white"
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.7, delay: 0.2 }}
+            transition={{ duration: 0.8, delay: 0.3 }}
+            className="text-4xl sm:text-6xl md:text-7xl font-extrabold text-white text-center drop-shadow-2xl max-w-5xl tracking-tight leading-tight"
           >
-            {heroSlides[currentSlide].title}
+            {heroSlidesDynamic[currentSlide]?.title}
           </motion.h1>
-          <motion.h2
-            className="text-xl md:text-3xl lg:text-4xl font-bold tracking-wide text-[#c8a415] mt-2"
-            initial={{ opacity: 0, y: 30 }}
+
+          {/* Subtitle */}
+          <motion.p
+            initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.7, delay: 0.3 }}
+            transition={{ duration: 0.8, delay: 0.5 }}
+            className="mt-6 text-lg sm:text-xl md:text-2xl text-white/90 text-center max-w-3xl drop-shadow-lg font-light"
           >
-            {heroSlides[currentSlide].subtitle}
-          </motion.h2>
+            {heroSlidesDynamic[currentSlide]?.subtitle}
+          </motion.p>
 
           {/* Buttons */}
           <motion.div
@@ -1445,68 +1478,73 @@ export default function HomePage() {
                   transition={{ duration: 0.6, ease: [0.25, 0.8, 0.25, 1] }}
                   className="relative"
                 >
-                  {/* Main promo card */}
-                  <div className="relative rounded-2xl overflow-hidden shadow-2xl bg-white border border-gray-100">
-                    <div className="grid md:grid-cols-2 gap-0">
-                      {/* Image side */}
-                      <div className="relative aspect-[3/4] md:aspect-auto md:min-h-[340px] bg-gray-50 overflow-hidden">
-                        <motion.img
-                          src={promoSlides[promoSlide].image}
-                          alt={promoSlides[promoSlide].title}
-                          className="w-full h-full object-cover"
-                          animate={{ scale: [1, 1.05, 1] }}
-                          transition={{ duration: 6, repeat: Infinity, ease: 'easeInOut' }}
-                        />
-                        <div className="absolute top-3 left-3">
-                          <Badge className="text-[9px] font-bold tracking-[0.12em] px-2.5 py-1 border-0 shadow-lg" style={{ backgroundColor: promoSlides[promoSlide].accent || '#0d4a28', color: 'white' }}>
-                            {promoSlides[promoSlide].tag}
-                          </Badge>
+                  <Card className="rounded-2xl overflow-hidden shadow-2xl border-none">
+                    <CardContent className="p-0">
+                      <div className="grid md:grid-cols-2 gap-0">
+                        {/* Image side */}
+                        <div className="relative aspect-[3/4] md:aspect-auto md:min-h-[340px] bg-gray-50 overflow-hidden">
+                          <motion.img
+                            src={promoSlidesDynamic[promoSlide]?.image}
+                            alt={promoSlidesDynamic[promoSlide]?.title}
+                            className="w-full h-full object-cover"
+                            animate={{ scale: [1, 1.05, 1] }}
+                            transition={{ duration: 6, repeat: Infinity, ease: 'easeInOut' }}
+                          />
+                          <div className="absolute top-3 left-3">
+                            <Badge className="text-[9px] font-bold tracking-[0.12em] px-2.5 py-1 border-0 shadow-lg" style={{ backgroundColor: promoSlidesDynamic[promoSlide]?.accentColor || '#0d4a28', color: 'white' }}>
+                              {promoSlidesDynamic[promoSlide]?.tag}
+                            </Badge>
+                          </div>
                         </div>
+                        {/* Content side */}
+                        {promoSlidesDynamic.length > 0 && (
+                          <div className="p-6 md:p-8 flex flex-col justify-center relative overflow-hidden">
+                            {/* Decorative circle */}
+                            <div className="absolute -bottom-8 -right-8 w-32 h-32 rounded-full opacity-5" style={{ backgroundColor: promoSlidesDynamic[promoSlide]?.accentColor || '#0d4a28' }} />
+                            <motion.div
+                              initial={{ opacity: 0, y: 20 }}
+                              animate={{ opacity: 1, y: 0 }}
+                              transition={{ delay: 0.25, duration: 0.5 }}
+                            >
+                              <h2 className="text-xl sm:text-2xl font-extrabold text-[#0d4a28] mb-3 leading-tight">
+                                {promoSlidesDynamic[promoSlide]?.title}
+                              </h2>
+                              <p className="text-sm text-muted-foreground leading-relaxed mb-5">
+                                {promoSlidesDynamic[promoSlide]?.subtitle}
+                              </p>
+                              <Button className="w-fit bg-[#0d4a28] hover:bg-[#0a3a20] rounded-full px-6 shadow-md hover:shadow-lg transition-all group">
+                                Learn More
+                                <ArrowRight className="w-4 h-4 ml-2 group-hover:translate-x-1 transition-transform" />
+                              </Button>
+                            </motion.div>
+                          </div>
+                        )}
                       </div>
-                      {/* Content side */}
-                      <div className="p-6 md:p-8 flex flex-col justify-center relative overflow-hidden">
-                        {/* Decorative circle */}
-                        <div className="absolute -bottom-8 -right-8 w-32 h-32 rounded-full opacity-5" style={{ backgroundColor: promoSlides[promoSlide].accent || '#0d4a28' }} />
-                        <motion.div
-                          initial={{ opacity: 0, y: 20 }}
-                          animate={{ opacity: 1, y: 0 }}
-                          transition={{ delay: 0.25, duration: 0.5 }}
-                        >
-                          <h2 className="text-xl sm:text-2xl font-extrabold text-[#0d4a28] mb-3 leading-tight">
-                            {promoSlides[promoSlide].title}
-                          </h2>
-                          <p className="text-sm text-muted-foreground leading-relaxed mb-5">
-                            {promoSlides[promoSlide].subtitle}
-                          </p>
-                          <button className="inline-flex items-center gap-2 bg-[#0d4a28] hover:bg-[#155d33] text-white px-5 py-2.5 rounded-xl text-sm font-semibold transition-all hover:shadow-lg hover:-translate-y-0.5 group/btn">
-                            Learn More
-                            <ArrowRight className="w-4 h-4 group-hover/btn:translate-x-0.5 transition-transform" />
-                          </button>
-                        </motion.div>
-                      </div>
-                    </div>
+                    </CardContent>
                     {/* Progress bar */}
-                    <div className="absolute bottom-0 left-0 right-0 h-1 bg-black/5">
-                      <motion.div
-                        className="h-full rounded-r-full"
-                        style={{ backgroundColor: promoSlides[promoSlide].accent || '#c8a415' }}
-                        animate={{ width: `${promoProgress}%` }}
-                        transition={{ duration: 0.08, ease: 'linear' }}
-                      />
-                    </div>
-                  </div>
+                    {promoSlidesDynamic.length > 0 && (
+                      <div className="absolute bottom-0 left-0 right-0 h-1 bg-black/5">
+                        <motion.div
+                          className="h-full rounded-r-full"
+                          style={{ backgroundColor: promoSlidesDynamic[promoSlide]?.accentColor || '#c8a415' }}
+                          animate={{ width: `${promoProgress}%` }}
+                          transition={{ duration: 0.08, ease: 'linear' }}
+                        />
+                      </div>
+                    )}
+                  </Card>
                 </motion.div>
               </AnimatePresence>
 
               {/* Side peek cards (decorative) */}
               <div className="hidden lg:block absolute top-1/2 -translate-y-1/2 -left-[calc(50%-280px)] opacity-30 pointer-events-none">
                 <div className="w-40 h-52 rounded-xl overflow-hidden shadow-lg rotate-[-3deg]">
-                  <img loading="lazy" src={promoSlides[(promoSlide - 1 + promoSlides.length) % promoSlides.length].image} alt="" className="w-full h-full object-cover" />
+                  {promoSlidesDynamic.length > 0 && <img loading="lazy" src={promoSlidesDynamic[(promoSlide - 1 + promoSlidesDynamic.length) % promoSlidesDynamic.length]?.image} alt="" className="w-full h-full object-cover" />}
                 </div>
               </div>
               <div className="hidden lg:block absolute top-1/2 -translate-y-1/2 -right-[calc(50%-280px)] opacity-30 pointer-events-none">
                 <div className="w-40 h-52 rounded-xl overflow-hidden shadow-lg rotate-[3deg]">
-                  <img loading="lazy" src={promoSlides[(promoSlide + 1) % promoSlides.length].image} alt="" className="w-full h-full object-cover" />
+                  {promoSlidesDynamic.length > 0 && <img loading="lazy" src={promoSlidesDynamic[(promoSlide + 1) % promoSlidesDynamic.length]?.image} alt="" className="w-full h-full object-cover" />}
                 </div>
               </div>
             </div>
@@ -1563,6 +1601,7 @@ export default function HomePage() {
               </button>
             ))}
           </div>
+        </div>
         </div>
       </section>
 
