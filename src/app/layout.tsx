@@ -9,6 +9,7 @@ import Script from "next/script";
 import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
 import Chatbot from "@/components/layout/Chatbot";
+import GoogleTranslate from "@/components/GoogleTranslate";
 // import VisitorCounter from "@/components/VisitorCounter";
 import { db } from "@/lib/db";
 
@@ -386,6 +387,7 @@ export default async function RootLayout({
             </div>
             <Chatbot />
           </LangProvider>
+          <GoogleTranslate />
           <Toaster />
           <CookieConsent />
         </ThemeProvider>

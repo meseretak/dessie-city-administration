@@ -348,17 +348,6 @@ export default function Header({ navItems }: { navItems: NavItem[] }) {
               </Tooltip>
             </TooltipProvider>
 
-            <TooltipProvider>
-              <Tooltip>
-                <TooltipTrigger asChild>
-                  <Button variant="ghost" size="sm" className="h-8 gap-1 font-semibold text-xs text-[#0d4a28] hover:text-[#c8a415] transition-colors bg-[#f1f5f9] hover:bg-[#e2e8f0]" onClick={toggle} aria-label="Toggle language">
-                    <Languages className="w-4 h-4" />
-                    {lang === 'en' ? 'አማርኛ' : 'EN'}
-                  </Button>
-                </TooltipTrigger>
-                <TooltipContent>{lang === 'en' ? 'ወደ አማርኛ ቀይር' : 'Switch to English'}</TooltipContent>
-              </Tooltip>
-            </TooltipProvider>
 
             <TooltipProvider>
               <Tooltip>
@@ -378,10 +367,7 @@ export default function Header({ navItems }: { navItems: NavItem[] }) {
                 </Button>
               </SheetTrigger>
               <SheetContent side="right" className="w-80 pt-10 overflow-y-auto">
-                <button onClick={toggle} className="w-full flex items-center gap-2 px-4 py-2 mb-2 rounded-md bg-[#f0fdf4] text-[#0d4a28] text-sm font-semibold border border-[#1a6b3c]/20">
-                  <Languages className="w-4 h-4" />
-                  {lang === 'en' ? 'አማርኛ (Switch to Amharic)' : 'English (ወደ እንግሊዝኛ)'}
-                </button>
+
                 <nav className="flex flex-col gap-0.5">
                   {navItems.map((item) => {
                     const NavIcon = navIcons[item.label] || HomeIcon;
