@@ -1,4 +1,4 @@
-'use client'
+ï»¿'use client'
 
 import { motion } from 'framer-motion'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
@@ -104,16 +104,16 @@ const serviceDataMap: Record<string, {
       { name: 'Compliance Checklist', desc: 'Pre-inspection requirements' },
     ],
     fees: [
-      { type: 'Small Enterprise', fee: 'ETB 500 — 2,000', time: '10 days' },
-      { type: 'Medium Enterprise', fee: 'ETB 2,000 — 10,000', time: '15 days' },
-      { type: 'Large Enterprise', fee: 'ETB 10,000 — 50,000', time: '20 days' },
+      { type: 'Small Enterprise', fee: 'ETB 500 â€” 2,000', time: '10 days' },
+      { type: 'Medium Enterprise', fee: 'ETB 2,000 â€” 10,000', time: '15 days' },
+      { type: 'Large Enterprise', fee: 'ETB 10,000 â€” 50,000', time: '20 days' },
     ],
     faqs: [
       { q: 'How long does it take to get a business license?', a: 'Processing time depends on business size: 10 days for small, 15 days for medium, and 20 days for large enterprises.' },
       { q: 'Can I track my application online?', a: 'Yes, after submitting your application you receive a tracking number to monitor progress through our portal.' },
       { q: 'What types of businesses need a license?', a: 'All commercial, manufacturing, and service businesses operating within Dessie city limits require a municipal business license.' },
     ],
-    office: 'Trade & Industry Bureau, City Hall 2nd Floor', phone: '+251 33 111 2244', processingTime: '10-20 working days', serviceFee: 'ETB 500 — 50,000',
+    office: 'Trade & Industry Bureau, City Hall 2nd Floor', phone: '+251 33 111 2244', processingTime: '10-20 working days', serviceFee: 'ETB 500 â€” 50,000',
   },
 }
 
@@ -135,7 +135,7 @@ const defaultServiceData = {
     { name: 'Fee Schedule', desc: 'Current service fee structure' },
   ],
   fees: [
-    { type: 'Standard Service', fee: 'ETB 50 — 500', time: '5-10 days' },
+    { type: 'Standard Service', fee: 'ETB 50 â€” 500', time: '5-10 days' },
     { type: 'Expedited Service', fee: 'ETB 1,000', time: '1-2 days' },
   ],
   faqs: [
@@ -144,7 +144,7 @@ const defaultServiceData = {
     { q: 'Can someone else apply on my behalf?', a: 'Yes, with a signed authorization letter and copies of both your ID and the representative\'s ID.' },
     { q: 'What if my application is rejected?', a: 'You will receive a written explanation. You may appeal the decision within 30 days.' },
   ],
-  office: 'City Administration Main Office, City Hall', phone: '+251 33 111 2200', processingTime: '5-10 working days', serviceFee: 'ETB 50 — 500',
+  office: 'City Administration Main Office, City Hall', phone: '+251 33 111 2200', processingTime: '5-10 working days', serviceFee: 'ETB 50 â€” 500',
 }
 
 const relatedServices = [
@@ -214,7 +214,7 @@ export default function ServiceDetailPage({ serviceId, navigateTo }: ServiceDeta
                 <CardContent className="space-y-4">
                   <div className="flex items-start gap-3"><MapPin className="w-4 h-4 text-[#1a6b3c] mt-0.5 flex-shrink-0" /><div><p className="text-xs text-muted-foreground">Office Location</p><p className="text-sm font-medium">{data.office}</p></div></div>
                   <Separator />
-                  <div className="flex items-start gap-3"><Clock className="w-4 h-4 text-[#1a6b3c] mt-0.5 flex-shrink-0" /><div><p className="text-xs text-muted-foreground">Working Hours</p><p className="text-sm font-medium">Mon–Fri 8AM–5PM</p></div></div>
+                  <div className="flex items-start gap-3"><Clock className="w-4 h-4 text-[#1a6b3c] mt-0.5 flex-shrink-0" /><div><p className="text-xs text-muted-foreground">Working Hours</p><p className="text-sm font-medium">Monâ€“Fri 8AMâ€“5PM</p></div></div>
                   <Separator />
                   <div className="flex items-start gap-3"><Phone className="w-4 h-4 text-[#1a6b3c] mt-0.5 flex-shrink-0" /><div><p className="text-xs text-muted-foreground">Contact Phone</p><p className="text-sm font-medium">{data.phone}</p></div></div>
                   <Separator />
@@ -416,7 +416,7 @@ export default function ServiceDetailPage({ serviceId, navigateTo }: ServiceDeta
                       <div className="flex items-start gap-3"><MapPin className="w-5 h-5 text-[#1a6b3c] mt-0.5" /><div><p className="text-xs text-muted-foreground">Office Address</p><p className="text-sm font-medium">{data.office}, Dessie, Amhara, Ethiopia</p></div></div>
                       <div className="flex items-start gap-3"><Phone className="w-5 h-5 text-[#1a6b3c] mt-0.5" /><div><p className="text-xs text-muted-foreground">Phone</p><p className="text-sm font-medium">{data.phone}</p></div></div>
                       <div className="flex items-start gap-3"><Mail className="w-5 h-5 text-[#1a6b3c] mt-0.5" /><div><p className="text-xs text-muted-foreground">Email</p><p className="text-sm font-medium">services@dessiecity.gov.et</p></div></div>
-                      <div className="flex items-start gap-3"><Clock className="w-5 h-5 text-[#1a6b3c] mt-0.5" /><div><p className="text-xs text-muted-foreground">Hours</p><p className="text-sm font-medium">Mon–Fri, 8:00 AM – 5:00 PM</p></div></div>
+                      <div className="flex items-start gap-3"><Clock className="w-5 h-5 text-[#1a6b3c] mt-0.5" /><div><p className="text-xs text-muted-foreground">Hours</p><p className="text-sm font-medium">Monâ€“Fri, 8:00 AM â€“ 5:00 PM</p></div></div>
                     </div>
                     <div className="space-y-3">
                       <Input placeholder="Your Name" value={inquiryName} onChange={(e) => setInquiryName(e.target.value)} className="bg-[#f8faf8] border-border" />
