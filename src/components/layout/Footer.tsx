@@ -2,6 +2,7 @@
 import React from 'react';
 import { Phone, Mail, Facebook, Twitter, Linkedin, Instagram, Youtube, FileText, Send, Video, MessageCircle } from 'lucide-react';
 import Link from 'next/link';
+import VisitorCounter from '@/components/VisitorCounter';
 import { useLang } from '@/lib/LangContext';
 
 export default function Footer() {
@@ -153,7 +154,7 @@ export default function Footer() {
           </div>
         </div>
 
-        <div className="border-t border-white/10 mt-12 pt-8 flex flex-col md:flex-row items-center justify-between gap-4">
+        <div className="border-t border-white/10 mt-12 pt-8 flex flex-col md:flex-row items-center justify-center gap-x-12 gap-y-4">
           <p className="text-xs text-white/40 text-center md:text-left">
             &copy; {new Date().getFullYear()} Dessie City Administration. All rights reserved.
           </p>
@@ -167,6 +168,7 @@ export default function Footer() {
           </div>
         </div>
       </div>
+      <VisitorCounter />
     </footer>
   );
 }
