@@ -2,7 +2,6 @@
 import React from 'react';
 import { Phone, Mail, Facebook, Twitter, Linkedin, Instagram, Youtube, FileText, Send, Video, MessageCircle } from 'lucide-react';
 import Link from 'next/link';
-import VisitorCounter from '@/components/VisitorCounter';
 import { useLang } from '@/lib/LangContext';
 
 export default function Footer() {
@@ -168,7 +167,6 @@ export default function Footer() {
           </div>
         </div>
       </div>
-      <VisitorCounter />
     </footer>
   );
 }
