@@ -30,34 +30,31 @@ import {
   Clock,
   Send,
   User,
-  Building2,
-  Landmark,
   HeartPulse,
   Scale,
   GraduationCap,
   Briefcase,
   Banknote,
   Wrench,
-  ChevronRight,
-  HelpCircle,
-  FileText,
-  CreditCard,
-  MessageSquare,
-  Calendar,
   UserCheck,
-  Baby,
+  Headset
 } from 'lucide-react'
 
-const fadeUp = {
-  hidden: { opacity: 0, y: 24 },
-  visible: (i: number) => ({ opacity: 1, y: 0, transition: { delay: i * 0.07, duration: 0.5 } }),
+const fadeInUp = {
+  hidden: { opacity: 0, y: 30 },
+  visible: { opacity: 1, y: 0, transition: { duration: 0.6, ease: 'easeOut' } }
+}
+
+const staggerContainer = {
+  hidden: { opacity: 0 },
+  visible: { opacity: 1, transition: { staggerChildren: 0.1 } }
 }
 
 const contactInfo = [
-  { icon: MapPin, title: 'Main Office', lines: ['Dessie City Administration', 'Main Street, Dessie, Amhara, Ethiopia'] },
-  { icon: Phone, title: 'Phone', lines: ['+251-33-111-XXXX', '+251-33-222-XXXX'] },
-  { icon: Mail, title: 'Email', lines: ['info@dessiecity.gov.et', 'support@dessiecity.gov.et'] },
-  { icon: Clock, title: 'Office Hours', lines: ['Monday - Friday: 8:00 AM - 5:00 PM', 'Saturday: 9:00 AM - 12:00 PM (Limited)'] },
+  { icon: MapPin, title: 'Main Office', lines: ['Dessie City Administration', 'Main Street, Dessie, Amhara, Ethiopia'], color: '#1a6b3c' },
+  { icon: Phone, title: 'Phone', lines: ['+251-33-111-XXXX', '+251-33-222-XXXX'], color: '#c8a415' },
+  { icon: Mail, title: 'Email', lines: ['info@dessiecity.gov.et', 'support@dessiecity.gov.et'], color: '#1a6b3c' },
+  { icon: Clock, title: 'Office Hours', lines: ['Monday - Friday: 8:00 AM - 5:00 PM', 'Saturday: 9:00 AM - 12:00 PM (Limited)'], color: '#c8a415' },
 ]
 
 const departments = [
@@ -119,152 +116,194 @@ export default function ContactPage() {
   }
 
   return (
-    <div className="min-h-screen">
+    <main className="bg-gray-50/50">
       {/* Page Banner */}
-      <section className="bg-[#0d4a28] py-20 px-4 text-center relative overflow-hidden">
-        <div className="absolute inset-0 opacity-10" style={{ backgroundImage: 'radial-gradient(circle at 2px 2px, rgba(255,255,255,0.3) 1px, transparent 0)', backgroundSize: '32px 32px' }} />
-        <motion.h1 initial={{ opacity: 0, y: -20 }} animate={{ opacity: 1, y: 0 }} className="text-4xl md:text-5xl font-bold text-white tracking-wide">{isAm ? 'ያግኙን' : 'CONTACT US'}</motion.h1>
-        <motion.p initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.2 }} className="text-green-200 mt-4 text-lg md:text-xl">{isAm ? 'ለማገልገል ዝግጁ ነን' : "We're here to serve you"}</motion.p>
+      <section className="bg-gradient-to-br from-[#0d4a28] to-[#1a6b3c] py-24 text-center relative overflow-hidden">
+        <div className="absolute inset-0 opacity-10">
+          <div className="absolute top-4 left-1/4 w-32 h-32 rounded-full border border-white/20 animate-[ping_3s_ease-in-out_infinite]" />
+          <div className="absolute bottom-8 right-1/3 w-48 h-48 rounded-full border border-white/20 animate-pulse" />
+          <div className="absolute top-8 right-16 w-20 h-20 rounded-full border border-white/20" />
+        </div>
+        <motion.div initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }} transition={{ duration: 0.8 }} className="relative z-10">
+          <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/10 backdrop-blur-md mb-6 border border-white/20 shadow-lg">
+            <Headset className="w-4 h-4 text-[#c8a415]" />
+            <p className="text-[#c8a415] text-sm tracking-widest font-semibold uppercase">{isAm ? 'ያግኙን' : 'Get In Touch'}</p>
+          </div>
+          <h1 className="text-4xl md:text-6xl font-extrabold text-white tracking-wide mb-6 drop-shadow-lg">{isAm ? 'አድራሻዎቻችን' : 'CONTACT US'}</h1>
+          <Separator className="w-24 mx-auto bg-gradient-to-r from-transparent via-[#c8a415] to-transparent h-1 mb-6 border-0" />
+          <p className="text-white/80 text-sm tracking-widest uppercase font-medium">{isAm ? 'ዋና ገጽ / አድራሻ' : 'Home / Contact'}</p>
+          <p className="text-white/70 text-lg mt-6 max-w-2xl mx-auto font-medium">{isAm ? 'ለማገልገል ዝግጁ ነን' : "We're here to serve you. Reach out to us through any of the channels below."}</p>
+        </motion.div>
       </section>
 
       {/* Contact Info Cards */}
-      <section className="bg-white py-16 px-4">
-        <div className="max-w-6xl mx-auto grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
-          {contactInfo.map((c, i) => (
-            <motion.div key={c.title} initial="hidden" whileInView="visible" viewport={{ once: true }} custom={i} variants={fadeUp}>
-              <Card className="stat-card h-full hover:shadow-lg transition-shadow border-0">
-                <CardContent className="p-6 text-center">
-                  <div className="w-12 h-12 rounded-full bg-[#1a6b3c]/10 flex items-center justify-center mx-auto mb-4">
-                    <c.icon className="w-6 h-6 text-[#1a6b3c]" />
-                  </div>
-                  <h3 className="font-bold text-foreground mb-2">{c.title}</h3>
-                  {c.lines.map((l, j) => <p key={j} className="text-muted-foreground text-sm">{l}</p>)}
-                </CardContent>
-              </Card>
-            </motion.div>
-          ))}
-        </div>
-      </section>
-
-      <Separator className="bg-[#c8a415]" />
-
-      {/* Department Directory */}
-      <section className="bg-[#f8faf8] py-16 px-4">
+      <section className="py-20 px-4 -mt-10 relative z-10">
         <div className="max-w-6xl mx-auto">
-          <motion.h2 initial="hidden" whileInView="visible" viewport={{ once: true }} custom={0} variants={fadeUp} className="gov-section-title text-3xl font-bold text-[#0d4a28] mb-2 text-center">DEPARTMENT CONTACTS</motion.h2>
-          <motion.div initial="hidden" whileInView="visible" viewport={{ once: true }} custom={1} variants={fadeUp} className="w-16 h-1 bg-[#c8a415] mx-auto mb-10" />
-          <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4">
-            {departments.map((d, i) => (
-              <motion.div key={d.name} initial="hidden" whileInView="visible" viewport={{ once: true }} custom={i} variants={fadeUp}>
-                <Card className="h-full hover:shadow-lg transition-shadow border-0">
-                  <CardContent className="p-4">
-                    <div className="flex items-center gap-2 mb-2">
-                      <d.icon className="w-4 h-4 text-[#1a6b3c]" />
-                      <h3 className="font-bold text-sm text-foreground">{d.name}</h3>
+          <motion.div initial="hidden" whileInView="visible" viewport={{ once: true, margin: '-50px' }} variants={staggerContainer} className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
+            {contactInfo.map((c) => (
+              <motion.div key={c.title} variants={fadeInUp}>
+                <Card className="h-full bg-white/90 backdrop-blur-md border border-gray-100 shadow-xl hover:-translate-y-2 hover:shadow-2xl transition-all duration-300 group overflow-hidden relative">
+                  <div className="absolute top-0 right-0 w-24 h-24 bg-gradient-to-br from-gray-50 to-gray-100 rounded-full -mr-8 -mt-8 opacity-50 group-hover:bg-[#c8a415]/10 transition-colors duration-500" />
+                  <CardContent className="p-8 text-center relative z-10 flex flex-col items-center">
+                    <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-gray-50 to-gray-100 border border-gray-100 flex items-center justify-center mb-6 shadow-sm group-hover:scale-110 transition-transform duration-300">
+                      <c.icon className="w-8 h-8" style={{ color: c.color }} />
                     </div>
-                    <div className="space-y-1 text-xs text-muted-foreground">
-                      <p><User className="w-3 h-3 inline mr-1" />{d.person}</p>
-                      <p><Phone className="w-3 h-3 inline mr-1" />{d.phone}</p>
-                      <p><Mail className="w-3 h-3 inline mr-1" />{d.email}</p>
-                    </div>
+                    <h3 className="font-extrabold text-xl text-[#0d4a28] mb-3">{c.title}</h3>
+                    {c.lines.map((l, j) => <p key={j} className="text-gray-600 text-sm font-medium leading-relaxed">{l}</p>)}
                   </CardContent>
                 </Card>
               </motion.div>
             ))}
-          </div>
-        </div>
-      </section>
-
-      {/* Contact Form */}
-      <section className="bg-white py-16 px-4">
-        <div className="max-w-3xl mx-auto">
-          <motion.h2 initial="hidden" whileInView="visible" viewport={{ once: true }} custom={0} variants={fadeUp} className="gov-section-title text-3xl font-bold text-[#0d4a28] mb-2 text-center">{isAm ? 'መልዕክት ይላኩ' : 'SEND US A MESSAGE'}</motion.h2>
-          <motion.div initial="hidden" whileInView="visible" viewport={{ once: true }} custom={1} variants={fadeUp} className="w-16 h-1 bg-[#c8a415] mx-auto mb-10" />
-          <motion.form initial="hidden" whileInView="visible" viewport={{ once: true }} custom={2} variants={fadeUp} onSubmit={handleSubmit} className="space-y-5">
-            <div className="grid sm:grid-cols-2 gap-4">
-              <div>
-                <Label className="text-sm font-semibold mb-1.5 block">{isAm ? 'ስም *' : 'Name *'}</Label>
-                <Input placeholder={isAm ? 'ሙሉ ስምዎ' : 'Your full name'} value={form.name} onChange={e => setForm({ ...form, name: e.target.value })} />
-              </div>
-              <div>
-                <Label className="text-sm font-semibold mb-1.5 block">{isAm ? 'ኢሜይል *' : 'Email *'}</Label>
-                <Input type="email" placeholder="you@example.com" value={form.email} onChange={e => setForm({ ...form, email: e.target.value })} />
-              </div>
-            </div>
-            <div className="grid sm:grid-cols-2 gap-4">
-              <div>
-                <Label className="text-sm font-semibold mb-1.5 block">{isAm ? 'ስልክ (አማራጭ)' : 'Phone (Optional)'}</Label>
-                <Input placeholder="+251-XX-XXX-XXXX" value={form.phone} onChange={e => setForm({ ...form, phone: e.target.value })} />
-              </div>
-              <div>
-                <Label className="text-sm font-semibold mb-1.5 block">{isAm ? 'ዲፓርትመንት *' : 'Department *'}</Label>
-                <Select value={form.department} onValueChange={v => setForm({ ...form, department: v })}>
-                  <SelectTrigger><SelectValue placeholder={isAm ? 'ዲፓርትመንት ይምረጡ' : 'Select department'} /></SelectTrigger>
-                  <SelectContent>
-                    {deptOptions.map(d => <SelectItem key={d} value={d}>{d}</SelectItem>)}
-                  </SelectContent>
-                </Select>
-              </div>
-            </div>
-            <div>
-              <Label className="text-sm font-semibold mb-1.5 block">{isAm ? 'ርዕሰ ጉዳይ *' : 'Subject *'}</Label>
-              <Input placeholder={isAm ? 'ጉዳዩን በአጭሩ ይጻፉ' : 'Brief subject'} value={form.subject} onChange={e => setForm({ ...form, subject: e.target.value })} />
-            </div>
-            <div>
-              <Label className="text-sm font-semibold mb-1.5 block">{isAm ? 'መልዕክት *' : 'Message *'}</Label>
-              <Textarea placeholder={isAm ? 'መልዕክትዎን እዚህ ይጻፉ...' : 'Write your message here...'} rows={5} value={form.message} onChange={e => setForm({ ...form, message: e.target.value })} />
-            </div>
-            <Button type="submit" disabled={sending} className="w-full bg-[#1a6b3c] hover:bg-[#0d4a28] text-white font-semibold">
-              {sending ? (isAm ? 'እየተላከ ነው...' : 'Sending...') : (isAm ? 'መልዕክት ላክ' : 'SEND MESSAGE')} <Send className="w-4 h-4 ml-2" />
-            </Button>
-          </motion.form>
-        </div>
-      </section>
-
-      {/* Office Locations */}
-      <section className="bg-[#f8faf8] py-16 px-4">
-        <div className="max-w-6xl mx-auto">
-          <motion.h2 initial="hidden" whileInView="visible" viewport={{ once: true }} custom={0} variants={fadeUp} className="gov-section-title text-3xl font-bold text-[#0d4a28] mb-2 text-center">OFFICE LOCATIONS</motion.h2>
-          <motion.div initial="hidden" whileInView="visible" viewport={{ once: true }} custom={1} variants={fadeUp} className="w-16 h-1 bg-[#c8a415] mx-auto mb-10" />
-          <div className="grid sm:grid-cols-3 gap-6">
-            {locations.map((l, i) => (
-              <motion.div key={l.title} initial="hidden" whileInView="visible" viewport={{ once: true }} custom={i} variants={fadeUp}>
-                <Card className="h-full hover:shadow-lg transition-shadow border-0">
-                  <CardContent className="p-6">
-                    <div className="flex items-center gap-2 mb-3">
-                      <MapPin className="w-5 h-5 text-[#1a6b3c]" />
-                      <h3 className="font-bold text-foreground">{l.title}</h3>
-                    </div>
-                    <div className="space-y-2 text-sm text-muted-foreground">
-                      <p className="flex items-center gap-2"><MapPin className="w-3.5 h-3.5 shrink-0" />{l.address}</p>
-                      <p className="flex items-center gap-2"><Phone className="w-3.5 h-3.5 shrink-0" />{l.phone}</p>
-                      <p className="flex items-center gap-2"><Clock className="w-3.5 h-3.5 shrink-0" />{l.hours}</p>
-                    </div>
-                  </CardContent>
-                </Card>
-              </motion.div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* FAQ */}
-      <section className="bg-white py-16 px-4">
-        <div className="max-w-3xl mx-auto">
-          <motion.h2 initial="hidden" whileInView="visible" viewport={{ once: true }} custom={0} variants={fadeUp} className="gov-section-title text-3xl font-bold text-[#0d4a28] mb-2 text-center">FREQUENTLY ASKED QUESTIONS</motion.h2>
-          <motion.div initial="hidden" whileInView="visible" viewport={{ once: true }} custom={1} variants={fadeUp} className="w-16 h-1 bg-[#c8a415] mx-auto mb-10" />
-          <motion.div initial="hidden" whileInView="visible" viewport={{ once: true }} custom={2} variants={fadeUp}>
-            <Accordion type="single" collapsible className="space-y-3">
-              {faqs.map((f, i) => (
-                <AccordionItem key={i} value={`faq-${i}`} className="border border-gray-200 rounded-lg px-4">
-                  <AccordionTrigger className="text-sm font-semibold text-left hover:no-underline">{f.q}</AccordionTrigger>
-                  <AccordionContent className="text-sm text-muted-foreground leading-relaxed">{f.a}</AccordionContent>
-                </AccordionItem>
-              ))}
-            </Accordion>
           </motion.div>
         </div>
       </section>
-    </div>
+
+      {/* Department Directory */}
+      <section className="bg-white py-24 px-4 border-y border-gray-100">
+        <div className="max-w-6xl mx-auto">
+          <motion.div initial="hidden" whileInView="visible" viewport={{ once: true, margin: '-50px' }} variants={staggerContainer}>
+            <div className="text-center mb-16">
+              <span className="text-[#c8a415] font-bold tracking-widest uppercase text-sm mb-2 block">Direct Access</span>
+              <h2 className="text-3xl md:text-4xl font-extrabold text-[#0d4a28]">DEPARTMENT CONTACTS</h2>
+              <div className="w-24 h-1 bg-[#1a6b3c] mx-auto mt-4 rounded-full" />
+            </div>
+
+            <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
+              {departments.map((d, i) => (
+                <motion.div key={d.name} variants={fadeInUp}>
+                  <Card className="h-full border border-gray-100 bg-white hover:border-[#1a6b3c]/30 shadow-sm hover:shadow-xl transition-all duration-300 group cursor-pointer overflow-hidden relative">
+                    <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-[#0d4a28] to-[#1a6b3c] transform scale-x-0 group-hover:scale-x-100 transition-transform duration-500 origin-left" />
+                    <CardContent className="p-6">
+                      <div className="flex items-center gap-3 mb-4">
+                        <div className="p-2 rounded-lg bg-[#1a6b3c]/10 group-hover:bg-[#1a6b3c] transition-colors duration-300">
+                          <d.icon className="w-5 h-5 text-[#1a6b3c] group-hover:text-white transition-colors duration-300" />
+                        </div>
+                        <h3 className="font-extrabold text-gray-900 leading-tight">{d.name}</h3>
+                      </div>
+                      <div className="space-y-2.5 text-sm font-medium text-gray-600">
+                        <p className="flex items-center gap-2 group-hover:text-gray-900 transition-colors"><User className="w-4 h-4 text-[#c8a415]" />{d.person}</p>
+                        <p className="flex items-center gap-2 group-hover:text-gray-900 transition-colors"><Phone className="w-4 h-4 text-[#c8a415]" />{d.phone}</p>
+                        <p className="flex items-center gap-2 group-hover:text-gray-900 transition-colors"><Mail className="w-4 h-4 text-[#c8a415]" />{d.email}</p>
+                      </div>
+                    </CardContent>
+                  </Card>
+                </motion.div>
+              ))}
+            </div>
+          </motion.div>
+        </div>
+      </section>
+
+      {/* Contact Form & Office Locations */}
+      <section className="bg-gradient-to-b from-gray-50 to-white py-24 px-4 relative overflow-hidden">
+        <div className="absolute right-0 top-0 w-[500px] h-[500px] bg-[#c8a415]/5 rounded-full blur-3xl pointer-events-none" />
+        <div className="absolute left-0 bottom-0 w-[500px] h-[500px] bg-[#1a6b3c]/5 rounded-full blur-3xl pointer-events-none" />
+        
+        <div className="max-w-7xl mx-auto grid lg:grid-cols-2 gap-16 relative z-10">
+          
+          {/* Form */}
+          <motion.div initial="hidden" whileInView="visible" viewport={{ once: true, margin: '-50px' }} variants={staggerContainer}>
+            <div className="mb-10">
+              <span className="text-[#c8a415] font-bold tracking-widest uppercase text-sm mb-2 block">Reach Out Online</span>
+              <h2 className="text-3xl md:text-4xl font-extrabold text-[#0d4a28]">{isAm ? 'መልዕክት ይላኩ' : 'SEND US A MESSAGE'}</h2>
+              <div className="w-16 h-1 bg-[#1a6b3c] mt-4 rounded-full" />
+            </div>
+
+            <Card className="bg-white/90 backdrop-blur-sm shadow-2xl border-gray-100 rounded-3xl overflow-hidden">
+              <CardContent className="p-8 md:p-10">
+                <motion.form variants={fadeInUp} onSubmit={handleSubmit} className="space-y-6">
+                  <div className="grid sm:grid-cols-2 gap-6">
+                    <div>
+                      <Label className="text-sm font-bold text-gray-700 mb-2 block">{isAm ? 'ስም *' : 'Name *'}</Label>
+                      <Input placeholder={isAm ? 'ሙሉ ስምዎ' : 'Your full name'} value={form.name} onChange={e => setForm({ ...form, name: e.target.value })} className="h-12 bg-gray-50/50 border-gray-200 focus:border-[#1a6b3c] focus:ring-[#1a6b3c]" />
+                    </div>
+                    <div>
+                      <Label className="text-sm font-bold text-gray-700 mb-2 block">{isAm ? 'ኢሜይል *' : 'Email *'}</Label>
+                      <Input type="email" placeholder="you@example.com" value={form.email} onChange={e => setForm({ ...form, email: e.target.value })} className="h-12 bg-gray-50/50 border-gray-200 focus:border-[#1a6b3c] focus:ring-[#1a6b3c]" />
+                    </div>
+                  </div>
+                  <div className="grid sm:grid-cols-2 gap-6">
+                    <div>
+                      <Label className="text-sm font-bold text-gray-700 mb-2 block">{isAm ? 'ስልክ (አማራጭ)' : 'Phone (Optional)'}</Label>
+                      <Input placeholder="+251-XX-XXX-XXXX" value={form.phone} onChange={e => setForm({ ...form, phone: e.target.value })} className="h-12 bg-gray-50/50 border-gray-200 focus:border-[#1a6b3c] focus:ring-[#1a6b3c]" />
+                    </div>
+                    <div>
+                      <Label className="text-sm font-bold text-gray-700 mb-2 block">{isAm ? 'ዲፓርትመንት *' : 'Department *'}</Label>
+                      <Select value={form.department} onValueChange={v => setForm({ ...form, department: v })}>
+                        <SelectTrigger className="h-12 bg-gray-50/50 border-gray-200 focus:border-[#1a6b3c] focus:ring-[#1a6b3c]">
+                          <SelectValue placeholder={isAm ? 'ዲፓርትመንት ይምረጡ' : 'Select department'} />
+                        </SelectTrigger>
+                        <SelectContent>
+                          {deptOptions.map(d => <SelectItem key={d} value={d}>{d}</SelectItem>)}
+                        </SelectContent>
+                      </Select>
+                    </div>
+                  </div>
+                  <div>
+                    <Label className="text-sm font-bold text-gray-700 mb-2 block">{isAm ? 'ርዕሰ ጉዳይ *' : 'Subject *'}</Label>
+                    <Input placeholder={isAm ? 'ጉዳዩን በአጭሩ ይጻፉ' : 'Brief subject'} value={form.subject} onChange={e => setForm({ ...form, subject: e.target.value })} className="h-12 bg-gray-50/50 border-gray-200 focus:border-[#1a6b3c] focus:ring-[#1a6b3c]" />
+                  </div>
+                  <div>
+                    <Label className="text-sm font-bold text-gray-700 mb-2 block">{isAm ? 'መልዕክት *' : 'Message *'}</Label>
+                    <Textarea placeholder={isAm ? 'መልዕክትዎን እዚህ ይጻፉ...' : 'Write your message here...'} rows={6} value={form.message} onChange={e => setForm({ ...form, message: e.target.value })} className="resize-none bg-gray-50/50 border-gray-200 focus:border-[#1a6b3c] focus:ring-[#1a6b3c]" />
+                  </div>
+                  <Button type="submit" disabled={sending} className="w-full h-14 bg-gradient-to-r from-[#0d4a28] to-[#1a6b3c] hover:from-[#1a6b3c] hover:to-[#0d4a28] text-white font-bold text-lg rounded-xl shadow-lg hover:shadow-xl transition-all">
+                    {sending ? (isAm ? 'እየተላከ ነው...' : 'Sending...') : (isAm ? 'መልዕክት ላክ' : 'SEND MESSAGE')} <Send className="w-5 h-5 ml-2" />
+                  </Button>
+                </motion.form>
+              </CardContent>
+            </Card>
+          </motion.div>
+
+          {/* Locations & FAQ */}
+          <motion.div initial="hidden" whileInView="visible" viewport={{ once: true, margin: '-50px' }} variants={staggerContainer}>
+            <div className="mb-10">
+              <span className="text-[#c8a415] font-bold tracking-widest uppercase text-sm mb-2 block">Visit Us</span>
+              <h2 className="text-3xl md:text-4xl font-extrabold text-[#0d4a28]">OFFICE LOCATIONS</h2>
+              <div className="w-16 h-1 bg-[#1a6b3c] mt-4 rounded-full" />
+            </div>
+
+            <div className="space-y-6 mb-16">
+              {locations.map((l, i) => (
+                <motion.div key={l.title} variants={fadeInUp}>
+                  <Card className="border border-gray-100 bg-white hover:border-[#c8a415]/50 shadow-sm hover:shadow-md transition-all duration-300">
+                    <CardContent className="p-6 flex gap-5 items-start">
+                      <div className="p-3 rounded-xl bg-[#c8a415]/10 shrink-0 mt-1">
+                        <MapPin className="w-6 h-6 text-[#c8a415]" />
+                      </div>
+                      <div>
+                        <h3 className="font-extrabold text-lg text-[#0d4a28] mb-2">{l.title}</h3>
+                        <div className="space-y-1.5 text-sm font-medium text-gray-600">
+                          <p>{l.address}</p>
+                          <p>{l.phone}</p>
+                          <p className="text-[#1a6b3c]">{l.hours}</p>
+                        </div>
+                      </div>
+                    </CardContent>
+                  </Card>
+                </motion.div>
+              ))}
+            </div>
+
+            <div className="mb-8">
+              <span className="text-[#c8a415] font-bold tracking-widest uppercase text-sm mb-2 block">Help Center</span>
+              <h2 className="text-3xl md:text-4xl font-extrabold text-[#0d4a28]">FAQS</h2>
+            </div>
+
+            <motion.div variants={fadeInUp}>
+              <Accordion type="single" collapsible className="space-y-4">
+                {faqs.map((f, i) => (
+                  <AccordionItem key={i} value={`faq-${i}`} className="border border-gray-200 rounded-xl px-5 bg-white shadow-sm">
+                    <AccordionTrigger className="text-base font-bold text-[#0d4a28] text-left hover:no-underline py-5">{f.q}</AccordionTrigger>
+                    <AccordionContent className="text-sm font-medium text-gray-600 leading-relaxed pb-5">{f.a}</AccordionContent>
+                  </AccordionItem>
+                ))}
+              </Accordion>
+            </motion.div>
+          </motion.div>
+
+        </div>
+      </section>
+    </main>
   )
 }

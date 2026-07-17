@@ -3,26 +3,24 @@
 import { useState } from 'react'
 import { motion } from 'framer-motion'
 import { Card, CardContent } from '@/components/ui/card'
-import { Badge } from '@/components/ui/badge'
 import { Separator } from '@/components/ui/separator'
 import { Input } from '@/components/ui/input'
-import { Button } from '@/components/ui/button'
 import type { PageId } from '@/lib/types'
 import { useLang } from '@/lib/LangContext'
 import {
   Baby, FileCheck, Building, MapPin, Receipt, Heart, Stethoscope, GraduationCap,
-  Bus, Droplets, MessageSquareWarning, CalendarDays, Search, ChevronRight,
-  ArrowRight, CircleDot, FileText, ClipboardList, Shield
+  Bus, Droplets, MessageSquareWarning, CalendarDays, Search,
+  ArrowRight, CircleDot, FileText, ClipboardList, Shield, Globe
 } from 'lucide-react'
 
 const fadeInUp = {
   hidden: { opacity: 0, y: 30 },
-  visible: { opacity: 1, y: 0, transition: { duration: 0.6, ease: 'easeOut' as const } }
+  visible: { opacity: 1, y: 0, transition: { duration: 0.6, ease: 'easeOut' } }
 }
 
 const staggerContainer = {
   hidden: { opacity: 0 },
-  visible: { opacity: 1, transition: { staggerChildren: 0.06 } }
+  visible: { opacity: 1, transition: { staggerChildren: 0.1 } }
 }
 
 interface ServicesPageProps {
@@ -81,30 +79,34 @@ export default function ServicesPage({ navigateTo }: ServicesPageProps) {
   )
 
   return (
-    <main>
+    <main className="bg-gray-50/50">
       {/* Page Banner */}
-      <section className="bg-[#0d4a28] py-16 text-center relative overflow-hidden">
+      <section className="bg-gradient-to-br from-[#0d4a28] to-[#1a6b3c] py-24 text-center relative overflow-hidden">
         <div className="absolute inset-0 opacity-10">
-          <div className="absolute top-6 left-1/3 w-36 h-36 rounded-full border border-white/20" />
-          <div className="absolute bottom-4 right-1/4 w-28 h-28 rounded-full border border-white/20" />
+          <div className="absolute top-4 left-1/4 w-32 h-32 rounded-full border border-white/20 animate-[ping_3s_ease-in-out_infinite]" />
+          <div className="absolute bottom-8 right-1/3 w-48 h-48 rounded-full border border-white/20 animate-pulse" />
+          <div className="absolute top-8 right-16 w-20 h-20 rounded-full border border-white/20" />
         </div>
-        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6 }} className="relative z-10">
-          <p className="text-[#c8a415] text-sm tracking-[0.2em] font-semibold mb-3 uppercase">{isAm ? 'የህዝብ አገልግሎቶች' : 'Municipal Services'}</p>
-          <h1 className="text-3xl md:text-5xl font-bold text-white tracking-wide mb-4">{isAm ? 'የዜጎች አገልግሎቶች' : 'CITIZEN SERVICES'}</h1>
-          <Separator className="w-20 mx-auto bg-[#c8a415] h-0.5 mb-4" />
-          <p className="text-white/70 text-sm tracking-widest uppercase">{isAm ? 'ዋና ገጽ / አገልግሎቶች' : 'Home / Services'}</p>
-          <p className="text-white/60 text-sm mt-3 max-w-xl mx-auto">{isAm ? 'ሁሉም የመንግስት አገልግሎቶች በዲጂታልና በቢሮ ይገኛሉ' : 'All government services available online and at city offices'}</p>
+        <motion.div initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }} transition={{ duration: 0.8 }} className="relative z-10">
+          <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/10 backdrop-blur-md mb-6 border border-white/20 shadow-lg">
+            <Globe className="w-4 h-4 text-[#c8a415]" />
+            <p className="text-[#c8a415] text-sm tracking-widest font-semibold uppercase">{isAm ? 'የህዝብ አገልግሎቶች' : 'Municipal Services'}</p>
+          </div>
+          <h1 className="text-4xl md:text-6xl font-extrabold text-white tracking-wide mb-6 drop-shadow-lg">{isAm ? 'የዜጎች አገልግሎቶች' : 'CITIZEN SERVICES'}</h1>
+          <Separator className="w-24 mx-auto bg-gradient-to-r from-transparent via-[#c8a415] to-transparent h-1 mb-6 border-0" />
+          <p className="text-white/80 text-sm tracking-widest uppercase font-medium">{isAm ? 'ዋና ገጽ / አገልግሎቶች' : 'Home / Services'}</p>
+          <p className="text-white/70 text-lg mt-6 max-w-2xl mx-auto font-medium">{isAm ? 'ሁሉም የመንግስት አገልግሎቶች በዲጂታልና በቢሮ ይገኛሉ' : 'All government services available seamlessly online and at city offices'}</p>
         </motion.div>
       </section>
 
       {/* Search Bar */}
-      <section className="bg-white py-8 px-4 -mt-6 relative z-10">
-        <div className="max-w-2xl mx-auto">
+      <section className="bg-white py-10 px-4 -mt-10 relative z-10 mx-4 md:mx-auto max-w-4xl rounded-2xl shadow-xl border border-gray-100">
+        <div className="w-full">
           <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }} className="relative">
-            <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-muted-foreground" />
+            <Search className="absolute left-6 top-1/2 -translate-y-1/2 w-6 h-6 text-[#1a6b3c]" />
             <Input
               placeholder={isAm ? 'አገልግሎቶችን ፈልግ... (ለምሳሌ፡ የልደት ምዝገባ፣ ታክስ)' : 'Search services... (e.g., birth registration, tax, license)'}
-              className="pl-12 pr-4 py-6 h-14 text-base rounded-xl border-[#1a6b3c]/20 focus:border-[#1a6b3c] shadow-lg"
+              className="pl-16 pr-6 py-8 h-16 text-lg rounded-xl border-[#1a6b3c]/20 focus:border-[#1a6b3c] shadow-inner bg-gray-50 focus:bg-white transition-colors"
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
             />
@@ -113,42 +115,44 @@ export default function ServicesPage({ navigateTo }: ServicesPageProps) {
       </section>
 
       {/* Services Grid */}
-      <section className="bg-white pb-16 px-4">
-        <div className="max-w-6xl mx-auto">
+      <section className="py-20 px-4">
+        <div className="max-w-7xl mx-auto">
           <motion.div initial="hidden" whileInView="visible" viewport={{ once: true, margin: '-50px' }} variants={staggerContainer}>
             {filteredServices.length === 0 ? (
-              <motion.div variants={fadeInUp} className="text-center py-16">
-                <Search className="w-16 h-16 text-muted-foreground/30 mx-auto mb-4" />
-                <h3 className="text-lg font-semibold text-muted-foreground">{isAm ? 'አገልግሎቶች አልተገኙም' : 'No services found'}</h3>
-                <p className="text-sm text-muted-foreground mt-1">{isAm ? 'ሌላ ቃል ይሞክሩ' : 'Try a different search term'}</p>
+              <motion.div variants={fadeInUp} className="text-center py-20 bg-white rounded-3xl shadow-sm border border-gray-100">
+                <Search className="w-20 h-20 text-gray-300 mx-auto mb-6" />
+                <h3 className="text-2xl font-bold text-gray-400">{isAm ? 'አገልግሎቶች አልተገኙም' : 'No services found'}</h3>
+                <p className="text-lg text-gray-400 mt-2">{isAm ? 'ሌላ ቃል ይሞክሩ' : 'Try a different search term'}</p>
               </motion.div>
             ) : (
-              <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
+              <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-8">
                 {filteredServices.map((service) => (
                   <motion.div key={service.title} variants={fadeInUp}>
-                    <Card className="h-full border border-gray-100 hover:border-[#1a6b3c]/30 shadow-sm hover:shadow-xl transition-all duration-300 group cursor-pointer bg-white overflow-hidden relative flex flex-col" onClick={() => navigateTo('service-detail', { serviceId: service.title })}>
-                      {/* Top colored accent line always slightly visible, full on hover */}
-                      <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-[#0d4a28] via-[#1a6b3c] to-[#c8a415] transform scale-x-75 opacity-50 group-hover:scale-x-100 group-hover:opacity-100 transition-all duration-500 origin-left z-20" />
+                    <Card className="h-full border border-gray-100/50 shadow-lg hover:shadow-2xl transition-all duration-500 group cursor-pointer bg-white/80 backdrop-blur-md overflow-hidden relative flex flex-col hover:-translate-y-2" onClick={() => navigateTo('service-detail', { serviceId: service.title })}>
+                      {/* Top colored accent line full on hover */}
+                      <div className="absolute top-0 left-0 right-0 h-1.5 bg-gradient-to-r from-[#0d4a28] via-[#1a6b3c] to-[#c8a415] transform scale-x-0 group-hover:scale-x-100 transition-transform duration-500 origin-left z-20" />
+                      
+                      {/* Abstract Background for Card */}
+                      <div className="absolute -bottom-10 -right-10 w-40 h-40 bg-gradient-to-tl from-[#c8a415]/10 to-transparent rounded-full blur-2xl group-hover:bg-[#c8a415]/20 transition-colors" />
 
-                      <CardContent className="p-7 flex flex-col h-full relative z-10">
+                      <CardContent className="p-8 flex flex-col h-full relative z-10">
                         {/* Icon & Title Header */}
-                        <div className="flex items-start gap-4 mb-5">
-                          {/* Always colorful icon container */}
-                          <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-[#0d4a28]/10 to-[#1a6b3c]/5 border border-[#1a6b3c]/10 flex items-center justify-center shrink-0 group-hover:bg-gradient-to-br group-hover:from-[#0d4a28] group-hover:to-[#1a6b3c] group-hover:border-transparent transition-all duration-300 shadow-sm group-hover:shadow-[#1a6b3c]/30 group-hover:scale-105">
-                            <service.icon className="w-7 h-7 text-[#0d4a28] group-hover:text-white transition-colors duration-300" />
+                        <div className="flex flex-col gap-6 mb-6">
+                          <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-gray-50 to-gray-100 border border-gray-200 flex items-center justify-center shrink-0 group-hover:bg-gradient-to-br group-hover:from-[#0d4a28] group-hover:to-[#1a6b3c] group-hover:border-transparent transition-all duration-500 shadow-sm group-hover:shadow-lg group-hover:shadow-[#1a6b3c]/30 group-hover:scale-110">
+                            <service.icon className="w-8 h-8 text-[#0d4a28] group-hover:text-white transition-colors duration-500" />
                           </div>
-                          <h3 className="text-lg font-extrabold text-gray-900 group-hover:text-[#0d4a28] transition-colors duration-300 pt-1 leading-snug">{service.title}</h3>
+                          <h3 className="text-2xl font-extrabold text-[#0d4a28] group-hover:text-[#1a6b3c] transition-colors duration-300 leading-snug">{service.title}</h3>
                         </div>
                         
                         {/* Description */}
-                        <p className="text-sm text-gray-500 leading-relaxed mb-6 flex-grow group-hover:text-gray-700 transition-colors duration-300">{service.description}</p>
+                        <p className="text-base text-gray-600 leading-relaxed mb-8 flex-grow font-medium">{service.description}</p>
                         
                         {/* Features List */}
-                        <ul className="space-y-3 mb-8">
+                        <ul className="space-y-4 mb-10">
                           {service.features.map((f) => (
-                            <li key={f} className="flex items-start gap-3 text-[13px] text-gray-500 group-hover:text-gray-600 transition-colors duration-300 font-medium">
-                              <div className="w-5 h-5 rounded-full bg-[#1a6b3c]/10 flex items-center justify-center shrink-0 mt-0.5 group-hover:bg-[#1a6b3c]/20 transition-colors">
-                                <CircleDot className="w-3 h-3 text-[#1a6b3c]" />
+                            <li key={f} className="flex items-start gap-3 text-sm text-gray-600 font-semibold group-hover:text-gray-800 transition-colors duration-300">
+                              <div className="w-6 h-6 rounded-full bg-[#1a6b3c]/10 flex items-center justify-center shrink-0 mt-0.5 group-hover:bg-[#c8a415]/20 transition-colors">
+                                <CircleDot className="w-3.5 h-3.5 text-[#1a6b3c] group-hover:text-[#c8a415]" />
                               </div>
                               {f}
                             </li>
@@ -156,16 +160,15 @@ export default function ServicesPage({ navigateTo }: ServicesPageProps) {
                         </ul>
                         
                         {/* Footer Action */}
-                        <div className="mt-auto pt-5 border-t border-gray-50 flex items-center justify-between">
-                          <span className="text-[10px] font-bold text-gray-400 uppercase tracking-widest flex items-center gap-1.5">
-                            <div className="w-1.5 h-1.5 rounded-full bg-[#c8a415]" />
+                        <div className="mt-auto pt-6 border-t border-gray-100 flex items-center justify-between">
+                          <span className="text-xs font-bold text-gray-400 uppercase tracking-widest flex items-center gap-2">
+                            <div className="w-2 h-2 rounded-full bg-[#c8a415]" />
                             Official Service
                           </span>
                           
-                          {/* Always visible but highlights on hover */}
-                          <div className="flex items-center gap-1.5 text-[#0d4a28] text-[11px] font-bold px-3 py-1.5 rounded-full bg-[#1a6b3c]/10 group-hover:bg-[#0d4a28] group-hover:text-white transition-all duration-300">
-                            <span>{isAm ? 'አገልግሎቱን ይጠቀሙ' : 'ACCESS SERVICE'}</span>
-                            <ArrowRight className="w-3.5 h-3.5" />
+                          <div className="flex items-center gap-2 text-white text-xs font-bold px-4 py-2 rounded-full bg-[#0d4a28] shadow-md group-hover:bg-[#c8a415] group-hover:scale-105 transition-all duration-300">
+                            <span>{isAm ? 'ይጠቀሙ' : 'ACCESS'}</span>
+                            <ArrowRight className="w-4 h-4" />
                           </div>
                         </div>
                       </CardContent>
@@ -179,21 +182,36 @@ export default function ServicesPage({ navigateTo }: ServicesPageProps) {
       </section>
 
       {/* How It Works */}
-      <section className="bg-[#f8faf8] py-16 px-4">
-        <div className="max-w-4xl mx-auto">
+      <section className="bg-[#0d4a28] py-24 px-4 relative overflow-hidden text-white">
+        {/* Abstract Background Patterns */}
+        <div className="absolute top-0 left-0 w-full h-full overflow-hidden opacity-10 pointer-events-none">
+           <svg viewBox="0 0 100 100" preserveAspectRatio="none" className="absolute w-full h-full"><path d="M0 100 C 20 0 50 0 100 100 Z" fill="#ffffff" /></svg>
+        </div>
+
+        <div className="max-w-6xl mx-auto relative z-10">
           <motion.div initial="hidden" whileInView="visible" viewport={{ once: true, margin: '-50px' }} variants={staggerContainer}>
-            <motion.div variants={fadeInUp} className="text-center mb-10">
-              <h2 className="gov-section-title text-2xl md:text-3xl font-bold text-[#0d4a28] inline-block">{isAm ? 'እንዴት እንደሚሰራ' : 'HOW IT WORKS'}</h2>
-              <p className="text-muted-foreground mt-4">{isAm ? 'የከተማ አገልግሎቶችን ማግኘት ቀላልና ቀጥተኛ ነው' : 'Accessing city services is simple and straightforward'}</p>
-            </motion.div>
-            <div className="grid md:grid-cols-3 gap-8">
+            <div className="text-center mb-20">
+              <span className="text-[#c8a415] font-bold tracking-widest uppercase text-sm mb-3 block">Simple Process</span>
+              <h2 className="text-3xl md:text-5xl font-extrabold text-white mb-6">{isAm ? 'እንዴት እንደሚሰራ' : 'HOW IT WORKS'}</h2>
+              <div className="w-24 h-1 bg-[#c8a415] mx-auto rounded-full" />
+              <p className="text-gray-300 mt-6 text-lg max-w-2xl mx-auto">{isAm ? 'የከተማ አገልግሎቶችን ማግኘት ቀላልና ቀጥተኛ ነው' : 'Accessing city services is simple, straightforward, and fully digitized for your convenience.'}</p>
+            </div>
+            
+            <div className="grid md:grid-cols-3 gap-12 relative">
+              {/* Connecting Line */}
+              <div className="hidden md:block absolute top-1/4 left-1/6 right-1/6 h-0.5 bg-gradient-to-r from-transparent via-[#c8a415]/50 to-transparent -translate-y-1/2 z-0" />
+
               {steps.map((step) => (
-                <motion.div key={step.num} variants={fadeInUp} className="text-center">
-                  <div className="w-16 h-16 rounded-full bg-[#1a6b3c] text-white text-2xl font-bold flex items-center justify-center mx-auto mb-4 shadow-lg">
-                    {step.num}
+                <motion.div key={step.num} variants={fadeInUp} className="relative z-10 text-center">
+                  <div className="w-24 h-24 rounded-3xl bg-gradient-to-br from-[#c8a415] to-[#a88810] text-white flex items-center justify-center mx-auto mb-8 shadow-2xl border-4 border-[#0d4a28] transform hover:scale-110 transition-transform duration-300 group">
+                    <step.icon className="w-10 h-10 group-hover:animate-bounce" />
                   </div>
-                  <h3 className="text-lg font-bold text-[#0d4a28] mb-2">{isAm ? step.titleAm : step.title}</h3>
-                  <p className="text-sm text-muted-foreground leading-relaxed">{isAm ? step.descAm : step.desc}</p>
+                  <Card className="bg-white/10 backdrop-blur-md border border-white/20 shadow-2xl hover:bg-white/20 transition-colors duration-300 text-center">
+                    <CardContent className="p-8">
+                      <h3 className="text-2xl font-bold text-white mb-4 tracking-wide">{isAm ? step.titleAm : step.title}</h3>
+                      <p className="text-gray-300 text-lg leading-relaxed">{isAm ? step.descAm : step.desc}</p>
+                    </CardContent>
+                  </Card>
                 </motion.div>
               ))}
             </div>
