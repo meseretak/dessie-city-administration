@@ -10,7 +10,6 @@ import { useLang } from '@/lib/LangContext';
 export default function CabinetPage() {
   const { lang } = useLang();
   const isAm = lang === 'am';
-  const [cabinetMembers, setCabinetMembers] = useState<any[]>([]);
 
   const defaultCabinetMembers = [
     {
