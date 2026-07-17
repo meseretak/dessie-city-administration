@@ -32,7 +32,9 @@ export async function GET() {
       { id: 'sub-about-transparency', label: 'Transparency',        pageId: 'transparency',   parentId: 'menu-about', order: 5 },
       // Mayor sub-items
       { id: 'sub-mayor-profile', label: "Mayor's Profile",  pageId: 'mayor', parentId: 'menu-mayor', order: 1 },
-      { id: 'sub-mayor-cabinet', label: 'Cabinet Members',  pageId: 'mayor', parentId: 'menu-mayor', order: 2 },
+      { id: 'sub-mayor-cabinet', label: 'Cabinet Members',  pageId: 'cabinet', parentId: 'menu-mayor', order: 2 },
+      { id: 'sub-mayor-structure', label: 'Structure',  pageId: 'structure', parentId: 'menu-mayor', order: 3 },
+      { id: 'sub-mayor-smart', label: 'Smart City',  pageId: 'smart-city', parentId: 'menu-mayor', order: 4 },
       // Services sub-items — full categorized list
       // Categories under Services
       { id: 'cat-civil',         label: 'Civil Registration',    pageId: 'services', parentId: 'menu-services', order: 1 },
