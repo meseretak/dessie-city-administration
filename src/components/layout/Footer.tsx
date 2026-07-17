@@ -160,10 +160,30 @@ export default function Footer() {
           <div className="text-xs text-white/40 text-center flex items-center gap-1.5">
             {lang === 'am' ? 'በመሰረት አቃሉ የተገነባ' : 'Developed by'} <a href="https://www.linkedin.com/in/meseret-akalu-76363121b/" target="_blank" rel="noopener noreferrer" className="font-semibold text-white/70 hover:text-green-400 transition-colors">Meseret Akalu</a> <span className="text-[#c8a415]">&bull;</span> <a href="tel:+251912465247" className="hover:text-green-400 transition-colors">0912465247</a>
           </div>
-          <div className="flex items-center justify-center gap-4 text-xs text-white/40">
-            <Link href="/privacy" className="hover:text-green-400 transition-colors">Privacy Policy</Link>
-            <Link href="/terms" className="hover:text-green-400 transition-colors">Terms of Service</Link>
-            <Link href="/accessibility" className="hover:text-green-400 transition-colors">Accessibility</Link>
+          <div className="flex flex-wrap items-center justify-center gap-3 text-xs text-white/40">
+            <Link href="/privacy" className="hover:text-green-400 transition-colors">
+              {lang === 'am' ? 'የግላዊነት ፖሊሲ' : 'Privacy Policy'}
+            </Link>
+            <span className="text-white/20">|</span>
+            <Link href="/terms" className="hover:text-green-400 transition-colors">
+              {lang === 'am' ? 'የአገልግሎት ውሎች' : 'Terms of Service'}
+            </Link>
+            <span className="text-white/20">|</span>
+            <Link href="/accessibility" className="hover:text-green-400 transition-colors">
+              {lang === 'am' ? 'ተደራሽነት' : 'Accessibility'}
+            </Link>
+            <span className="text-white/20">|</span>
+            <Link href="/faq" className="hover:text-green-400 transition-colors">
+              {lang === 'am' ? 'በየጥ' : 'FAQ'}
+            </Link>
+            <span className="text-white/20">|</span>
+            <Link href="/sitemap" className="hover:text-green-400 transition-colors">
+              {lang === 'am' ? 'የጣቢያ ካርታ' : 'Sitemap'}
+            </Link>
+            <span className="text-white/20">|</span>
+            <Link href="/help" className="hover:text-green-400 transition-colors">
+              {lang === 'am' ? 'እገዛ' : 'Help'}
+            </Link>
           </div>
         </div>
       </div>
