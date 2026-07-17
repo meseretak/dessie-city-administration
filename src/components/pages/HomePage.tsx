@@ -261,38 +261,7 @@ const heroSlides = [
     subtitle: 'Quality Health Services & Modern Education for Every Dessie Resident',
     tag: 'HEALTH',
   },
-  // New AI Generated High Quality Images added to the end
-  {
-    image: '/images/slider/slider_smart_city_1784237536479.png',
-    title: 'Dessie Smart City 2025',
-    subtitle: 'Advanced Digital Control Center — Real-Time City Monitoring & Governance',
-    tag: 'TECHNOLOGY',
-  },
-  {
-    image: '/images/slider/slider_mountains_1784237554732.png',
-    title: 'ደሴ — የተራሮች እንቁ',
-    subtitle: 'Dessie City — Nestled in the Breathtaking Mountains of Wollo',
-    tag: 'LANDSCAPE & NATURE',
-  },
-  {
-    image: '/images/slider/slider_culture_1784237526640.png',
-    title: 'የወሎ ባህልና ትውፊት',
-    subtitle: 'Rich Amhara Culture, Ancient Heritage & Highland Traditions of Dessie',
-    tag: 'CULTURE & HERITAGE',
-  },
-  {
-    image: '/images/slider/slider_market_1784237546014.png',
-    title: 'ደሴ ገበያ — ባህላዊ ሕይወት',
-    subtitle: 'The Vibrant Dessie Merkato — Traditional Trade, Crafts & Community Life',
-    tag: 'CULTURE',
-  },
-  {
-    image: '/images/slider/slider_women_1784237563940.png',
-    title: 'የወሎ ቆንጆዎች — ውበትና ኩራት',
-    subtitle: 'Celebrating the Joyful Spirit and Elegant Traditional Dress of Dessie Women',
-    tag: 'PEOPLE',
-  },
-  // Original Images Restored in Order
+
   {
     image: '/dessie-smart-center.png',
     title: 'Dessie Smart City 2025',
