@@ -336,33 +336,35 @@ export default function AboutPage() {
       </section>
 
       {/* Economy */}
-      <section className="bg-gradient-to-tr from-[#0d4a28] to-[#1a6b3c] py-20 px-4 relative overflow-hidden text-white">
-        <div className="absolute inset-0 opacity-10" style={{ backgroundImage: 'radial-gradient(circle at 2px 2px, rgba(255,255,255,1) 1px, transparent 0)', backgroundSize: '30px 30px' }} />
+      <section className="bg-white py-20 px-4 relative overflow-hidden border-t border-gray-100">
+        <div className="absolute inset-0 opacity-[0.02]" style={{ backgroundImage: 'radial-gradient(circle at 2px 2px, #000 1px, transparent 0)', backgroundSize: '30px 30px' }} />
         
         <div className="max-w-6xl mx-auto relative z-10">
           <motion.div initial="hidden" whileInView="visible" viewport={{ once: true, margin: '-50px' }} variants={staggerContainer}>
             <div className="text-center mb-16">
-              <span className="text-[#c8a415] font-bold tracking-widest uppercase text-xs mb-2 block drop-shadow-md">Growth & Prosperity</span>
-              <h2 className="text-3xl md:text-4xl font-extrabold text-white">ECONOMY & COMMERCE</h2>
-              <div className="w-24 h-1 bg-[#c8a415] mx-auto mt-4 rounded-full" />
+              <span className="text-[#c8a415] font-bold tracking-widest uppercase text-xs mb-2 block">Growth & Prosperity</span>
+              <h2 className="text-3xl md:text-4xl font-extrabold text-[#0d4a28]">ECONOMY & COMMERCE</h2>
+              <div className="w-24 h-1 bg-gradient-to-r from-[#0d4a28] via-[#1a6b3c] to-[#c8a415] mx-auto mt-4 rounded-full" />
             </div>
             
-            <motion.p variants={fadeInUp} className="text-white/90 text-sm md:text-base text-center max-w-3xl mx-auto mb-12 leading-relaxed drop-shadow-sm">
+            <motion.p variants={fadeInUp} className="text-gray-600 text-sm md:text-base text-center max-w-3xl mx-auto mb-12 leading-relaxed">
               Dessie&apos;s economy is diverse and rapidly growing, driven by trade, agriculture, manufacturing, and services. As a major commercial crossroads, the city connects producers from the surrounding highlands with markets across Ethiopia.
             </motion.p>
             
             <div className="grid md:grid-cols-3 gap-6">
               {economyStats.map((stat, i) => (
                 <motion.div key={stat.label} variants={fadeInUp} whileHover={{ y: -5 }}>
-                  <Card className="bg-white/10 backdrop-blur-md border border-white/20 shadow-lg overflow-hidden group rounded-2xl h-full">
+                  <Card className="bg-white border border-gray-100 shadow-lg hover:shadow-xl hover:border-[#1a6b3c]/20 transition-all overflow-hidden group rounded-2xl h-full relative">
+                    {/* Abstract gradient on hover */}
+                    <div className="absolute -bottom-10 -right-10 w-24 h-24 rounded-full blur-xl transition-colors duration-500 opacity-10 group-hover:opacity-20" style={{ backgroundColor: stat.color }} />
                     <CardContent className="p-8 text-center relative z-10">
-                      <div className="w-16 h-16 rounded-2xl mx-auto mb-6 flex items-center justify-center bg-white shadow-md group-hover:rotate-6 transition-transform duration-300">
+                      <div className="w-16 h-16 rounded-2xl mx-auto mb-6 flex items-center justify-center bg-gray-50 shadow-sm border border-gray-100 group-hover:scale-110 transition-transform duration-300">
                         <stat.icon className="w-8 h-8" style={{ color: stat.color }} />
                       </div>
-                      <div className="text-3xl font-black text-white drop-shadow-md mb-2">
+                      <div className="text-3xl font-black text-gray-800 drop-shadow-sm mb-2">
                          <AnimatedStat value={stat.val} prefix={stat.prefix} suffix={stat.suffix} />
                       </div>
-                      <div className="text-xs text-[#c8a415] font-bold uppercase tracking-widest">{stat.label}</div>
+                      <div className="text-xs text-gray-500 font-bold uppercase tracking-widest">{stat.label}</div>
                     </CardContent>
                   </Card>
                 </motion.div>
