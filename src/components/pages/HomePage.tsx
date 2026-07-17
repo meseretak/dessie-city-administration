@@ -1,7 +1,9 @@
 'use client'
 
-import { useState, useEffect, useRef, useCallback, useMemo } from 'react'
+import { useState, useRef, useCallback, useMemo } from 'react'
 import { motion, AnimatePresence, useMotionValue, animate } from 'framer-motion'
+import useSWR from 'swr'
+import { fetcherArray } from '@/lib/fetcher'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
@@ -405,74 +407,63 @@ export default function HomePage() {
   const isAm = lang === 'am'
   const { toast } = useToast()
 
-  // Fetch news from DB — shows library news and all published articles
-  const [homeNews, setHomeNews] = useState(staticHomeNews as any[])
-  const [heroSlidesDynamic, setHeroSlidesDynamic] = useState(heroSlides as any[])
-  const [promoSlidesDynamic, setPromoSlidesDynamic] = useState(promoSlides as any[])
-  const [dynamicProjects, setDynamicProjects] = useState(featuredProjects as any[])
+  const { data: dbNews } = useSWR('/api/admin/news', fetcherArray)
+  const { data: dbHeroSlides } = useSWR('/api/admin/sliders?sliderType=hero', fetcherArray)
+  const { data: dbPromoSlides } = useSWR('/api/admin/sliders?sliderType=promo', fetcherArray)
+  const { data: dbProjects } = useSWR('/api/admin/projects', fetcherArray)
 
-  useEffect(() => {
-    // Fetch News
-    fetch('/api/admin/news')
-      .then(r => r.ok ? r.json() : [])
-      .then((data: any[]) => {
-        const published = data.filter(a => a.approvalStatus === 'approved' || a.status === 'published')
-        if (published.length > 0) {
-          const mapped = published.map(a => ({
-            id: a.id,
-            title: a.title,
-            date: new Date(a.createdAt).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }),
-            category: a.category || 'News',
-            image: (() => {
-              const img = a.image || '/news-meeting.png'
-              if (img.trim().startsWith('[')) { try { const arr = JSON.parse(img); return arr[0] || '/news-meeting.png' } catch { return '/news-meeting.png' } }
-              return img
-            })(),
-            excerpt: a.excerpt || '',
-          }))
-          setHomeNews(mapped)
+  const homeNews = useMemo(() => {
+    if (dbNews && dbNews.length > 0) {
+      const published = dbNews.filter((a: any) => a.approvalStatus === 'approved' || a.status === 'published')
+      if (published.length > 0) {
+        return published.map((a: any) => ({
+          id: a.id,
+          title: a.title,
+          date: new Date(a.createdAt).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }),
+          category: a.category || 'News',
+          image: (() => {
+            const img = a.image || '/news-meeting.png'
+            if (img.trim().startsWith('[')) { try { const arr = JSON.parse(img); return arr[0] || '/news-meeting.png' } catch { return '/news-meeting.png' } }
+            return img
+          })(),
+          excerpt: a.excerpt || '',
+        }))
+      }
+    }
+    return staticHomeNews;
+  }, [dbNews]);
+
+  const heroSlidesDynamic = useMemo(() => {
+    if (dbHeroSlides && dbHeroSlides.length > 0) {
+      return dbHeroSlides.filter((s: any) => s.isActive)
+    }
+    return heroSlides;
+  }, [dbHeroSlides]);
+
+  const promoSlidesDynamic = useMemo(() => {
+    if (dbPromoSlides && dbPromoSlides.length > 0) {
+      return dbPromoSlides.filter((s: any) => s.isActive)
+    }
+    return promoSlides;
+  }, [dbPromoSlides]);
+
+  const dynamicProjects = useMemo(() => {
+    if (dbProjects && dbProjects.length > 0) {
+      return dbProjects.filter((p: any) => p.approvalStatus === 'approved').map((p: any) => {
+        let img = '/project-smart-city.png'
+        if (p.images) {
+          try { const arr = JSON.parse(p.images); if (arr.length > 0) img = arr[0] } catch {}
+        }
+        return {
+          title: p.title,
+          desc: p.description,
+          image: img,
+          color: 'blue' // Default color
         }
       })
-      .catch(() => {})
-
-    // Fetch Hero Sliders
-    fetch('/api/admin/sliders?sliderType=hero')
-      .then(r => r.ok ? r.json() : [])
-      .then((data: any[]) => {
-        if (data.length > 0) setHeroSlidesDynamic(data.filter((s: any) => s.isActive))
-      })
-      .catch(() => {})
-
-    // Fetch Promo Sliders
-    fetch('/api/admin/sliders?sliderType=promo')
-      .then(r => r.ok ? r.json() : [])
-      .then((data: any[]) => {
-        if (data.length > 0) setPromoSlidesDynamic(data.filter((s: any) => s.isActive))
-      })
-      .catch(() => {})
-
-    // Fetch Projects
-    fetch('/api/admin/projects')
-      .then(r => r.ok ? r.json() : [])
-      .then((data: any[]) => {
-        if (data.length > 0) {
-          const mapped = data.filter((p: any) => p.approvalStatus === 'approved').map((p: any) => {
-            let img = '/project-smart-city.png'
-            if (p.images) {
-              try { const arr = JSON.parse(p.images); if (arr.length > 0) img = arr[0] } catch {}
-            }
-            return {
-              title: p.title,
-              desc: p.description,
-              image: img,
-              color: 'blue' // Default color
-            }
-          })
-          setDynamicProjects(mapped)
-        }
-      })
-      .catch(() => {})
-  }, [])
+    }
+    return featuredProjects;
+  }, [dbProjects]);
 
   /* ── Slider State ── */
   const [currentSlide, setCurrentSlide] = useState(0)

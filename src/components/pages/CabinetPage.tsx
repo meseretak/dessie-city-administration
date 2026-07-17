@@ -1,7 +1,9 @@
 "use client"
 import React from 'react';
-import { useState, useEffect } from 'react';
+import { useState, useMemo } from 'react';
 import { motion } from 'framer-motion';
+import useSWR from 'swr';
+import { fetcherArray } from '@/lib/fetcher';
 import { Users, Mail, Phone, MapPin, Briefcase } from 'lucide-react';
 import { useLang } from '@/lib/LangContext';
 
@@ -61,32 +63,22 @@ export default function CabinetPage() {
     }
   ];
 
-  useEffect(() => {
-    fetch('/api/admin/cabinet-members')
-      .then(res => res.json())
-      .then(data => {
-        if (data && data.length > 0) {
-          const mapped = data.filter((m: any) => m.approvalStatus === 'approved').map((m: any) => ({
-            name: m.name,
-            role: m.position,
-            department: m.department || "Cabinet Office",
-            image: m.image || "https://images.unsplash.com/photo-1559839734-2b71ea197ec2?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
-            email: m.email || "info@dessiecity.gov.et",
-            phone: m.phone || "+251-33-111-XXXX"
-          }));
-          if (mapped.length > 0) {
-            setCabinetMembers(mapped);
-          } else {
-            setCabinetMembers(defaultCabinetMembers);
-          }
-        } else {
-          setCabinetMembers(defaultCabinetMembers);
-        }
-      })
-      .catch(() => {
-        setCabinetMembers(defaultCabinetMembers);
-      });
-  }, []);
+  const { data: dbData } = useSWR('/api/admin/cabinet-members', fetcherArray);
+
+  const cabinetMembers = useMemo(() => {
+    if (dbData && dbData.length > 0) {
+      const mapped = dbData.filter((m: any) => m.approvalStatus === 'approved').map((m: any) => ({
+        name: m.name,
+        role: m.position,
+        department: m.department || "Cabinet Office",
+        image: m.image || "https://images.unsplash.com/photo-1559839734-2b71ea197ec2?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
+        email: m.email || "info@dessiecity.gov.et",
+        phone: m.phone || "+251-33-111-XXXX"
+      }));
+      if (mapped.length > 0) return mapped;
+    }
+    return defaultCabinetMembers;
+  }, [dbData, defaultCabinetMembers]);
 
   return (
     <div className="min-h-screen bg-[#f8faf8]">

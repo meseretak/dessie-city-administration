@@ -1,7 +1,9 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState, useMemo } from 'react'
 import { motion } from 'framer-motion'
+import useSWR from 'swr'
+import { fetcherArray } from '@/lib/fetcher'
 import { Card, CardContent } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
@@ -115,14 +117,11 @@ export default function ProjectsPage() {
   const { lang } = useLang()
   const isAm = lang === 'am'
   const [activeFilter, setActiveFilter] = useState<Filter>('All')
-  const [dbProjects, setDbProjects] = useState<DbProject[]>([])
-
-  useEffect(() => {
-    fetch('/api/admin/projects')
-      .then(r => r.json())
-      .then(data => { if (Array.isArray(data)) setDbProjects(data) })
-      .catch(() => {})
-  }, [])
+  const { data: rawProjects } = useSWR('/api/admin/projects', fetcherArray)
+  
+  const dbProjects = useMemo(() => {
+    return Array.isArray(rawProjects) ? rawProjects : []
+  }, [rawProjects])
 
   // Merge: DB projects take priority, fall back to hardcoded if DB is empty
   const activeOngoing = dbProjects.length > 0

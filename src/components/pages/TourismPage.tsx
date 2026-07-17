@@ -62,30 +62,26 @@ const tips = [
   { icon: FileCheck, title: 'Visa', value: 'On Arrival', desc: 'Available at Bole International Airport.' },
 ]
 
-import { useState, useEffect } from 'react'
-
+import { useMemo } from 'react'
+import useSWR from 'swr'
+import { fetcherArray } from '@/lib/fetcher'
 export default function TourismPage() {
   const { lang } = useLang()
   const isAm = lang === 'am'
-  const [hotels, setHotels] = useState<any[]>(defaultHotels)
+  const { data: dbData } = useSWR('/api/admin/hotels', fetcherArray)
 
-  useEffect(() => {
-    fetch('/api/admin/hotels')
-      .then(res => res.json())
-      .then(data => {
-        if (data && data.length > 0) {
-          const mapped = data.filter((h: any) => h.approvalStatus === 'approved').map((h: any) => ({
-            name: h.name,
-            stars: h.starRating || 3,
-            desc: h.description,
-            amenities: h.amenities ? (typeof h.amenities === 'string' ? JSON.parse(h.amenities) : h.amenities) : ['WiFi', 'Restaurant']
-          }))
-          setHotels(mapped)
-        }
-      })
-      .catch(console.error)
-  }, [])
-  
+  const hotels = useMemo(() => {
+    if (dbData && dbData.length > 0) {
+      const mapped = dbData.filter((h: any) => h.approvalStatus === 'approved').map((h: any) => ({
+        name: h.name,
+        stars: h.starRating || 3,
+        desc: h.description,
+        amenities: h.amenities ? (typeof h.amenities === 'string' ? JSON.parse(h.amenities) : h.amenities) : ['WiFi', 'Restaurant']
+      }))
+      if (mapped.length > 0) return mapped;
+    }
+    return defaultHotels;
+  }, [dbData]);
   return (
     <main className="bg-gray-50/50 min-h-screen">
       {/* Page Banner */}
