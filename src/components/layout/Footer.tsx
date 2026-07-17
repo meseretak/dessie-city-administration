@@ -16,10 +16,9 @@ export default function Footer() {
           <div className="col-span-2 md:col-span-1 mb-4 md:mb-0">
             <div className="flex items-center gap-3 mb-4">
               <img
-                src="/official-logo.png"
+                src="/dessie-logo.png"
                 alt="Dessie City Administration Logo"
-                className="h-14 w-auto object-contain mix-blend-screen"
-                style={{ filter: 'invert(1) grayscale(1) brightness(2)' }}
+                className="h-14 w-auto object-contain drop-shadow-md"
               />
               <div className="leading-tight">
                 <span className="text-green-400 font-bold text-xl tracking-wide">DESSIE</span>
