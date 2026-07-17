@@ -253,10 +253,12 @@ export default function MayorPage() {
   const CABINET_PER_PAGE = 4
   const [dbCabinet, setDbCabinet] = useState<DbCabinetMember[]>([])
   const [dbMayorInfo, setDbMayorInfo] = useState<{ name: string; photo: string; title: string } | null>(null)
+  const [dbSpeeches, setDbSpeeches] = useState<{ title: string; date: string; icon: any }[]>([])
   const [selectedMember, setSelectedMember] = useState<any | null>(null)
   const [selectedOrg, setSelectedOrg] = useState<{ title: string; bio: string; photo: string; name: string; role?: string; email?: string; phone?: string; social?: any } | null>(null)
 
   useEffect(() => {
+    // Fetch cabinet members
     fetch('/api/admin/cabinet-members')
       .then(r => r.json())
       .then((data: DbCabinetMember[]) => {
@@ -276,12 +278,30 @@ export default function MayorPage() {
         }
       })
       .catch(() => {})
+
+    // Fetch news for speeches
+    fetch('/api/admin/news')
+      .then(r => r.json())
+      .then((data: any[]) => {
+        if (Array.isArray(data) && data.length > 0) {
+          // Filter or just take the latest 3 for speeches
+          const latest = data.slice(0, 3).map(news => ({
+            title: news.title,
+            date: new Date(news.createdAt).toLocaleDateString(),
+            icon: FileText
+          }))
+          setDbSpeeches(latest)
+        }
+      })
+      .catch(() => {})
   }, [])
 
   // Use DB data if available, fallback to hardcoded
   const displayCabinet = dbCabinet.length > 0 ? dbCabinet : cabinetMembers
   const mayorName = dbMayorInfo?.name || mayorInfo.name
   const mayorPhoto = dbMayorInfo?.photo || mayorInfo.photo
+
+  const displaySpeeches = dbSpeeches.length > 0 ? dbSpeeches : speeches
 
   const totalCabinetPages = Math.ceil(displayCabinet.length / CABINET_PER_PAGE)
   const pageMembers = displayCabinet.slice(cabinetPage * CABINET_PER_PAGE, (cabinetPage + 1) * CABINET_PER_PAGE)
@@ -423,7 +443,7 @@ export default function MayorPage() {
 
 
       {/* ═══ EXECUTIVE CABINET MEMBERS — WITH PAGINATION ═══ */}
-      <section className="bg-white py-16 md:py-20 px-4">
+      <section className="bg-[#f8faf8] py-16 md:py-20 px-4">
         <div className="max-w-6xl mx-auto">
           <motion.div initial="hidden" whileInView="visible" viewport={{ once: true, margin: '-50px' }} variants={staggerContainer}>
             <motion.div variants={fadeInUp} className="text-center mb-10">
@@ -522,7 +542,7 @@ export default function MayorPage() {
       </section>
 
       {/* Key Priorities */}
-      <section className="bg-[#f8faf8] py-16 md:py-20 px-4">
+      <section className="bg-white py-16 md:py-20 px-4">
         <div className="max-w-6xl mx-auto">
           <motion.div initial="hidden" whileInView="visible" viewport={{ once: true, margin: '-50px' }} variants={staggerContainer}>
             <motion.div variants={fadeInUp} className="text-center mb-10">
@@ -531,12 +551,13 @@ export default function MayorPage() {
             <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
               {priorities.map((item) => (
                 <motion.div key={item.title} variants={fadeInUp}>
-                  <Card className="h-full border-0 shadow-md hover:shadow-lg transition-shadow group">
-                    <CardContent className="p-6">
-                      <div className="w-12 h-12 rounded-full bg-[#1a6b3c]/10 flex items-center justify-center mb-4 group-hover:bg-[#1a6b3c] transition-colors">
-                        <item.icon className="w-6 h-6 text-[#1a6b3c] group-hover:text-white transition-colors" />
+                  <Card className="h-full border border-gray-100 shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all group overflow-hidden relative">
+                    <div className="absolute top-0 right-0 w-32 h-32 rounded-full bg-gradient-to-br from-[#1a6b3c]/5 to-transparent blur-2xl -mr-10 -mt-10 group-hover:scale-150 transition-transform duration-700" />
+                    <CardContent className="p-8 relative z-10">
+                      <div className="w-14 h-14 rounded-2xl bg-[#1a6b3c]/10 flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300">
+                        <item.icon className="w-7 h-7 text-[#1a6b3c]" />
                       </div>
-                      <h3 className="font-bold text-[#0d4a28] mb-2">{item.title}</h3>
+                      <h3 className="font-extrabold text-xl text-[#0d4a28] mb-3">{item.title}</h3>
                       <p className="text-sm text-muted-foreground leading-relaxed">{item.desc}</p>
                     </CardContent>
                   </Card>
@@ -547,28 +568,32 @@ export default function MayorPage() {
         </div>
       </section>
 
-      {/* Recent Speeches */}
-      <section className="bg-white py-16 md:py-20 px-4">
+      {/* Recent Speeches / Announcements */}
+      <section className="bg-[#f8faf8] py-16 md:py-20 px-4">
         <div className="max-w-4xl mx-auto">
           <motion.div initial="hidden" whileInView="visible" viewport={{ once: true, margin: '-50px' }} variants={staggerContainer}>
             <motion.div variants={fadeInUp} className="text-center mb-10">
-              <h2 className="gov-section-title text-2xl md:text-3xl font-bold text-[#0d4a28] inline-block">RECENT SPEECHES</h2>
+              <Badge className="bg-[#c8a415]/10 text-[#c8a415] border-[#c8a415]/30 mb-3 px-3 py-1 font-semibold uppercase tracking-widest text-[10px]">News & Press</Badge>
+              <h2 className="gov-section-title text-2xl md:text-3xl font-bold text-[#0d4a28] inline-block block">LATEST ANNOUNCEMENTS</h2>
             </motion.div>
             <div className="space-y-4">
-              {speeches.map((speech) => (
-                <motion.div key={speech.title} variants={fadeInUp}>
-                  <Card className="border-0 shadow-md hover:shadow-lg transition-shadow">
-                    <CardContent className="p-5 flex items-center justify-between gap-4">
-                      <div className="flex items-center gap-4 min-w-0">
-                        <div className="w-12 h-12 rounded-lg bg-[#1a6b3c]/10 flex items-center justify-center flex-shrink-0">
-                          <speech.icon className="w-5 h-5 text-[#1a6b3c]" />
+              {displaySpeeches.map((speech, index) => (
+                <motion.div key={speech.title + index} variants={fadeInUp}>
+                  <Card className="border-0 shadow-sm hover:shadow-lg hover:border-[#1a6b3c]/30 border border-transparent transition-all overflow-hidden group">
+                    <CardContent className="p-6 flex flex-col md:flex-row md:items-center justify-between gap-4 relative">
+                      <div className="absolute left-0 top-0 bottom-0 w-1.5 bg-gradient-to-b from-[#1a6b3c] to-[#c8a415] opacity-0 group-hover:opacity-100 transition-opacity" />
+                      <div className="flex items-center gap-5 min-w-0">
+                        <div className="w-14 h-14 rounded-xl bg-white shadow-sm border border-gray-100 flex items-center justify-center flex-shrink-0 group-hover:scale-110 transition-transform duration-300">
+                          <speech.icon className="w-6 h-6 text-[#1a6b3c]" />
                         </div>
                         <div className="min-w-0">
-                          <h3 className="font-semibold text-[#0d4a28] text-sm md:text-base truncate">{speech.title}</h3>
-                          <p className="text-xs text-muted-foreground flex items-center gap-1 mt-1"><Calendar className="w-3 h-3" /> {speech.date}</p>
+                          <h3 className="font-bold text-[#0d4a28] text-lg truncate mb-1">{speech.title}</h3>
+                          <p className="text-xs text-muted-foreground flex items-center gap-1.5 font-medium"><Calendar className="w-3.5 h-3.5 text-[#c8a415]" /> {speech.date}</p>
                         </div>
                       </div>
-                      <button className="flex items-center gap-1 text-[#1a6b3c] text-sm font-semibold hover:gap-2 transition-all flex-shrink-0">READ <ChevronRight className="w-4 h-4" /></button>
+                      <button className="flex items-center justify-between gap-2 bg-[#f0fdf4] hover:bg-[#1a6b3c] text-[#1a6b3c] hover:text-white px-5 py-2.5 rounded-lg text-sm font-bold transition-colors w-full md:w-auto flex-shrink-0 mt-4 md:mt-0">
+                        READ MORE <ChevronRight className="w-4 h-4" />
+                      </button>
                     </CardContent>
                   </Card>
                 </motion.div>
