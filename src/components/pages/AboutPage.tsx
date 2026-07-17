@@ -210,30 +210,30 @@ export default function AboutPage() {
         </div>
       </section>
 
-      {/* Vision, Mission, Values */}
-      <section className="bg-[#0d4a28] py-24 px-4 text-white relative overflow-hidden">
+      {/* Vision, Mission */}
+      <section className="bg-white py-24 px-4 relative overflow-hidden">
         {/* Abstract Background Patterns */}
-        <div className="absolute top-0 left-0 w-full h-full overflow-hidden opacity-10 pointer-events-none">
-           <svg viewBox="0 0 100 100" preserveAspectRatio="none" className="absolute w-full h-full"><path d="M0 100 C 20 0 50 0 100 100 Z" fill="#ffffff" /></svg>
+        <div className="absolute top-0 left-0 w-full h-full overflow-hidden opacity-50 pointer-events-none">
+           <svg viewBox="0 0 100 100" preserveAspectRatio="none" className="absolute w-full h-full"><path d="M0 100 C 20 0 50 0 100 100 Z" fill="#f8faf8" /></svg>
         </div>
 
-        <div className="max-w-6xl mx-auto relative z-10">
+        <div className="max-w-5xl mx-auto relative z-10">
           <motion.div initial="hidden" whileInView="visible" viewport={{ once: true, margin: '-50px' }} variants={staggerContainer}>
             <div className="text-center mb-16">
               <span className="text-[#c8a415] font-bold tracking-widest uppercase text-sm mb-2 block">Our Ideology</span>
-              <h2 className="text-3xl md:text-4xl font-extrabold text-white">THE CITY'S FOUNDATION</h2>
-              <div className="w-24 h-1 bg-[#c8a415] mx-auto mt-4 rounded-full" />
+              <h2 className="text-3xl md:text-4xl font-extrabold text-[#0d4a28]">THE CITY'S FOUNDATION</h2>
+              <div className="w-24 h-1 bg-[#1a6b3c] mx-auto mt-4 rounded-full" />
             </div>
             
-            <div className="grid md:grid-cols-3 gap-8">
+            <div className="grid md:grid-cols-2 gap-12">
               <motion.div variants={fadeInUp}>
-                <Card className="h-full bg-white/10 backdrop-blur-md border border-white/20 shadow-2xl hover:bg-white/20 transition-colors duration-300 group">
-                  <CardContent className="p-8">
-                    <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-[#c8a415] to-[#a88810] flex items-center justify-center mb-6 shadow-lg group-hover:scale-110 transition-transform duration-300">
-                      <Eye className="w-8 h-8 text-white" />
+                <Card className="h-full bg-white/80 backdrop-blur-md border border-gray-100 shadow-xl hover:-translate-y-2 transition-transform duration-300 group">
+                  <CardContent className="p-10 text-center">
+                    <div className="w-20 h-20 mx-auto rounded-full bg-gradient-to-br from-[#c8a415]/20 to-[#c8a415]/5 flex items-center justify-center mb-6 shadow-inner group-hover:scale-110 transition-transform duration-300">
+                      <Eye className="w-10 h-10 text-[#c8a415]" />
                     </div>
-                    <h3 className="text-2xl font-bold text-white mb-4 tracking-wide">Vision</h3>
-                    <p className="text-gray-300 leading-relaxed text-lg">
+                    <h3 className="text-2xl font-bold text-[#0d4a28] mb-4 tracking-wide">Vision</h3>
+                    <p className="text-gray-600 leading-relaxed text-lg">
                       To make Dessie a model smart city in Ethiopia, known for good governance, sustainable development, and an unparalleled quality of life for all its residents.
                     </p>
                   </CardContent>
@@ -241,34 +241,15 @@ export default function AboutPage() {
               </motion.div>
 
               <motion.div variants={fadeInUp}>
-                <Card className="h-full bg-white/10 backdrop-blur-md border border-white/20 shadow-2xl hover:bg-white/20 transition-colors duration-300 group">
-                  <CardContent className="p-8">
-                    <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-[#1a6b3c] to-[#114a29] flex items-center justify-center mb-6 shadow-lg group-hover:scale-110 transition-transform duration-300">
-                      <Target className="w-8 h-8 text-white" />
+                <Card className="h-full bg-white/80 backdrop-blur-md border border-gray-100 shadow-xl hover:-translate-y-2 transition-transform duration-300 group">
+                  <CardContent className="p-10 text-center">
+                    <div className="w-20 h-20 mx-auto rounded-full bg-gradient-to-br from-[#1a6b3c]/20 to-[#1a6b3c]/5 flex items-center justify-center mb-6 shadow-inner group-hover:scale-110 transition-transform duration-300">
+                      <Target className="w-10 h-10 text-[#1a6b3c]" />
                     </div>
-                    <h3 className="text-2xl font-bold text-white mb-4 tracking-wide">Mission</h3>
-                    <p className="text-gray-300 leading-relaxed text-lg">
+                    <h3 className="text-2xl font-bold text-[#0d4a28] mb-4 tracking-wide">Mission</h3>
+                    <p className="text-gray-600 leading-relaxed text-lg">
                       Provide efficient, transparent, and citizen-centered municipal services while actively promoting local economic growth, social equity, and cultural preservation.
                     </p>
-                  </CardContent>
-                </Card>
-              </motion.div>
-
-              <motion.div variants={fadeInUp}>
-                <Card className="h-full bg-white/10 backdrop-blur-md border border-white/20 shadow-2xl hover:bg-white/20 transition-colors duration-300 group">
-                  <CardContent className="p-8">
-                    <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-gray-100 to-white flex items-center justify-center mb-6 shadow-lg group-hover:scale-110 transition-transform duration-300">
-                      <Award className="w-8 h-8 text-[#0d4a28]" />
-                    </div>
-                    <h3 className="text-2xl font-bold text-white mb-4 tracking-wide">Core Values</h3>
-                    <div className="space-y-4">
-                      {coreValues.map((v) => (
-                        <div key={v.label} className="flex items-center gap-4 bg-black/20 p-3 rounded-lg border border-white/5 hover:bg-black/40 transition-colors">
-                          <v.icon className="w-5 h-5 text-[#c8a415] flex-shrink-0" />
-                          <span className="text-md font-semibold text-white tracking-wide">{v.label}</span>
-                        </div>
-                      ))}
-                    </div>
                   </CardContent>
                 </Card>
               </motion.div>
