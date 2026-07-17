@@ -450,9 +450,33 @@ export default function HomePage() {
   const dynamicProjects = useMemo(() => {
     if (dbProjects && dbProjects.length > 0) {
       return dbProjects.filter((p: any) => p.approvalStatus === 'approved').map((p: any) => {
-        let img = '/project-smart-city.png'
+        let img = '';
+        
+        // Dynamic fallback based on title keywords
+        const lowerTitle = p.title.toLowerCase();
+        if (lowerTitle.includes('smart') || lowerTitle.includes('digital')) {
+          img = 'https://images.unsplash.com/photo-1451187580459-43490279c0fa?auto=format&fit=crop&w=1200&q=80';
+        } else if (lowerTitle.includes('industrial') || lowerTitle.includes('zone')) {
+          img = 'https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?auto=format&fit=crop&w=1200&q=80';
+        } else if (lowerTitle.includes('road') || lowerTitle.includes('transport')) {
+          img = 'https://images.unsplash.com/photo-1449824913935-59a10b8d2000?auto=format&fit=crop&w=1200&q=80';
+        } else if (lowerTitle.includes('water') || lowerTitle.includes('sanitation')) {
+          img = 'https://images.unsplash.com/photo-1519822550275-9e6b46142e03?auto=format&fit=crop&w=1200&q=80';
+        } else if (lowerTitle.includes('housing') || lowerTitle.includes('residential')) {
+          img = 'https://images.unsplash.com/photo-1545324418-cc1a3fa10c00?auto=format&fit=crop&w=1200&q=80';
+        } else if (lowerTitle.includes('education') || lowerTitle.includes('school')) {
+          img = 'https://images.unsplash.com/photo-1523050854058-8df90110c9f1?auto=format&fit=crop&w=1200&q=80';
+        } else if (lowerTitle.includes('health') || lowerTitle.includes('clinic')) {
+          img = 'https://images.unsplash.com/photo-1519494026892-80bbd2d6fd0d?auto=format&fit=crop&w=1200&q=80';
+        } else {
+          img = 'https://images.unsplash.com/photo-1466611653911-95081537e5b7?auto=format&fit=crop&w=1200&q=80'; // Green energy/city fallback
+        }
+
         if (p.images) {
-          try { const arr = JSON.parse(p.images); if (arr.length > 0) img = arr[0] } catch {}
+          try { 
+            const arr = JSON.parse(p.images); 
+            if (arr.length > 0 && arr[0].length > 0) img = arr[0] 
+          } catch {}
         }
         return {
           title: p.title,
