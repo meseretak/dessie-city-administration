@@ -472,11 +472,8 @@ export default function HomePage() {
           img = 'https://images.unsplash.com/photo-1466611653911-95081537e5b7?auto=format&fit=crop&w=1200&q=80'; // Green energy/city fallback
         }
 
-        if (p.images) {
-          try { 
-            const arr = JSON.parse(p.images); 
-            if (arr.length > 0 && arr[0].length > 0) img = arr[0] 
-          } catch {}
+        if (p.image && typeof p.image === 'string' && p.image.length > 5) {
+          img = p.image;
         }
         return {
           title: p.title,
