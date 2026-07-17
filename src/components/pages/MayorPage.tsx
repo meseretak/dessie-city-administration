@@ -320,7 +320,7 @@ export default function MayorPage() {
       .catch(() => { })
   }, [])
 
-  // Use DB data if available, fallback to hardcoded have aded 
+  // Use DB data if available, fallback to hardcoded have aded  ADDDD
   const displayCabinet = dbCabinet.length > 0 ? dbCabinet : cabinetMembers
   const mayorName = dbMayorInfo?.name || mayorInfo.name
   const mayorPhoto = dbMayorInfo?.photo || mayorInfo.photo
