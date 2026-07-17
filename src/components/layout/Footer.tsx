@@ -18,7 +18,8 @@ export default function Footer() {
               <img
                 src="/official-logo.png"
                 alt="Dessie City Administration Logo"
-                className="h-14 w-auto object-contain"
+                className="h-14 w-auto object-contain mix-blend-screen"
+                style={{ filter: 'invert(1) grayscale(1) brightness(2)' }}
               />
               <div className="leading-tight">
                 <span className="text-green-400 font-bold text-xl tracking-wide">DESSIE</span>
