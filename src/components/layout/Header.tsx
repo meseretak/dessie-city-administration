@@ -8,7 +8,7 @@ import {
   Building, MapPin, Receipt, Heart, Stethoscope, GraduationCap,
   Bus, Droplets, MessageSquareWarning, CalendarDays, ArrowRight, 
   ShieldCheck, Scale, Leaf, Landmark, Factory, Wheat, Lightbulb, 
-  Users, Monitor, FileText
+  Users, Monitor, FileText, Send, Video, MessageCircle
 } from 'lucide-react';
 import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
@@ -153,10 +153,18 @@ export default function Header({ navItems }: { navItems: NavItem[] }) {
           </div>
           <div className="flex items-center gap-3">
             <span className="text-white/40 text-[0.65rem] tracking-wider uppercase font-medium mr-1">Follow Us</span>
-            {[Facebook, Twitter, Linkedin, Instagram, Youtube].map((Icon, i) => (
-              <button key={i} className="w-6 h-6 rounded-full bg-white/10 hover:bg-white/25 flex items-center justify-center transition-all hover:scale-110">
+            {[
+              { Icon: Facebook, href: 'https://www.facebook.com/DessieCityAdministrationCommunicationAffairsOffice/' },
+              { Icon: Send, href: 'https://t.me/dessiecityadminstration' },
+              { Icon: Video, href: 'https://vm.tiktok.com/ZMkdcEx16/' },
+              { Icon: Youtube, href: 'https://youtu.be/y5y5l_PaKfM?si=inJ8KYCEipJ6pDWBb' },
+              { Icon: Twitter, href: 'https://twitter.com/Dessieadmcom?s=09' },
+              { Icon: MessageCircle, href: 'https://chat.whatsapp.com/CosS5afsqLH1OtlwPaNrNa' },
+              { Icon: Linkedin, href: 'https://www.linkedin.com/in/meseret-akalu-76363121b/' }
+            ].map(({ Icon, href }, i) => (
+              <a key={i} href={href} target="_blank" rel="noopener noreferrer" className="w-6 h-6 rounded-full bg-white/10 hover:bg-white/25 flex items-center justify-center transition-all hover:scale-110">
                 <Icon className="w-3 h-3 text-white" />
-              </button>
+              </a>
             ))}
           </div>
         </div>

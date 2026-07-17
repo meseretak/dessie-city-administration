@@ -1,6 +1,6 @@
 "use client"
 import React from 'react';
-import { Phone, Mail, Facebook, Twitter, Linkedin, Instagram, Youtube, FileText } from 'lucide-react';
+import { Phone, Mail, Facebook, Twitter, Linkedin, Instagram, Youtube, FileText, Send, Video, MessageCircle } from 'lucide-react';
 import Link from 'next/link';
 import { useLang } from '@/lib/LangContext';
 
@@ -114,15 +114,26 @@ export default function Footer() {
           {/* Column 5: Connect */}
           <div>
             <h4 className="text-white font-semibold text-sm tracking-wider uppercase mb-4">{lang === 'am' ? 'ያግኙን' : 'Connect'}</h4>
-            <div className="flex gap-2 mb-4">
-              {[Facebook, Twitter, Instagram, Youtube].map((Icon, i) => (
-                <button
+            <div className="flex gap-2 mb-4 flex-wrap">
+              {[
+                { Icon: Facebook, href: 'https://www.facebook.com/DessieCityAdministrationCommunicationAffairsOffice/' },
+                { Icon: Send, href: 'https://t.me/dessiecityadminstration' },
+                { Icon: Video, href: 'https://vm.tiktok.com/ZMkdcEx16/' },
+                { Icon: Youtube, href: 'https://youtu.be/y5y5l_PaKfM?si=inJ8KYCEipJ6pDWBb' },
+                { Icon: Twitter, href: 'https://twitter.com/Dessieadmcom?s=09' },
+                { Icon: MessageCircle, href: 'https://chat.whatsapp.com/CosS5afsqLH1OtlwPaNrNa' },
+                { Icon: Linkedin, href: 'https://www.linkedin.com/in/meseret-akalu-76363121b/' }
+              ].map(({ Icon, href }, i) => (
+                <a
                   key={i}
+                  href={href}
+                  target="_blank"
+                  rel="noopener noreferrer"
                   className="w-8 h-8 rounded-full bg-white/10 hover:bg-white/20 flex items-center justify-center transition-colors"
                   aria-label="Social media"
                 >
                   <Icon className="w-3.5 h-3.5 text-white" />
-                </button>
+                </a>
               ))}
             </div>
             <p className="text-sm text-white/50 mb-3">{lang === 'am' ? 'በኢሜይል ዝማኔዎችን ያግኙ' : 'Get updates via email'}</p>
@@ -147,7 +158,7 @@ export default function Footer() {
             &copy; {new Date().getFullYear()} Dessie City Administration. All rights reserved.
           </p>
           <div className="text-xs text-white/40 text-center flex items-center gap-1.5">
-            {lang === 'am' ? 'በመሰረት አቃሉ የተገነባ' : 'Developed by'} <span className="font-semibold text-white/70">Meseret Akalu</span> <span className="text-[#c8a415]">&bull;</span> <a href="tel:+251912465247" className="hover:text-green-400 transition-colors">0912465247</a>
+            {lang === 'am' ? 'በመሰረት አቃሉ የተገነባ' : 'Developed by'} <a href="https://www.linkedin.com/in/meseret-akalu-76363121b/" target="_blank" rel="noopener noreferrer" className="font-semibold text-white/70 hover:text-green-400 transition-colors">Meseret Akalu</a> <span className="text-[#c8a415]">&bull;</span> <a href="tel:+251912465247" className="hover:text-green-400 transition-colors">0912465247</a>
           </div>
           <div className="flex items-center justify-center gap-4 text-xs text-white/40">
             <Link href="/privacy" className="hover:text-green-400 transition-colors">Privacy Policy</Link>
