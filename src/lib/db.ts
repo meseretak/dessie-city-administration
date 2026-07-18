@@ -9,7 +9,7 @@
 // ─────────────────────────────────────────────────────────────────
 const TURSO_URL = (process.env.TURSO_DATABASE_URL ?? '').trim()
 const TURSO_TOKEN = (process.env.TURSO_AUTH_TOKEN ?? '').trim()
-const USE_TURSO = TURSO_URL.startsWith('libsql://') && TURSO_TOKEN.length > 10
+const USE_TURSO = (TURSO_URL.startsWith('libsql://') || TURSO_URL.startsWith('https://')) && TURSO_TOKEN.length > 10 || !!process.env.VERCEL
 
 async function tursoExec(sql: string, args: unknown[] = []): Promise<any> {
   const httpUrl = TURSO_URL.replace('libsql://', 'https://')
