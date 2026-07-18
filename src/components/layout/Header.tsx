@@ -11,6 +11,7 @@ import {
   Users, Monitor, FileText, Send, Video, MessageCircle
 } from 'lucide-react';
 import Link from 'next/link';
+import Image from 'next/image';
 import { usePathname, useRouter } from 'next/navigation';
 import { useTheme } from 'next-themes';
 import { useLang } from '@/lib/LangContext';
@@ -174,7 +175,7 @@ export default function Header({ navItems }: { navItems: NavItem[] }) {
         <div className="tricolor-stripe" />
         <div className="max-w-7xl mx-auto px-4 py-2 md:py-3 flex items-center gap-4">
           <Link href="/" className="flex items-center gap-2 shrink-0 cursor-pointer">
-            <img src="/official-logo.png" alt="Dessie City Administration Logo" className="h-12 md:h-14 w-auto object-contain" />
+            <Image src="/official-logo.png" alt="Dessie City Administration Logo" width={150} height={56} className="h-12 md:h-14 w-auto object-contain" priority />
             <div className="leading-tight hidden sm:block">
               <span className="text-[#0d4a28] font-extrabold text-base md:text-lg tracking-wide">DESSIE</span>
               <br />
@@ -231,7 +232,7 @@ export default function Header({ navItems }: { navItems: NavItem[] }) {
                       ) : item.label === 'ABOUT' ? (
                         <div className="flex bg-white min-w-[450px]">
                            <div className="w-2/5 relative shrink-0">
-                              <img src="/dessie-city-hall.png" alt="Dessie" className="absolute inset-0 w-full h-full object-cover" />
+                              <Image src="/dessie-city-hall.png" alt="Dessie" fill className="object-cover" />
                               <div className="absolute inset-0 bg-gradient-to-t from-[#0d4a28]/90 via-[#0d4a28]/40 to-transparent flex flex-col justify-end p-4">
                                  <span className="text-white font-bold text-[0.85rem] leading-tight shadow-sm">Discover Dessie City</span>
                                  <span className="text-white/80 text-[0.65rem] mt-1 font-medium">Heart of South Wollo</span>
@@ -254,7 +255,7 @@ export default function Header({ navItems }: { navItems: NavItem[] }) {
                       ) : item.label === 'MAYOR' ? (
                         <div className="flex bg-white min-w-[450px]">
                            <div className="w-2/5 relative shrink-0">
-                              <img src="/mayor-photo.png" alt="Mayor" className="absolute inset-0 w-full h-full object-cover object-top" />
+                              <Image src="/mayor-photo.png" alt="Mayor" fill className="object-cover object-top" />
                               <div className="absolute inset-0 bg-gradient-to-t from-[#0d4a28]/90 via-[#0d4a28]/20 to-transparent flex flex-col justify-end p-4">
                                  <span className="text-white font-bold text-[0.85rem] leading-tight shadow-sm">Office of the Mayor</span>
                                  <span className="text-white/80 text-[0.65rem] mt-1 font-medium">Leadership & Vision</span>

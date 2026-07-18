@@ -8,6 +8,7 @@ import { Badge } from '@/components/ui/badge'
 import { Input } from '@/components/ui/input'
 import { Skeleton } from '@/components/ui/skeleton'
 import { Separator } from '@/components/ui/separator'
+import Image from 'next/image'
 import {
   Newspaper, Calendar, MapPin, Clock, ChevronLeft, ChevronRight,
   Search, ArrowRight, Eye, Sparkles
@@ -89,21 +90,33 @@ export default function NewsPage({ navigateTo, lang = 'en' }: NewsPageProps) {
   return (
     <main className="min-h-screen bg-gray-50/50">
       {/* Page Banner */}
-      <section className="bg-gradient-to-br from-[#0d4a28] to-[#1a6b3c] py-12 text-center relative overflow-hidden">
+      <section className="relative h-[40vh] min-h-[350px] flex items-center justify-center overflow-hidden">
+        <div className="absolute inset-0 z-0">
+          <Image 
+            src="https://images.unsplash.com/photo-1585829365295-ab7cd400c167?q=80&w=2000&auto=format&fit=crop" 
+            alt="Dessie News" 
+            fill 
+            className="object-cover"
+            priority
+          />
+          <div className="absolute inset-0 bg-gradient-to-b from-black/70 via-black/40 to-[#f8faf8] opacity-90" />
+        </div>
+
         {/* Dynamic Animated Background */}
-        <div className="absolute inset-0 opacity-10">
-          <motion.div animate={{ rotate: 360 }} transition={{ duration: 150, repeat: Infinity, ease: "linear" }} className="absolute -top-20 -left-20 w-[400px] h-[400px] rounded-full border-[20px] border-white/5 border-dashed" />
-          <motion.div animate={{ rotate: -360 }} transition={{ duration: 120, repeat: Infinity, ease: "linear" }} className="absolute -bottom-20 -right-20 w-[300px] h-[300px] rounded-full border-[15px] border-[#c8a415]/10 border-dashed" />
-          <div className="absolute top-1/4 left-1/4 w-20 h-20 rounded-full border-2 border-white/20 animate-[ping_4s_ease-in-out_infinite]" />
+        <div className="absolute inset-0 opacity-10 pointer-events-none z-10">
+          <motion.div animate={{ rotate: 360 }} transition={{ duration: 150, repeat: Infinity, ease: "linear" }} className="absolute -top-20 -left-20 w-[400px] h-[400px] rounded-full border-[20px] border-white/10 border-dashed" />
+          <motion.div animate={{ rotate: -360 }} transition={{ duration: 120, repeat: Infinity, ease: "linear" }} className="absolute -bottom-20 -right-20 w-[300px] h-[300px] rounded-full border-[15px] border-[#c8a415]/20 border-dashed" />
         </div>
         
-        <motion.div initial={{ opacity: 0, scale: 0.95, y: 10 }} animate={{ opacity: 1, scale: 1, y: 0 }} transition={{ duration: 0.6, ease: "easeOut" }} className="relative z-10 max-w-7xl mx-auto px-4">
-          <div className="inline-flex items-center gap-1.5 px-4 py-1.5 rounded-full bg-white/10 backdrop-blur-md mb-4 border border-white/20 shadow-lg">
-            <Sparkles className="w-4 h-4 text-[#c8a415] animate-pulse" />
-            <p className="text-[#c8a415] text-xs tracking-widest font-bold uppercase">{isAm ? 'ሚዲያ ማዕከል' : 'Media Center'}</p>
+        <motion.div initial={{ opacity: 0, scale: 0.95, y: 10 }} animate={{ opacity: 1, scale: 1, y: 0 }} transition={{ duration: 0.6, ease: "easeOut" }} className="relative z-20 max-w-7xl mx-auto px-4 w-full">
+          <div className="flex flex-col items-center">
+            <div className="inline-flex items-center gap-1.5 px-4 py-1.5 rounded-full bg-white/10 backdrop-blur-md mb-4 border border-white/20 shadow-lg">
+              <Sparkles className="w-4 h-4 text-[#c8a415] animate-pulse" />
+              <p className="text-[#c8a415] text-xs tracking-widest font-bold uppercase">{isAm ? 'ሚዲያ ማዕከል' : 'Media Center'}</p>
+            </div>
+            <h1 className="text-4xl md:text-5xl lg:text-6xl font-extrabold text-white tracking-tight mb-4 drop-shadow-2xl">{isAm ? 'ዜናዎችና ማስታወቂያዎች' : 'NEWS & ANNOUNCEMENTS'}</h1>
+            <Separator className="w-20 mx-auto bg-[#c8a415] h-1 mb-8 border-0 rounded-full" />
           </div>
-          <h1 className="text-4xl md:text-5xl font-extrabold text-white tracking-tight mb-4 drop-shadow-md">{isAm ? 'ዜናዎችና ማስታወቂያዎች' : 'NEWS & ANNOUNCEMENTS'}</h1>
-          <Separator className="w-20 mx-auto bg-gradient-to-r from-transparent via-[#c8a415] to-transparent h-1 mb-8 border-0 rounded-full" />
           
           {/* Search Box in Banner */}
           <div className="relative w-full max-w-md mx-auto shadow-2xl">

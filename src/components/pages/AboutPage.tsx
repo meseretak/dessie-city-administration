@@ -77,8 +77,7 @@ export default function AboutPage() {
             className="object-cover"
             priority
           />
-          <div className="absolute inset-0 bg-[#001a09]/60 mix-blend-multiply" />
-          <div className="absolute inset-0 bg-gradient-to-t from-[#f8faf8] via-transparent to-transparent opacity-100" />
+          <div className="absolute inset-0 bg-gradient-to-b from-black/60 via-black/30 to-[#f8faf8] opacity-90" />
         </motion.div>
         
         <div className="relative z-10 text-center px-4 max-w-5xl mx-auto mt-10">

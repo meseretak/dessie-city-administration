@@ -7,6 +7,7 @@ import { Separator } from '@/components/ui/separator'
 import { Input } from '@/components/ui/input'
 import type { PageId } from '@/lib/types'
 import { useLang } from '@/lib/LangContext'
+import Image from 'next/image'
 import {
   Baby, FileCheck, Building, MapPin, Receipt, Heart, Stethoscope, GraduationCap,
   Bus, Droplets, MessageSquareWarning, CalendarDays, Search,
@@ -81,21 +82,33 @@ export default function ServicesPage({ navigateTo }: ServicesPageProps) {
   return (
     <main className="bg-gray-50/50">
       {/* Page Banner */}
-      <section className="bg-gradient-to-br from-[#0d4a28] to-[#1a6b3c] py-10 text-center relative overflow-hidden">
-        <div className="absolute inset-0 opacity-10">
+      <section className="relative h-[40vh] min-h-[350px] flex items-center justify-center overflow-hidden">
+        <div className="absolute inset-0 z-0">
+          <Image 
+            src="https://images.unsplash.com/photo-1573164713988-8665fc963095?q=80&w=2000&auto=format&fit=crop" 
+            alt="Dessie Services" 
+            fill 
+            className="object-cover"
+            priority
+          />
+          <div className="absolute inset-0 bg-gradient-to-b from-black/70 via-black/40 to-[#f8faf8] opacity-90" />
+        </div>
+
+        <div className="absolute inset-0 opacity-10 z-10 pointer-events-none">
           <div className="absolute top-4 left-1/4 w-32 h-32 rounded-full border border-white/20 animate-[ping_3s_ease-in-out_infinite]" />
           <div className="absolute bottom-8 right-1/3 w-48 h-48 rounded-full border border-white/20 animate-pulse" />
           <div className="absolute top-8 right-16 w-20 h-20 rounded-full border border-white/20" />
         </div>
-        <motion.div initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }} transition={{ duration: 0.8 }} className="relative z-10">
+        
+        <motion.div initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }} transition={{ duration: 0.8 }} className="relative z-20 text-center px-4">
           <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/10 backdrop-blur-md mb-6 border border-white/20 shadow-lg">
             <Globe className="w-4 h-4 text-[#c8a415]" />
             <p className="text-[#c8a415] text-sm tracking-widest font-semibold uppercase">{isAm ? 'የህዝብ አገልግሎቶች' : 'Municipal Services'}</p>
           </div>
-          <h1 className="text-4xl md:text-6xl font-extrabold text-white tracking-wide mb-6 drop-shadow-lg">{isAm ? 'የዜጎች አገልግሎቶች' : 'CITIZEN SERVICES'}</h1>
-          <Separator className="w-24 mx-auto bg-gradient-to-r from-transparent via-[#c8a415] to-transparent h-1 mb-6 border-0" />
-          <p className="text-white/80 text-sm tracking-widest uppercase font-medium">{isAm ? 'ዋና ገጽ / አገልግሎቶች' : 'Home / Services'}</p>
-          <p className="text-white/70 text-lg mt-6 max-w-2xl mx-auto font-medium">{isAm ? 'ሁሉም የመንግስት አገልግሎቶች በዲጂታልና በቢሮ ይገኛሉ' : 'All government services available seamlessly online and at city offices'}</p>
+          <h1 className="text-4xl md:text-6xl font-extrabold text-white tracking-wide mb-6 drop-shadow-2xl">{isAm ? 'የዜጎች አገልግሎቶች' : 'CITIZEN SERVICES'}</h1>
+          <Separator className="w-24 mx-auto bg-[#c8a415] h-1 mb-6 border-0 rounded-full" />
+          <p className="text-white/90 text-xs tracking-widest uppercase font-bold bg-black/30 inline-block px-4 py-1.5 rounded-full backdrop-blur-md border border-white/10">{isAm ? 'ዋና ገጽ / አገልግሎቶች' : 'Home / Services'}</p>
+          <p className="text-white/90 text-lg mt-6 max-w-2xl mx-auto font-medium drop-shadow-md">{isAm ? 'ሁሉም የመንግስት አገልግሎቶች በዲጂታልና በቢሮ ይገኛሉ' : 'All government services available seamlessly online and at city offices'}</p>
         </motion.div>
       </section>
 
