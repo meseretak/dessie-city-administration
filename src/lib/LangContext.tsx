@@ -13,13 +13,6 @@ const LangContext = createContext<LangContextType>({ lang: 'en', setLang: () => 
 export function LangProvider({ children, initialLang = 'en' }: { children: React.ReactNode, initialLang?: Lang }) {
   const [lang, setLangState] = useState<Lang>(initialLang)
 
-  useEffect(() => {
-    const saved = localStorage.getItem('dessie_lang') as Lang | null
-    if (saved && saved !== initialLang) {
-      setLang(saved)
-    }
-  }, [])
-
   const setLang = (l: Lang) => {
     setLangState(l)
     localStorage.setItem('dessie_lang', l)
@@ -30,6 +23,13 @@ export function LangProvider({ children, initialLang = 'en' }: { children: React
       window.location.reload()
     }
   }
+
+  useEffect(() => {
+    const saved = localStorage.getItem('dessie_lang') as Lang | null
+    if (saved && saved !== initialLang) {
+      setLang(saved)
+    }
+  }, [])
 
   const toggle = () => setLang(lang === 'en' ? 'am' : 'en')
 
