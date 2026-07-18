@@ -4,7 +4,7 @@ const db = new PrismaClient()
 
 async function main() {
   console.log('Seeding data...')
-  
+
   // 1. Seed Hero Sliders
   const heroSlides = [
     { image: '/dessie-city-hall.png', title: 'ደሴ ከተማ አስተዳደር', subtitle: 'Welcome to Dessie City Administration — Serving 500,000+ Citizens with Excellence', tag: 'GOVERNANCE' },
@@ -77,7 +77,7 @@ async function main() {
     })
   }
 
-  // 4. Seed Hotels
+  // 4. Seed Hotels updaed
   const hotels = [
     { name: 'Dessie Grand Hotel', rating: 4, priceRange: 'ETB 3,500-8,000', location: 'City Center', phone: '+251 33 111 2233', email: 'info@dessiegrand.com', description: 'The premier hotel in Dessie offering luxury rooms, conference facilities, and fine dining with panoramic city views.', image: '/hotel-building.png' },
     { name: 'Mountain View Lodge', rating: 4, priceRange: 'ETB 2,800-6,500', location: 'Hillside', phone: '+251 33 111 4455', email: 'booking@mviewlodge.com', description: 'A peaceful hillside retreat with stunning mountain views, spa services, and traditional Ethiopian cuisine.', image: '/hotel-lobby.png' },
