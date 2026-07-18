@@ -36,10 +36,18 @@ async function tursoExec(sql: string, args: unknown[] = []): Promise<any> {
       ],
     }),
   })
-  const data = await res.json()
-  const result = data.results?.[0]
-  if (result?.type === 'error') throw new Error(`SQL error: ${result.error?.message}`)
-  return result?.response?.result
+  try {
+    const data = await res.json()
+    const result = data.results?.[0]
+    if (result?.type === 'error') {
+      console.error(`SQL error in tursoExec: ${result.error?.message}`)
+      return null
+    }
+    return result?.response?.result
+  } catch (err) {
+    console.error(`Fetch error in tursoExec:`, err)
+    return null
+  }
 }
 
 function toRows(result: any): Record<string, unknown>[] {
